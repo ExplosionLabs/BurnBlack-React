@@ -1,4 +1,5 @@
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { useNavigate } from "react-router-dom";
 import logoUrl from "@/assets/images/logo.svg";
 import illustrationUrl from "@/assets/images/illustration.svg";
 import { FormInput, FormCheck } from "@/components/Base/Form";
@@ -6,9 +7,10 @@ import Button from "@/components/Base/Button";
 import clsx from "clsx";
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerRequest, registerSuccess, registerFailure } from '../../stores/userSlice';
-import { registerUser, sendEmailOtp, sendPhoneOtp, verifyOtp } from '../../api/userApi';
+import { registerRequest, registerSuccess, registerFailure,googleLoginRequest, googleLoginSuccess, googleLoginFailure } from '../../stores/userSlice';
+import { registerUser, registerUserWithGoogle } from '../../api/userApi';
 import { RootState } from '../../stores/store';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Main() {
   const [formData, setFormData] = useState({
@@ -19,6 +21,7 @@ function Main() {
     passwordConfirmation: '',
   });
 
+  const navigate=useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.user);
 
@@ -46,12 +49,39 @@ function Main() {
 
     try {
       const response = await registerUser(userData);
-      dispatch(registerSuccess(response.user));
+      dispatch(registerSuccess(response));
       alert('Registration successful!');
     } catch (error: any) {
       dispatch(registerFailure(error));
       alert('Registration failed. Please try again.');
     }
+  };
+
+  function decodeJwt(token: string) {
+    const base64Url = token.split('.')[1]; // Get the payload part of the JWT (the second part)
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // URL-safe base64
+    const decoded = atob(base64); // Decode the Base64 string
+    return JSON.parse(decoded); // Parse and return the JSON payload
+  }
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    dispatch(googleLoginRequest());
+  
+    try {
+      const decodedToken = decodeJwt(credentialResponse.credential); // Use the custom decodeJwt function
+      const response = await registerUserWithGoogle({ token: credentialResponse.credential });
+      dispatch(googleLoginSuccess(response));
+      alert('Google Sign-In successful!');
+    } catch (error) {
+      console.log("error", error);
+      dispatch(googleLoginFailure(error.message));
+      alert('Google Sign-In failed!');
+    }
+  };
+  
+
+  const handleGoogleLoginFailure = () => {
+    dispatch(googleLoginFailure('Google Sign-In was unsuccessful.'));
+    alert('Google Sign-In failed!');
   };
 
   return (
@@ -177,6 +207,9 @@ function Main() {
                     {loading ? 'Registering...' : 'Register'}
                   </Button>
                   <Button
+                  onClick={()=>{
+                    navigate("/login")
+                  }}
                     variant="outline-secondary"
                     className="w-full px-4 py-3 mt-3 align-top xl:w-32 xl:mt-0"
                   >
@@ -185,6 +218,11 @@ function Main() {
                 </div>
               </div>
             </div>
+            <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={handleGoogleLoginFailure}
+          useOneTap
+        />
             {/* END: Register Form */}
           </div>
         </div>

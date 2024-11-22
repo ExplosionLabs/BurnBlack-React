@@ -1,11 +1,77 @@
+import React, { useState } from 'react';
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import logoUrl from "@/assets/images/logo.svg";
 import illustrationUrl from "@/assets/images/illustration.svg";
 import { FormInput, FormCheck } from "@/components/Base/Form";
 import Button from "@/components/Base/Button";
 import clsx from "clsx";
-
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../stores/store';
+import { loginFailure, loginRequest, loginSuccess ,googleLoginRequest, googleLoginSuccess, googleLoginFailure} from '@/stores/userSlice';
+import { loginUser,registerUserWithGoogle } from '@/api/userApi';
+import { GoogleLogin } from '@react-oauth/google';
 function Main() {
+  const navigate=useNavigate();
+ 
+  const [formData, setFormData] = useState({
+
+    email: '',
+    password: '',
+
+  });
+  const dispatch = useDispatch();
+  const {user, loading, error } = useSelector((state: RootState) => state.user);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+   
+
+    const userData = {
+      email: formData.email,
+      password: formData.password,
+    };
+
+    dispatch(loginRequest());
+
+    try {
+      const response = await loginUser(userData);
+      dispatch(loginSuccess(response));
+      alert('Login successful!');
+    } catch (error: any) {
+      dispatch(loginFailure(error));
+      alert('Login. Please try again.');
+    }
+  };
+  function decodeJwt(token: string) {
+    const base64Url = token.split('.')[1]; // Get the payload part of the JWT (the second part)
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // URL-safe base64
+    const decoded = atob(base64); // Decode the Base64 string
+    return JSON.parse(decoded); // Parse and return the JSON payload
+  }
+  const handleGoogleLoginSuccess = async (credentialResponse) => {
+    dispatch(googleLoginRequest());
+  
+    try {
+      const decodedToken = decodeJwt(credentialResponse.credential); // Use the custom decodeJwt function
+      const response = await registerUserWithGoogle({ token: credentialResponse.credential });
+      dispatch(googleLoginSuccess(response));
+      alert('Google Sign-In successful!');
+    } catch (error) {
+      console.log("error", error);
+      dispatch(googleLoginFailure(error.message));
+      alert('Google Sign-In failed!');
+    }
+  };
+  const handleGoogleLoginFailure = () => {
+    dispatch(googleLoginFailure('Google Sign-In was unsuccessful.'));
+    alert('Google Sign-In failed!');
+  };
+
   return (
     <>
       <div
@@ -48,48 +114,48 @@ function Main() {
             <div className="flex h-screen py-5 my-10 xl:h-auto xl:py-0 xl:my-0">
               <div className="w-full px-5 py-8 mx-auto my-auto bg-white rounded-md shadow-md xl:ml-20 dark:bg-darkmode-600 xl:bg-transparent sm:px-8 xl:p-0 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto">
                 <h2 className="text-2xl font-bold text-center intro-x xl:text-3xl xl:text-left">
-                  Sign In
+             
+             Sign In
                 </h2>
                 <div className="mt-2 text-center intro-x text-slate-400 xl:hidden">
                   A few more clicks to sign in to your account. Manage all your
                   e-commerce accounts in one place
                 </div>
+                
                 <div className="mt-8 intro-x">
                   <FormInput
                     type="text"
                     className="block px-4 py-3 intro-x min-w-full xl:min-w-[350px]"
                     placeholder="Email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
                   <FormInput
                     type="password"
                     className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
                     placeholder="Password"
+                    name='password'
+                    value={formData.password}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="flex mt-4 text-xs intro-x text-slate-600 dark:text-slate-500 sm:text-sm">
-                  <div className="flex items-center mr-auto">
-                    <FormCheck.Input
-                      id="remember-me"
-                      type="checkbox"
-                      className="mr-2 border"
-                    />
-                    <label
-                      className="cursor-pointer select-none"
-                      htmlFor="remember-me"
-                    >
-                      Remember me
-                    </label>
-                  </div>
+        
                   <a href="">Forgot Password?</a>
                 </div>
                 <div className="mt-5 text-center intro-x xl:mt-8 xl:text-left">
                   <Button
+                  onClick={handleSubmit}
                     variant="primary"
                     className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
                   >
                     Login
                   </Button>
                   <Button
+                  onClick={()=>{
+                    navigate("/register")
+                  }}
                     variant="outline-secondary"
                     className="w-full px-4 py-3 mt-3 align-top xl:w-32 xl:mt-0"
                   >
@@ -108,6 +174,11 @@ function Main() {
                 </div>
               </div>
             </div>
+            <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={handleGoogleLoginFailure}
+          useOneTap
+        />
             {/* END: Login Form */}
           </div>
         </div>
