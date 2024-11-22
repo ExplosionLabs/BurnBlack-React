@@ -4,8 +4,56 @@ import illustrationUrl from "@/assets/images/illustration.svg";
 import { FormInput, FormCheck } from "@/components/Base/Form";
 import Button from "@/components/Base/Button";
 import clsx from "clsx";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerRequest, registerSuccess, registerFailure } from '../../stores/userSlice';
+import { registerUser, sendEmailOtp, sendPhoneOtp, verifyOtp } from '../../api/userApi';
+import { RootState } from '../../stores/store';
 
 function Main() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    password: '',
+    passwordConfirmation: '',
+  });
+
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state: RootState) => state.user);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.passwordConfirmation) {
+      alert("Passwords don't match!");
+      return;
+    }
+
+    const userData = {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    dispatch(registerRequest());
+
+    try {
+      const response = await registerUser(userData);
+      dispatch(registerSuccess(response.user));
+      alert('Registration successful!');
+    } catch (error: any) {
+      dispatch(registerFailure(error));
+      alert('Registration failed. Please try again.');
+    }
+  };
+
   return (
     <>
       <div
@@ -57,21 +105,33 @@ function Main() {
                 <div className="mt-8 intro-x">
                   <FormInput
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     className="block px-4 py-3 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="First Name"
+                    placeholder="Name"
                   />
                   <FormInput
-                    type="text"
+                    type="number"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="Last Name"
+                    placeholder="Phone No"
                   />
                   <FormInput
                     type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
                     placeholder="Email"
                   />
                   <FormInput
-                    type="text"
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
                     className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
                     placeholder="Password"
                   />
@@ -81,14 +141,11 @@ function Main() {
                     <div className="h-full col-span-3 rounded bg-success"></div>
                     <div className="h-full col-span-3 rounded bg-slate-100 dark:bg-darkmode-800"></div>
                   </div>
-                  <a
-                    href=""
-                    className="block mt-2 text-xs intro-x text-slate-500 sm:text-sm"
-                  >
-                    What is a secure password?
-                  </a>
                   <FormInput
-                    type="text"
+                    type="password"
+                    name="passwordConfirmation"
+                    value={formData.passwordConfirmation}
+                    onChange={handleInputChange}
                     className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
                     placeholder="Password Confirmation"
                   />
@@ -114,8 +171,10 @@ function Main() {
                   <Button
                     variant="primary"
                     className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
+                    onClick={handleSubmit}
+                    disabled={loading}
                   >
-                    Register
+                    {loading ? 'Registering...' : 'Register'}
                   </Button>
                   <Button
                     variant="outline-secondary"
