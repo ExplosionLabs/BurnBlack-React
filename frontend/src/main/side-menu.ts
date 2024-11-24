@@ -8,7 +8,7 @@ const menu: Array<Menu | "divider"> = [
       {
         icon: "Activity",
         pathname: "/",
-        title: "Overview 1",
+        title: "Overview 1d",
       },
       {
         icon: "Activity",

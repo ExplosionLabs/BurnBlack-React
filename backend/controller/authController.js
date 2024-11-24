@@ -71,7 +71,7 @@ const loginController = async (req, res) => {
 
     // Generate a token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "7d",
     });
 
     res.status(200).json({
@@ -108,9 +108,12 @@ const signupGoogleController = async (req, res) => {
         name,
       });
     }
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     // Return user data
-    res.json({ token, user });
+    res.json({ token: jwtToken, user });
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: "Invalid Google token" });

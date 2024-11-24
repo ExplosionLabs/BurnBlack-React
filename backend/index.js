@@ -5,6 +5,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const app = express();
 const authRoute = require("./routes/authRoute");
+const fileITRRoute = require("./routes/fileITRRoute");
 const port = 4000;
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan("dev"));
 
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/fillDetail", fileITRRoute);
 app.get("/", (req, res) => {
   res.send("black burn backend running");
 });
