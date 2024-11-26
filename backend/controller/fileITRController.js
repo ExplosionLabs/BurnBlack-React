@@ -1,3 +1,6 @@
+const addressDetail = require("../model/addressDetail");
+const bankDetail = require("../model/bankDetail");
+const contactDetail = require("../model/contactDetail");
 const form16model = require("../model/form16model");
 const personalDetailModel = require("../model/personalDetailModel");
 
@@ -75,8 +78,156 @@ const getPersonalDetailController = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch personal details" });
   }
 };
+
+const updateContactDetailController = async (req, res) => {
+  const { ...personalDetails } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      // Try to find and update the record if it already exists
+      updatedDetail = await contactDetail.findOneAndUpdate(
+        { userId }, // Find by userId instead of _id
+        { $set: personalDetails },
+        { new: true } // Return the updated document
+      );
+    }
+
+    if (!updatedDetail) {
+      // If userId is not provided or doesn't exist, create a new record without the _id field
+      const newDetail = new contactDetail({ userId, ...personalDetails });
+      updatedDetail = await newDetail.save(); // MongoDB will auto-generate the _id
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating contact details:", error);
+    res.status(500).json({ error: "Failed to update contact details" });
+  }
+};
+
+const getContactDetailController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const personalDetails = await contactDetail.findOne({ userId });
+    if (!personalDetails) {
+      return res.status(404).json({ error: "Contact details not found" });
+    }
+    res.status(200).json(personalDetails); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching contact details:", error);
+    res.status(500).json({ error: "Failed to fetch contact details" });
+  }
+};
+
+const updateAddressDetailController = async (req, res) => {
+  const { ...addressDetails } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      // Try to find and update the record if it already exists
+      updatedDetail = await addressDetail.findOneAndUpdate(
+        { userId }, // Find by userId instead of _id
+        { $set: addressDetails },
+        { new: true } // Return the updated document
+      );
+    }
+
+    if (!updatedDetail) {
+      // If userId is not provided or doesn't exist, create a new record without the _id field
+      const newDetail = new addressDetail({ userId, ...addressDetails });
+      updatedDetail = await newDetail.save(); // MongoDB will auto-generate the _id
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating contact details:", error);
+    res.status(500).json({ error: "Failed to update contact details" });
+  }
+};
+
+const getAddressDetailController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const personalDetails = await addressDetail.findOne({ userId });
+    if (!personalDetails) {
+      return res.status(404).json({ error: "Address details not found" });
+    }
+    res.status(200).json(personalDetails); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching contact details:", error);
+    res.status(500).json({ error: "Failed to fetch contact details" });
+  }
+};
+
+const updateBankDetailsController = async (req, res) => {
+  const userId = req.user.id; // Assume authentication middleware adds `user` to `req`
+  const { bankDetails } = req.body;
+
+  try {
+    let userBankDetails = await bankDetail.findOne({ userId });
+
+    if (userBankDetails) {
+      // Update existing bank details
+      userBankDetails.bankDetails = bankDetails;
+      await userBankDetails.save();
+    } else {
+      // Create new record
+      userBankDetails = new bankDetail({ userId, bankDetails });
+      await userBankDetails.save();
+    }
+
+    res.status(200).json({ message: "Bank details updated successfully." });
+  } catch (error) {
+    console.error("Error updating bank details:", error);
+    res.status(500).json({ error: "Failed to update bank details." });
+  }
+};
+
+const getBankDetailsController = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const bankDetails = await bankDetail.findOne({ userId });
+
+    if (!bankDetails) {
+      return res.status(404).json({ message: "No bank details found." });
+    }
+
+    res.status(200).json({
+      message: "Bank details fetched successfully.",
+      data: bankDetails,
+    });
+  } catch (error) {
+    console.error("Error fetching bank details:", error);
+    res.status(500).json({ error: "Failed to fetch bank details." });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
   getPersonalDetailController,
+  updateContactDetailController,
+  getContactDetailController,
+  updateAddressDetailController,
+  getAddressDetailController,
+  updateBankDetailsController,
+  getBankDetailsController,
 };

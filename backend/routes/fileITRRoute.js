@@ -2,6 +2,13 @@ const {
   uploadForm16Controller,
   updatePersonalDetailController,
   getPersonalDetailController,
+  updateContactDetailController,
+  getContactDetailController,
+  updateAddressDetailController,
+  getAddressDetailController,
+  updateBankDetails,
+  updateBankDetailsController,
+  getBankDetailsController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -21,4 +28,20 @@ router.put(
   updatePersonalDetailController
 );
 router.get("/getPersonalDetail", authMiddleware, getPersonalDetailController);
+router.put(
+  "/updateContactDetails",
+  authMiddleware,
+  updateContactDetailController
+);
+router.get("/getContactDetails", authMiddleware, getContactDetailController);
+router.put(
+  "/updateAddressDetails",
+  authMiddleware,
+  updateAddressDetailController
+);
+
+router.get("/getAddressDetails", authMiddleware, getAddressDetailController);
+router.put("/updateBankDetails", authMiddleware, updateBankDetailsController);
+router.get("/getBankDetails", authMiddleware, getBankDetailsController);
+
 module.exports = router;
