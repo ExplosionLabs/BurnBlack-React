@@ -9,6 +9,8 @@ const {
   updateBankDetails,
   updateBankDetailsController,
   getBankDetailsController,
+  postInterestController,
+  getInterestController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -43,5 +45,7 @@ router.put(
 router.get("/getAddressDetails", authMiddleware, getAddressDetailController);
 router.put("/updateBankDetails", authMiddleware, updateBankDetailsController);
 router.get("/getBankDetails", authMiddleware, getBankDetailsController);
+router.post("/interest-income", authMiddleware, postInterestController);
+router.get("/get-interest-income/:type", authMiddleware, getInterestController);
 
 module.exports = router;

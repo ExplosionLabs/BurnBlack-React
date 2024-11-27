@@ -4,10 +4,10 @@ import debounce from "lodash.debounce";
 import { useSelector } from 'react-redux';
 import { RootState } from "@/stores/store";
 import SectionNavigation from "@/utils/SectionNavigation";
-import ContactDetail from "./Section/ContactDetail";
-import PersonalDetail from "./Section/PersonalDetail";
-import AddressSection from "./Section/AddresDetail";
-import BankDetails from "./Section/BankDetail";
+import ContactDetail from "../../../../ImportantComponent/PersonalDetailComponent/ContactDetail";
+import PersonalDetail from "../../../../ImportantComponent/PersonalDetailComponent/PersonalDetail";
+import AddressSection from "../../../../ImportantComponent/PersonalDetailComponent/AddresDetail";
+import BankDetails from "../../../../ImportantComponent/PersonalDetailComponent/BankDetail";
 
 function Main() {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;

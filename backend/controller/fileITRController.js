@@ -2,6 +2,7 @@ const addressDetail = require("../model/addressDetail");
 const bankDetail = require("../model/bankDetail");
 const contactDetail = require("../model/contactDetail");
 const form16model = require("../model/form16model");
+const IncomeInterest = require("../model/IncomeInterest");
 const personalDetailModel = require("../model/personalDetailModel");
 
 const uploadForm16Controller = async (req, res) => {
@@ -220,6 +221,59 @@ const getBankDetailsController = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch bank details." });
   }
 };
+
+const postInterestController = async (req, res) => {
+  try {
+    const { type, data } = req.body;
+    const userId = req.user.id;
+
+    // Validate type
+    if (
+      ![
+        "Savings Bank",
+        "Fixed Deposits",
+        "P2P Investments",
+        "Bond Investments",
+      ].includes(type)
+    ) {
+      return res.status(400).json({ error: "Invalid type" });
+    }
+
+    // Upsert: Update if exists, insert if not
+    await IncomeInterest.findOneAndUpdate(
+      { userId, type },
+      { $set: { data } },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save data" });
+  }
+};
+const getInterestController = async (req, res) => {
+  const { type } = req.params; // User ID and Type passed in query parameters
+  const userId = req.user.id;
+  try {
+    // Query the database to get the data for the specified user and type
+    console.log("deoc", type);
+    const decodedType = decodeURIComponent(type);
+    console.log("deoc", decodedType);
+    const data = await IncomeInterest.findOne({ userId, type: decodedType });
+
+    if (data) {
+      res.status(200).json({ success: true, data: data.data });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "No data found for the specified user and type",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -230,4 +284,6 @@ module.exports = {
   getAddressDetailController,
   updateBankDetailsController,
   getBankDetailsController,
+  postInterestController,
+  getInterestController,
 };

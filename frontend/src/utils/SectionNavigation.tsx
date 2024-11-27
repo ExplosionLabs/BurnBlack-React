@@ -9,7 +9,7 @@ const SectionNavigation: React.FC = () => {
       <button onClick={() => navigate("/fileITR/personalDetail")}>
         Personal Detail
       </button>
-      <button onClick={() => navigate("/fileITR/contactDetail")}>
+      <button onClick={() => navigate("/fileITR/incomeSources")}>
         Incomes Sources
       </button>
       <button onClick={() => navigate("/fileITR/bankDetail")}>

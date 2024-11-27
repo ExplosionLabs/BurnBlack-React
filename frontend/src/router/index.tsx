@@ -72,6 +72,7 @@ import HomePage from "../pages/ImportantPage/HomePage"
 import AddPan from "../pages/ImportantPage/FileITR/AddPan"
 import UploadForm16 from "../pages/ImportantPage/FileITR/UploadForm16"
 import PersonalDetail from "../pages/ImportantPage/FileITR/Personal Detail";
+import IncomeSources from "../pages/ImportantPage/FileITR/IncomeSources";
 import ITRMainPage from "../pages/ImportantPage/FileITR/ITRMainPage";
 // import Layout from "../themes";
 
@@ -120,6 +121,10 @@ function Router() {
         {
           path: "personalDetail",
           element: <PersonalDetail />,
+        },
+        {
+          path: "incomeSources",
+          element: < IncomeSources/>,
         },
       ],
     },
