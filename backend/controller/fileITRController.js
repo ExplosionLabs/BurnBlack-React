@@ -234,6 +234,9 @@ const postInterestController = async (req, res) => {
         "Fixed Deposits",
         "P2P Investments",
         "Bond Investments",
+        "Provident Fund",
+        "Income Tax Refund",
+        "Other Interest Income",
       ].includes(type)
     ) {
       return res.status(400).json({ error: "Invalid type" });
@@ -256,9 +259,8 @@ const getInterestController = async (req, res) => {
   const userId = req.user.id;
   try {
     // Query the database to get the data for the specified user and type
-    console.log("deoc", type);
+
     const decodedType = decodeURIComponent(type);
-    console.log("deoc", decodedType);
     const data = await IncomeInterest.findOne({ userId, type: decodedType });
 
     if (data) {

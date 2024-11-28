@@ -8,7 +8,6 @@ function Form16Main() {
     const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   return (
     <>
-   <SectionNavigation/>
    <div>
     Add manually
    </div>

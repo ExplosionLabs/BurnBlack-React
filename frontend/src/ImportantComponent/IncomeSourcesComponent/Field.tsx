@@ -9,6 +9,13 @@ interface FieldsProps {
   onUpdate: (newData: any[]) => void;
 }
 
+const providentFundOptions = [
+  "Interest on EPF Balance- 1st Proviso to sec 10(11)",
+  "Interest on EPF Balance- 2nd Proviso to sec 10(11)",
+  "Interest on RPF Balance- 1st Proviso to sec 10(12)",
+  "Interest on RPF Balance- 2nd Proviso to sec 10(12)",
+];
+
 const Fields: React.FC<FieldsProps> = ({ userId, type, data, onUpdate }) => {
   const [items, setItems] = useState<any[]>(data);
 
@@ -17,8 +24,11 @@ const Fields: React.FC<FieldsProps> = ({ userId, type, data, onUpdate }) => {
     const newItem: any = { amount: 0 }; // Default field for amount
     if (type === "Savings Bank" || type === "P2P Investments" || type === "Bond Investments") {
       newItem.name = ""; // Default field for name of platform
-    } else if (type === "Fixed Deposits") {
+    } else if (type === "Fixed Deposits" || type==="Other Interest Income") {
       newItem.description = ""; // Default field for description
+    }
+    if (type === "Provident Fund") {
+      newItem.fieldType = providentFundOptions[0]; // Default to first option
     }
     setItems([...items, newItem]);
   };
@@ -69,7 +79,7 @@ const Fields: React.FC<FieldsProps> = ({ userId, type, data, onUpdate }) => {
               onChange={(e) => handleFieldChange(index, "name", e.target.value)}
               style={{ marginRight: "10px" }}
             />
-          ) : type === "Fixed Deposits" ? (
+          ) : type === "Fixed Deposits" || type==="Other Interest Income" ? (
             <input
               type="text"
               placeholder="Enter Description"
@@ -77,6 +87,20 @@ const Fields: React.FC<FieldsProps> = ({ userId, type, data, onUpdate }) => {
               onChange={(e) => handleFieldChange(index, "description", e.target.value)}
               style={{ marginRight: "10px" }}
             />
+            
+          ):
+          type === "Provident Fund" ? (
+            <select
+              value={item.fieldType || ""}
+              onChange={(e) => updateItem(index, "fieldType", e.target.value)}
+              style={{ marginRight: "10px" }}
+            >
+              {providentFundOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           ) : null}
           <input
             type="number"

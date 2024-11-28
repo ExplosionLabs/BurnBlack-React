@@ -14,11 +14,15 @@ const InterestIncomeSchema = new mongoose.Schema(
         "Fixed Deposits",
         "P2P Investments",
         "Bond Investments",
+        "Provident Fund",
+        "Income Tax Refund",
+        "Other Interest Income",
       ],
       required: true,
     },
     data: [
       {
+        fieldType: { type: String },
         name: { type: String }, // For "Savings Bank", "P2P Investments", "Bond Investments"
         description: { type: String }, // For "Fixed Deposits"
         amount: { type: Number, required: true }, // Shared across all

@@ -74,6 +74,7 @@ import UploadForm16 from "../pages/ImportantPage/FileITR/UploadForm16"
 import PersonalDetail from "../pages/ImportantPage/FileITR/Personal Detail";
 import IncomeSources from "../pages/ImportantPage/FileITR/IncomeSources";
 import ITRMainPage from "../pages/ImportantPage/FileITR/ITRMainPage";
+import IncomeInterest from "@/ImportantComponent/IncomeSourcesComponent/IncomeInterest";
 // import Layout from "../themes";
 
 function Router() {
@@ -125,6 +126,10 @@ function Router() {
         {
           path: "incomeSources",
           element: < IncomeSources/>,
+        },
+        {
+          path: "incomeInterest",
+          element: < IncomeInterest/>,
         },
       ],
     },
