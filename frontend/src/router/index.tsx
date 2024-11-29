@@ -75,6 +75,7 @@ import PersonalDetail from "../pages/ImportantPage/FileITR/Personal Detail";
 import IncomeSources from "../pages/ImportantPage/FileITR/IncomeSources";
 import ITRMainPage from "../pages/ImportantPage/FileITR/ITRMainPage";
 import IncomeInterest from "@/ImportantComponent/IncomeSourcesComponent/IncomeInterest";
+import CapitalGainSubMain from "@/ImportantComponent/CaptialGainComponent/CapitalGainSubMain";
 // import Layout from "../themes";
 
 function Router() {
@@ -130,6 +131,10 @@ function Router() {
         {
           path: "incomeInterest",
           element: < IncomeInterest/>,
+        },
+        {
+          path: "capitalGain",
+          element: < CapitalGainSubMain/>,
         },
       ],
     },

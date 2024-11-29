@@ -46,7 +46,7 @@ const IncomeInterest: React.FC = () => {
         // Create a new array to store updated sections
         const updatedInterestData = await Promise.all(
           interestData.map(async (section) => {
-            console.log("Fetching data for type:", section.type);
+          
             
             try {
               const response = await axios.get(
