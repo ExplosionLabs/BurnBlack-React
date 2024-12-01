@@ -5,6 +5,7 @@ import SectionNavigation from "@/utils/SectionNavigation";
 import Form16Main from "@/ImportantComponent/IncomeSourcesComponent/Form16Main";
 import InterestIncomeMain from "@/ImportantComponent/IncomeSourcesComponent/InterestIncomeMain";
 import CapitalGainMain from "@/ImportantComponent/CaptialGainComponent/CaptialGainMain";
+import HousePropComponent from "@/ImportantComponent/HousePropertyComponent/HousePropComponent";
 
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -18,6 +19,7 @@ function Main() {
     <Form16Main/>
     <InterestIncomeMain/>
     <CapitalGainMain/>
+  <HousePropComponent/>
    </div>
     </>
   );

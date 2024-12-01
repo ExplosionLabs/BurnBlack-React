@@ -4,6 +4,7 @@ const contactDetail = require("../model/contactDetail");
 const form16model = require("../model/form16model");
 const IncomeInterest = require("../model/IncomeInterest");
 const personalDetailModel = require("../model/personalDetailModel");
+const Property = require("../model/propertyModel");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -276,6 +277,61 @@ const getInterestController = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+const postPropertyDataController = async (req, res) => {
+  try {
+    const { propertyType, houseAddress, ownerDetails } = req.body;
+
+    const userId = req.user.id;
+
+    // Find an existing entry for the user and update or create a new one
+    const property = await Property.findOneAndUpdate(
+      { userId }, // Filter by userId
+      {
+        $set: {
+          propertyType,
+          houseAddress,
+          ownerDetails,
+        },
+      },
+      {
+        new: true, // Return the updated document
+        upsert: true, // Create a new document if one doesn't exist
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Data saved or updated successfully.",
+      property,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error saving data.", error });
+  }
+};
+
+const getPropertyDataController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const property = await Property.findOne({ userId });
+
+    if (!property) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: property });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
+
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -288,4 +344,6 @@ module.exports = {
   getBankDetailsController,
   postInterestController,
   getInterestController,
+  postPropertyDataController,
+  getPropertyDataController,
 };

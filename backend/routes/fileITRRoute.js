@@ -11,6 +11,8 @@ const {
   getBankDetailsController,
   postInterestController,
   getInterestController,
+  postPropertyDataController,
+  getPropertyDataController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -47,5 +49,6 @@ router.put("/updateBankDetails", authMiddleware, updateBankDetailsController);
 router.get("/getBankDetails", authMiddleware, getBankDetailsController);
 router.post("/interest-income", authMiddleware, postInterestController);
 router.get("/get-interest-income/:type", authMiddleware, getInterestController);
-
+router.post("/addPropertyData", authMiddleware, postPropertyDataController);
+router.get("/getPropertyData", authMiddleware, getPropertyDataController);
 module.exports = router;

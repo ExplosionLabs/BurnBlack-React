@@ -56,7 +56,7 @@ const IncomeInterest: React.FC = () => {
                   },
                 });
     
-              console.log("Response for type", section.type, response.data); // Log the full response
+          
     
               // Update the section data only if it's valid
               if (response.data.success && response.data.data) {
