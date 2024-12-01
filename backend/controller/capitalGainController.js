@@ -1,6 +1,10 @@
+const bondDebenture = require("../model/bondDebenture");
 const ForeignAssest = require("../model/ForeignAssest");
+const GoldForm = require("../model/goldAssets");
 const LandForm = require("../model/landBuildModel");
+const LongShortModel = require("../model/LongShortModel");
 const stockMututalassest = require("../model/stockMututalassest");
+const stockRsuData = require("../model/stockRsuData");
 
 const postStockMutualControler = async (req, res) => {
   try {
@@ -199,6 +203,243 @@ const updateLandFormAssestData = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+const postStockRsuAssestControler = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const stockRsuAssest = new stockRsuData({
+      userId,
+      ...req.body,
+    });
+
+    await stockRsuAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+const getStockRsuAssetsData = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const stockRsuAssestData = await stockRsuData.findOne({
+      userId,
+    });
+
+    if (stockRsuAssestData) {
+      return res.status(200).json(stockRsuAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateStockRsuAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await stockRsuData.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const postBondDebentureAssestControler = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const bondDebentureAssest = new bondDebenture({
+      userId,
+      ...req.body,
+    });
+
+    await bondDebentureAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+const getBondDebentureAssetsData = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const bondDebentureAssestData = await bondDebenture.findOne({
+      userId,
+    });
+
+    if (bondDebentureAssestData) {
+      return res.status(200).json(bondDebentureAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateBondDebentureAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await bondDebenture.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const postLongShortAssestControler = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you're using authentication middleware
+    const { shortTermDetails, longTermDetails } = req.body;
+
+    // Save the data in the database
+    const newCapitalGain = new LongShortModel({
+      userId,
+      shortTermDetails,
+      longTermDetails,
+    });
+
+    await newCapitalGain.save();
+
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getShortLongAssetsData = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const longShortAssestData = await LongShortModel.findOne({
+      userId,
+    });
+
+    if (longShortAssestData) {
+      return res.status(200).json(longShortAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateLongShortData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await LongShortModel.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const postGoldAssestControler = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const goldFormAssest = new GoldForm({
+      userId,
+      ...req.body,
+    });
+
+    await goldFormAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+const getGoldAssetsData = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const goldFormAssestData = await GoldForm.findOne({
+      userId,
+    });
+
+    if (goldFormAssestData) {
+      return res.status(200).json(goldFormAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateGoldFormAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await GoldForm.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   postStockMutualControler,
   getStockMututalData,
@@ -209,4 +450,16 @@ module.exports = {
   postLandFormController,
   getLandFormData,
   updateLandFormAssestData,
+  postStockRsuAssestControler,
+  getStockRsuAssetsData,
+  updateStockRsuAssestData,
+  postBondDebentureAssestControler,
+  getBondDebentureAssetsData,
+  updateBondDebentureAssestData,
+  postLongShortAssestControler,
+  getShortLongAssetsData,
+  updateLongShortData,
+  postGoldAssestControler,
+  getGoldAssetsData,
+  updateGoldFormAssestData,
 };
