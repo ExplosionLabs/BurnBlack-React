@@ -56,7 +56,7 @@ function ContactDetail() {
     if (isUserLoggedIn) {
       fetchContactDetail(); // Fetch details if the user is logged in
     }
-  }, [isUserLoggedIn]); // Fetch data when the component mounts
+  }, [isUserLoggedIn]); 
   // Handle input change and trigger autosave
   const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
