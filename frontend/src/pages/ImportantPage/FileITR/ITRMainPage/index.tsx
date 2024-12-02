@@ -1,18 +1,113 @@
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { RootState } from "@/stores/store";
-
+import { ArrowRight, CheckCircle, MessageCircle, PlayCircle, Shield } from 'lucide-react'
+import Sliderbar from "@/Layout/Sidebar";
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
     const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   return (
     <>
-    <div>
-    ITR Main page
-    <div>
-    <Link to="/fileITR/addPanCardDetail">Fill Details</Link>
-    </div>
+
+   <div className="min-h-screen mx-40 font-poppins">
+      <main className="container mx-auto p-6">
+        <h1 className="text-2xl font-semibold text-gray-900 mb-6">My Dashboard</h1>
         
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
+                <div>
+                  <span className="font-medium">PAN:</span> FJTPB2763R
+                </div>
+                <div>
+                  <span className="font-medium">Filing Status:</span> AY 2024 - 2025 (current)
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-gray-600 mb-2">Hi Mayur Ajay Bhoyar, it&apos;s a good day today to complete e-filing 😊</p>
+                <h2 className="text-2xl font-semibold text-gray-900">Let&apos;s finish the last few steps quickly</h2>
+              </div>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium">Link PAN & Pre-fill</span>
+                    </div>
+                    <div className="flex-1 mx-4 border-t border-dashed border-gray-300" />
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium">Add your Details</span>
+                    </div>
+                    <div className="flex-1 mx-4 border-t border-dashed border-gray-300" />
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full border-2 border-gray-300" />
+                      <span className="text-sm font-medium">File ITR</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <button
+                  className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+                >
+                   <Link to="/fileITR/addPanCardDetail">
+                  Complete E-Filing
+                  </Link>
+                </button>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-gray-600">Know more about steps</span>
+                  <ArrowRight className="w-4 h-4 text-blue-500" />
+                </div>
+              </div>
+
+              <div className="mt-8 bg-blue-50 p-4 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700">Want to file for friends or family?</span>
+                  <button className="text-blue-500 font-medium flex items-center">
+                    Start a New Filing <ArrowRight className="w-4 h-4 ml-1" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         <Sliderbar/>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center gap-8 text-gray-600 text-sm">
+          <div className="flex items-center gap-2">
+            <img src="/placeholder.svg?height=32&width=32" alt="SSL Secure" className="w-8 h-8" />
+            <span>SSL Secure</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <img src="/placeholder.svg?height=32&width=32" alt="Certified" className="w-8 h-8" />
+            <span>Govt. Certified</span>
+          </div>
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold">6M+</span>
+              <span>Users</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold">800 Cr+</span>
+              <span>worth taxes filed</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Shield className="w-5 h-5" />
+            <span className="text-xs">Cleartax is a Govt. authorized ERI license holder. Your data is 100% secure with Cleartax.</span>
+          </div>
+        </div>
+      </main>
     </div>
     </>
   );

@@ -10,6 +10,10 @@ const toRGB = (value) => {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  fontFamily: {
+    mentra: ["mentra", "sans-serif"],
+    poppins: ["Poppins", "sans-serif"],
+  },
   darkMode: "class",
   theme: {
     extend: {

@@ -5,11 +5,68 @@ import {
   StateSelect,
 } from "react-country-state-city";
 
-const HouseAddressComponent: React.FC<{ data: any; onChange: (data: any) => void }> = ({
-  data,
-  onChange,
-}) => {
+const HouseAddressComponent: React.FC<{
+  data: any;
+  onChange: (data: any) => void;
+}> = ({ data, onChange }) => {
   const [countryId, setCountryId] = useState(null);
+  const [usePersonalDetails, setUsePersonalDetails] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Function to fetch addressDetail from the API
+  const fetchAddressDetail = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      setLoading(true); // Start loading
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getAddressDetails`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }); // Replace with your API endpoint
+      if (!response.ok) throw new Error("Failed to fetch address details");
+      const addressDetail = await response.json();
+
+      // Populate the form with fetched address details
+      onChange({
+        flatNo: addressDetail.flatNo || "",
+        premiseName: addressDetail.premiseName || "",
+        road: addressDetail.road || "",
+        area: addressDetail.area || "",
+        pincode: addressDetail.pincode || "",
+        country: addressDetail.country || "",
+        state: addressDetail.state || "",
+        city: addressDetail.city || "",
+      });
+      setCountryId(addressDetail.countryId || null);
+    } catch (error) {
+      console.error("Error fetching address detail:", error);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+
+  const handleCheckboxChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setUsePersonalDetails(checked);
+
+    if (checked) {
+      // Fetch address details when checked
+      await fetchAddressDetail();
+    } else {
+      // Clear the form fields if unchecked
+      onChange({
+        flatNo: "",
+        premiseName: "",
+        road: "",
+        area: "",
+        pincode: "",
+        country: "",
+        state: "",
+        city: "",
+      });
+      setCountryId(null);
+    }
+  };
 
   const handleChange = (
     name: string,
@@ -29,6 +86,19 @@ const HouseAddressComponent: React.FC<{ data: any; onChange: (data: any) => void
     <div>
       <h3>House Address</h3>
       <form>
+        {/* Checkbox for using personal details */}
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={usePersonalDetails}
+              onChange={handleCheckboxChange}
+              disabled={loading} // Disable checkbox during loading
+            />
+            {loading ? "Loading address details..." : "Use Personal Details Address"}
+          </label>
+        </div>
+
         <div>
           <label htmlFor="flatNo">Flat/Door/Block No.*</label>
           <input
@@ -51,23 +121,23 @@ const HouseAddressComponent: React.FC<{ data: any; onChange: (data: any) => void
           />
         </div>
         <div>
-          <label htmlFor="roadStreet">Road/Street</label>
+          <label htmlFor="road">Road/Street</label>
           <input
             type="text"
-            id="roadStreet"
-            name="roadStreet"
-            value={data.roadStreet}
-            onChange={(e) => handleChange("roadStreet", e.target.value, e)}
+            id="road"
+            name="road"
+            value={data.road}
+            onChange={(e) => handleChange("road", e.target.value, e)}
           />
         </div>
         <div>
-          <label htmlFor="areaLocality">Area/Locality*</label>
+          <label htmlFor="area">Area/Locality*</label>
           <input
             type="text"
-            id="areaLocality"
-            name="areaLocality"
-            value={data.areaLocality}
-            onChange={(e) => handleChange("areaLocality", e.target.value, e)}
+            id="area"
+            name="area"
+            value={data.area}
+            onChange={(e) => handleChange("area", e.target.value, e)}
             required
           />
         </div>

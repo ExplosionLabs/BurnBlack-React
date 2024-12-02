@@ -280,7 +280,13 @@ const getInterestController = async (req, res) => {
 
 const postPropertyDataController = async (req, res) => {
   try {
-    const { propertyType, houseAddress, ownerDetails } = req.body;
+    const {
+      propertyType,
+      houseAddress,
+      ownerDetails,
+      taxSavings,
+      rentalIncomeDetails,
+    } = req.body;
 
     const userId = req.user.id;
 
@@ -292,6 +298,8 @@ const postPropertyDataController = async (req, res) => {
           propertyType,
           houseAddress,
           ownerDetails,
+          taxSavings,
+          rentalIncomeDetails,
         },
       },
       {

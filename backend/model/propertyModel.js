@@ -11,8 +11,8 @@ const propertySchema = new mongoose.Schema({
   houseAddress: {
     flatNo: String,
     premiseName: String,
-    roadStreet: String,
-    areaLocality: String,
+    road: String,
+    area: String,
     pincode: String,
     country: String,
     state: String,
@@ -30,6 +30,18 @@ const propertySchema = new mongoose.Schema({
         coOwnerShare: Number,
       },
     ],
+  },
+  taxSavings: {
+    constructionYear: String,
+    interestDuringConstruction: Number,
+    interestAfterCompletion: Number,
+    totalDeduction: Number,
+  },
+  rentalIncomeDetails: {
+    annualRent: String,
+    taxPaid: Number,
+    standardDeduction: Number,
+    netIncome: Number,
   },
 });
 

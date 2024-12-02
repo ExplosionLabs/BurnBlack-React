@@ -3,23 +3,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import HouseAddresComponent from "./HouseAddressComponent";
 import OwnerDetails from "./OwnerDetail";
+import TaxSavingsDetails from "./TaxSaving";
+import RentalIncomeDetails from "./RentalIncomeDetails";
 
-// Other components
-const TaxSavingsDetails: React.FC = () => (
-  <div>
-    <h3>Tax Savings for Home Loan (Interest Paid Details)</h3>
-    <p>Enter the details of the tax savings for the home loan.</p>
-    {/* Add form fields for tax savings */}
-  </div>
-);
 
-const RentalIncomeDetails: React.FC = () => (
-  <div>
-    <h3>Rental Income and Property Tax Details</h3>
-    <p>Enter the details of rental income and property tax.</p>
-    {/* Add form fields for rental income and property tax */}
-  </div>
-);
 
 const SelfProperty: React.FC = () => {
   const [propertyType, setPropertyType] = useState<string>("Self Occupied House Property");
@@ -28,8 +15,8 @@ const SelfProperty: React.FC = () => {
     houseAddress: {
       flatNo: "",
       premiseName: "",
-      roadStreet: "",
-      areaLocality: "",
+      road: "",
+      area: "",
       pincode: "",
       country: "",
       state: "",
@@ -42,11 +29,25 @@ const SelfProperty: React.FC = () => {
       hasMultipleOwners: false,
       coOwners: [],
     },
+    taxSavings: {
+      constructionYear: "",
+      interestDuringConstruction: 0,
+      interestAfterCompletion: 0,
+      totalDeduction: 0,
+    },
+    rentalIncomeDetails: {
+      annualRent: 0,
+      taxPaid: 0,
+      standardDeduction: 0,
+      netIncome: 0,
+    },
+  
   });
   const [loading, setLoading] = useState(true);
 
   // Fetch data when the component mounts
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -108,8 +109,8 @@ const SelfProperty: React.FC = () => {
 
       {/* Dropdown for selecting property type */}
       <div>
-        <label htmlFor="property-type">Your Property Type:</label>
-        <select id="property-type" value={propertyType} onChange={handlePropertyTypeChange}>
+        <label htmlFor="propertyType">Your Property Type:</label>
+        <select id="propertyType" value={formData.propertyType} onChange={handlePropertyTypeChange}>
           <option value="Self Occupied House Property">Self Occupied House Property</option>
           <option value="Deemed Let Out Property">Deemed Let Out Property</option>
         </select>
@@ -125,13 +126,17 @@ const SelfProperty: React.FC = () => {
           data={formData.ownerDetails}
           onChange={(updatedData: any) => handleFormChange("ownerDetails", updatedData)}
         />
-        <TaxSavingsDetails />
-        {propertyType === "Deemed Let Out Property" && <RentalIncomeDetails />}
+     <TaxSavingsDetails
+  data={formData.taxSavings }
+  onChange={(updatedData: any) => handleFormChange("taxSavings", updatedData)}
+/>
+        {propertyType === "Deemed Let Out Property" && <RentalIncomeDetails  data={formData.rentalIncomeDetails }
+  onChange={(updatedData: any) => handleFormChange("rentalIncomeDetails", updatedData)} />}
       </div>
 
       {/* Navigation links */}
       <div style={{ marginTop: "20px" }}>
-        <Link to="/fileITR/self-occupied-property">Add Details for Self-Occupied Property</Link>
+        <Link to="/fileITR/self-occupied-property">Next</Link>
       </div>
     </div>
   );
