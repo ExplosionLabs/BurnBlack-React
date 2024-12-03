@@ -30,7 +30,7 @@ export default function SectionNavigation() {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-4">
+      <div className="flex justify-between">
         {sections.map((section) => (
           <NavLink
             key={section.path}

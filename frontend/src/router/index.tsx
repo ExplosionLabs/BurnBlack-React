@@ -78,6 +78,7 @@ import IncomeInterest from "@/ImportantComponent/IncomeSourcesComponent/IncomeIn
 import CapitalGainSubMain from "@/ImportantComponent/CaptialGainComponent/CapitalGainSubMain";
 import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HousePropMain";
 import SelfProperty from "@/ImportantComponent/HousePropertyComponent/SelfProperty";
+import RentProperty from "@/ImportantComponent/HousePropertyComponent/RentProperty";
 // import Layout from "../themes";
 
 function Layout({ children }) {
@@ -195,6 +196,14 @@ function Router() {
           element: (
             <Layout>
               <SelfProperty />
+            </Layout>
+          ),
+        },
+        {
+          path: "rental-property",
+          element: (
+            <Layout>
+              <RentProperty />
             </Layout>
           ),
         },

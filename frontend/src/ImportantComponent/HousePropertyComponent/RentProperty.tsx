@@ -5,13 +5,13 @@ import HouseAddresComponent from "./SelfProperty/HouseAddressComponent";
 import OwnerDetails from "./SelfProperty/OwnerDetail";
 import TaxSavingsDetails from "./SelfProperty/TaxSaving";
 import RentalIncomeDetails from "./SelfProperty/RentalIncomeDetails";
+import TenantDetailsComponent from "./RentProperty/TentantDetail";
 
 
 
-const SelfProperty: React.FC = () => {
-  const [propertyType, setPropertyType] = useState<string>("Self Occupied House Property");
-  const [formData, setFormData] = useState({
-    propertyType: "Self Occupied House Property",
+const RentProperty: React.FC = () => {
+  
+  const [rentFormData, setRentFormData] = useState({
     houseAddress: {
       flatNo: "",
       premiseName: "",
@@ -41,6 +41,9 @@ const SelfProperty: React.FC = () => {
       standardDeduction: 0,
       netIncome: 0,
     },
+    tentatDetails:[{
+        name: "", panOrTan: "", aadhaar: "" 
+    }]
   
   });
   const [loading, setLoading] = useState(true);
@@ -51,14 +54,14 @@ const SelfProperty: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getPropertyData`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getRentalData`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.data.success) {
-          setFormData(response.data.data);
+          setRentFormData(response.data.data);
          console.log("respond",response.data.data);
         }
       } catch (error) {
@@ -72,18 +75,15 @@ const SelfProperty: React.FC = () => {
   }, []);
 
   const handleFormChange = (section: string, updatedData: any) => {
-    setFormData((prev) => ({ ...prev, [section]: updatedData }));
+    setRentFormData((prev) => ({ ...prev, [section]: updatedData }));
   };
 
-  const handlePropertyTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPropertyType(e.target.value);
-    setFormData((prev) => ({ ...prev, propertyType: e.target.value }));
-  };
+  
 
   const saveDataToDatabase = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/addPropertyData`, formData, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/addRentalData`, rentFormData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -99,39 +99,42 @@ const SelfProperty: React.FC = () => {
       saveDataToDatabase();
     }, 1000); // Save after 1 second of inactivity
     return () => clearTimeout(debounce);
-  }, [formData]);
+  }, [rentFormData]);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div>
-      <h1>House Property Details</h1>
+      <h1>Add Rental Property</h1>
 
-      {/* Dropdown for selecting property type */}
-      <div>
-        <label htmlFor="propertyType">Your Property Type:</label>
-        <select id="propertyType" value={formData.propertyType} onChange={handlePropertyTypeChange}>
-          <option value="Self Occupied House Property">Self Occupied House Property</option>
-          <option value="Deemed Let Out Property">Deemed Let Out Property</option>
-        </select>
-      </div>
+    
 
       {/* Render components */}
       <div>
         <HouseAddresComponent
-          data={formData.houseAddress}
+          data={rentFormData.houseAddress}
           onChange={(updatedData: any) => handleFormChange("houseAddress", updatedData)}
         />
         <OwnerDetails
-          data={formData.ownerDetails}
+          data={rentFormData.ownerDetails}
           onChange={(updatedData: any) => handleFormChange("ownerDetails", updatedData)}
         />
      <TaxSavingsDetails
-  data={formData.taxSavings }
+  data={rentFormData.taxSavings }
   onChange={(updatedData: any) => handleFormChange("taxSavings", updatedData)}
 />
-        {propertyType === "Deemed Let Out Property" && <RentalIncomeDetails  data={formData.rentalIncomeDetails }
-  onChange={(updatedData: any) => handleFormChange("rentalIncomeDetails", updatedData)} />}
+        <RentalIncomeDetails  data={rentFormData.rentalIncomeDetails }
+  onChange={(updatedData: any) => handleFormChange("rentalIncomeDetails", updatedData)} />
+        <TenantDetailsComponent
+  data={rentFormData.tentatDetails}
+  onChange={(updatedData) =>
+    setRentFormData((prev) => ({
+      ...prev,
+      tentatDetails: updatedData,
+    }))
+  }
+/>
+
       </div>
 
       {/* Navigation links */}
@@ -142,4 +145,4 @@ const SelfProperty: React.FC = () => {
   );
 };
 
-export default SelfProperty;
+export default RentProperty;

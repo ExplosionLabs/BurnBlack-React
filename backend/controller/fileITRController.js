@@ -5,6 +5,7 @@ const form16model = require("../model/form16model");
 const IncomeInterest = require("../model/IncomeInterest");
 const personalDetailModel = require("../model/personalDetailModel");
 const Property = require("../model/propertyModel");
+const RentalProperty = require("../model/rentalModel");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -339,6 +340,67 @@ const getPropertyDataController = async (req, res) => {
       .json({ success: false, message: "Error fetching data.", error });
   }
 };
+const postRentalDataController = async (req, res) => {
+  try {
+    const {
+      houseAddress,
+      ownerDetails,
+      taxSavings,
+      rentalIncomeDetails,
+      tentatDetails,
+    } = req.body;
+
+    const userId = req.user.id;
+
+    // Find an existing entry for the user and update or create a new one
+    const rentProperty = await RentalProperty.findOneAndUpdate(
+      { userId }, // Filter by userId
+      {
+        $set: {
+          houseAddress,
+          ownerDetails,
+          taxSavings,
+          rentalIncomeDetails,
+          tentatDetails,
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Data saved or updated successfully.",
+      rentProperty,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error saving data.", error });
+  }
+};
+
+const getRentalDataController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const rentProperty = await RentalProperty.findOne({ userId });
+
+    if (!rentProperty) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: rentProperty });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
 
 module.exports = {
   uploadForm16Controller,
@@ -354,4 +416,6 @@ module.exports = {
   getInterestController,
   postPropertyDataController,
   getPropertyDataController,
+  postRentalDataController,
+  getRentalDataController,
 };

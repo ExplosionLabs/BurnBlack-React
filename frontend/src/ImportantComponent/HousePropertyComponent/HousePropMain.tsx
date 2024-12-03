@@ -26,7 +26,10 @@ const HousePropMain: React.FC = () => {
 
         </div>
         <div>
+        <Link to="/fileITR/rental-property">
+      
             Add Details
+            </Link>
         </div>
     </div>
 </div>
