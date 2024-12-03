@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { CheckCircle, Info } from "lucide-react"; // Importing icons from Lucide React
 
 export default function SectionNavigation() {
@@ -14,7 +14,7 @@ export default function SectionNavigation() {
     {
       title: "Income Sources",
       path: "/fileITR/incomeSources",
-      status: "completed",
+      status: "pending",
     },
     {
       title: "Tax Saving",
@@ -30,17 +30,22 @@ export default function SectionNavigation() {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-4 ">
+      <div className="flex gap-4">
         {sections.map((section) => (
-          <button
+          <NavLink
             key={section.path}
-            onClick={() => navigate(section.path)}
-            className={`
-              flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium transition-colors
-              ${section.status === "completed" ? "bg-blue-800 text-white" : 
-                section.status === "info" ? "border border-gray-300" :
-                "border border-gray-300 bg-white"}
-            `}
+            to={section.path}
+            className={({ isActive }) =>
+              `flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-blue-800 text-white"
+                  : section.status === "completed"
+                  ? "bg-blue-800 text-white"
+                  : section.status === "info"
+                  ? "border border-gray-300"
+                  : "border border-gray-300 bg-white"
+              }`
+            }
           >
             {section.title}
             {section.status === "completed" && (
@@ -49,7 +54,7 @@ export default function SectionNavigation() {
             {section.status === "info" && (
               <Info size={16} className="text-blue-500" />
             )}
-          </button>
+          </NavLink>
         ))}
       </div>
       <div className="flex items-center justify-between rounded-lg bg-blue-50 p-4">

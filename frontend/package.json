@@ -50,6 +50,7 @@
     "react-transition-group": "^4.4.5",
     "simplebar": "^6.2.5",
     "tabulator-tables": "^5.5.2",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tiny-slider": "^2.9.4",
     "tippy.js": "^6.3.7",
     "toastify-js": "^1.12.0",

@@ -75,6 +75,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("tailwind-scrollbar-hide"),
     require("@tailwindcss/forms"),
     plugin(function ({ addBase, matchUtilities }) {
       addBase({
