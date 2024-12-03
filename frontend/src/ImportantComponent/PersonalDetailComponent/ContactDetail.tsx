@@ -3,7 +3,7 @@ import axios from "axios"
 import debounce from "lodash.debounce"
 import { useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
-import { ChevronDown, ChevronUp, CircleUserRound, HelpCircle } from 'lucide-react'
+import { ChevronDown, ChevronUp, ChevronUpIcon, CircleUserRound, HelpCircle } from 'lucide-react'
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 
@@ -96,7 +96,7 @@ function ContactDetail() {
             </div>
           </div>
           <button className="text-gray-500 hover:text-gray-700" onClick={toggleOpen}>
-            {isOpen ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
+          <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen  ? '' : 'rotate-180'}`} />
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import debounce from "lodash.debounce"
-import { MapPin , ChevronDown, ChevronUp} from 'lucide-react'
+import { MapPin , ChevronDown, ChevronUp, ChevronUpIcon} from 'lucide-react'
 import {
   CitySelect,
   CountrySelect,
@@ -108,7 +108,7 @@ export default function AddressSection() {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="w-full  mx-auto bg-white shadow-md rounded-lg overflow-hidden">
           <div className="cursor-pointer p-6 border-b border-gray-200" onClick={toggleOpen}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -121,7 +121,8 @@ export default function AddressSection() {
             </div>
           </div>
           <button className="text-gray-500 hover:text-gray-700" onClick={toggleOpen}>
-            {isOpen ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
+            {/* {? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />} */}
+            <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen  ? '' : 'rotate-180'}`} />
           </button>
         </div>
       </div>  

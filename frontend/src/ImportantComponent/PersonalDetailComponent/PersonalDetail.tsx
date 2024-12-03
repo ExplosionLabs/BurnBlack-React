@@ -3,7 +3,7 @@ import axios from "axios"
 import debounce from "lodash.debounce"
 import { useSelector } from "react-redux"
 import { format } from "date-fns"
-import { User } from 'lucide-react'
+import { ChevronUpIcon, User } from 'lucide-react'
 import { ChevronDown, ChevronUp ,CircleUserRound} from "lucide-react";
 import type { RootState } from "@/stores/store"
 
@@ -86,7 +86,7 @@ export default function PersonalDetails() {
         </div>
         {/* Toggle Button */}
         <button onClick={toggleOpen} className="text-gray-600 hover:text-gray-800">
-          {isOpen ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
+        <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen  ? '' : 'rotate-180'}`} />
         </button>
       </div>
       {isOpen && (
