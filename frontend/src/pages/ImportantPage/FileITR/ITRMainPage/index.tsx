@@ -49,7 +49,7 @@ function Main() {
   return (
     <>
 
-   <div className="min-h-screen mx-40 font-poppins">
+   <div className="min-h-screen font-poppins">
       <main className="container mx-auto p-6">
         <h1 className="text-2xl font-semibold text-gray-900 mb-6">My Dashboard</h1>
         
@@ -107,7 +107,7 @@ function Main() {
                   <span className="text-gray-600">Know more about steps</span>
                   <ArrowRight className="w-4 h-4 text-blue-500" />
                 </div>
-              <div className="space-y-4">
+              <div className="mt-4">
                 <button
                   className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out"
                 >

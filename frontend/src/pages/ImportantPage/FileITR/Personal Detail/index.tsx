@@ -8,18 +8,29 @@ import ContactDetail from "../../../../ImportantComponent/PersonalDetailComponen
 import PersonalDetail from "../../../../ImportantComponent/PersonalDetailComponent/PersonalDetail";
 import AddressSection from "../../../../ImportantComponent/PersonalDetailComponent/AddresDetail";
 import BankDetails from "../../../../ImportantComponent/PersonalDetailComponent/BankDetail";
+import Sliderbar from "@/Layout/Sidebar";
+import PanLinkingSection from "@/ImportantComponent/PersonalDetailComponent/PanDetail";
 
 function Main() {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   return (
     <>
-      <div className="flex flex-col gap-8">
-        <SectionNavigation />
-       <PersonalDetail/>
-       <ContactDetail/>
-       <AddressSection/>
-       <BankDetails/>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+
+   
+    <div className="lg:col-span-2 space-y-4">
+  <SectionNavigation />
+  <PersonalDetail />
+  <ContactDetail />
+  <AddressSection />
+  <BankDetails />
+  <PanLinkingSection/>
+</div>
+
+      <div>
+        <Sliderbar/>
+      </div>
       </div>
     </>
   );

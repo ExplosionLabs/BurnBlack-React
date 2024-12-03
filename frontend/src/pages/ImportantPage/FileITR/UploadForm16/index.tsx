@@ -1,69 +1,188 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
-import axios from "axios";
-import { uploadForm16 } from "@/api/fileITR";
-import { Link } from "react-router-dom";
-function Main() {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploaded, setIsUploaded] = useState(false); // State to track upload success
-  const { user, loading, error } = useSelector((state: RootState) => state.user);
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/stores/store'
+import { uploadForm16 } from '@/api/fileITR'
+import { Link } from 'react-router-dom'
 
-  const userId = user?._id;
+interface FAQItem {
+  id: string
+  question: string
+  answer: string
+}
+
+const faqs: FAQItem[] = [
+  {
+    id: 'what-is-form-16',
+    question: 'What is Form 16?',
+    answer: 'Form 16 is a certificate issued by employers, detailing the salary paid and taxes deducted for an employee in a financial year.'
+  },
+  {
+    id: 'where-to-get-form-16',
+    question: 'From where do I get my Form 16?',
+    answer: 'Your employer will provide Form 16 after the end of the financial year, typically by June.'
+  },
+  {
+    id: 'annexure-as-separate-file',
+    question: 'I have got annexure as a different file.',
+    answer: 'You can upload both Form 16 and its annexure separately. Both documents are important for filing your ITR.'
+  },
+  {
+    id: 'multiple-form-16s',
+    question: 'Can I upload multiple Form 16s at once?',
+    answer: 'Yes, if you have switched jobs during the financial year, you can upload Form 16 from each employer.'
+  }
+]
+
+export default function Form16Upload() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [openFaqId, setOpenFaqId] = useState<string | null>(null)
+  const { user } = useSelector((state: RootState) => state.user)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setSelectedFile(event.target.files[0]);
-      setIsUploaded(false); // Reset upload state if the user selects a new file
+      setSelectedFile(event.target.files[0])
     }
-  };
+  }
 
-  const handleFileUpload = async () => {
-    if (!selectedFile || !userId) {
-      alert("Please select a file and ensure you are logged in.");
-      return;
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    setIsDragging(false)
+    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      setSelectedFile(event.dataTransfer.files[0])
+    }
+  }
+
+  const handleUpload = async () => {
+    if (!selectedFile || !user?._id) {
+      alert('Please select a file and ensure you are logged in.')
+      return
     }
 
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("userId", userId);
+    const formData = new FormData()
+    formData.append('file', selectedFile)
+    formData.append('userId', user._id)
 
     try {
-      const response = await uploadForm16(formData); // API call
-      setIsUploaded(true); // Set upload state to true on success
-      alert(response.message);
+      const response = await uploadForm16(formData)
+      alert(response.message)
     } catch (error) {
-      console.error("File upload failed:", error);
-      alert("Failed to upload file.");
+      console.error('File upload failed:', error)
+      alert('Failed to upload file.')
     }
-  };
+  }
 
-  const handleContinue = () => {
-    // Logic for the Continue button (e.g., navigate to another page or perform another action)
-    alert("Continuing to the next step...");
-  };
+  const toggleFaq = (id: string) => {
+    setOpenFaqId(openFaqId === id ? null : id)
+  }
 
   return (
-    <div>
-      <h1>Upload Form 16</h1>
-      <input type="file" accept="application/pdf" onChange={handleFileChange} />
-      <button onClick={handleFileUpload} disabled={!selectedFile}>
-        Upload
-      </button>
-      <div>
-        <Link to="/fileITR/personalDetail">
-        Contine without form16
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="flex items-center gap-4 mb-8">
+        <Link to="/dashboard" className="text-gray-600 hover:text-gray-800">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
         </Link>
+        <h1 className="text-2xl font-semibold">Upload Form-16 to auto-fill your data</h1>
       </div>
-      
 
-      {isUploaded && (
-        <div style={{ marginTop: "20px" }}>
-          <button onClick={handleContinue}>Continue</button>
+      <div className="grid md:grid-cols-[1fr,300px] gap-6">
+        <div className="space-y-6">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-start gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <ul className="list-disc pl-5 space-y-1 text-sm text-blue-800">
+                  <li>You can upload multiple Form 16's if you have switched jobs in this Financial Year.</li>
+                  <li>You should also upload the annexure if you have received it separately from your employer.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`border-2 border-dashed rounded-lg p-12 text-center ${
+              isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p className="text-lg mb-2">Drop PDF file here or click to select</p>
+            <p className="text-sm text-gray-500 mb-4">OR</p>
+            <label htmlFor="fileInput" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer">
+              Browse Files
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </div>
+
+          {selectedFile && (
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">Selected file: {selectedFile.name}</p>
+              <button
+                onClick={handleUpload}
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded"
+              >
+                Upload File
+              </button>
+            </div>
+          )}
+
+          <div className="text-center">
+            <Link to="/fileITR/personalDetail" className="text-blue-500 hover:underline">
+              Continue without Form 16
+            </Link>
+          </div>
         </div>
-      )}
+
+        <div className="bg-gray-800 text-white rounded-lg p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 className="font-semibold">FAQs</h2>
+          </div>
+          <div className="space-y-2">
+            {faqs.map((faq) => (
+              <div key={faq.id} className="border-b border-gray-700 pb-2">
+                <button
+                  onClick={() => toggleFaq(faq.id)}
+                  className="flex justify-between items-center w-full text-left py-2"
+                >
+                  <span className="text-sm">{faq.question}</span>
+                  <span>{openFaqId === faq.id ? '−' : '+'}</span>
+                </button>
+                {openFaqId === faq.id && (
+                  <p className="text-sm text-gray-300 mt-2 mb-4">{faq.answer}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 
-export default Main;

@@ -11,7 +11,10 @@ const personalDetailSchema = new mongoose.Schema(
     middleName: { type: String },
     lastName: { type: String },
     dob: { type: Date },
-    martialStatus: {
+    gender: {
+      type: String,
+    },
+    maritalStatus: {
       type: String,
     },
   },

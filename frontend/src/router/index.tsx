@@ -80,78 +80,130 @@ import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HouseProp
 import SelfProperty from "@/ImportantComponent/HousePropertyComponent/SelfProperty";
 // import Layout from "../themes";
 
+function Layout({ children }) {
+  return <div className="md:mx-44">{children}</div>;
+}
+
 function Router() {
   const routes = [
     {
       path: "/",
-    
       children: [
         {
           path: "/",
-          element: <HomePage/>,
+          element: (
+            <Layout>
+              <HomePage />
+            </Layout>
+          ),
         },
-
         {
           path: "/login",
-          element: <Login />,
+          element: (
+            <Layout>
+              <Login />
+            </Layout>
+          ),
         },
         {
           path: "/register",
-          element: <Register />,
+          element: (
+            <Layout>
+              <Register />
+            </Layout>
+          ),
         },
         {
           path: "/tes",
-          element: <FileUpload />,
+          element: (
+            <Layout>
+              <FileUpload />
+            </Layout>
+          ),
         },
       ],
     },
     {
       path: "/fileITR",
-    
       children: [
         {
           path: "",
-          element: <ITRMainPage/>,
+          element: (
+            <Layout>
+              <ITRMainPage />
+            </Layout>
+          ),
         },
         {
           path: "addPanCardDetail",
-          element: <AddPan/>,
+          element: (
+            <Layout>
+              <AddPan />
+            </Layout>
+          ),
         },
-
         {
           path: "uploadForm16",
-          element: <UploadForm16 />,
+          element: (
+            <Layout>
+              <UploadForm16 />
+            </Layout>
+          ),
         },
         {
           path: "personalDetail",
-          element: <PersonalDetail />,
+          element: (
+            <Layout>
+              <PersonalDetail />
+            </Layout>
+          ),
         },
         {
           path: "incomeSources",
-          element: < IncomeSources/>,
+          element: (
+            <Layout>
+              <IncomeSources />
+            </Layout>
+          ),
         },
         {
           path: "incomeInterest",
-          element: < IncomeInterest/>,
+          element: (
+            <Layout>
+              <IncomeInterest />
+            </Layout>
+          ),
         },
         {
           path: "capitalGain",
-          element: < CapitalGainSubMain/>,
+          element: (
+            <Layout>
+              <CapitalGainSubMain />
+            </Layout>
+          ),
         },
         {
           path: "income-house-property",
-          element: < HousePropMain/>,
+          element: (
+            <Layout>
+              <HousePropMain />
+            </Layout>
+          ),
         },
         {
           path: "self-occupied-property",
-          element: <SelfProperty/>,
+          element: (
+            <Layout>
+              <SelfProperty />
+            </Layout>
+          ),
         },
       ],
     },
-  
   ];
 
   return useRoutes(routes);
 }
 
 export default Router;
+

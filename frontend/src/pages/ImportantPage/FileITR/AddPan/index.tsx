@@ -102,7 +102,7 @@ function Main() {
     Skip</Link>
    </div>
     </div> */}
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center mx-40">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
 
      
      <div className="lg:col-span-2 ">
