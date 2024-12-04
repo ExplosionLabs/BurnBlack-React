@@ -7,6 +7,7 @@ import InterestIncomeMain from "@/ImportantComponent/IncomeSourcesComponent/Inte
 import CapitalGainMain from "@/ImportantComponent/CaptialGainComponent/CaptialGainMain";
 import HousePropComponent from "@/ImportantComponent/HousePropertyComponent/HousePropComponent";
 import DividentComponent from "@/ImportantComponent/HousePropertyComponent/DividentComponent";
+import ProBussinesIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProBussinnessIncome";
 
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -22,6 +23,7 @@ function Main() {
     <CapitalGainMain/>
   <HousePropComponent/>
   <DividentComponent/>
+  <ProBussinesIncome/>
    </div>
     </>
   );

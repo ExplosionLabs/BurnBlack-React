@@ -80,6 +80,8 @@ import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HouseProp
 import SelfProperty from "@/ImportantComponent/HousePropertyComponent/SelfProperty";
 import RentProperty from "@/ImportantComponent/HousePropertyComponent/RentProperty";
 import DividentIncome from "@/ImportantComponent/HousePropertyComponent/DividentComponent/DivdentIcome";
+import ProSubSection from "@/ImportantComponent/ProfessionBussinessIncome/ProfSubSection";
+import ProfessionalIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProfessionalIncome";
 // import Layout from "../themes";
 
 function Layout({ children }) {
@@ -213,6 +215,22 @@ function Router() {
           element: (
             <Layout>
               <DividentIncome />
+            </Layout>
+          ),
+        },
+        {
+          path: "income-professional-freelancing-business",
+          element: (
+            <Layout>
+              <ProSubSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "professional-income",
+          element: (
+            <Layout>
+              <ProfessionalIncome />
             </Layout>
           ),
         },
