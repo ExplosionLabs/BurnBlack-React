@@ -1,6 +1,7 @@
 const addressDetail = require("../model/addressDetail");
 const bankDetail = require("../model/bankDetail");
 const contactDetail = require("../model/contactDetail");
+const dividentIncome = require("../model/dividentIncome");
 const form16model = require("../model/form16model");
 const IncomeInterest = require("../model/IncomeInterest");
 const personalDetailModel = require("../model/personalDetailModel");
@@ -402,6 +403,43 @@ const getRentalDataController = async (req, res) => {
   }
 };
 
+const postDividendIncomeController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { dividendIncome } = req.body;
+
+    // Upsert (update or insert) data for the user
+    await dividentIncome.findOneAndUpdate(
+      { userId },
+      { userId, dividendIncome },
+      { upsert: true, new: true }
+    );
+    res.status(200).send("Data saved successfully!");
+  } catch (error) {
+    console.error("Error saving data:", error);
+    res.status(500).send("Error saving data");
+  }
+};
+
+const getDividendIncomeController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const dividentData = await dividentIncome.findOne({ userId });
+
+    if (!dividentData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: dividentData.dividendIncome });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -418,4 +456,6 @@ module.exports = {
   getPropertyDataController,
   postRentalDataController,
   getRentalDataController,
+  postDividendIncomeController,
+  getDividendIncomeController,
 };

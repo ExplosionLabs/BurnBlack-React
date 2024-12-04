@@ -79,6 +79,7 @@ import CapitalGainSubMain from "@/ImportantComponent/CaptialGainComponent/Capita
 import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HousePropMain";
 import SelfProperty from "@/ImportantComponent/HousePropertyComponent/SelfProperty";
 import RentProperty from "@/ImportantComponent/HousePropertyComponent/RentProperty";
+import DividentIncome from "@/ImportantComponent/HousePropertyComponent/DividentComponent/DivdentIcome";
 // import Layout from "../themes";
 
 function Layout({ children }) {
@@ -204,6 +205,14 @@ function Router() {
           element: (
             <Layout>
               <RentProperty />
+            </Layout>
+          ),
+        },
+        {
+          path: "dividend-income",
+          element: (
+            <Layout>
+              <DividentIncome />
             </Layout>
           ),
         },

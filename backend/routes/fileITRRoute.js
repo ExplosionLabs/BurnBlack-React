@@ -15,6 +15,8 @@ const {
   getPropertyDataController,
   postRentalDataController,
   getRentalDataController,
+  postDividendIncomeController,
+  getDividendIncomeController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -55,4 +57,6 @@ router.post("/addPropertyData", authMiddleware, postPropertyDataController);
 router.get("/getPropertyData", authMiddleware, getPropertyDataController);
 router.post("/addRentalData", authMiddleware, postRentalDataController);
 router.get("/getRentalData", authMiddleware, getRentalDataController);
+router.post("/addDividentData", authMiddleware, postDividendIncomeController);
+router.get("/getDividentData", authMiddleware, getDividendIncomeController);
 module.exports = router;

@@ -6,6 +6,7 @@ import Form16Main from "@/ImportantComponent/IncomeSourcesComponent/Form16Main";
 import InterestIncomeMain from "@/ImportantComponent/IncomeSourcesComponent/InterestIncomeMain";
 import CapitalGainMain from "@/ImportantComponent/CaptialGainComponent/CaptialGainMain";
 import HousePropComponent from "@/ImportantComponent/HousePropertyComponent/HousePropComponent";
+import DividentComponent from "@/ImportantComponent/HousePropertyComponent/DividentComponent";
 
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -20,6 +21,7 @@ function Main() {
     <InterestIncomeMain/>
     <CapitalGainMain/>
   <HousePropComponent/>
+  <DividentComponent/>
    </div>
     </>
   );
