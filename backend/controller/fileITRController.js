@@ -1,5 +1,6 @@
 const addressDetail = require("../model/addressDetail");
 const bankDetail = require("../model/bankDetail");
+const BussinessIncome = require("../model/BussinessIncome");
 const contactDetail = require("../model/contactDetail");
 const dividentIncome = require("../model/dividentIncome");
 const form16model = require("../model/form16model");
@@ -498,6 +499,62 @@ const getProfessionalDataController = async (req, res) => {
       .json({ success: false, message: "Error fetching data.", error });
   }
 };
+const updateBussinessIncomeController = async (req, res) => {
+  const { ...bussinessIncome } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      // Try to find and update the record if it already exists
+      updatedDetail = await BussinessIncome.findOneAndUpdate(
+        { userId }, // Find by userId instead of _id
+        { $set: bussinessIncome },
+        { new: true } // Return the updated document
+      );
+    }
+
+    if (!updatedDetail) {
+      // If userId is not provided or doesn't exist, create a new record without the _id field
+      const newDetail = new BussinessIncome({
+        userId,
+        ...bussinessIncome,
+      });
+      updatedDetail = await newDetail.save(); // MongoDB will auto-generate the _id
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating contact details:", error);
+    res.status(500).json({ error: "Failed to update contact details" });
+  }
+};
+
+const getBussinessIncomeController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const incomeData = await BussinessIncome.findOne({ userId });
+
+    if (!incomeData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: incomeData });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
 
 module.exports = {
   uploadForm16Controller,
@@ -519,4 +576,6 @@ module.exports = {
   getDividendIncomeController,
   updateProfessionalIncomeController,
   getProfessionalDataController,
+  updateBussinessIncomeController,
+  getBussinessIncomeController,
 };

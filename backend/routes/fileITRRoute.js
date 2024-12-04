@@ -18,6 +18,8 @@ const {
   postDividendIncomeController,
   getDividendIncomeController,
   updateProfessionalIncomeController,
+  updateBussinessIncomeController,
+  getBussinessIncomeController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -69,5 +71,15 @@ router.get(
   "/getProfesionalIncomeData",
   authMiddleware,
   updateProfessionalIncomeController
+);
+router.post(
+  "/addBussinessIncomeData",
+  authMiddleware,
+  updateBussinessIncomeController
+);
+router.get(
+  "/getBussinessIncomeData",
+  authMiddleware,
+  getBussinessIncomeController
 );
 module.exports = router;
