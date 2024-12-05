@@ -10,15 +10,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center ">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2 h-96 overflow-auto ">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end">
+      {/* Modal Container */}
+      <div className="bg-white h-full w-1/2 shadow-lg transform transition-transform translate-x-0">
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 float-right"
+          className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
         >
           ✕
         </button>
-        {children}
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );

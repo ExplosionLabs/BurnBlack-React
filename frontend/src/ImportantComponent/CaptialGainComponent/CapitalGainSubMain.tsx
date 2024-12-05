@@ -699,24 +699,33 @@ setIsGoldModalOpen(false);
         </div>
       
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="text-center mb-4">
-          <button
-            onClick={() => setActiveTab("Stocks")}
-            className={`px-4 py-2 rounded-l ${
-              activeTab === "Stocks" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            Stocks
-          </button>
-          <button
-            onClick={() => setActiveTab("Mutual Funds")}
-            className={`px-4 py-2 rounded-r ${
-              activeTab === "Mutual Funds" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            Mutual Funds
-          </button>
-        </div>
+      <div className="text-center mb-4">
+  <div className="inline-flex items-center">
+    <label className="flex items-center cursor-pointer mr-6">
+      <input
+        type="radio"
+        name="activeTab"
+        value="Stocks"
+        checked={activeTab === "Stocks"}
+        onChange={() => setActiveTab("Stocks")}
+        className="form-radio h-5 w-5 text-blue-600"
+      />
+      <span className="ml-2 text-gray-800 font-medium">Stocks</span>
+    </label>
+    <label className="flex items-center cursor-pointer">
+      <input
+        type="radio"
+        name="activeTab"
+        value="Mutual Funds"
+        checked={activeTab === "Mutual Funds"}
+        onChange={() => setActiveTab("Mutual Funds")}
+        className="form-radio h-5 w-5 text-blue-600"
+      />
+      <span className="ml-2 text-gray-800 font-medium">Mutual Funds</span>
+    </label>
+  </div>
+</div>
+
 
         <StockMututalForm
           formData={formData}
