@@ -83,6 +83,7 @@ import DividentIncome from "@/ImportantComponent/HousePropertyComponent/Divident
 import ProSubSection from "@/ImportantComponent/ProfessionBussinessIncome/ProfSubSection";
 import ProfessionalIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProfessionalIncome";
 import BussinessIncome from "@/ImportantComponent/ProfessionBussinessIncome/BussinesIncome";
+import Main from "@/main/main";
 // import Layout from "../themes";
 
 function Layout({ children }) {
@@ -93,6 +94,7 @@ function Router() {
   const routes = [
     {
       path: "/",
+      element: <Main></Main>,
       children: [
         {
           path: "/",
@@ -130,6 +132,7 @@ function Router() {
     },
     {
       path: "/fileITR",
+      element: <Main></Main>,
       children: [
         {
           path: "",

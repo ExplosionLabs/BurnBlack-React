@@ -76,7 +76,7 @@ function Main() {
                 <h2 className="text-2xl font-semibold text-gray-900">Let&apos;s finish the last few steps quickly</h2>
               </div>
 
-              <div className="flex items-center gap-4 mb-8">
+              <div className="md:flex items-center gap-4 mb-8 hidden">
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -102,6 +102,29 @@ function Main() {
                   </div>
                 </div>
               </div>
+              <div className="md:hidden flex flex-col items-start gap-4 mb-8">
+        {/* Step 1 */}
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+            <CircleDashed className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-sm font-medium">Link PAN & Pre-fill</span>
+        </div>
+
+        {/* Step 2 */}
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
+            <CircleDashed className="w-4 h-4 text-white" />
+          </div>
+          <span className="text-sm font-medium">Add your Details</span>
+        </div>
+
+        {/* Step 3 */}
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full border-2 border-gray-300" />
+          <span className="text-sm font-medium">File ITR</span>
+        </div>
+      </div>
 
               <div className="flex items-center gap-2 text-sm">
                   <span className="text-gray-600">Know more about steps</span>

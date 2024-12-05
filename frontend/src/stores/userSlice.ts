@@ -67,5 +67,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { registerRequest, registerSuccess, registerFailure,loginRequest, loginSuccess, loginFailure, googleLoginRequest, googleLoginSuccess, googleLoginFailure  } = userSlice.actions;
+export const { registerRequest, registerSuccess, registerFailure,loginRequest, loginSuccess, loginFailure, googleLoginRequest, googleLoginSuccess, googleLoginFailure ,logout } = userSlice.actions;
 export default userSlice.reducer;
