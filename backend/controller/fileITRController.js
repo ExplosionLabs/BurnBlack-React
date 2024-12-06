@@ -556,6 +556,27 @@ const getBussinessIncomeController = async (req, res) => {
   }
 };
 
+const getAllInterestController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    // Query the database to get the data for the specified user and type
+
+    const data = await IncomeInterest.find({ userId });
+
+    if (data) {
+      res.status(200).json({ success: true, data: data });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "No data found for the specified user and type",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -578,4 +599,5 @@ module.exports = {
   getProfessionalDataController,
   updateBussinessIncomeController,
   getBussinessIncomeController,
+  getAllInterestController,
 };

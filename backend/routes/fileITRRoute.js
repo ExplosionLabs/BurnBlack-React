@@ -20,6 +20,7 @@ const {
   updateProfessionalIncomeController,
   updateBussinessIncomeController,
   getBussinessIncomeController,
+  getAllInterestController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -82,4 +83,5 @@ router.get(
   authMiddleware,
   getBussinessIncomeController
 );
+router.get("/getInterestIncomeData", authMiddleware, getAllInterestController);
 module.exports = router;

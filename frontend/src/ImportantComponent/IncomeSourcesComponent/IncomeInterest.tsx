@@ -7,6 +7,7 @@ import { BanknoteIcon as BankIcon, FileTextIcon, UsersIcon, FileIcon, WalletIcon
 import Fields from "./Field"
 import Sliderbar from "@/Layout/Sidebar"
 import SectionNavigation from "@/utils/SectionNavigation"
+import { fetchInterestData } from "@/api/incomeSoucre"
 
 type InterestType = "Savings Bank" | "Fixed Deposits" | "P2P Investments" | "Bond Investments" | "Provident Fund" | "Income Tax Refund" | "Other Interest Income"
 
@@ -92,23 +93,8 @@ export default function IncomeInterest() {
         const token = localStorage.getItem("token")
         const updatedInterestData = await Promise.all(
           interestData.map(async (section) => {
-            try {
-              const response = await axios.get(
-                `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/get-interest-income/${section.type}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              )
-
-              if (response.data.success && response.data.data) {
-                section.data = response.data.data
-              }
-            } catch (error) {
-              console.error(`Error fetching data for ${section.type}:`, error)
-            }
-            return section
+            const data = await fetchInterestData(token, section.type)
+            return { ...section, data }
           })
         )
         setInterestData(updatedInterestData)
@@ -175,7 +161,7 @@ export default function IncomeInterest() {
           </div>
 
           {expanded[section.type] && (
-            <div className="border-t border-gray-100">
+            <div className="border-t border-gray-100 mx-10">
               <Fields
                 type={section.type}
                 data={section.data}

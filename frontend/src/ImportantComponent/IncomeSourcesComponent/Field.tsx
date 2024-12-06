@@ -129,7 +129,7 @@ export default function Fields({ type, data, onUpdate }: FieldsProps) {
         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md"
       >
         <PlusIcon className="w-4 h-4" />
-        Add More
+        Add More Items
       </button>
     </div>
   )
