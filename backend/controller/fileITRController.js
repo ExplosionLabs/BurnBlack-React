@@ -3,9 +3,11 @@ const bankDetail = require("../model/bankDetail");
 const BussinessIncome = require("../model/BussinessIncome");
 const contactDetail = require("../model/contactDetail");
 const dividentIncome = require("../model/dividentIncome");
+const FinanceParticular = require("../model/FinanceParticular");
 const form16model = require("../model/form16model");
 const IncomeInterest = require("../model/IncomeInterest");
 const personalDetailModel = require("../model/personalDetailModel");
+const ProfAndBussinessIncome = require("../model/ProfAndBussinessIncome");
 const ProfessionalIncome = require("../model/ProfessionalIncome");
 const Property = require("../model/propertyModel");
 const RentalProperty = require("../model/rentalModel");
@@ -577,6 +579,118 @@ const getAllInterestController = async (req, res) => {
   }
 };
 
+const updateProfandBussinessIncomeController = async (req, res) => {
+  const { ...bussinessIncome } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      // Try to find and update the record if it already exists
+      updatedDetail = await ProfAndBussinessIncome.findOneAndUpdate(
+        { userId }, // Find by userId instead of _id
+        { $set: bussinessIncome },
+        { new: true } // Return the updated document
+      );
+    }
+
+    if (!updatedDetail) {
+      // If userId is not provided or doesn't exist, create a new record without the _id field
+      const newDetail = new ProfAndBussinessIncome({
+        userId,
+        ...bussinessIncome,
+      });
+      updatedDetail = await newDetail.save(); // MongoDB will auto-generate the _id
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating contact details:", error);
+    res.status(500).json({ error: "Failed to update contact details" });
+  }
+};
+
+const getProfandBussinessIncomeController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const incomeData = await ProfAndBussinessIncome.findOne({ userId });
+
+    if (!incomeData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: incomeData });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
+const updateFinanceParticularController = async (req, res) => {
+  const { ...financeParticular } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      // Try to find and update the record if it already exists
+      updatedDetail = await FinanceParticular.findOneAndUpdate(
+        { userId }, // Find by userId instead of _id
+        { $set: financeParticular },
+        { new: true } // Return the updated document
+      );
+    }
+
+    if (!updatedDetail) {
+      // If userId is not provided or doesn't exist, create a new record without the _id field
+      const newDetail = new FinanceParticular({
+        userId,
+        ...financeParticular,
+      });
+      updatedDetail = await newDetail.save(); // MongoDB will auto-generate the _id
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating contact details:", error);
+    res.status(500).json({ error: "Failed to update contact details" });
+  }
+};
+
+const getFinanceParticularController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const financeData = await FinanceParticular.findOne({ userId });
+
+    if (!financeData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: financeData });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -600,4 +714,8 @@ module.exports = {
   updateBussinessIncomeController,
   getBussinessIncomeController,
   getAllInterestController,
+  updateProfandBussinessIncomeController,
+  getProfandBussinessIncomeController,
+  updateFinanceParticularController,
+  getFinanceParticularController,
 };

@@ -20,6 +20,12 @@ const ProSubSection: React.FC = () => {
     <Link to="/fileITR/bussiness-income">
     Add Details</Link>
     </div>
+ <div>
+
+ Professional Income({`Revenue > ₹ 75 lakhs`}) or Business Income({`Revenue > ₹3 crores`})
+    <Link to="/fileITR/book-of-account-dashboard">
+    Add Details</Link>
+    </div>
     </>
   );
 };

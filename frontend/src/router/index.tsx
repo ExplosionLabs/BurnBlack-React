@@ -84,6 +84,9 @@ import ProSubSection from "@/ImportantComponent/ProfessionBussinessIncome/ProfSu
 import ProfessionalIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProfessionalIncome";
 import BussinessIncome from "@/ImportantComponent/ProfessionBussinessIncome/BussinesIncome";
 import Main from "@/main/main";
+import ProfBussinessSection from "@/ImportantComponent/ProfessionBussinessIncome/ProffBussinessSection";
+import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/ProfitLoss";
+import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
 // import Layout from "../themes";
 
 function Layout({ children }) {
@@ -243,6 +246,30 @@ function Router() {
           element: (
             <Layout>
               <BussinessIncome />
+            </Layout>
+          ),
+        },
+        {
+          path: "book-of-account-dashboard",
+          element: (
+            <Layout>
+              <ProfBussinessSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "profit-and-loss-boa",
+          element: (
+            <Layout>
+              <ProfitLoss />
+            </Layout>
+          ),
+        },
+        {
+          path: "financial-particulars",
+          element: (
+            <Layout>
+              <FinanceSubSection />
             </Layout>
           ),
         },

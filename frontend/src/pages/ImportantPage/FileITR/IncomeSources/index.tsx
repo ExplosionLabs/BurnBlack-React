@@ -9,6 +9,7 @@ import HousePropComponent from "@/ImportantComponent/HousePropertyComponent/Hous
 import DividentComponent from "@/ImportantComponent/HousePropertyComponent/DividentComponent";
 import ProBussinesIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProBussinnessIncome";
 import Sliderbar from "@/Layout/Sidebar";
+import FinancialParticular from "@/ImportantComponent/FinancialParticular/FinancialParticular";
 
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -28,6 +29,7 @@ function Main() {
   <HousePropComponent/>
   <DividentComponent/>
   <ProBussinesIncome/>
+  <FinancialParticular/>
   </div>
       
 
