@@ -10,50 +10,56 @@ const ProBussinesIncome: React.FC = () => {
  
 
 
-    <div className="p-6 bg-white rounded-lg shadow-sm border">
-      <div className="space-y-4">
-        {/* Header Section */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Currency className="w-6 h-6 text-blue-600" />
-            <h2 className="text-xl font-semibold text-gray-900"> 
-            Professional, Freelancing and Business Income
- </h2>
+ <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+      {/* Header Section */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Currency className="w-6 h-6 text-blue-600" />
+          <div>
+            <h3 className="font-medium text-gray-900 text-base">  Professional, Freelancing and Business Income</h3>
+            <p className="text-sm text-gray-500 mt-1 ">
+            Doctors, Lawyers, Freelancers, FnO investors, Businesses, Tutors, Influencers etc.
+            </p>
           </div>
-          <div className="flex items-center space-x-4">
-           
-            <Link
-              to="/fileITR/income-professional-freelancing-business"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
-            >
+        </div>
+        <div className="flex items-center space-x-4">
+          <Link
+                       to="/fileITR/income-professional-freelancing-business"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+          >
             Add Details
-            </Link>
-          </div>
+          </Link>
         </div>
-
-        {/* Description */}
-        <div className="text-sm text-gray-600 mx-9">
-        Doctors, Lawyers, Freelancers, FnO investors, Businesses, Tutors, Influencers etc.
-        </div>
-
-        {/* Salary Entry */}
-        {/* <div className="mt-4 ml-4 p-4 bg-gray-50 rounded-lg flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="font-medium text-gray-900">Tata Consultancy Services Ltd.</span>
-            <ExclamationTriangleIcon className="w-5 h-5 text-orange-500" />
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className="font-medium text-gray-900">₹2,000</span>
-            <button className="text-gray-700 hover:text-gray-900 font-medium">
-              Edit
-            </button>
-            <button className="text-gray-700 hover:text-gray-900 font-medium">
-              Remove
-            </button>
-          </div>
-        </div> */}
       </div>
+
+      {/* Interest Details Section */}
+      {/* <div className="mt-4 ml-10">
+        {interestData.length > 0 ? (
+          interestData.map((section) => {
+            const totalAmount = section.data.reduce((sum, item) => sum + (item.amount || 0), 0);
+            return (
+              <div
+                key={section._id}
+                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{section.type}</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">₹{totalAmount.toLocaleString()}</span>
+                  <Link    to="/fileITR/incomeInterest" className="text-gray-700 hover:text-gray-900 font-medium">Edit</Link>
+
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div>No interest income details available.</div>
+        )}
+      </div> */}
     </div>
+
+   
     </>
   );
 };

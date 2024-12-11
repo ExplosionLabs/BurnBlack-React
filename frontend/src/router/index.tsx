@@ -74,6 +74,7 @@ import UploadForm16 from "../pages/ImportantPage/FileITR/UploadForm16"
 import PersonalDetail from "../pages/ImportantPage/FileITR/Personal Detail";
 import IncomeSources from "../pages/ImportantPage/FileITR/IncomeSources";
 import ITRMainPage from "../pages/ImportantPage/FileITR/ITRMainPage";
+import TaxSummary from "../pages/ImportantPage/FileITR/TaxSummary";
 import IncomeInterest from "@/ImportantComponent/IncomeSourcesComponent/IncomeInterest";
 import CapitalGainSubMain from "@/ImportantComponent/CaptialGainComponent/CapitalGainSubMain";
 import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HousePropMain";
@@ -87,6 +88,7 @@ import Main from "@/main/main";
 import ProfBussinessSection from "@/ImportantComponent/ProfessionBussinessIncome/ProffBussinessSection";
 import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/ProfitLoss";
 import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
+import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
 // import Layout from "../themes";
 
 function Layout({ children }) {
@@ -266,10 +268,26 @@ function Router() {
           ),
         },
         {
+          path: "balance-sheet-boa",
+          element: (
+            <Layout>
+              <BalanceSheet />
+            </Layout>
+          ),
+        },
+        {
           path: "financial-particulars",
           element: (
             <Layout>
               <FinanceSubSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "tax-summary",
+          element: (
+            <Layout>
+              <TaxSummary/>
             </Layout>
           ),
         },

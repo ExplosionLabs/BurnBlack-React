@@ -25,6 +25,10 @@ const {
   getProfandBussinessIncomeController,
   updateFinanceParticularController,
   getFinanceParticularController,
+  updateProfitLossController,
+  getProfitLossController,
+  updateBalanceSheetController,
+  getBalanceSheetController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -108,4 +112,12 @@ router.get(
   authMiddleware,
   getFinanceParticularController
 );
+router.post("/addProfitLossData", authMiddleware, updateProfitLossController);
+router.get("/getProfitLossData", authMiddleware, getProfitLossController);
+router.post(
+  "/addBalanceSheetData",
+  authMiddleware,
+  updateBalanceSheetController
+);
+router.get("/getBalanceSheetData", authMiddleware, getBalanceSheetController);
 module.exports = router;

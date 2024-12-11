@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import FinancialParticular from "../FinancialParticular/FinancialParticular";
 const ProSubSection: React.FC = () => {
  
 
@@ -26,6 +27,8 @@ const ProSubSection: React.FC = () => {
     <Link to="/fileITR/book-of-account-dashboard">
     Add Details</Link>
     </div>
+
+    <FinancialParticular/>
     </>
   );
 };

@@ -174,6 +174,13 @@ const ProfBussinessSection: React.FC = () => {
       <Link to="/fileITR/profit-and-loss-boa"> Add Detail</Link>
 
     </div>
+    <div>
+      <div>
+      Balance Sheet
+      </div>
+      <Link to="/fileITR/balance-sheet-boa"> Add Detail</Link>
+
+    </div>
     </>
   );
 };

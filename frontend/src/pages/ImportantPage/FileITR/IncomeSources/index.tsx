@@ -29,7 +29,7 @@ function Main() {
   <HousePropComponent/>
   <DividentComponent/>
   <ProBussinesIncome/>
-  <FinancialParticular/>
+  {/* <FinancialParticular/> */}
   </div>
       
 

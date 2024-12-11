@@ -23,7 +23,7 @@ export default function SectionNavigation() {
     },
     {
       title: "Tax Summary",
-      path: "/fileITR/bankDetail",
+      path: "/fileITR/tax-summary",
       status: "pending",
     },
   ];
