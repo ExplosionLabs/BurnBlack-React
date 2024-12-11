@@ -34,7 +34,7 @@ const Navbar = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="text-xl font-semibold text-gray-700">
-                BlackBurn
+                BurnBlack
               </Link>
             </div>
   

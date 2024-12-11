@@ -20,6 +20,7 @@ const {
   postGoldAssestControler,
   getGoldAssetsData,
   updateGoldFormAssestData,
+  getAllMututalData,
 } = require("../controller/capitalGainController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -28,6 +29,7 @@ const router = require("express").Router();
 router.post("/postStockMutualData", authMiddleware, postStockMutualControler);
 router.post("/editStockMutualData", authMiddleware, updateStockMutualData);
 router.get("/getStockMutualData", authMiddleware, getStockMututalData);
+router.get("/getAllStockMutualData", authMiddleware, getAllMututalData);
 router.post("/addForeignAssest", authMiddleware, postForeignAssestControler);
 router.get("/getForeignAssest", authMiddleware, getForeignAssetsData);
 router.post("/editForeignAssest", authMiddleware, updateForeignAssestData);

@@ -33,6 +33,7 @@ const landFormSchema = new Schema(
     transferExpenses: { type: String },
     purchasePrice: { type: String },
     stampDutyPrice: { type: String },
+    totalProfit: { type: Number, default: 0 },
     isHouseProperty: { type: Boolean },
     improvementDetails: [improvementDetailsSchema],
     propertyAddress: propertyAddressSchema,
@@ -45,6 +46,20 @@ const landFormSchema = new Schema(
   },
   { timestamps: true }
 );
+
+landFormSchema.pre("save", function (next) {
+  // Ensure all required fields are present
+  if (
+    this.salePrice &&
+    this.purchasePrice &&
+    this.transferExpenses !== undefined
+  ) {
+    // Calculate totalProfit
+    this.totalProfit =
+      this.salePrice - this.transferExpenses - this.purchasePrice;
+  }
+  next();
+});
 
 // Create the model
 const LandForm = mongoose.model("LandForm", landFormSchema);

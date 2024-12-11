@@ -42,3 +42,157 @@ export const fetchAllInterestData = async (token: string) => {
    
     }
   }
+export const fetchStockMututalData = async (token: string) => {
+    try {
+      console.log("adfd");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getAllStockMutualData`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchForeignAssetsData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getForeignAssest`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchLandFormData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getLandFormAssest`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchStockRsuData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getStockRsuAssest`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchGoldData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getGoldAssest`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchBondData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getBondDebentureAssest`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchLongShortData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getShortLongAssest`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }

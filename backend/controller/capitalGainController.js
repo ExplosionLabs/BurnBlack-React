@@ -46,6 +46,28 @@ const getStockMututalData = async (req, res) => {
       .json({ error: "Server error, please try again later." });
   }
 };
+const getAllMututalData = async (req, res) => {
+  const userId = req.user.id; // Assuming user is authenticated
+
+  try {
+    const capitalGainData = await stockMututalassest.find({
+      userId: userId,
+    });
+
+    if (capitalGainData) {
+      return res.status(200).json(capitalGainData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
 
 const updateStockMutualData = async (req, res) => {
   try {
@@ -462,4 +484,5 @@ module.exports = {
   postGoldAssestControler,
   getGoldAssetsData,
   updateGoldFormAssestData,
+  getAllMututalData,
 };

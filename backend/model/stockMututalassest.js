@@ -15,9 +15,25 @@ const stockMutualAssestSchema = new mongoose.Schema(
     transferExpenses: { type: Number },
     purchasePrice: { type: Number },
     sttPaid: { type: Boolean },
+    totalProfit: { type: Number, default: 0 }, // Field to store the total profit
   },
   { timestamps: true }
 );
+
+// Pre-save hook to calculate totalProfit
+stockMutualAssestSchema.pre("save", function (next) {
+  // Ensure all required fields are present
+  if (
+    this.salePrice &&
+    this.purchasePrice &&
+    this.transferExpenses !== undefined
+  ) {
+    // Calculate totalProfit
+    this.totalProfit =
+      this.salePrice - this.transferExpenses - this.purchasePrice;
+  }
+  next();
+});
 
 module.exports = mongoose.model(
   "StockMutualAssestSchema",

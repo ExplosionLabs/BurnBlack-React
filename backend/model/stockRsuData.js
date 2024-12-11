@@ -16,8 +16,22 @@ const stockRsuSchema = new mongoose.Schema(
     exercisePrice: { type: Number },
     fairValue: { type: Number },
     sttPaid: { type: Boolean },
+    totalProfit: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
 
+stockRsuSchema.pre("save", function (next) {
+  // Ensure all required fields are present
+  if (
+    this.salePrice &&
+    this.exercisePrice &&
+    this.transferExpenses !== undefined
+  ) {
+    // Calculate totalProfit
+    this.totalProfit =
+      this.salePrice - this.transferExpenses - this.purchasePrice;
+  }
+  next();
+});
 module.exports = mongoose.model("StockRsuData", stockRsuSchema);

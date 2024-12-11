@@ -61,6 +61,7 @@ const LongShortTerm: React.FC<FormProps> = ({
               <input
                 type="number"
                 name="shortTotalAmountDeemed"
+                disabled
                 onChange={handleShortTermInputChange}
                 value={shortTermData.shortTotalAmountDeemed || ""}
                 className="w-full border rounded px-3 py-2"
@@ -192,6 +193,7 @@ const LongShortTerm: React.FC<FormProps> = ({
               <input
                 type="number"
                 name="longTotalAmountDeemed"
+                disabled
                 onChange={handleLongTermInputChange}
                 value={longTermData.longTotalAmountDeemed || ""}
                 className="w-full border rounded px-3 py-2"
