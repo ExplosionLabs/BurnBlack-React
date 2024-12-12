@@ -32,7 +32,7 @@ export default function BankDetails() {
           }
         )
         setBankDetails(response.data.data.bankDetails || [])
-        setLoading(false)
+        
       } catch (err) {
         setError("Failed to load bank details.")
         console.error(err)
@@ -82,8 +82,7 @@ export default function BankDetails() {
     autoSave(updatedDetails)
   }
 
-  if (loading) return <p className="text-center p-4">Loading...</p>
-  if (error) return <p className="text-center text-red-500 p-4">{error}</p>
+ 
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6 w-full">

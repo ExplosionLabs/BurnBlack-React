@@ -11,6 +11,8 @@ import { RootState } from '../../../stores/store';
 import { loginFailure, loginRequest, loginSuccess ,googleLoginRequest, googleLoginSuccess, googleLoginFailure} from '@/stores/userSlice';
 import { loginUser,registerUserWithGoogle } from '@/api/userApi';
 import { GoogleLogin } from '@react-oauth/google';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Main() {
   const navigate=useNavigate();
  
@@ -41,7 +43,7 @@ function Main() {
     try {
       const response = await loginUser(userData);
       dispatch(loginSuccess(response));
-      alert('Login successful!');
+      toast.success('Login successful!');
       navigate("/fileITR")
     } catch (error: any) {
       dispatch(loginFailure(error));
@@ -61,8 +63,10 @@ function Main() {
       const decodedToken = decodeJwt(credentialResponse.credential); // Use the custom decodeJwt function
       const response = await registerUserWithGoogle({ token: credentialResponse.credential });
       dispatch(googleLoginSuccess(response));
-      alert('Google Sign-In successful!');
-      navigate("/fileITR")
+      toast.success('Login successful!');
+      setTimeout(() => {
+        navigate("/fileITR");
+      }, 2000);
     } catch (error) {
       console.log("error", error);
       dispatch(googleLoginFailure(error.message));
@@ -184,6 +188,7 @@ function Main() {
             {/* END: Login Form */}
           </div>
         </div>
+        <ToastContainer />
       </div>
     </>
   );

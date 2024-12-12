@@ -1,10 +1,10 @@
-const bondDebenture = require("../model/bondDebenture");
-const ForeignAssest = require("../model/ForeignAssest");
-const GoldForm = require("../model/goldAssets");
-const LandForm = require("../model/landBuildModel");
-const LongShortModel = require("../model/LongShortModel");
-const stockMututalassest = require("../model/stockMututalassest");
-const stockRsuData = require("../model/stockRsuData");
+const bondDebenture = require("../model/StockGainAssets/bondDebenture");
+const ForeignAssest = require("../model/StockGainAssets/ForeignAssest");
+const GoldForm = require("../model/StockGainAssets/goldAssets");
+const LandForm = require("../model/StockGainAssets/landBuildModel");
+const LongShortModel = require("../model/StockGainAssets/LongShortModel");
+const stockMututalassest = require("../model/StockGainAssets/stockMututalassest");
+const stockRsuData = require("../model/StockGainAssets/stockRsuData");
 
 const postStockMutualControler = async (req, res) => {
   try {

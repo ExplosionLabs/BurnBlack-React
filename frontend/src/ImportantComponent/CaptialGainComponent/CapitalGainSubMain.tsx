@@ -9,6 +9,7 @@ import StockRsuForm from "./StockRsu/StockRsuForm";
 import BondsDebentureForm from "./BondsDebenture/BondsDebenture";
 import LongShortTerm from "./LongShortTerm/LongShortTerm";
 import GoldAssestsForm from "./GoldAssestComponent/GoldAssetsForm";
+import { fetchBondData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockRsuData } from "@/api/incomeSoucre";
 
 const CapitalGainSubMain: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -434,17 +435,9 @@ setIsGoldModalOpen(false);
     const fetchExistingForeignAssest = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getForeignAssest`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-        
-          }
-        );
+        const data = await fetchForeignAssetsData(token);
 
-        const data = response.data;
+        
         if (data) {
           setExistingForeignData(data);
           setForeignFormData({
@@ -466,17 +459,9 @@ setIsGoldModalOpen(false);
     const fetchExistingLandFormAssest = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getLandFormAssest`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-        
-          }
-        );
+        const data=await fetchLandFormData(token);
 
-        const data = response.data;
+      
         if (data) {
           setExistingLandFormData(data);
           setLandFormData({
@@ -498,17 +483,9 @@ setIsGoldModalOpen(false);
     const fetchExistingStockRsuAssest = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getStockRsuAssest`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-        
-          }
-        );
+        const data = await fetchStockRsuData(token);
 
-        const data = response.data;
+      
         if (data) {
           setExistingStockRsuData(data);
           setStockRsuData({
@@ -530,15 +507,7 @@ setIsGoldModalOpen(false);
     const fetchExistingBondDebentureAssest = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getBondDebentureAssest`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-        
-          }
-        );
+        const response = await fetchBondData(token);
 
         const data = response.data;
         if (data) {
@@ -562,17 +531,9 @@ setIsGoldModalOpen(false);
     const fetchExistingLongShortAssets = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getShortLongAssest`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-        
-          }
-        );
+        const data =await fetchLongShortData(token);
 
-        const data = response.data;
+       
         if (data) {
           setExistingShortLongData(data);
           setShortTermDetails(data.shortTermDetails
@@ -595,17 +556,9 @@ setIsGoldModalOpen(false);
     const fetchExistingGoldAssest = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getGoldAssest`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-        
-          }
-        );
+        const data = await fetchGoldData(token);
 
-        const data = response.data;
+    
         if (data) {
           setExistingGoldData(data);
           setGoldTermDetails({

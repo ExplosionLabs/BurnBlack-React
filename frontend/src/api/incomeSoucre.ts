@@ -44,7 +44,7 @@ export const fetchAllInterestData = async (token: string) => {
   }
 export const fetchStockMututalData = async (token: string) => {
     try {
-      console.log("adfd");
+      
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getAllStockMutualData`,
         {
@@ -132,7 +132,7 @@ export const fetchStockRsuData = async (token: string) => {
   }
 export const fetchGoldData = async (token: string) => {
     try {
-      console.log("ad");
+      
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getGoldAssest`,
         {
@@ -154,7 +154,7 @@ export const fetchGoldData = async (token: string) => {
   }
 export const fetchBondData = async (token: string) => {
     try {
-      console.log("ad");
+
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/getBondDebentureAssest`,
         {

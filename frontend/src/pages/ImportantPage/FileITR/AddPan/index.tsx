@@ -95,13 +95,7 @@ function Main() {
  
   return (
     <>
-    {/* <div>
-   Add Pan Details
-   <div>
-    <Link to="/fileITR/uploadForm16">
-    Skip</Link>
-   </div>
-    </div> */}
+    
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
 
      
@@ -142,38 +136,39 @@ function Main() {
 
             
             <div>
-              <label htmlFor="pan" className="block text-sm font-medium text-gray-700 mb-1">
-                PAN Card Number
-              </label>
-              <input
-                type="text"
-                id="pan"
-                value={panNumber}
-                onChange={(e) => {setPanNumber(e.target.value.toUpperCase())
+  <label htmlFor="pan" className="block text-sm font-medium text-gray-700 mb-1">
+    PAN Card Number
+  </label>
+  <input
+    type="text"
+    id="pan"
+    value={panNumber}
+    onChange={(e) => {
+      setPanNumber(e.target.value.toUpperCase());
+      updateDatabase(e.target.value.toUpperCase());
+    }}
+    className="w-72 px-6 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+    maxLength={10}
+  />
+</div>
 
-                  updateDatabase(e.target.value.toUpperCase())
-                }}
-                className="w-72 px-6 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-               
-                maxLength={10}
-              />
-            </div>
+<div>
+  <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
+    Date of Birth
+  </label>
+  <input
+    type="date"
+    name="dob"
+    value={dob}
+    onChange={(e) => {
+      setDob(e.target.value);
+      updateDatabaseDob(e.target.value); // Use the correct debounced function
+    }}
+    className="w-72 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+  />
+  <p className="mt-1 text-sm text-gray-500">Specify date in a format like DD/MM/YYYY</p>
+</div>
 
-            <div>
-              <label htmlFor="dob" className="block text-sm font-medium text-gray-700 mb-1">
-                Date of Birth
-              </label>
-              <input
-                                type="date"
-                                name="dob"
-                                value={dob}  onChange={(e) => {setDob(e.target.value)
-
-                                  updateDatabase(e.target.value)
-                                }}
-                            
-                className="w-72 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" />
-              <p className="mt-1 text-sm text-gray-500">Specify date in a format like DD/MM/YYYY</p>
-            </div>
             </div>
 
             <div className="space-y-4">

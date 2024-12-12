@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/stores/store'
 import { uploadForm16 } from '@/api/fileITR'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 interface FAQItem {
   id: string
@@ -38,7 +38,7 @@ export default function Form16Upload() {
   const [isDragging, setIsDragging] = useState(false)
   const [openFaqId, setOpenFaqId] = useState<string | null>(null)
   const { user } = useSelector((state: RootState) => state.user)
-
+const navigate=useNavigate();
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0])
@@ -75,7 +75,8 @@ export default function Form16Upload() {
 
     try {
       const response = await uploadForm16(formData)
-      alert(response.message)
+      // alert(response.message)
+      navigate("/fileITR/personalDetail")
     } catch (error) {
       console.error('File upload failed:', error)
       alert('Failed to upload file.')
