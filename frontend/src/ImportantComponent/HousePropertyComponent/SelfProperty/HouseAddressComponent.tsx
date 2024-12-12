@@ -1,3 +1,4 @@
+import { ChevronDown, MapPin } from "lucide-react";
 import { useState } from "react";
 import {
   CitySelect,
@@ -12,6 +13,11 @@ const HouseAddressComponent: React.FC<{
   const [countryId, setCountryId] = useState(null);
   const [usePersonalDetails, setUsePersonalDetails] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [isFormVisible, setIsFormVisible] = useState(false); // State to toggle form visibility
+  const toggleFormVisibility = () => {
+    setIsFormVisible(!isFormVisible);
+  };
 
   // Function to fetch addressDetail from the API
   const fetchAddressDetail = async () => {
@@ -83,108 +89,142 @@ const HouseAddressComponent: React.FC<{
   };
 
   return (
-    <div>
-      <h3>House Address</h3>
-      <form>
-        {/* Checkbox for using personal details */}
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={usePersonalDetails}
-              onChange={handleCheckboxChange}
-              disabled={loading} // Disable checkbox during loading
+    <div className="w-full mx-auto">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <MapPin className="w-5 h-5 text-rose-500" />
+          <h3 className="text-lg font-medium">House Address</h3>
+        </div>
+      <button
+            onClick={toggleFormVisibility}
+            className="p-2 hover:bg-gray-50 rounded-full transition-colors"
+          >
+            <ChevronDown
+              className={`w-5 h-5 text-gray-400 transform transition-transform ${
+                isFormVisible ? "rotate-180" : ""
+              }`}
             />
-            {loading ? "Loading address details..." : "Use Personal Details Address"}
-          </label>
-        </div>
+          </button>
 
-        <div>
-          <label htmlFor="flatNo">Flat/Door/Block No.*</label>
+      </div>
+
+      {isFormVisible && (
+      <form className="space-y-6">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
-            type="text"
-            id="flatNo"
-            name="flatNo"
-            value={data.flatNo}
-            onChange={(e) => handleChange("flatNo", e.target.value, e)}
-            required
+            type="checkbox"
+            checked={usePersonalDetails}
+            onChange={handleCheckboxChange}
+
+            className="w-4 h-4 rounded border-gray-300 text-gray-600"
           />
-        </div>
-        <div>
-          <label htmlFor="premiseName">Premise Name</label>
-          <input
-            type="text"
-            id="premiseName"
-            name="premiseName"
-            value={data.premiseName}
-            onChange={(e) => handleChange("premiseName", e.target.value, e)}
-          />
-        </div>
-        <div>
-          <label htmlFor="road">Road/Street</label>
-          <input
-            type="text"
-            id="road"
-            name="road"
-            value={data.road}
-            onChange={(e) => handleChange("road", e.target.value, e)}
-          />
-        </div>
-        <div>
-          <label htmlFor="area">Area/Locality*</label>
-          <input
-            type="text"
-            id="area"
-            name="area"
-            value={data.area}
-            onChange={(e) => handleChange("area", e.target.value, e)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="pincode">Pincode*</label>
-          <input
-            type="text"
-            id="pincode"
-            name="pincode"
-            value={data.pincode}
-            onChange={(e) => handleChange("pincode", e.target.value, e)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="country">Country*</label>
+          <span className="text-gray-600">Same as the address filled in Personal Information</span>
+        </label>
+
+        <div className="space-y-4">
+          <div>
+            <label className="flex gap-0.5">
+              <span>Flat/Door/Block no.</span>
+              <span className="text-gray-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={data.flatNo}
+              onChange={(e) => handleChange('flatNo', e.target.value)}
+              required
+              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+            />
+          </div>
+
+          <div>
+            <label>Premise Name</label>
+            <input
+              type="text"
+              value={data.premiseName}
+              onChange={(e) => handleChange('premiseName', e.target.value)}
+              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+            />
+          </div>
+
+          <div>
+            <label>Road/Street</label>
+            <input
+              type="text"
+              value={data.road}
+              onChange={(e) => handleChange('road', e.target.value)}
+              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+            />
+          </div>
+
+          <div>
+            <label className="flex gap-0.5">
+              <span>Area/Locality</span>
+              <span className="text-gray-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={data.area}
+              onChange={(e) => handleChange('area', e.target.value)}
+              required
+              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+            />
+          </div>
+
+          <div>
+            <label className="flex gap-0.5">
+              <span>Pincode</span>
+              <span className="text-gray-400">*</span>
+            </label>
+            <input
+              type="text"
+              value={data.pincode}
+              onChange={(e) => handleChange('pincode', e.target.value)}
+              required
+              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+        <label className="block text-xs text-gray-500 mb-1">Country</label>
           <CountrySelect
             value={data.country || ""}
             onChange={(value) => {
               handleChange("country", value?.name || "");
               setCountryId(value?.id || null);
             }}
-            className="w-full border rounded px-3 py-2"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              
           />
         </div>
+
         <div>
-          <label htmlFor="state">State*</label>
+        <label className="block text-xs text-gray-500 mb-1">State</label>
           <StateSelect
             countryid={countryId}
             value={data.state || ""}
             onChange={(value) => handleChange("state", value?.name || "")}
-            className="w-full border rounded px-3 py-2"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div>
-          <label htmlFor="city">City</label>
-          <input
-            type="text"
-            id="city"
-            name="city"
-            value={data.city}
-            onChange={(e) => handleChange("city", e.target.value, e)}
-            required
-          />
+
+
+            <div>
+              <label className="block text-xs text-gray-400 mb-1">City</label>
+              <input
+                type="text"
+                value={data.city}
+                onChange={(e) => handleChange('city', e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+              />
+            </div>
+          </div>
         </div>
       </form>
+      )}
     </div>
+  </div>
   );
 };
 

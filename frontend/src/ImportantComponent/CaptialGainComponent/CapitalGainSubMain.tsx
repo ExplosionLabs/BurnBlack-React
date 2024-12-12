@@ -10,6 +10,8 @@ import BondsDebentureForm from "./BondsDebenture/BondsDebenture";
 import LongShortTerm from "./LongShortTerm/LongShortTerm";
 import GoldAssestsForm from "./GoldAssestComponent/GoldAssetsForm";
 import { fetchBondData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockRsuData } from "@/api/incomeSoucre";
+import Sliderbar from "@/Layout/Sidebar";
+import { BarChart2 } from "lucide-react";
 
 const CapitalGainSubMain: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -408,6 +410,7 @@ setIsGoldModalOpen(false);
         );
 
         const data = response.data;
+      console.log("dat",data);
         if (data) {
           if (activeTab === "Stocks") {
             setExistingStockData(data);
@@ -578,78 +581,140 @@ setIsGoldModalOpen(false);
   }, []);
   return (
     <>
+     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+      <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
    <SectionNavigation/>
-    <div className="p-4">
-      <div>
-
-      <h1 className="text-lg font-bold mb-4">Capital Gain: Stocks & Mutual Funds</h1>
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-        >
-        {formData ? "Edit Details" : "Add Details"}
-      </button>
+  
+    <div className="">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+      {/* Header Section */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <BarChart2  className="w-6 h-6 text-blue-600" />
+          <div>
+            <h3 className="font-medium text-gray-900 text-base">Capital Gain: Stocks & Mutual Funds</h3>
+            <p className="text-sm text-gray-500 mt-1 ">
+           
+Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currency, Commodity
+            </p>
+          </div>
         </div>
+        <div className="flex items-center space-x-4">
+          <button
+          onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+          >
+                {formData ? "Edit Details" : "Add Details"}
+          </button>
+        </div>
+      </div>
+
+    
+    </div>
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <BarChart2  className="w-6 h-6 text-blue-600" />
         <div>
-        <h1 className="text-lg font-bold mb-4">Foreign Assest</h1>
-        <button
-        
+          <h3 className="font-medium text-gray-900 text-base">Foreign Asset</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Declare assets held outside India, such as bank accounts, <br /> investments, and properties.
+          </p>
+        </div>
+      </div>
+      <button
         onClick={() => setIsForeignModalOpen(true)}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
       >
         Add Foreign Assets
       </button>
-        </div>
+    </div>
+  </div>
+
+  {/* Sale of Land or Building */}
+  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <BarChart2  className="w-6 h-6 text-blue-600" />
         <div>
-        <h1 className="text-lg font-bold mb-4">Sale of Land or Building</h1>
-        <button
-        
+          <h3 className="font-medium text-gray-900 text-base">Sale of Land or Building</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Report the sale of land, buildings, or other immovable properties.
+          </p>
+        </div>
+      </div>
+      <button
         onClick={() => setIsLandBuildModalOpen(true)}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
       >
         Add Entry
       </button>
-        </div>
+    </div>
+  </div>
+
+  {/* Stock Options & RSUs */}
+  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <BarChart2  className="w-6 h-6 text-blue-600" />
         <div>
-        <h1 className="text-lg font-bold mb-4">Stock Options & RSUs</h1>
-        <button
-        
+          <h3 className="font-medium text-gray-900 text-base">Stock Options & RSUs</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Declare your income from stock options and RSUs (Restricted Stock Units).
+          </p>
+        </div>
+      </div>
+      <button
         onClick={() => setIsStockRsuModalOpen(true)}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
       >
         Add Entry
       </button>
-        </div>
+    </div>
+  </div>
+
+  {/* Bonds and Debentures */}
+  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <BarChart2 className="w-6 h-6 text-blue-600" />
         <div>
-        <h1 className="text-lg font-bold mb-4">Bonds and Debentures</h1>
-        <button
-        
+          <h3 className="font-medium text-gray-900 text-base">Bonds and Debentures</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Record your capital gains or losses from bonds and debentures.
+          </p>
+        </div>
+      </div>
+      <button
         onClick={() => setIsBondDebentureModalOpen(true)}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
       >
         Add Entry
       </button>
-        </div>
+    </div>
+  </div>
+
+  {/* Gold, Jewellery, and Others */}
+  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <BarChart2  className="w-6 h-6 text-blue-600" />
         <div>
-        <h1 className="text-lg font-bold mb-4">Deemed Capital Gains</h1>
-        <button
-        
-        onClick={() => setIsShortLongModalOpen(true)}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-      >
-       Add Details
-      </button>
+          <h3 className="font-medium text-gray-900 text-base">Gold, Jewellery and Others</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Declare gains from selling gold, jewellery, or other valuable items.
+          </p>
         </div>
-        <div>
-        <h1 className="text-lg font-bold mb-4">Gold, Jewellery and Others</h1>
-        <button
-        
+      </div>
+      <button
         onClick={() => setIsGoldModalOpen(true)}
-        className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-yellow-700 font-medium"
       >
-       Add Details
+        Add Details
       </button>
-        </div>
+    </div>
+  </div>
+
       
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <div className="text-center mb-4">
@@ -762,6 +827,15 @@ setIsGoldModalOpen(false);
 />
 
       </Modal>
+      
+    </div>
+    
+      </div>
+      <div className="lg:col-span-1">
+        <div className="sticky top-0">
+          <Sliderbar />
+        </div>
+      </div>
     </div>
     </>
   );

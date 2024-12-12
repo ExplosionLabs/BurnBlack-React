@@ -75,6 +75,7 @@ import PersonalDetail from "../pages/ImportantPage/FileITR/Personal Detail";
 import IncomeSources from "../pages/ImportantPage/FileITR/IncomeSources";
 import ITRMainPage from "../pages/ImportantPage/FileITR/ITRMainPage";
 import TaxSummary from "../pages/ImportantPage/FileITR/TaxSummary";
+import TaxSaving from "../pages/ImportantPage/FileITR/TaxSaving";
 import IncomeInterest from "@/ImportantComponent/IncomeSourcesComponent/IncomeInterest";
 import CapitalGainSubMain from "@/ImportantComponent/CaptialGainComponent/CapitalGainSubMain";
 import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HousePropMain";
@@ -280,6 +281,14 @@ function Router() {
           element: (
             <Layout>
               <FinanceSubSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "tax-saving",
+          element: (
+            <Layout>
+              <TaxSaving/>
             </Layout>
           ),
         },

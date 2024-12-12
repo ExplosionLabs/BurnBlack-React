@@ -5,6 +5,8 @@ import HouseAddresComponent from "./SelfProperty/HouseAddressComponent";
 import OwnerDetails from "./SelfProperty/OwnerDetail";
 import TaxSavingsDetails from "./SelfProperty/TaxSaving";
 import RentalIncomeDetails from "./SelfProperty/RentalIncomeDetails";
+import { ArrowLeft, HelpCircle } from "lucide-react";
+import Sliderbar from "@/Layout/Sidebar";
 
 
 
@@ -104,20 +106,49 @@ const SelfProperty: React.FC = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h1>House Property Details</h1>
-
-      {/* Dropdown for selecting property type */}
-      <div>
-        <label htmlFor="propertyType">Your Property Type:</label>
-        <select id="propertyType" value={formData.propertyType} onChange={handlePropertyTypeChange}>
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
+  <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
+    {/* Header */}
+    <div className="w-full max-w-4xl p-6">
+      <div className="mb-6">
+        <div className="flex items-center mb-4">
+        <Link to="/fileITR/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <h1 className="text-2xl font-semibold text-gray-900">
+            Self Occupied Properties (not given on rent)
+          </h1>
+        </div>
+        <p className="text-gray-600">
+          Enter the home loan interest, address and other details. You can get the interest details from the home loan certificate issued by the bank.
+        </p>
+      </div>
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8">
+        <div className="flex items-center gap-2 min-w-[180px]">
+          <label htmlFor="propertyType" className="font-medium text-gray-700">
+            Your property type
+          </label>
+          <HelpCircle className="w-4 h-4 text-gray-400" />
+        </div>
+        <select
+          id="propertyType"
+          value={propertyType}
+          onChange={handlePropertyTypeChange}
+          className="w-full md:w-[400px] p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
           <option value="Self Occupied House Property">Self Occupied House Property</option>
           <option value="Deemed Let Out Property">Deemed Let Out Property</option>
         </select>
       </div>
+    </div>
+
+
+
+
+
 
       {/* Render components */}
-      <div>
+      <div className="flex flex-col gap-4">
         <HouseAddresComponent
           data={formData.houseAddress}
           onChange={(updatedData: any) => handleFormChange("houseAddress", updatedData)}
@@ -135,8 +166,12 @@ const SelfProperty: React.FC = () => {
       </div>
 
       {/* Navigation links */}
-      <div style={{ marginTop: "20px" }}>
-        <Link to="/fileITR/self-occupied-property">Next</Link>
+      
+    </div>
+    <div className="lg:col-span-1">
+        <div className="sticky top-0">
+          <Sliderbar />
+        </div>
       </div>
     </div>
   );

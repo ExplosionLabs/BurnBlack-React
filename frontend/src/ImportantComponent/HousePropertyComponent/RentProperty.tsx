@@ -6,6 +6,8 @@ import OwnerDetails from "./SelfProperty/OwnerDetail";
 import TaxSavingsDetails from "./SelfProperty/TaxSaving";
 import RentalIncomeDetails from "./SelfProperty/RentalIncomeDetails";
 import TenantDetailsComponent from "./RentProperty/TentantDetail";
+import Sliderbar from "@/Layout/Sidebar";
+import { ArrowLeft } from "lucide-react";
 
 
 
@@ -104,13 +106,29 @@ const RentProperty: React.FC = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h1>Add Rental Property</h1>
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
+  <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
+  <div className="w-full max-w-4xl p-6">
+      <div className="mb-6">
+        <div className="flex items-center mb-4">
+        <Link to="/fileITR/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <h1 className="text-2xl font-semibold text-gray-900">
+          Add Rental Property
+          </h1>
+        </div>
+        <p className="text-gray-600">
+        Enter Rent, Home Loan Interest, Tenant and other details. You can get the interest details from the home loan certificate issued by the bank.
+        </p>
+      </div>
+      
+    </div>
 
     
 
       {/* Render components */}
-      <div>
+      <div className="flex flex-col gap-4">
         <HouseAddresComponent
           data={rentFormData.houseAddress}
           onChange={(updatedData: any) => handleFormChange("houseAddress", updatedData)}
@@ -137,9 +155,11 @@ const RentProperty: React.FC = () => {
 
       </div>
 
-      {/* Navigation links */}
-      <div style={{ marginTop: "20px" }}>
-        <Link to="/fileITR/self-occupied-property">Next</Link>
+      </div>
+    <div className="lg:col-span-1">
+        <div className="sticky top-0">
+          <Sliderbar />
+        </div>
       </div>
     </div>
   );

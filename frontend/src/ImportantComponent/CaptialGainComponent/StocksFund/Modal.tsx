@@ -10,7 +10,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-end h-full  overflow-y-scroll">
+    <div className="fixed z-50 inset-0 bg-white bg-opacity-50 flex justify-end h-screen  overflow-y-scroll">
       {/* Modal Container */}
       <div className="bg-white h-full w-1/2 shadow-lg transform transition-transform translate-x-0">
         <button

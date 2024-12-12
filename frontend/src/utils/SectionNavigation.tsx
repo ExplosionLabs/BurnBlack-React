@@ -18,7 +18,7 @@ export default function SectionNavigation() {
     },
     {
       title: "Tax Saving",
-      path: "/fileITR/bankDetail",
+      path: "/fileITR/tax-saving",
       status: "info",
     },
     {

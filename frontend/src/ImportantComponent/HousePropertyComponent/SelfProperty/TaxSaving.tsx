@@ -1,103 +1,142 @@
-import React, { useEffect } from "react";
+'use client'
+
+import { Scissors, ChevronDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface TaxSavingsDetailsProps {
   data: {
-    constructionYear: string;
-    interestDuringConstruction: number;
-    interestAfterCompletion: number;
-    totalDeduction: number;
-  };
-  onChange: (updatedData: any) => void;
+    constructionYear: string
+    interestDuringConstruction: number
+    interestAfterCompletion: number
+    totalDeduction: number
+  }
+  onChange: (updatedData: any) => void
 }
 
-const TaxSavingsDetails: React.FC<TaxSavingsDetailsProps> = ({ data, onChange }) => {
-  const years = [
-    "2022 - 2023",
-    "2021 - 2022",
-    "2020 - 2021",
-    "2019 - 2020",
-    "2018 - 2019",
-  ];
+export default function TaxSavingsDetails({ data, onChange }: TaxSavingsDetailsProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const years = ["2022 - 2023", "2021 - 2022", "2020 - 2021", "2019 - 2020", "2018 - 2019"]
 
   const handleChange = (field: string, value: any) => {
-    onChange({ ...data, [field]: value });
-  };
+    onChange({ ...data, [field]: value })
+  }
 
-  // Auto-calculate Total Deduction when relevant fields change
   useEffect(() => {
-    const totalDeduction =
-      0.2 * (data.interestDuringConstruction || 0) + (data.interestAfterCompletion || 0);
-    handleChange("totalDeduction", totalDeduction);
-  }, [data.interestDuringConstruction, data.interestAfterCompletion]);
+    const totalDeduction = 0.2 * (data.interestDuringConstruction || 0) + (data.interestAfterCompletion || 0)
+    handleChange("totalDeduction", totalDeduction)
+  }, [data.interestDuringConstruction, data.interestAfterCompletion])
 
   return (
-    <div>
-      <h3>Tax Savings for Home Loan (Interest Paid Details)</h3>
-
-      {/* Dropdown for year selection */}
-      <div>
-        <label htmlFor="construction-year">
-          Year previous to completion of construction:
-        </label>
-        <select
-          id="construction-year"
-          value={data.constructionYear}
-          onChange={(e) => handleChange("constructionYear", e.target.value)}
+    <div className="w-full rounded-2xl p-6 shadow-sm bg-white border border-gray-100">
+      <div className="flex items-center justify-between mb-2 ">
+        <div className="flex items-center gap-2">
+          <Scissors className="w-5 h-5 text-blue-600" />
+          <h2 className="text-xl font-semibold">Tax Savings for Home Loan(Interest Paid Details)</h2>
+        </div>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+          aria-label="Toggle form visibility"
         >
-          <option value="">Select Year</option>
-          {years.map((year, index) => (
-            <option key={index} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+          <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`} />
+        </button>
       </div>
+      
+      <p className="text-gray-500 mb-4 ml-8">Following details are optional. Please fill in the relevant fields only.</p>
 
-      {/* Home loan interest paid during construction */}
-      <div>
-        <label htmlFor="interest-during-construction">
-          A. Home Loan Interest Paid During Construction:
-        </label>
-        <input
-          type="number"
-          id="interest-during-construction"
-          value={data.interestDuringConstruction || ""}
-          onChange={(e) =>
-            handleChange("interestDuringConstruction", Number(e.target.value))
-          }
-          placeholder="Enter interest paid during construction"
-        />
-      </div>
+      {isOpen && (
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <label htmlFor="construction-year" className="text-gray-700 font-medium">
+                Year previous to completion of construction
+              </label>
+              <button className="text-gray-400 hover:text-gray-500" title="If construction completed on July 2023, specify 2022-23">
+                ⓘ
+              </button>
+            </div>
+            <select
+              id="construction-year"
+              value={data.constructionYear}
+              onChange={(e) => handleChange("constructionYear", e.target.value)}
+              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Year</option>
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+            <p className="text-sm text-gray-500">If construction completed on July 2023, specify 2022-23</p>
+          </div>
 
-      {/* Home loan interest paid after construction */}
-      <div>
-        <label htmlFor="interest-after-completion">
-          B. Home Loan Interest Paid After Construction Completion:
-        </label>
-        <input
-          type="number"
-          id="interest-after-completion"
-          value={data.interestAfterCompletion || ""}
-          onChange={(e) =>
-            handleChange("interestAfterCompletion", Number(e.target.value))
-          }
-          placeholder="Enter interest paid after completion"
-        />
-      </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <label htmlFor="interest-during-construction" className="text-gray-700 font-medium">
+                A. Home Loan interest paid during construction period
+              </label>
+              <button className="text-gray-400 hover:text-gray-500" title="20% of the interest will be considered for deduction every year">
+                ⓘ
+              </button>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-2.5 text-gray-500">₹</span>
+              <input
+                type="number"
+                id="interest-during-construction"
+                value={data.interestDuringConstruction || ''}
+                onChange={(e) => handleChange("interestDuringConstruction", Number(e.target.value))}
+                className="w-full pl-8 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter amount"
+              />
+            </div>
+            <p className="text-sm text-gray-500">20% of the interest will be considered for deduction every year</p>
+          </div>
 
-      {/* Total Deduction */}
-      <div>
-        <label htmlFor="total-deduction">C. Total Deduction (20% of A + B):</label>
-        <input
-          type="number"
-          id="total-deduction"
-          value={data.totalDeduction || ""}
-          readOnly
-          placeholder="Auto-calculated"
-        />
-      </div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <label htmlFor="interest-after-completion" className="text-gray-700 font-medium">
+                B. Home Loan interest paid after construction completion (Section 24b Deduction)
+              </label>
+              <button className="text-gray-400 hover:text-gray-500" title="Interest paid after completion">
+                ⓘ
+              </button>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-2.5 text-gray-500">₹</span>
+              <input
+                type="number"
+                id="interest-after-completion"
+                value={data.interestAfterCompletion || ''}
+                onChange={(e) => handleChange("interestAfterCompletion", Number(e.target.value))}
+                className="w-full pl-8 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter amount"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <label htmlFor="total-deduction" className="text-gray-700 font-medium">
+                C. Total Deduction(20% of A + B)
+              </label>
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-2.5 text-gray-500">₹</span>
+              <input
+                type="number"
+                id="total-deduction"
+                value={data.totalDeduction || '0'}
+                readOnly
+                className="w-full pl-8 p-2 bg-gray-50 border rounded-lg"
+              />
+            </div>
+            <p className="text-sm text-gray-500">Maximum deduction that can be claimed in a FY is Rs. 2,00,000</p>
+          </div>
+        </div>
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default TaxSavingsDetails;

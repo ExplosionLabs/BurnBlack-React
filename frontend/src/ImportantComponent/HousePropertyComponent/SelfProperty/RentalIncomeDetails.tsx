@@ -1,84 +1,145 @@
-import React, { useEffect } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import React, { useEffect, useState } from "react";
+
 const RentalIncomeDetails: React.FC<{
   data: any;
   onChange: (data: any) => void;
 }> = ({ data, onChange }) => {
- 
+  const [isOpen, setIsOpen] = useState(true); // State to track visibility of content
+
   const handleChange = (field: string, value: any) => {
     onChange({ ...data, [field]: value });
   };
+
   useEffect(() => {
     const standardDeduction =
-      0.3 * (data.annualRent || 0)- (data.taxPaid || 0);
+      0.3 * (data.annualRent || 0) - (data.taxPaid || 0);
     handleChange("standardDeduction", standardDeduction);
   }, [data.annualRent, data.taxPaid]);
+
   useEffect(() => {
     const netIncome =
-     (data.annualRent || 0)- (data.taxPaid || 0) - (data.standardDeduction|| 0);
-    handleChange("netIncome",netIncome );
-  }, [data.annualRent, data.taxPaid,data.standardDeduction]);
+      (data.annualRent || 0) - (data.taxPaid || 0) - (data.standardDeduction || 0);
+    handleChange("netIncome", netIncome);
+  }, [data.annualRent, data.taxPaid, data.standardDeduction]);
+
+  // Toggle visibility of the form content
+  const toggleContent = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <>
-    <div>
-    <div>
-        <label htmlFor="annualRent">
-          A. Home Loan Interest Paid During Construction:
-        </label>
-        <input
-          type="number"
-          id="annualRent"
-          value={data.annualRent || ""}
-          onChange={(e) =>
-            handleChange("annualRent", Number(e.target.value))
-          }
-          placeholder="Enter interest paid during construction"
-        />
-      </div>
+      <div className="rounded-lg border bg-white p-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-50">
+            <svg
+              className="h-6 w-6 text-red-500"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="24"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <path d="M14 2v6h6" />
+              <path d="M16 13H8" />
+              <path d="M16 17H8" />
+              <path d="M10 9H8" />
+            </svg>
+          </div>
+          <div className="flex flex-1 items-center justify-between">
+            <h2 className="text-lg font-semibold">Rental Income and Property Tax Details</h2>
+            {/* Toggle arrow based on state */}
+            {isOpen ? (
+              <ChevronUp className="h-5 w-5 text-gray-500" onClick={toggleContent} />
+            ) : (
+              <ChevronDown className="h-5 w-5 text-gray-500" onClick={toggleContent} />
+            )}
+          </div>
+        </div>
 
-      {/* Home loan interest paid after construction */}
-      <div>
-        <label htmlFor="taxPaid">
-          B. Home Loan Interest Paid After Construction Completion:
-        </label>
-        <input
-          type="number"
-          id="taxPaid"
-          value={data.taxPaid || ""}
-          onChange={(e) =>
-            handleChange("taxPaid", Number(e.target.value))
-          }
-          placeholder="Enter interest paid after completion"
-        />
-      </div>
+        {/* Conditional rendering of the content */}
+        {isOpen && (
+          <div className="space-y-6">
+            <div className="space-y-1">
+              <label htmlFor="annualRent" className="text-sm font-medium text-gray-900">
+                A. Total Estimated Annual rent receivable
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input
+                  type="number"
+                  id="annualRent"
+                  value={data.annualRent || ""}
+                  onChange={(e) => handleChange("annualRent", Number(e.target.value))}
+                  className="w-full rounded-md border border-gray-200 py-2 pl-8 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="0"
+                />
+              </div>
+            </div>
 
-      {/* Total Deduction */}
-      <div>
-        <label htmlFor="standardDeduction">C. Standard Deduction u/s 24a(30% of (A - B)):</label>
-        <input
-          type="number"
-          id="standardDeduction"
-          value={data.standardDeduction || ""}
-          readOnly
-          placeholder="0"
-          disabled
-        />
-      </div>
-      <div>
-        <label htmlFor="netIncome">Net Income (A - B - C)
+            <div className="space-y-1">
+              <label htmlFor="taxPaid" className="text-sm font-medium text-gray-900">
+                B. Municipal/Property Tax Paid
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input
+                  type="number"
+                  id="taxPaid"
+                  value={data.taxPaid || ""}
+                  onChange={(e) => handleChange("taxPaid", Number(e.target.value))}
+                  className="w-full rounded-md border border-gray-200 py-2 pl-8 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="0"
+                />
+              </div>
+              <p className="text-sm text-gray-500">Specifying this reduces your tax liability</p>
+            </div>
 
-</label>
-        <input
-          type="number"
-          id="netIncome"
-          value={data.netIncome || ""}
-          readOnly
-          placeholder="0"
-          disabled
-        />
+            <div className="space-y-1">
+              <label htmlFor="standardDeduction" className="text-sm font-medium text-gray-900">
+                C. Standard Deduction u/s 24a(30% of (A - B))
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input
+                  type="number"
+                  id="standardDeduction"
+                  value={data.standardDeduction || ""}
+                  className="w-full rounded-md border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-sm"
+                  placeholder="0"
+                  disabled
+                />
+              </div>
+              <p className="text-sm text-gray-500">This field is auto-calculated</p>
+            </div>
+
+            <div className="space-y-1">
+              <label htmlFor="netIncome" className="text-sm font-medium text-gray-900">
+                Net Income (A - B - C)
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input
+                  type="number"
+                  id="netIncome"
+                  value={data.netIncome || ""}
+                  className="w-full rounded-md border border-gray-200 bg-gray-50 py-2 pl-8 pr-3 text-sm"
+                  placeholder="0"
+                  disabled
+                />
+              </div>
+              <p className="text-sm text-gray-500">This field is auto-calculated</p>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
     </>
-  )
+  );
 };
 
 export default RentalIncomeDetails;
