@@ -27,9 +27,9 @@ function Main() {
     <InterestIncomeMain/>
     <CapitalGainMain/>
   <HousePropComponent/>
-  {/* <DividentComponent/>
-  <ProBussinesIncome/> */}
-  {/* <FinancialParticular/> */}
+   <DividentComponent/>
+  {/* <ProBussinesIncome/>
+  <FinancialParticular/> */}
   </div>
       
 

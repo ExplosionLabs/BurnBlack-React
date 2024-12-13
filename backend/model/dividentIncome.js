@@ -1,10 +1,9 @@
-// models/Dividend.js
 const mongoose = require("mongoose");
 
 const dividedSchema = new mongoose.Schema({
   narration: String,
   amount: Number,
-  dateOfReceipt: Date,
+  dateOfReceipt: String,
 });
 
 const DividendSchema = new mongoose.Schema(
@@ -15,6 +14,10 @@ const DividendSchema = new mongoose.Schema(
       ref: "User",
     },
     dividendIncome: [dividedSchema],
+    totalAmount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

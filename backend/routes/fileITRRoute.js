@@ -29,6 +29,8 @@ const {
   getProfitLossController,
   updateBalanceSheetController,
   getBalanceSheetController,
+  deleteDividendIncomeController,
+  deleteAllDividendIncomeController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -71,6 +73,16 @@ router.post("/addRentalData", authMiddleware, postRentalDataController);
 router.get("/getRentalData", authMiddleware, getRentalDataController);
 router.post("/addDividentData", authMiddleware, postDividendIncomeController);
 router.get("/getDividentData", authMiddleware, getDividendIncomeController);
+router.delete(
+  "/deleteDividentData",
+  authMiddleware,
+  deleteDividendIncomeController
+);
+router.delete(
+  "/deleteAllDividentData",
+  authMiddleware,
+  deleteAllDividendIncomeController
+);
 router.post(
   "/addProfesionalIncomeData",
   authMiddleware,

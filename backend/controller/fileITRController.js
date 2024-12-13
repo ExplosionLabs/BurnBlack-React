@@ -414,12 +414,21 @@ const postDividendIncomeController = async (req, res) => {
     const userId = req.user.id;
     const { dividendIncome } = req.body;
 
+    console.log("dividend Income", dividendIncome);
+
+    // Calculate totalAmount, ensuring amounts are treated as numbers
+    const totalAmount = dividendIncome.reduce(
+      (sum, income) => sum + Number(income.amount || 0),
+      0
+    );
+
     // Upsert (update or insert) data for the user
     await dividentIncome.findOneAndUpdate(
       { userId },
-      { userId, dividendIncome },
+      { userId, dividendIncome, totalAmount },
       { upsert: true, new: true }
     );
+
     res.status(200).send("Data saved successfully!");
   } catch (error) {
     console.error("Error saving data:", error);
@@ -439,11 +448,72 @@ const getDividendIncomeController = async (req, res) => {
         .json({ success: false, message: "Property data not found." });
     }
 
-    res.status(200).json({ success: true, data: dividentData.dividendIncome });
+    res.status(200).json({ success: true, data: dividentData });
   } catch (error) {
     res
       .status(500)
       .json({ success: false, message: "Error fetching data.", error });
+  }
+};
+
+const deleteDividendIncomeController = async (req, res) => {
+  try {
+    const { dividendIncome } = req.body;
+    const userId = req.user.id;
+    if (!userId || !dividendIncome) {
+      return res
+        .status(400)
+        .json({ error: "User ID and dividend data are required." });
+    }
+
+    // Remove the specific record for the user
+    const result = await dividentIncome.findOneAndUpdate(
+      { userId },
+      { $pull: { dividendIncome: dividendIncome } },
+      { new: true } // Returns the updated document
+    );
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ error: "Dividend record not found for the user." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Dividend record deleted successfully.", data: result });
+  } catch (error) {
+    console.error("Error deleting dividend record:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+const deleteAllDividendIncomeController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required." });
+    }
+
+    // Remove all records for the user
+    const result = await dividentIncome.findOneAndUpdate(
+      { userId },
+      { $set: { dividendIncome: [] } }, // Clears the 'dividends' array
+      { new: true } // Returns the updated document
+    );
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ error: "User not found or no dividend data exists." });
+    }
+
+    res.status(200).json({
+      message: "All dividend records deleted successfully.",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error deleting dividend record:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -836,4 +906,6 @@ module.exports = {
   getProfitLossController,
   updateBalanceSheetController,
   getBalanceSheetController,
+  deleteDividendIncomeController,
+  deleteAllDividendIncomeController,
 };

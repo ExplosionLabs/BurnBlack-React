@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchAllInterestData, fetchBondData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
+import { fetchAllInterestData, fetchBondData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 interface InterestItem {
   fieldType?: string;
@@ -29,6 +29,7 @@ const IncomeSourceComponent = () => {
   const [goldData, setGoldData] = useState<any>(null);
   const [longTermData, setLongTermData] = useState<any>(null);
   const [shortTermData, setShortTermData] = useState<any>(null);
+  const [dividendData, setDividendData] = useState<any>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [expandedProfitSections, setExpandedProfitSections] = useState<Record<string, boolean>>({});
 
@@ -48,11 +49,13 @@ const IncomeSourceComponent = () => {
         const goldFormResponse = await fetchGoldData(token);
         const stockRsuResponse = await fetchStockRsuData(token);
         const longShortResponse = await fetchLongShortData(token);
-  
+        const dividendDataResponse=await fetchDividendData(token);
         if (interestResponse?.data && Array.isArray(interestResponse.data)) {
           setInterestData(interestResponse.data);
         }
-  
+   if(dividendDataResponse){
+    setDividendData(dividendDataResponse?.data);
+   }
         if (stockMutualResponse) {
           setStockMutualData(stockMutualResponse);
         }
@@ -104,6 +107,8 @@ const IncomeSourceComponent = () => {
     0
   );
 
+  const totalIncomeOther = totalIncome + (dividendData?.totalAmount || 0);
+
   const totalCapitalGain = stockMutualData.reduce((sum, item) => sum + item.totalProfit, 0);
 
 // Calculate total gross profit from all data sources
@@ -117,7 +122,7 @@ const totalGrossProfit =
   (Number(longTermData?.longOtherAmountDeemed) > 0 ? Number(longTermData?.longOtherAmountDeemed) : 0);
 
   // Calculate Gross Income as the sum of Other Income and Gross Profit
-  const grossIncome = totalIncome + totalGrossProfit;
+  const grossIncome =totalIncomeOther + totalGrossProfit;
 
   return (
 
@@ -157,7 +162,7 @@ const totalGrossProfit =
   >
     <span className="text-indigo-600 font-medium">Other Income</span>
     <div className="flex items-center gap-4">
-      <span className="text-gray-900">₹{totalIncome.toLocaleString()}</span>
+      <span className="text-gray-900">₹{totalIncomeOther.toLocaleString()}</span>
       {expandedSections['otherIncome'] ? (
         <ChevronUp className="w-5 h-5 text-gray-400" />
       ) : (
@@ -177,7 +182,16 @@ const totalGrossProfit =
           </div>
         );
       })}
+      {dividendData && dividendData.totalAmount && (
+        <>
+         <div  className="flex justify-between items-center">
+            <span className="text-gray-600">Dividend Data</span>
+            <span className="text-gray-900">₹{dividendData.totalAmount}</span>
+          </div></>
+      )}
     </div>
+
+    
   )}
 </div>
 
