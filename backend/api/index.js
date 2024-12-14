@@ -1,12 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const connectDB = require("./database/db");
+const connectDB = require("../database/db");
 const cors = require("cors");
 const morgan = require("morgan");
 const app = express();
-const authRoute = require("./routes/authRoute");
-const fileITRRoute = require("./routes/fileITRRoute");
-const capitalGainRoute = require("./routes/capitalGainRoute");
+const authRoute = require("../routes/authRoute");
+const fileITRRoute = require("../routes/fileITRRoute");
+const capitalGainRoute = require("../routes/capitalGainRoute");
 const port = 4000;
 
 dotenv.config();
