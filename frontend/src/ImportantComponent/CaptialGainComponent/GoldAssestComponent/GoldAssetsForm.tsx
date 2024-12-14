@@ -24,7 +24,7 @@ const GoldAssestsForm: React.FC< GoldAssetsFormProps> = ({
   handleSubmit,
   handleInputChange, // Accept handleInputChange as a prop
 }) => {
-  const [countryid, setCountryid] = useState(null);
+  const [countryid, setCountryid] = useState<number | null>(null);
   const handleImprovementInputChange = (
     index: number,
     field: "description" | "amount",

@@ -8,23 +8,41 @@ export const registerUser = async (userData: {
   password: string;
 }) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/register`, userData);
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/register`,
+      userData
+    );
     return response.data;
   } catch (error) {
-    console.log("error",error);
-    throw error.response ? error.response.data : 'Something went wrong';
+    console.error("Error:", error);
+
+    if (axios.isAxiosError(error)) {
+      // Axios-specific error handling
+      throw error.response ? error.response.data : 'Something went wrong';
+    } else {
+      // Non-Axios errors
+      throw 'Something went wrong';
+    }
   }
 };
-export const loginUser = async (userData: {
-  email: string;
-  password: string;
-}) => {
+
+export const loginUser = async (userData: { email: string; password: string }) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/login`, userData);
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/login`,
+      userData
+    );
     return response.data;
   } catch (error) {
-    console.log("error",error);
-    throw error.response ? error.response.data : 'Something went wrong';
+    console.error("Error:", error);
+
+    if (axios.isAxiosError(error)) {
+      // Axios-specific error handling
+      throw error.response ? error.response.data : 'Something went wrong';
+    } else {
+      // Non-Axios errors
+      throw 'Something went wrong';
+    }
   }
 };
 

@@ -20,7 +20,7 @@ const Navbar = () => {
         dispatch(logout());
         alert("Logout Successfully");
       };
-    const getInitials = (name) => {
+    const getInitials = (name: string | undefined) => {
         if (!name) return '';
         return name
           .split(' ')

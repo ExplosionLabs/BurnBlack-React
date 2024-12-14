@@ -217,16 +217,37 @@ const CapitalGainSubMain: React.FC = () => {
     const { name, value } = e.target;
     setForeignFormData({ ...foreignFormData, [name]: value });
   };
-  const handleShortTermInputChange = (e, type, index) => {
+  const handleShortTermInputChange = (
+    e: { target: { name: string; value: any } },
+    type: any,
+    index: string | number
+  ) => {
     const { name, value } = e.target;
   
-    console.log("e",e.target);
-    // Handle nested values inside shortEntries array
-    if (name.startsWith('shortPrevYear_') || name.startsWith('shortSection_') || name.startsWith('shortYearNewAsset_') || name.startsWith('shortAmountUtilised_') || name.startsWith('shortAmountNotUsed_')) {
-      const fieldName = name.split('_')[0]; // Get the dynamic part of the name (e.g., shortPrevYear, shortSection, etc.)
-      setShortTermDetails(prevData => {
+    console.log("e", e.target);
+  
+    // Ensure `index` is a number
+    const numericIndex = typeof index === "string" ? parseInt(index, 10) : index;
+  
+    if (
+      name.startsWith("shortPrevYear_") ||
+      name.startsWith("shortSection_") ||
+      name.startsWith("shortYearNewAsset_") ||
+      name.startsWith("shortAmountUtilised_") ||
+      name.startsWith("shortAmountNotUsed_")
+    ) {
+      const fieldName = name.split("_")[0]; // Get the dynamic part of the name
+      setShortTermDetails((prevData) => {
         const updatedEntries = [...prevData.shortEntries]; // Create a copy of the shortEntries array
-        updatedEntries[index] = { ...updatedEntries[index], [fieldName]: value }; // Update the specific field in the correct entry
+  
+        // Validate `numericIndex` before updating the array
+        if (Number.isInteger(numericIndex) && numericIndex >= 0 && numericIndex < updatedEntries.length) {
+          updatedEntries[numericIndex] = {
+            ...updatedEntries[numericIndex],
+            [fieldName]: value,
+          };
+        }
+  
         return {
           ...prevData,
           shortEntries: updatedEntries,
@@ -234,7 +255,7 @@ const CapitalGainSubMain: React.FC = () => {
       });
     } else {
       // For top-level fields like shortTermCapitalGain, shortOtherAmountDeemed, etc.
-      setShortTermDetails(prevData => ({
+      setShortTermDetails((prevData) => ({
         ...prevData,
         [name]: value,
       }));
@@ -242,29 +263,53 @@ const CapitalGainSubMain: React.FC = () => {
   };
   
 
-  const handleLongTermInputChange = (e, type, index) => {
+  const handleLongTermInputChange = (
+    e: { target: { name: string; value: any } },
+    type: any,
+    index: string | number
+  ) => {
     const { name, value } = e.target;
   
-    
-    // Handle nested values inside shortEntries array
-    if (name.startsWith('longPrevYear_') || name.startsWith('longSection_') || name.startsWith('longYearNewAsset_') || name.startsWith('longAmountUtilised_') || name.startsWith('longAmountNotUsed_')) {
-      const fieldName = name.split('_')[0]; // Get the dynamic part of the name (e.g., shortPrevYear, shortSection, etc.)
-      setLongTermDetails(prevData => {
-        const updatedEntries = [...prevData.longEntries]; // Create a copy of the shortEntries array
-        updatedEntries[index] = { ...updatedEntries[index], [fieldName]: value }; // Update the specific field in the correct entry
+    // Ensure `index` is a number
+    const numericIndex = typeof index === "string" ? parseInt(index, 10) : index;
+  
+    if (
+      name.startsWith("longPrevYear_") ||
+      name.startsWith("longSection_") ||
+      name.startsWith("longYearNewAsset_") ||
+      name.startsWith("longAmountUtilised_") ||
+      name.startsWith("longAmountNotUsed_")
+    ) {
+      const fieldName = name.split("_")[0]; // Get the dynamic part of the name
+      setLongTermDetails((prevData) => {
+        const updatedEntries = [...prevData.longEntries]; // Create a copy of the longEntries array
+  
+        // Validate `numericIndex` before updating the array
+        if (
+          Number.isInteger(numericIndex) &&
+          numericIndex >= 0 &&
+          numericIndex < updatedEntries.length
+        ) {
+          updatedEntries[numericIndex] = {
+            ...updatedEntries[numericIndex],
+            [fieldName]: value,
+          };
+        }
+  
         return {
           ...prevData,
           longEntries: updatedEntries,
         };
       });
     } else {
-      // For top-level fields like shortTermCapitalGain, shortOtherAmountDeemed, etc.
-      setLongTermDetails(prevData => ({
+      // For top-level fields like longTermCapitalGain, longOtherAmountDeemed, etc.
+      setLongTermDetails((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
   };
+  
   
   
   
@@ -363,20 +408,30 @@ setIsShortLongModalOpen(false);
       alert(error.response?.data?.error || "Error submitting form");
     }
   };
-  const handleInputChangeLandForm = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
+  const handleInputChangeLandForm = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+  
+    const isCheckbox = e.target instanceof HTMLInputElement && type === "checkbox";
     setLandFormData((prevState: any) => ({
       ...prevState,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
     }));
   };
-  const handleInputChangeGold= (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
+  
+  const handleInputChangeGold = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+  
+    const isCheckbox = e.target instanceof HTMLInputElement && type === "checkbox";
     setGoldTermDetails((prevState: any) => ({
       ...prevState,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
     }));
   };
+  
 
   const handleGoldAssetsForm = async () => {
     try {
@@ -437,10 +492,16 @@ setIsGoldModalOpen(false);
   useEffect(() => {
     const fetchExistingForeignAssest = async () => {
       const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        resetForm();  // Optionally handle the case when there is no token
+        return;
+      }
+  
       try {
         const data = await fetchForeignAssetsData(token);
-
-        
+  
         if (data) {
           setExistingForeignData(data);
           setForeignFormData({
@@ -456,11 +517,20 @@ setIsGoldModalOpen(false);
         resetForm();
       }
     };
+  
     fetchExistingForeignAssest();
   }, []);
+  
   useEffect(() => {
     const fetchExistingLandFormAssest = async () => {
       const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        resetForm();  // Optionally handle the case when there is no token
+        return;
+      }
+  
       try {
         const data=await fetchLandFormData(token);
 
@@ -485,6 +555,13 @@ setIsGoldModalOpen(false);
   useEffect(() => {
     const fetchExistingStockRsuAssest = async () => {
       const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        resetForm();  // Optionally handle the case when there is no token
+        return;
+      }
+  
       try {
         const data = await fetchStockRsuData(token);
 
@@ -509,6 +586,13 @@ setIsGoldModalOpen(false);
   useEffect(() => {
     const fetchExistingBondDebentureAssest = async () => {
       const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        resetForm();  // Optionally handle the case when there is no token
+        return;
+      }
+  
       try {
         const response = await fetchBondData(token);
 
@@ -533,6 +617,13 @@ setIsGoldModalOpen(false);
   useEffect(() => {
     const fetchExistingLongShortAssets = async () => {
       const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        resetForm();  // Optionally handle the case when there is no token
+        return;
+      }
+  
       try {
         const data =await fetchLongShortData(token);
 
@@ -558,6 +649,13 @@ setIsGoldModalOpen(false);
   useEffect(() => {
     const fetchExistingGoldAssest = async () => {
       const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No token found in localStorage");
+        resetForm();  // Optionally handle the case when there is no token
+        return;
+      }
+  
       try {
         const data = await fetchGoldData(token);
 

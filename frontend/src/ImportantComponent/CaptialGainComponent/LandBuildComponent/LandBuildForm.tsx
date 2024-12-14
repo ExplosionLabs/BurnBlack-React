@@ -15,6 +15,14 @@ interface LandBuildFormProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void; // Add this
 }
 
+// Define the type for each buyer
+type Buyer = {
+  buyerName: string | undefined;
+  ownershipPercentage: string | number | undefined;
+  aadhaar: string | number | undefined;
+  pan: string | number | undefined;
+  amountPaid: string | number | undefined;
+};
 const LandBuildForm: React.FC<LandBuildFormProps> = ({
   landFormData,
   setLandFormData,
@@ -24,7 +32,11 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
   handleSubmit,
   handleInputChange, // Accept handleInputChange as a prop
 }) => {
-  const [countryid, setCountryid] = useState(null);
+  const [countryid, setCountryid] = useState<number | null>(null);
+  type PropertyAddressChangeValue = 
+  | string 
+  | { name: string } 
+  | React.ChangeEvent<HTMLInputElement>;
   const handleImprovementInputChange = (
     index: number,
     field: "description" | "amount",
@@ -38,22 +50,40 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
     });
   };
   const handlePropertyAddressChange = (
-    key: string,
-    value: string,
-    additionalData?: Country | State
+    key: string, 
+    value: PropertyAddressChangeValue, 
+    additionalData?: Country | State | React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (additionalData && "id" in additionalData) {
+    // Extract value based on input type
+    let finalValue: string = '';
+
+    // Handle input change events
+    if (value && typeof value === 'object' && 'target' in value) {
+      finalValue = value.target.value;
+    } 
+    // Handle objects with name property (like Country/State)
+    else if (value && typeof value === 'object' && 'name' in value) {
+      finalValue = value.name;
+    } 
+    // Handle string values
+    else if (typeof value === 'string') {
+      finalValue = value;
+    }
+
+    // Handle country/state selections with additional data
+    if (additionalData && 'id' in additionalData) {
       setCountryid(additionalData.id);
     }
-  
+
     setLandFormData((prevState: any) => ({
       ...prevState,
       propertyAddress: {
         ...prevState.propertyAddress,
-        [key]: value,
+        [key]: finalValue,
       },
     }));
   };
+
   
   
   const addImprovementField = () => {
@@ -324,20 +354,22 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
           <div className="mb-4">
   <label className="block text-gray-700">Country *</label>
   <CountrySelect
-  value={landFormData.propertyAddress?.country || ""}
-  onChange={(value) =>
-    handlePropertyAddressChange("country", value?.name || "", value)
-  }
-  className="w-full border rounded px-3 py-2"
-/>
+        value={landFormData.propertyAddress?.country || ""}
+        onChange={(value) =>
+          handlePropertyAddressChange("country", value, value)
+        }
+        className="w-full border rounded px-3 py-2"
+      />
+
+
 </div>
 <div className="mb-4">
   <label className="block text-gray-700">State *</label>
   <StateSelect
-  countryid={countryid}
+  countryid={countryid?? 0}
   value={landFormData.propertyAddress?.state || ""}
   onChange={(value) =>
-    handlePropertyAddressChange("state", value?.name || "", value)
+    handlePropertyAddressChange("state", value, value)
   }
   className="w-full border rounded px-3 py-2"
 />
@@ -357,11 +389,10 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
           </div>
 </div>
 
-
 <div>
   <h2 className="text-lg font-semibold">Buyer Details</h2>
-  {landFormData.buyers.map((buyer, index) => (
-    <div key={index} className="border p-4 rounded mb-4">
+  {landFormData.buyers.map((buyer: Buyer, index: number) => (
+    <div key={index !== undefined ? index : 0} className="border p-4 rounded mb-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
@@ -423,6 +454,7 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
     Add More Buyer
   </button>
 </div>
+
 
           <button
             onClick={handleSubmit}
