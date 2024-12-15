@@ -1,6 +1,6 @@
-const plugin = require("tailwindcss/plugin");
-const colors = require("tailwindcss/colors");
-const { parseColor } = require("tailwindcss/lib/util/color");
+import plugin from "tailwindcss/plugin";
+import colors from "tailwindcss/colors";
+import { parseColor } from "tailwindcss/lib/util/color";
 
 /** Converts HEX color to RGB */
 const toRGB = (value) => {
