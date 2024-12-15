@@ -52,7 +52,7 @@ export default function Fields({ type, data, onUpdate }: FieldsProps) {
   }
 
   const debouncedSave = debounce(async (newData: any[]) => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/interest-income`,
@@ -65,12 +65,21 @@ export default function Fields({ type, data, onUpdate }: FieldsProps) {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
-      console.log("Data saved successfully:", response.data)
-    } catch (error) {
-      console.error("Error saving data:", error.response ? error.response.data : error.message)
+      );
+      console.log("Data saved successfully:", response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        // For Axios errors, access `response` safely
+        console.error("Error saving data:", error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        // For other errors, access `message`
+        console.error("Error saving data:", error.message);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
     }
-  }, 500)
+  }, 500);
+  
 
   return (
     <div className="p-4 space-y-4">

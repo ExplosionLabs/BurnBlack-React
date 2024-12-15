@@ -109,7 +109,7 @@ function Main() {
             </button>
             <h1 className="text-xl font-semibold text-gray-800">
               Link your PAN to E-file{' '}
-              <Link href="#" className="text-blue-600 text-base font-normal hover:underline">
+              <Link to="#" className="text-blue-600 text-base font-normal hover:underline">
                 Learn More
               </Link>
             </h1>

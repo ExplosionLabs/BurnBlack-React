@@ -12,13 +12,13 @@ const BalanceSheet: React.FC = () => {
     shortTermHold: "",
     cash: "",
     balanceBank: "",
-    otherAssets:"",
-    totalAssest: "",
-  
+    otherAssets: "",
+    totalAssest: 0, // Change to number
     capitalInvestment: "",
     securedLoan: "",
-    totatLiablities: 0,
+    totatLiablities: 0, // Change to number
   });
+  
 
   const totalAsset = (
     longTermHold: string,

@@ -70,16 +70,27 @@ const ProfBussinessSection: React.FC = () => {
   };
 
 
-  const handleDetailChange = (index: number, e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
+  const handleDetailChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
-    const updatedDetails = [...professionDetails];
-    updatedDetails[index][name] = value;
-    setProfessionDetails(updatedDetails);
-
-    saveData({
-      professionDetail: updatedDetails,
-    });
+  
+    // Ensure `name` is a key of the object
+    if (name in professionDetails[index]) {
+      const updatedDetails = [...professionDetails];
+      updatedDetails[index] = {
+        ...updatedDetails[index],
+        [name]: value, // Update the specific field dynamically
+      };
+      setProfessionDetails(updatedDetails);
+  
+      saveData({
+        professionDetail: updatedDetails,
+      });
+    }
   };
+  
 
   const handleAddDetail = () => {
     const updatedDetails = [

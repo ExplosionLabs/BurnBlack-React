@@ -29,7 +29,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
   };
 
   const removeCoOwner = (index: number) => {
-    const updatedCoOwners = data.coOwners.filter((_, i) => i !== index);
+    const updatedCoOwners = data.coOwners.filter((_: any, i: number) => i !== index);
     onChange({ ...data, coOwners: updatedCoOwners });
   };
 

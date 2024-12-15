@@ -90,7 +90,13 @@ export default function IncomeInterest() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("token");
+        
+      if (!token) {
+        console.error("No token found in localStorage");
+      
+        return;
+      }
         const updatedInterestData = await Promise.all(
           interestData.map(async (section) => {
             const data = await fetchInterestData(token, section.type)
