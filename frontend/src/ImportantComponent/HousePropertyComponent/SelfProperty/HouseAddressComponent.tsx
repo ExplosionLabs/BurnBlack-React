@@ -76,18 +76,20 @@ const HouseAddressComponent: React.FC<{
 
   const handleChange = (
     name: string,
-    value: string | null,
+    value: string | { name: string } | null,
     event?: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     if (event) {
       // For standard input elements
       onChange({ ...data, [event.target.name]: event.target.value });
+    } else if (value && typeof value === "object" && "name" in value) {
+      // For custom components like CountrySelect, where value is an object with a name property
+      onChange({ ...data, [name]: value.name });
     } else {
-      // For custom components like CountrySelect and StateSelect
-      onChange({ ...data, [name]: value });
+      // For other cases (e.g., null or plain string values)
+      onChange({ ...data, [name]: value || "" });
     }
   };
-
   return (
     <div className="w-full mx-auto">
     <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -188,23 +190,27 @@ const HouseAddressComponent: React.FC<{
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
         <label className="block text-xs text-gray-500 mb-1">Country</label>
-          <CountrySelect
-            value={data.country || ""}
-            onChange={(value) => {
-              handleChange("country", value?.name || "");
-              setCountryId(value?.id || null);
-            }}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              
-          />
+        <CountrySelect
+  value={data.country || ""}
+  onChange={(value) => {
+    handleChange("country", value as { name: string } | null);
+  }}
+  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+/>;
+
         </div>
 
         <div>
         <label className="block text-xs text-gray-500 mb-1">State</label>
           <StateSelect
-            countryid={countryId}
+            countryid={countryId ?? 0}
             value={data.state || ""}
-            onChange={(value) => handleChange("state", value?.name || "")}
+            onChange={(value) => 
+              {
+ 
+                handleChange("state", value as { name: string } | null); 
+              }
+            }
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

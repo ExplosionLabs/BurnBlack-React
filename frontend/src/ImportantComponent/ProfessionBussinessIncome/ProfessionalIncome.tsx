@@ -3,6 +3,13 @@ import axios from "axios";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 
+
+interface ProfessionDetail {
+  professionTypes: string;
+  natureOfProfessions: string;
+  companyNames: string;
+  descriptions: string;
+}
 const ProfessionalIncome: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
@@ -14,7 +21,7 @@ const ProfessionalIncome: React.FC = () => {
     totalRevenue: 0,
   });
 
-  const [professionDetails, setProfessionDetails] = useState([
+  const [professionDetails, setProfessionDetails] = useState<ProfessionDetail[]>([
     {
       professionTypes: "",
       natureOfProfessions: "",
@@ -23,7 +30,7 @@ const ProfessionalIncome: React.FC = () => {
     },
   ]);
 
-  const calculateTotalRevenue = (cash, mode, digital) => {
+  const calculateTotalRevenue = (cash: string, mode: string, digital: string) => {
     return (Number(cash || 0) + Number(mode || 0) + Number(digital || 0)) * 0.5;
   };
 
@@ -82,7 +89,7 @@ const ProfessionalIncome: React.FC = () => {
     }
   }, [isUserLoggedIn]);
 
-  const saveData = async (updatedData) => {
+  const saveData = async (updatedData: { revenueCash: string; revenueMode: string; revenueDigitalMode: string; totalRevenue: number; professionDetail: { professionTypes: string; natureOfProfessions: string; companyNames: string; descriptions: string; }[]; }) => {
     const token = localStorage.getItem("token");
     try {
       await axios.post(
@@ -99,7 +106,7 @@ const ProfessionalIncome: React.FC = () => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     const updatedFormData = {
       ...formData,
@@ -113,10 +120,13 @@ const ProfessionalIncome: React.FC = () => {
     });
   };
 
-  const handleDetailChange = (index, e) => {
+  const handleDetailChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     const updatedDetails = [...professionDetails];
-    updatedDetails[index][name] = value;
+    updatedDetails[index][name as keyof ProfessionDetail] = value;
     setProfessionDetails(updatedDetails);
 
     saveData({
@@ -124,6 +134,7 @@ const ProfessionalIncome: React.FC = () => {
       ...formData,
     });
   };
+
 
   const handleAddDetail = () => {
     const updatedDetails = [

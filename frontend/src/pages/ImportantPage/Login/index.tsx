@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../stores/store';
 import { loginFailure, loginRequest, loginSuccess ,googleLoginRequest, googleLoginSuccess, googleLoginFailure} from '@/stores/userSlice';
 import { loginUser,registerUserWithGoogle } from '@/api/userApi';
-import { GoogleLogin } from '@react-oauth/google';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 function Main() {
@@ -56,11 +56,14 @@ function Main() {
     const decoded = atob(base64); // Decode the Base64 string
     return JSON.parse(decoded); // Parse and return the JSON payload
   }
-  const handleGoogleLoginSuccess = async (credentialResponse) => {
+  const handleGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) {
+      alert('Google Sign-In failed! No credential received.');
+      return;
+    }
+
     dispatch(googleLoginRequest());
-  
     try {
-      const decodedToken = decodeJwt(credentialResponse.credential); // Use the custom decodeJwt function
       const response = await registerUserWithGoogle({ token: credentialResponse.credential });
       dispatch(googleLoginSuccess(response));
       toast.success('Login successful!');
@@ -68,11 +71,10 @@ function Main() {
         navigate("/fileITR");
       }, 2000);
     } catch (error) {
-      console.log("error", error);
-      dispatch(googleLoginFailure(error.message));
+      console.error("Error during Google login:", error);
+      dispatch(googleLoginFailure(error instanceof Error ? error.message : 'Unknown error'));
       alert('Google Sign-In failed!');
-    }
-  };
+    }}
   const handleGoogleLoginFailure = () => {
     dispatch(googleLoginFailure('Google Sign-In was unsuccessful.'));
     alert('Google Sign-In failed!');

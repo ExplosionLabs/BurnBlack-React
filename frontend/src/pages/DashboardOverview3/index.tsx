@@ -27,7 +27,7 @@ function Main() {
                 dismissible
                 className="flex items-center mb-6 box dark:border-darkmode-600"
               >
-                {({ dismiss }) => (
+                {/* {({ dismiss }) => (
                   <>
                     <span>
                       Introducing new dashboard! Download now at
@@ -50,7 +50,7 @@ function Main() {
                       <Lucide icon="X" className="w-4 h-4" />
                     </Alert.DismissButton>
                   </>
-                )}
+                )} */}
               </Alert>
             </div>
             <div className="grid grid-cols-12 mb-3 mt-14 sm:gap-10 intro-y">

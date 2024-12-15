@@ -12,7 +12,7 @@ import GoldAssestsForm from "./GoldAssestComponent/GoldAssetsForm";
 import { fetchBondData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockRsuData } from "@/api/incomeSoucre";
 import Sliderbar from "@/Layout/Sidebar";
 import { BarChart2 } from "lucide-react";
-
+import { ChangeEvent } from "react"
 const CapitalGainSubMain: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"Stocks" | "Mutual Funds">("Stocks");
@@ -218,15 +218,14 @@ const CapitalGainSubMain: React.FC = () => {
     setForeignFormData({ ...foreignFormData, [name]: value });
   };
   const handleShortTermInputChange = (
-    e: { target: { name: string; value: any } },
-    type: any,
-    index: string | number
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    index?: number
   ) => {
     const { name, value } = e.target;
   
     console.log("e", e.target);
   
-    // Ensure `index` is a number
+    // Ensure `index` is a number if provided
     const numericIndex = typeof index === "string" ? parseInt(index, 10) : index;
   
     if (
@@ -241,7 +240,12 @@ const CapitalGainSubMain: React.FC = () => {
         const updatedEntries = [...prevData.shortEntries]; // Create a copy of the shortEntries array
   
         // Validate `numericIndex` before updating the array
-        if (Number.isInteger(numericIndex) && numericIndex >= 0 && numericIndex < updatedEntries.length) {
+        if (
+          numericIndex !== undefined &&
+          Number.isInteger(numericIndex) &&
+          numericIndex >= 0 &&
+          numericIndex < updatedEntries.length
+        ) {
           updatedEntries[numericIndex] = {
             ...updatedEntries[numericIndex],
             [fieldName]: value,
@@ -262,16 +266,11 @@ const CapitalGainSubMain: React.FC = () => {
     }
   };
   
-
   const handleLongTermInputChange = (
-    e: { target: { name: string; value: any } },
-    type: any,
-    index: string | number
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    index?: number
   ) => {
     const { name, value } = e.target;
-  
-    // Ensure `index` is a number
-    const numericIndex = typeof index === "string" ? parseInt(index, 10) : index;
   
     if (
       name.startsWith("longPrevYear_") ||
@@ -280,19 +279,15 @@ const CapitalGainSubMain: React.FC = () => {
       name.startsWith("longAmountUtilised_") ||
       name.startsWith("longAmountNotUsed_")
     ) {
-      const fieldName = name.split("_")[0]; // Get the dynamic part of the name
+      const fieldName = name.split("_")[0]; // Extract the dynamic part of the field name
       setLongTermDetails((prevData) => {
-        const updatedEntries = [...prevData.longEntries]; // Create a copy of the longEntries array
+        const updatedEntries = [...prevData.longEntries]; // Clone the longEntries array
   
-        // Validate `numericIndex` before updating the array
-        if (
-          Number.isInteger(numericIndex) &&
-          numericIndex >= 0 &&
-          numericIndex < updatedEntries.length
-        ) {
-          updatedEntries[numericIndex] = {
-            ...updatedEntries[numericIndex],
-            [fieldName]: value,
+        // Ensure the index is valid
+        if (index !== undefined && index >= 0 && index < updatedEntries.length) {
+          updatedEntries[index] = {
+            ...updatedEntries[index],
+            [fieldName]: value, // Update the specific field
           };
         }
   
@@ -309,6 +304,7 @@ const CapitalGainSubMain: React.FC = () => {
       }));
     }
   };
+  
   
   
   
@@ -806,6 +802,25 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
       </div>
       <button
         onClick={() => setIsGoldModalOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-yellow-700 font-medium"
+      >
+        Add Details
+      </button>
+    </div>
+  </div>
+  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
+        <BarChart2  className="w-6 h-6 text-blue-600" />
+        <div>
+          <h3 className="font-medium text-gray-900 text-base">Deemed Capital Gains</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Declare gains from selling gold, jewellery, or other valuable items.
+          </p>
+        </div>
+      </div>
+      <button
+        onClick={() => setIsShortLongModalOpen(true)}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-yellow-700 font-medium"
       >
         Add Details

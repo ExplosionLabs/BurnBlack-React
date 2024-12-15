@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { fetchAllInterestData, fetchBondData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 interface InterestItem {
@@ -15,6 +15,7 @@ interface InterestData {
 }
 
 interface ProfitData {
+  assetType: ReactNode;
   name: string;
   totalProfit: number;
 }

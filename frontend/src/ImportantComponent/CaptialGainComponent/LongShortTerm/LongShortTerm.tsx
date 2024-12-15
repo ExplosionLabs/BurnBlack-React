@@ -14,6 +14,22 @@ interface FormProps {
 
 }
 
+interface ShortEntry {
+  shortPrevYear?: number;
+  shortSection?: string;
+  shortYearNewAsset?: number;
+  shortAmountUtilised?: number;
+  shortAmountNotUsed?: number;
+}
+
+interface LongEntry {
+  longPrevYear?: number;
+  longSection?: string;
+  longYearNewAsset?: number;
+  longAmountUtilised?: number;
+  longAmountNotUsed?: number;
+}
+
 const LongShortTerm: React.FC<FormProps> = ({
   shortTermData,
   longTermData,
@@ -86,7 +102,7 @@ const LongShortTerm: React.FC<FormProps> = ({
 
             {shortTermData.shortUnutilizedCapitalGain === "yes" && (
   <>
-    {shortTermData.shortEntries.map((entry, index) => (
+    {shortTermData.shortEntries.map((entry:ShortEntry, index:number) => (
       <div key={index} className="mb-4 border rounded p-4">
         <h3 className="font-bold">Entry {index + 1}</h3>
         <div className="mb-2">
@@ -94,7 +110,7 @@ const LongShortTerm: React.FC<FormProps> = ({
           <input
             type="number"
             name={`shortPrevYear_${index}`}  // Dynamic name
-            onChange={(e) => handleShortTermInputChange(e, "shortTerm", index)} // Pass index to the handler
+            onChange={(e) => handleShortTermInputChange(e, index)} // Pass index to the handler
             value={entry.shortPrevYear || ""}  // Ensure correct value mapping
             className="w-full border rounded px-3 py-2"
           />
@@ -103,7 +119,7 @@ const LongShortTerm: React.FC<FormProps> = ({
           <label className="block text-gray-700">Section under which deduction claimed</label>
           <select
             name={`shortSection_${index}`}  // Dynamic name
-            onChange={(e) => handleShortTermInputChange(e, "shortTerm", index)} // Pass index to the handler
+            onChange={(e) => handleShortTermInputChange(e,  index)} // Pass index to the handler
             value={entry.shortSection || ""}  // Ensure correct value mapping
             className="w-full border rounded px-3 py-2"
           >
@@ -121,7 +137,7 @@ const LongShortTerm: React.FC<FormProps> = ({
           <input
             type="number"
             name={`shortYearNewAsset_${index}`}  // Dynamic name
-            onChange={(e) => handleShortTermInputChange(e, "shortTerm", index)} // Pass index to the handler
+            onChange={(e) => handleShortTermInputChange(e, index)} // Pass index to the handler
             value={entry.shortYearNewAsset|| ""}  // Ensure correct value mapping
             className="w-full border rounded px-3 py-2"
           />
@@ -131,7 +147,7 @@ const LongShortTerm: React.FC<FormProps> = ({
           <input
             type="number"
             name={`shortAmountUtilised_${index}`}  // Dynamic name
-            onChange={(e) => handleShortTermInputChange(e, "shortTerm", index)} // Pass index to the handler
+            onChange={(e) => handleShortTermInputChange(e, index)} // Pass index to the handler
             value={entry.shortAmountUtilised || ""}  // Ensure correct value mapping
             className="w-full border rounded px-3 py-2"
           />
@@ -141,7 +157,7 @@ const LongShortTerm: React.FC<FormProps> = ({
           <input
             type="number"
             name={`shortAmountNotUsed_${index}`}  // Dynamic name
-            onChange={(e) => handleShortTermInputChange(e, "shortTerm", index)} // Pass index to the handler
+            onChange={(e) => handleShortTermInputChange(e, index)} // Pass index to the handler
             value={entry.shortAmountNotUsed || ""}  // Ensure correct value mapping
             className="w-full border rounded px-3 py-2"
           />
@@ -218,7 +234,7 @@ const LongShortTerm: React.FC<FormProps> = ({
 
             {longTermData.unutilizedCapitalGain === "yes" && (
               <>
-                {longTermData.longEntries.map((entry,index) => (
+                {longTermData.longEntries.map((entry:LongEntry,index:number) => (
                   <div key={index} className="mb-4 border rounded p-4">
                     <h3 className="font-bold">Entry {index + 1}</h3>
                     <div className="mb-2">
@@ -226,7 +242,7 @@ const LongShortTerm: React.FC<FormProps> = ({
                       <input
                         type="number"
                         name={`longPrevYear_${index}`}
-                        onChange={(e) => handleLongTermInputChange(e, "longTerm", index)}
+                        onChange={(e) => handleLongTermInputChange(e, index)}
                         value={entry.longPrevYear || ""}
                         className="w-full border rounded px-3 py-2"
                       />
@@ -235,7 +251,7 @@ const LongShortTerm: React.FC<FormProps> = ({
                       <label className="block text-gray-700">Section under which deduction claimed</label>
                       <select
                         name={`longSection_${index}`}
-                        onChange={(e) => handleLongTermInputChange(e, "longTerm", index)}
+                        onChange={(e) => handleLongTermInputChange(e, index)}
                         value={entry.longSection || ""}
                         className="w-full border rounded px-3 py-2"
                       >
@@ -253,7 +269,7 @@ const LongShortTerm: React.FC<FormProps> = ({
                       <input
                         type="number"
                         name={`longYearNewAsset_${index}`}
-                        onChange={(e) => handleLongTermInputChange(e, "longTerm", index)}
+                        onChange={(e) => handleLongTermInputChange(e, index)}
                         value={entry.longYearNewAsset || ""}
                         className="w-full border rounded px-3 py-2"
                       />
@@ -263,7 +279,7 @@ const LongShortTerm: React.FC<FormProps> = ({
                       <input
                         type="number"
                         name={`longAmountUtilised_${index}`}
-                        onChange={(e) => handleLongTermInputChange(e, "longTerm", index)}
+                        onChange={(e) => handleLongTermInputChange(e, index)}
                         value={entry.longAmountUtilised || ""}
                         className="w-full border rounded px-3 py-2"
                       />
@@ -273,7 +289,7 @@ const LongShortTerm: React.FC<FormProps> = ({
                       <input
                         type="number"
                         name={`longAmountNotUsed_${index}`}
-                        onChange={(e) => handleLongTermInputChange(e, "longTerm", index)}
+                        onChange={(e) => handleLongTermInputChange(e, index)}
                         value={entry.longAmountNotUsed || ""}
                         className="w-full border rounded px-3 py-2"
                       />

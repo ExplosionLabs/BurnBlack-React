@@ -3,10 +3,17 @@ import axios from "axios";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 
+
 const BussinessIncome: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
+  type ProfessionDetail = {
+    professionTypes: string;
+    natureOfProfessions: string;
+    companyNames: string;
+    descriptions: string;
+  };
   const [formData, setFormData] = useState({
     revenueCash: "",
     revenueMode: "",
@@ -16,7 +23,7 @@ const BussinessIncome: React.FC = () => {
     profitDigitalMode: 0  ,
   });
 
-  const [professionDetails, setProfessionDetails] = useState([
+  const [professionDetails, setProfessionDetails] = useState<ProfessionDetail[]>([
     {
       professionTypes: "",
       natureOfProfessions: "",
@@ -80,7 +87,7 @@ const BussinessIncome: React.FC = () => {
     }
   }, [isUserLoggedIn]);
 
-  const saveData = async (updatedData) => {
+  const saveData = async (updatedData: { revenueCash: string; revenueMode: string; revenueDigitalMode: string; profitcash: number; profitMode: number; profitDigitalMode: number; professionDetail: { professionTypes: string; natureOfProfessions: string; companyNames: string; descriptions: string; }[]; }) => {
     const token = localStorage.getItem("token");
     try {
       await axios.post(
@@ -97,7 +104,7 @@ const BussinessIncome: React.FC = () => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
     const updatedFormData = {
       ...formData,
@@ -111,17 +118,26 @@ const BussinessIncome: React.FC = () => {
     });
   };
 
-  const handleDetailChange = (index, e) => {
+  const handleDetailChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
+    
     const updatedDetails = [...professionDetails];
-    updatedDetails[index][name] = value;
+    updatedDetails[index] = {
+      ...updatedDetails[index],
+      [name as keyof ProfessionDetail]: value,
+    };
+  
     setProfessionDetails(updatedDetails);
-
+  
     saveData({
       professionDetail: updatedDetails,
       ...formData,
     });
   };
+  
 
   const handleAddDetail = () => {
     const updatedDetails = [

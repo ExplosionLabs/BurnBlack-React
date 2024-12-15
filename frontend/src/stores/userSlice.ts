@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  user: null | { name: string; email: string };
+  user: null | { _id: string; name: string; email: string }; // Added _id here
   loading: boolean;
   error: string | null;
 }
@@ -21,7 +21,7 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loginSuccess(state, action: PayloadAction<{ user: { id: string; name: string; email: string }; token: string }>) {
+    loginSuccess(state, action: PayloadAction<{ user: { _id: string; name: string; email: string }; token: string }>) { // Added _id here
       state.loading = false;
       state.user = action.payload.user;
       localStorage.setItem('user', JSON.stringify(action.payload.user)); // Store user info
@@ -40,7 +40,7 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    registerSuccess(state, action: PayloadAction<{ user: { name: string; phone: string; email: string }; token: string }>) {
+    registerSuccess(state, action: PayloadAction<{ user: { _id: string; name: string; phone: string; email: string }; token: string }>) { // Added _id here
       state.loading = false;
       state.user = action.payload.user;
       localStorage.setItem('user', JSON.stringify(action.payload.user)); // Store user info
@@ -54,7 +54,7 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    googleLoginSuccess(state, action: PayloadAction<{ user: { id: string; name: string; email: string }; token: string }>) {
+    googleLoginSuccess(state, action: PayloadAction<{ user: { _id: string; name: string; email: string }; token: string }>) { // Added _id here
       state.user = action.payload.user;
       state.loading = false;
       localStorage.setItem('user', JSON.stringify(action.payload.user)); // Store user info
@@ -67,5 +67,17 @@ const userSlice = createSlice({
   },
 });
 
-export const { registerRequest, registerSuccess, registerFailure,loginRequest, loginSuccess, loginFailure, googleLoginRequest, googleLoginSuccess, googleLoginFailure ,logout } = userSlice.actions;
+export const { 
+  registerRequest, 
+  registerSuccess, 
+  registerFailure, 
+  loginRequest, 
+  loginSuccess, 
+  loginFailure, 
+  googleLoginRequest, 
+  googleLoginSuccess, 
+  googleLoginFailure, 
+  logout 
+} = userSlice.actions;
+
 export default userSlice.reducer;

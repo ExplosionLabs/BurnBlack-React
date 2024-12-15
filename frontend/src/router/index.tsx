@@ -52,7 +52,6 @@ import Notification from "../pages/Notification";
 import Tab from "../pages/Tab";
 import Accordion from "../pages/Accordion";
 import Button from "../pages/Button";
-import Alert from "../pages/Alert";
 import ProgressBar from "../pages/ProgressBar";
 import Tooltip from "../pages/Tooltip";
 import Dropdown from "../pages/Dropdown";
@@ -90,9 +89,14 @@ import ProfBussinessSection from "@/ImportantComponent/ProfessionBussinessIncome
 import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/ProfitLoss";
 import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
 import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
+import { ReactNode } from "react";
 // import Layout from "../themes";
 
-function Layout({ children }) {
+interface LayoutProps {
+  children: ReactNode; // Define children type as ReactNode
+}
+
+function Layout({ children }: LayoutProps) {
   return <div className="md:mx-44">{children}</div>;
 }
 

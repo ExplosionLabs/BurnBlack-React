@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, SetStateAction } from "react"
 import axios from "axios"
 import debounce from "lodash.debounce"
 import { MapPin , ChevronDown, ChevronUp, ChevronUpIcon} from 'lucide-react'
@@ -79,33 +79,34 @@ export default function AddressSection() {
     updateDatabase(updatedData)
   }
 
-  const handleCountrySelect = (selectedCountry) => {
-    setCountryid(selectedCountry.id)
+  const handleCountrySelect = (selectedCountry: any) => {
+    if (!selectedCountry) return;
+    setCountryid(selectedCountry.id);
     const updatedData = {
       ...formData,
       country: selectedCountry.name,
       state: "",
       city: "",
-    }
-    setFormData(updatedData)
-    updateDatabase(updatedData)
-  }
-
-  const handleStateSelect = (selectedState: {
-    id: React.SetStateAction<null>
-    name: any
-  }) => {
-    setStateid(selectedState.id)
-    const updatedData = { ...formData, state: selectedState.name, city: "" }
-    setFormData(updatedData)
-    updateDatabase(updatedData)
-  }
-
-  const handleCitySelect = (selectedCity: { name: any }) => {
-    const updatedData = { ...formData, city: selectedCity.name }
-    setFormData(updatedData)
-    updateDatabase(updatedData)
-  }
+    };
+    setFormData(updatedData);
+    updateDatabase(updatedData);
+  };
+  
+  const handleStateSelect = (selectedState: any) => {
+    if (!selectedState) return;
+    setStateid(selectedState.id);
+    const updatedData = { ...formData, state: selectedState.name, city: "" };
+    setFormData(updatedData);
+    updateDatabase(updatedData);
+  };
+  
+  const handleCitySelect = (selectedCity: any) => {
+    if (!selectedCity) return;
+    const updatedData = { ...formData, city: selectedCity.name };
+    setFormData(updatedData);
+    updateDatabase(updatedData);
+  };
+  
 
   return (
     <div className="w-full  mx-auto bg-white shadow-md rounded-lg overflow-hidden">
@@ -223,7 +224,7 @@ export default function AddressSection() {
               </label>
               <StateSelect
               value={formData.state}
-                countryid={countryid}
+                countryid={countryid ?? 0}
                 onChange={handleStateSelect}
                 placeHolder="Select State"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -235,8 +236,8 @@ export default function AddressSection() {
                 City <span className="text-red-500">*</span>
               </label>
               <CitySelect
-                countryid={countryid}
-                stateid={stateid}
+                countryid={countryid ?? 0}
+                stateid={stateid??0}
                 onChange={handleCitySelect}
                 placeHolder="Select City"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

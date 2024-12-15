@@ -435,7 +435,7 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
           className="w-full border rounded px-3 py-2"
         />
       </div>
-      {landFormData.buyers.length > 1 && (
+      {/* {landFormData.buyers.length > 1 && (
         <button
           type="button"
           onClick={() => removeBuyer(index)}
@@ -443,7 +443,7 @@ const LandBuildForm: React.FC<LandBuildFormProps> = ({
         >
           Remove Buyer
         </button>
-      )}
+      )} */}
     </div>
   ))}
   <button
