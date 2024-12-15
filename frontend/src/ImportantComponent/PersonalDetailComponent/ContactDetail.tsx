@@ -84,151 +84,153 @@ function ContactDetail() {
 
   return (
     <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="cursor-pointer p-6 border-b border-gray-200" onClick={toggleOpen}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <CircleUserRound className="h-8 w-8 text-blue-500" />
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">Identification & Contact details</h2>
-              <p className="text-sm text-gray-600">
-                To e-file your returns, please provide your Aadhaar, PAN and contact details.
-              </p>
+    <div className="cursor-pointer p-4 sm:p-6 border-b border-gray-200" onClick={toggleOpen}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <CircleUserRound className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
+          <div>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Identification & Contact details</h2>
+            <p className="text-xs sm:text-sm text-gray-600">
+              To e-file your returns, please provide your Aadhaar, PAN and contact details.
+            </p>
+          </div>
+        </div>
+        <button className="text-gray-500 hover:text-gray-700" onClick={toggleOpen}>
+          <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? '' : 'rotate-180'}`} />
+        </button>
+      </div>
+    </div>
+    {isOpen && (
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-base sm:text-lg font-medium text-gray-700 mb-2">Aadhaar Details *</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
+                <input
+                  type="text"
+                  name="aadharNumber"
+                  value={formData.aadharNumber}
+                  onChange={handleChange}
+                  placeholder="XXXX XXXX XXXX"
+                  disabled={useEnrollment}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">OR Aadhaar Enrollment No.</label>
+                <input
+                  type="text"
+                  name="aadharEnrollment"
+                  value={formData.aadharEnrollment}
+                  onChange={handleChange}
+                  placeholder="Enter 28 digit number"
+                  disabled={!useEnrollment}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            <div className="mt-1 flex items-center space-x-2">
+              <HelpCircle className="h-4 w-4 text-gray-400" />
+              <span className="text-xs sm:text-sm text-gray-500">
+                Don't remember your Aadhaar number or Enrollment number?{" "}
+                <button className="text-blue-500 hover:underline">Search it here</button>
+              </span>
             </div>
           </div>
-          <button className="text-gray-500 hover:text-gray-700" onClick={toggleOpen}>
-          <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen  ? '' : 'rotate-180'}`} />
-          </button>
-        </div>
-      </div>
-      {isOpen && (
-        <div className="p-6 space-y-6">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">Aadhaar Details *</label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
-                  <input
-                    type="text"
-                    name="aadharNumber"
-                    value={formData.aadharNumber}
-                    onChange={handleChange}
-                    placeholder="XXXX XXXX XXXX"
-                    disabled={useEnrollment}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">OR Aadhaar Enrollment No.</label>
-                  <input
-                    type="text"
-                    name="aadharEnrollment"
-                    value={formData.aadharEnrollment}
-                    onChange={handleChange}
-                    placeholder="Enter 28 digit number"
-                    disabled={!useEnrollment}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-              <div className="mt-1 flex items-center space-x-2">
-                <HelpCircle className="h-4 w-4 text-gray-400" />
-                <span className="text-sm text-gray-500">
-                  Don't remember your Aadhaar number or Enrollment number?{" "}
-                  <button className="text-blue-500 hover:underline">Search it here</button>
-                </span>
-              </div>
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">PAN *</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">PAN *</label>
+            <input
+              type="text"
+              name="panNumber"
+              value={formData.panNumber}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
+              placeholder="Enter PAN"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile No *</label>
+            <PhoneInput
+              country="in"
+              value={formData.mobileNumber}
+              onChange={(value) => handlePhoneChange(value, "mobileNumber")}
+              inputClass="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              containerClass="w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <hr className="my-4 sm:my-6 border-gray-200" />
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-base sm:text-lg font-medium text-gray-700 mb-2">Additional Information (Optional)</label>
+            <p className="text-xs sm:text-sm text-gray-500">Leave empty if you don't have additional information</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Secondary Mobile Number</label>
+            <PhoneInput
+              country="in"
+              value={formData.secondaryMobileNumber}
+              onChange={(value) => handlePhoneChange(value, "secondaryMobileNumber")}
+              inputClass="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              containerClass="w-full"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Secondary Email Address</label>
+            <input
+              type="email"
+              name="secondaryEmail"
+              value={formData.secondaryEmail}
+              onChange={handleChange}
+              placeholder="eg: email@gmail.com"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Landline Number</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 type="text"
-                name="panNumber"
-                value={formData.panNumber}
+                name="landlineStd"
+                value={formData.landlineStd}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
-                placeholder="Enter PAN"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mobile No *</label>
-              <PhoneInput
-                country="in"
-                value={formData.mobileNumber}
-                onChange={(value) => handlePhoneChange(value, "mobileNumber")}
-                inputClass="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
+                placeholder="STD code"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
-          </div>
-
-          <hr className="my-6 border-gray-200" />
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">Additional Information (Optional)</label>
-              <p className="text-sm text-gray-500">Leave empty if you don't have additional information</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Secondary Mobile Number</label>
-              <PhoneInput
-                country="in"
-                value={formData.secondaryMobileNumber}
-                onChange={(value) => handlePhoneChange(value, "secondaryMobileNumber")}
-                inputClass="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Secondary Email Address</label>
               <input
-                type="email"
-                name="secondaryEmail"
-                value={formData.secondaryEmail}
+                type="text"
+                name="landlineNumber"
+                value={formData.landlineNumber}
                 onChange={handleChange}
-                placeholder="eg: email@gmail.com"
+                placeholder="Enter your landline telephone number"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Landline Number</label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  name="landlineStd"
-                  value={formData.landlineStd}
-                  onChange={handleChange}
-                  placeholder="STD code"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <input
-                  type="text"
-                  name="landlineNumber"
-                  value={formData.landlineNumber}
-                  onChange={handleChange}
-                  placeholder="Enter your landline telephone number"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
             </div>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   )
 }
 
