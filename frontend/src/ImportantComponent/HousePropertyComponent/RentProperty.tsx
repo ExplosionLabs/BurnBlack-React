@@ -8,12 +8,14 @@ import RentalIncomeDetails from "./SelfProperty/RentalIncomeDetails";
 import TenantDetailsComponent from "./RentProperty/TentantDetail";
 import Sliderbar from "@/Layout/Sidebar";
 import { ArrowLeft } from "lucide-react";
+import { fetchRentPropertyData } from "@/api/landProperty";
 
 
 
 const RentProperty: React.FC = () => {
   
   const [rentFormData, setRentFormData] = useState({
+    netTaxableIncome:0,
     houseAddress: {
       flatNo: "",
       premiseName: "",
@@ -56,15 +58,15 @@ const RentProperty: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getRentalData`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        if (!token) {
+          throw new Error("Token is missing from localStorage");
+        }
+        const response = await fetchRentPropertyData(token)
 
-        if (response.data.success) {
-          setRentFormData(response.data.data);
-         console.log("respond",response.data.data);
+
+        if (response.data) {
+          setRentFormData(response.data);
+      
         }
       } catch (error) {
         console.error("Error fetching property data:", error);
@@ -79,7 +81,23 @@ const RentProperty: React.FC = () => {
   const handleFormChange = (section: string, updatedData: any) => {
     setRentFormData((prev) => ({ ...prev, [section]: updatedData }));
   };
+  useEffect(() => {
+    const calculateNetTaxableIncome = () => {
+      const { rentalIncomeDetails, taxSavings } = rentFormData;
+      const netIncome = rentalIncomeDetails.netIncome || 0;
+      const totalDeduction = taxSavings.totalDeduction || 0;
 
+    
+        return netIncome - totalDeduction;
+    
+  
+    };
+
+    setRentFormData((prev) => ({
+      ...prev,
+      netTaxableIncome: calculateNetTaxableIncome(),
+    }));
+  }, [rentFormData.taxSavings, rentFormData.rentalIncomeDetails]);
   
 
   const saveDataToDatabase = async () => {
@@ -96,6 +114,7 @@ const RentProperty: React.FC = () => {
     }
   };
 
+  
   useEffect(() => {
     const debounce = setTimeout(() => {
       saveDataToDatabase();
@@ -122,7 +141,11 @@ const RentProperty: React.FC = () => {
         Enter Rent, Home Loan Interest, Tenant and other details. You can get the interest details from the home loan certificate issued by the bank.
         </p>
       </div>
-      
+      <div className="mt-6">
+          <h2 className="text-xl font-semibold text-gray-900">
+            Net Taxable Income: ₹{rentFormData.netTaxableIncome}
+          </h2>
+        </div>
     </div>
 
     

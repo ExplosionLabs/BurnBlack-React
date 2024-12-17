@@ -8,20 +8,31 @@ const RentalIncomeDetails: React.FC<{
   const [isOpen, setIsOpen] = useState(true); // State to track visibility of content
 
   const handleChange = (field: string, value: any) => {
+    console.log("field",field,"valu",value);
     onChange({ ...data, [field]: value });
   };
 
   useEffect(() => {
-    const standardDeduction =
-      0.3 * (data.annualRent || 0) - (data.taxPaid || 0);
-    handleChange("standardDeduction", standardDeduction);
+    // Calculate the standard deduction based on current values
+    const standardDeduction = Math.max(0, 0.3 * (data.annualRent || 0) - (data.taxPaid || 0));
+  
+    // Update the standard deduction directly
+    onChange({ ...data, standardDeduction });
+  
+    // Calculate the net income after updating the deduction
+    const netIncome = Math.max(
+      0,
+      (data.annualRent || 0) - (data.taxPaid || 0) - standardDeduction
+    );
+  
+    // Update the net income
+    onChange({ ...data, standardDeduction, netIncome });
+  
+    console.log("Standard Deduction:", standardDeduction);
+    console.log("Net Income:", netIncome);
   }, [data.annualRent, data.taxPaid]);
-
-  useEffect(() => {
-    const netIncome =
-      (data.annualRent || 0) - (data.taxPaid || 0) - (data.standardDeduction || 0);
-    handleChange("netIncome", netIncome);
-  }, [data.annualRent, data.taxPaid, data.standardDeduction]);
+  
+  
 
   // Toggle visibility of the form content
   const toggleContent = () => {
@@ -134,7 +145,7 @@ const RentalIncomeDetails: React.FC<{
                 />
               </div>
               <p className="text-sm text-gray-500">This field is auto-calculated</p>
-            </div>
+            </div> 
           </div>
         )}
       </div>

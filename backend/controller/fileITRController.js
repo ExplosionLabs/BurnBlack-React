@@ -294,6 +294,7 @@ const postPropertyDataController = async (req, res) => {
       ownerDetails,
       taxSavings,
       rentalIncomeDetails,
+      netTaxableIncome,
     } = req.body;
 
     const userId = req.user.id;
@@ -308,6 +309,7 @@ const postPropertyDataController = async (req, res) => {
           ownerDetails,
           taxSavings,
           rentalIncomeDetails,
+          netTaxableIncome,
         },
       },
       {
@@ -355,6 +357,7 @@ const postRentalDataController = async (req, res) => {
       taxSavings,
       rentalIncomeDetails,
       tentatDetails,
+      netTaxableIncome,
     } = req.body;
 
     const userId = req.user.id;
@@ -369,6 +372,7 @@ const postRentalDataController = async (req, res) => {
           taxSavings,
           rentalIncomeDetails,
           tentatDetails,
+          netTaxableIncome,
         },
       },
       {

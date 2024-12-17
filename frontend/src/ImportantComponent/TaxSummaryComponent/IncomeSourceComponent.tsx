@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { fetchAllInterestData, fetchBondData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
+import { fetchLandPropertyData, fetchRentPropertyData } from '@/api/landProperty';
 interface InterestItem {
   fieldType?: string;
   name?: string;
@@ -31,8 +32,11 @@ const IncomeSourceComponent = () => {
   const [longTermData, setLongTermData] = useState<any>(null);
   const [shortTermData, setShortTermData] = useState<any>(null);
   const [dividendData, setDividendData] = useState<any>(null);
+  const [propertyData, setPropertyData] = useState<any>(null);
+  const [rentPropertyData, setRentPropertyData] = useState<any>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [expandedProfitSections, setExpandedProfitSections] = useState<Record<string, boolean>>({});
+  const [expandedLandsSections, setExpandedLandSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +55,8 @@ const IncomeSourceComponent = () => {
         const stockRsuResponse = await fetchStockRsuData(token);
         const longShortResponse = await fetchLongShortData(token);
         const dividendDataResponse=await fetchDividendData(token);
+        const propertyResponse=await fetchLandPropertyData(token);
+        const rentPropertyResponse=await fetchRentPropertyData(token);
         if (interestResponse?.data && Array.isArray(interestResponse.data)) {
           setInterestData(interestResponse.data);
         }
@@ -85,6 +91,12 @@ const IncomeSourceComponent = () => {
           setShortTermData(longShortResponse.shortTermDetails);
           setLongTermData(longShortResponse.longTermDetails);
         }
+        if(propertyResponse){
+          setPropertyData(propertyResponse.data);
+        }
+        if(rentPropertyResponse){
+          setRentPropertyData(rentPropertyResponse.data);
+        }
   
       } catch (err: any) {
         console.error("Error fetching data:", err.message);
@@ -101,6 +113,9 @@ const IncomeSourceComponent = () => {
   const toggleProfitSection = (id: string) => {
     setExpandedProfitSections(prev => ({ ...prev, [id]: !prev[id] }));
   };
+  const togglePropertySection = (id: string) => {
+    setExpandedLandSections(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const totalIncome = interestData.reduce(
     (sum, section) =>
@@ -110,7 +125,9 @@ const IncomeSourceComponent = () => {
 
   const totalIncomeOther = totalIncome + (dividendData?.totalAmount || 0);
 
-  const totalCapitalGain = stockMutualData.reduce((sum, item) => sum + item.totalProfit, 0);
+  // const totalCapitalGain = stockMutualData.reduce((sum, item) => sum + item.totalProfit, 0);
+  const totalIncomeLand=(propertyData? propertyData.netTaxableIncome :0)+(rentPropertyData? rentPropertyData.netTaxableIncome:0)
+  
 
 // Calculate total gross profit from all data sources
 const totalGrossProfit =
@@ -123,7 +140,7 @@ const totalGrossProfit =
   (Number(longTermData?.longOtherAmountDeemed) > 0 ? Number(longTermData?.longOtherAmountDeemed) : 0);
 
   // Calculate Gross Income as the sum of Other Income and Gross Profit
-  const grossIncome =totalIncomeOther + totalGrossProfit;
+  const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand;
 
   return (
 
@@ -154,6 +171,161 @@ const totalGrossProfit =
             <Pencil className="w-5 h-5" />
           </button>
         </div>
+
+
+{rentPropertyData || propertyData ?
+(
+        <div className="mb-4">
+        <button
+    onClick={() => togglePropertySection('landIncome')}
+    className="w-full flex items-center justify-between py-2"
+  >
+    <span className="text-indigo-600 font-medium">House Property</span>
+    <div className="flex items-center gap-4">
+      
+      {expandedLandsSections['landIncome'] ? (
+        <ChevronUp className="w-5 h-5 text-gray-400" />
+      ) : (
+        <ChevronDown className="w-5 h-5 text-gray-400" />
+      )}
+    </div>
+  </button>
+  {expandedLandsSections['landIncome'] && (
+    <>
+    <div>
+
+
+     <div className='text-base font-bold text-black'>1
+     Property 1</div>
+            <div className="pl-4 space-y-3 mb-4">
+             
+
+{propertyData && propertyData.netTaxableIncome
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Rent
+   </span>
+   <span className="text-gray-900">₹{propertyData.rentalIncomeDetails.annualRent
+
+}</span>
+ </div>
+)}
+{propertyData && propertyData.netTaxableIncome
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Less: Municipal Tax
+   </span>
+   <span className="text-gray-900">₹{propertyData.rentalIncomeDetails.taxPaid
+
+}</span>
+ </div>
+)}
+{propertyData && propertyData.rentalIncomeDetails.taxPaid
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Net Annual Rent (Less 30% of ₹ {propertyData.rentalIncomeDetails.annualRent
+
+}-{propertyData.rentalIncomeDetails.taxPaid
+
+})
+   </span>
+   <span className="text-gray-900">₹{propertyData.rentalIncomeDetails.
+standardDeduction
+
+
+}</span>
+ </div>
+)}
+{propertyData && propertyData.netTaxableIncome
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="font-bold text-black">
+   Income from House Property 1
+   </span>
+   <span className="text-gray-900">₹{propertyData.netTaxableIncome}</span>
+ </div>
+)}
+
+
+            </div>
+            </div>
+    <div>
+
+
+     <div className='text-base font-bold text-black'>2
+     Property 2</div>
+            <div className="pl-4 space-y-3 mb-4">
+             
+
+{rentPropertyData && rentPropertyData.netTaxableIncome
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Rent
+   </span>
+   <span className="text-gray-900">₹{rentPropertyData.rentalIncomeDetails.annualRent
+
+}</span>
+ </div>
+)}
+{rentPropertyData && rentPropertyData.netTaxableIncome
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Less: Municipal Tax
+   </span>
+   <span className="text-gray-900">₹{rentPropertyData.rentalIncomeDetails.taxPaid
+
+}</span>
+ </div>
+)}
+{rentPropertyData && rentPropertyData.rentalIncomeDetails.taxPaid
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Net Annual Rent (Less 30% of ₹ {rentPropertyData.rentalIncomeDetails.annualRent
+
+}-{rentPropertyData.rentalIncomeDetails.taxPaid
+
+})
+   </span>
+   <span className="text-gray-900">₹{rentPropertyData.rentalIncomeDetails.
+standardDeduction
+
+
+}</span>
+ </div>
+)}
+{rentPropertyData && rentPropertyData.netTaxableIncome
+ && (
+   <div  className="flex justify-between items-center">
+   <span className="font-bold text-black">
+   Income from House Property 2
+   </span>
+   <span className="text-gray-900">₹{rentPropertyData.netTaxableIncome}</span>
+ </div>
+)}
+
+
+            </div>
+            </div>
+            <div  className="flex justify-between items-center">
+   <span className="font-bold text-black">
+   Total Income from House Property
+   </span>
+   <span className="text-gray-900">₹{totalIncomeLand}</span>
+ </div>
+            </>
+          )}
+
+  </div>
+  ):(
+    <>
+    </>
+  )}
 
         {/* Other Income Section */}
         <div className="mb-4">

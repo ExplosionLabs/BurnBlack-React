@@ -8,6 +8,7 @@ const propertySchema = new mongoose.Schema({
     required: true,
   },
   propertyType: String,
+  netTaxableIncome: Number,
   houseAddress: {
     flatNo: String,
     premiseName: String,
