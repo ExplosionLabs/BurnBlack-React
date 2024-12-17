@@ -7,6 +7,7 @@ import TaxSavingsDetails from "./SelfProperty/TaxSaving";
 import RentalIncomeDetails from "./SelfProperty/RentalIncomeDetails";
 import { ArrowLeft, HelpCircle } from "lucide-react";
 import Sliderbar from "@/Layout/Sidebar";
+import { fetchLandPropertyData } from "@/api/landProperty";
 
 
 
@@ -14,6 +15,7 @@ const SelfProperty: React.FC = () => {
   const [propertyType, setPropertyType] = useState<string>("Self Occupied House Property");
   const [formData, setFormData] = useState({
     propertyType: "Self Occupied House Property",
+    netTaxableIncome: 0,
     houseAddress: {
       flatNo: "",
       premiseName: "",
@@ -53,15 +55,13 @@ const SelfProperty: React.FC = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getPropertyData`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.data.success) {
-          setFormData(response.data.data);
-         console.log("respond",response.data.data);
+        if (!token) {
+          throw new Error("Token is missing from localStorage");
+        }
+        const response = await fetchLandPropertyData(token);
+        if (response.data) {
+          setFormData(response.data);
+        
         }
       } catch (error) {
         console.error("Error fetching property data:", error);
@@ -81,6 +81,25 @@ const SelfProperty: React.FC = () => {
     setPropertyType(e.target.value);
     setFormData((prev) => ({ ...prev, propertyType: e.target.value }));
   };
+  useEffect(() => {
+    const calculateNetTaxableIncome = () => {
+      const { rentalIncomeDetails, taxSavings } = formData;
+      const netIncome = rentalIncomeDetails.netIncome || 0;
+      const totalDeduction = taxSavings.totalDeduction || 0;
+
+      if (propertyType === "Deemed Let Out Property") {
+        return netIncome - totalDeduction;
+      } else if (propertyType === "Self Occupied House Property") {
+        return -totalDeduction;
+      }
+      return 0;
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      netTaxableIncome: calculateNetTaxableIncome(),
+    }));
+  }, [propertyType, formData.taxSavings, formData.rentalIncomeDetails]);
 
   const saveDataToDatabase = async () => {
     try {
@@ -132,7 +151,7 @@ const SelfProperty: React.FC = () => {
         </div>
         <select
           id="propertyType"
-          value={propertyType}
+          value={formData.propertyType}
           onChange={handlePropertyTypeChange}
           className="w-full md:w-[400px] p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         >
@@ -140,6 +159,11 @@ const SelfProperty: React.FC = () => {
           <option value="Deemed Let Out Property">Deemed Let Out Property</option>
         </select>
       </div>
+      <div className="mt-6">
+          <h2 className="text-xl font-semibold text-gray-900">
+            Net Taxable Income: ₹{formData.netTaxableIncome}
+          </h2>
+        </div>
     </div>
 
 
@@ -161,7 +185,7 @@ const SelfProperty: React.FC = () => {
   data={formData.taxSavings }
   onChange={(updatedData: any) => handleFormChange("taxSavings", updatedData)}
 />
-        {propertyType === "Deemed Let Out Property" && <RentalIncomeDetails  data={formData.rentalIncomeDetails }
+        {formData.propertyType === "Deemed Let Out Property" && <RentalIncomeDetails  data={formData.rentalIncomeDetails }
   onChange={(updatedData: any) => handleFormChange("rentalIncomeDetails", updatedData)} />}
       </div>
 
