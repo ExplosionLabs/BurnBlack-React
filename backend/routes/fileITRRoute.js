@@ -31,6 +31,10 @@ const {
   getBalanceSheetController,
   deleteDividendIncomeController,
   deleteAllDividendIncomeController,
+  postCrytoDataController,
+  getCryptoDataController,
+  updateCryptoAssestData,
+  updateNFTAssestData,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -132,4 +136,8 @@ router.post(
   updateBalanceSheetController
 );
 router.get("/getBalanceSheetData", authMiddleware, getBalanceSheetController);
+router.post("/addCryptoIncome", authMiddleware, postCrytoDataController);
+router.get("/getCryptoIncome", authMiddleware, getCryptoDataController);
+router.post("/updateCryptoIncome", authMiddleware, updateCryptoAssestData);
+router.post("/updateNFTIncome", authMiddleware, updateNFTAssestData);
 module.exports = router;

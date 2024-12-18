@@ -14,7 +14,7 @@ const RentalIncomeDetails: React.FC<{
 
   useEffect(() => {
     // Calculate the standard deduction based on current values
-    const standardDeduction = Math.max(0, 0.3 * (data.annualRent || 0) - (data.taxPaid || 0));
+    const standardDeduction = Math.max(0, 0.3 * ((data.annualRent || 0) - (data.taxPaid || 0)));
   
     // Update the standard deduction directly
     onChange({ ...data, standardDeduction });

@@ -13,6 +13,7 @@ const ProfessionalIncome = require("../model/Professionalncome/ProfessionalIncom
 const profitLoss = require("../model/Professionalncome/profitLoss");
 const Property = require("../model/propertyModel");
 const RentalProperty = require("../model/rentalModel");
+const CryptoIncome = require("../model/CryptoIncome/CryptoIncome");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -879,6 +880,87 @@ const getBalanceSheetController = async (req, res) => {
       .json({ success: false, message: "Error fetching data.", error });
   }
 };
+
+const postCrytoDataController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cryptoAssest = new CryptoIncome({
+      userId,
+      ...req.body,
+    });
+
+    await cryptoAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getCryptoDataController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const cryptoAssestData = await CryptoIncome.find({
+      userId,
+    });
+
+    if (cryptoAssestData) {
+      return res.status(200).json(cryptoAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateCryptoAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await CryptoIncome.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const updateNFTAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await CryptoIncome.findOneAndUpdate(
+      { userId, assetSubType: updatedData.assetSubType },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -912,4 +994,8 @@ module.exports = {
   getBalanceSheetController,
   deleteDividendIncomeController,
   deleteAllDividendIncomeController,
+  postCrytoDataController,
+  getCryptoDataController,
+  updateCryptoAssestData,
+  updateNFTAssestData,
 };

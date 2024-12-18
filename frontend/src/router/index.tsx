@@ -90,6 +90,7 @@ import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMa
 import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
 import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
 import { ReactNode } from "react";
+import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -285,6 +286,14 @@ function Router() {
           element: (
             <Layout>
               <FinanceSubSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "virtual-assets",
+          element: (
+            <Layout>
+              <VirtualAssestSubMain />
             </Layout>
           ),
         },
