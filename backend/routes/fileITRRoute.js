@@ -35,6 +35,9 @@ const {
   getCryptoDataController,
   updateCryptoAssestData,
   updateNFTAssestData,
+  postDeprectationController,
+  getDeprectationController,
+  updateDeprectationData,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -140,4 +143,8 @@ router.post("/addCryptoIncome", authMiddleware, postCrytoDataController);
 router.get("/getCryptoIncome", authMiddleware, getCryptoDataController);
 router.post("/updateCryptoIncome", authMiddleware, updateCryptoAssestData);
 router.post("/updateNFTIncome", authMiddleware, updateNFTAssestData);
+router.post("/addDeprecationEntry", authMiddleware, postDeprectationController);
+router.post("/addDeprecationEntry", authMiddleware, postDeprectationController);
+router.get("/getDeprecationEntry", authMiddleware, getDeprectationController);
+router.post("/updateDeprecationEntry", authMiddleware, updateDeprectationData);
 module.exports = router;

@@ -14,6 +14,7 @@ const profitLoss = require("../model/Professionalncome/profitLoss");
 const Property = require("../model/propertyModel");
 const RentalProperty = require("../model/rentalModel");
 const CryptoIncome = require("../model/CryptoIncome/CryptoIncome");
+const deprectationData = require("../model/Professionalncome/deprectationData");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -961,6 +962,64 @@ const updateNFTAssestData = async (req, res) => {
   }
 };
 
+const postDeprectationController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const deprectationAssest = new deprectationData({
+      userId,
+      ...req.body,
+    });
+
+    await deprectationAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getDeprectationController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const deprecationAssestData = await deprectationData.findOne({
+      userId,
+    });
+
+    if (deprecationAssestData) {
+      return res.status(200).json(deprecationAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateDeprectationData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await deprectationData.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -998,4 +1057,7 @@ module.exports = {
   getCryptoDataController,
   updateCryptoAssestData,
   updateNFTAssestData,
+  postDeprectationController,
+  getDeprectationController,
+  updateDeprectationData,
 };

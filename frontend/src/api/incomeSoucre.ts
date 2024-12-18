@@ -241,3 +241,25 @@ export const fetchDividendData = async (token: string) => {
    
     }
   }
+  export const fetchDeprecatationData = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getDeprecationEntry`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }

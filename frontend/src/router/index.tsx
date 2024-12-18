@@ -91,6 +91,7 @@ import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceS
 import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
 import { ReactNode } from "react";
 import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
+import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/DeprectationEntry";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -310,6 +311,14 @@ function Router() {
           element: (
             <Layout>
               <TaxSummary/>
+            </Layout>
+          ),
+        },
+        {
+          path: "add-deprectation",
+          element: (
+            <Layout>
+              <DeprectationEntry/>
             </Layout>
           ),
         },
