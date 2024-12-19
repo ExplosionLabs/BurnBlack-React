@@ -11,6 +11,7 @@ import ProBussinesIncome from "@/ImportantComponent/ProfessionBussinessIncome/Pr
 import Sliderbar from "@/Layout/Sidebar";
 import FinancialParticular from "@/ImportantComponent/FinancialParticular/FinancialParticular";
 import { VirtualAssestMain } from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestMain";
+import { OtherIncome } from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncome";
 
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -31,6 +32,7 @@ function Main() {
    <DividentComponent/>
   <ProBussinesIncome/>
 <VirtualAssestMain/>
+<OtherIncome/>
   </div>
       
 

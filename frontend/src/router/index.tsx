@@ -92,6 +92,8 @@ import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/Account
 import { ReactNode } from "react";
 import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
 import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/DeprectationEntry";
+import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
+import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExempIncom";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -295,6 +297,22 @@ function Router() {
           element: (
             <Layout>
               <VirtualAssestSubMain />
+            </Layout>
+          ),
+        },
+        {
+          path: "other-income",
+          element: (
+            <Layout>
+              <OtherIncomeSubSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "exempt-other-income",
+          element: (
+            <Layout>
+              <ExemptIncome />
             </Layout>
           ),
         },

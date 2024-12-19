@@ -15,6 +15,7 @@ const Property = require("../model/propertyModel");
 const RentalProperty = require("../model/rentalModel");
 const CryptoIncome = require("../model/CryptoIncome/CryptoIncome");
 const deprectationData = require("../model/Professionalncome/deprectationData");
+const ExcemptIncome = require("../model/OtherIncome/ExcemptIncome");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -1020,6 +1021,55 @@ const updateDeprectationData = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+const postExemptIncomeController = async (req, res) => {
+  try {
+    const { type, data } = req.body;
+    const userId = req.user.id;
+
+    // Validate type
+    if (
+      !["Income from PPF", "Income from NRE", "Other Exempt Income"].includes(
+        type
+      )
+    ) {
+      return res.status(400).json({ error: "Invalid type" });
+    }
+
+    // Upsert: Update if exists, insert if not
+    await ExcemptIncome.findOneAndUpdate(
+      { userId, type },
+      { $set: { data } },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save data" });
+  }
+};
+const getExcemptIncomeController = async (req, res) => {
+  const { type } = req.params; // User ID and Type passed in query parameters
+  const userId = req.user.id;
+  try {
+    // Query the database to get the data for the specified user and type
+
+    const decodedType = decodeURIComponent(type);
+    const data = await ExcemptIncome.findOne({ userId, type: decodedType });
+
+    if (data) {
+      res.status(200).json({ success: true, data: data.data });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "No data found for the specified user and type",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -1060,4 +1110,6 @@ module.exports = {
   postDeprectationController,
   getDeprectationController,
   updateDeprectationData,
+  postExemptIncomeController,
+  getExcemptIncomeController,
 };

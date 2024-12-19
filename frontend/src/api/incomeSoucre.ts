@@ -263,3 +263,24 @@ export const fetchDividendData = async (token: string) => {
    
     }
   }
+
+  export const fetchExemptData = async (token: string, type: string) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/get-excempt-income/${type}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response.data.success && response.data.data) {
+        return response.data.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data for ${type}:`, error)
+      return []
+    }
+  }

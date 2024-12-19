@@ -38,6 +38,8 @@ const {
   postDeprectationController,
   getDeprectationController,
   updateDeprectationData,
+  postExemptIncomeController,
+  getExcemptIncomeController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -147,4 +149,10 @@ router.post("/addDeprecationEntry", authMiddleware, postDeprectationController);
 router.post("/addDeprecationEntry", authMiddleware, postDeprectationController);
 router.get("/getDeprecationEntry", authMiddleware, getDeprectationController);
 router.post("/updateDeprecationEntry", authMiddleware, updateDeprectationData);
+router.post("/addexcempt-income", authMiddleware, postExemptIncomeController);
+router.get(
+  "/get-excempt-income/:type",
+  authMiddleware,
+  getExcemptIncomeController
+);
 module.exports = router;
