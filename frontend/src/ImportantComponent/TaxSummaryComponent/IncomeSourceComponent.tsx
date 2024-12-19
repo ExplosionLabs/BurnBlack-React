@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { fetchAllInterestData, fetchBondData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
+import { fetchAllInterestData, fetchBondData, fetchCryptoAssestData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 import { fetchLandPropertyData, fetchRentPropertyData } from '@/api/landProperty';
 interface InterestItem {
@@ -33,6 +33,7 @@ const IncomeSourceComponent = () => {
   const [shortTermData, setShortTermData] = useState<any>(null);
   const [dividendData, setDividendData] = useState<any>(null);
   const [propertyData, setPropertyData] = useState<any>(null);
+  const [virtualAssestsData, setVirtualAssestData] = useState<any>(null);
   const [rentPropertyData, setRentPropertyData] = useState<any>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [expandedProfitSections, setExpandedProfitSections] = useState<Record<string, boolean>>({});
@@ -57,6 +58,7 @@ const IncomeSourceComponent = () => {
         const dividendDataResponse=await fetchDividendData(token);
         const propertyResponse=await fetchLandPropertyData(token);
         const rentPropertyResponse=await fetchRentPropertyData(token);
+        const virtualAssestsResponse=await fetchCryptoAssestData(token);
         if (interestResponse?.data && Array.isArray(interestResponse.data)) {
           setInterestData(interestResponse.data);
         }
@@ -96,6 +98,10 @@ const IncomeSourceComponent = () => {
         }
         if(rentPropertyResponse){
           setRentPropertyData(rentPropertyResponse.data);
+        }
+        if(virtualAssestsResponse && Array.isArray(virtualAssestsResponse)){
+          const combinedTotalGain = virtualAssestsResponse.reduce((acc, item) => acc + (item.totalGains || 0), 0);
+          setVirtualAssestData(combinedTotalGain);
         }
   
       } catch (err: any) {
@@ -140,7 +146,7 @@ const totalGrossProfit =
   (Number(longTermData?.longOtherAmountDeemed) > 0 ? Number(longTermData?.longOtherAmountDeemed) : 0);
 
   // Calculate Gross Income as the sum of Other Income and Gross Profit
-  const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand;
+  const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand+virtualAssestsData;
 
   return (
 
@@ -461,7 +467,19 @@ standardDeduction
             </div>
           )}
 
-          
+{virtualAssestsData &&
+(
+<button
+           onClick={() => toggleProfitSection('grossProfit')}
+            className="w-full flex items-center justify-between py-2"
+          >
+            <span className="text-indigo-600 font-medium">Virtual Assest Profit</span>
+            <div className="flex items-center gap-4 mr-9">
+              <span className="text-gray-900">₹{virtualAssestsData}</span>
+            
+            </div>
+          </button>
+          )}
         </div>
 
         {/* Gross Total Income */}

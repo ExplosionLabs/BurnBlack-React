@@ -13,6 +13,10 @@ const ProfessionalIncome = require("../model/Professionalncome/ProfessionalIncom
 const profitLoss = require("../model/Professionalncome/profitLoss");
 const Property = require("../model/propertyModel");
 const RentalProperty = require("../model/rentalModel");
+const CryptoIncome = require("../model/CryptoIncome/CryptoIncome");
+const deprectationData = require("../model/Professionalncome/deprectationData");
+const ExcemptIncome = require("../model/OtherIncome/ExcemptIncome");
+const Agriculture = require("../model/OtherIncome/AgriIncome");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -879,6 +883,230 @@ const getBalanceSheetController = async (req, res) => {
       .json({ success: false, message: "Error fetching data.", error });
   }
 };
+
+const postCrytoDataController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cryptoAssest = new CryptoIncome({
+      userId,
+      ...req.body,
+    });
+
+    await cryptoAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getCryptoDataController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const cryptoAssestData = await CryptoIncome.find({
+      userId,
+    });
+
+    if (cryptoAssestData) {
+      return res.status(200).json(cryptoAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateCryptoAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await CryptoIncome.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const updateNFTAssestData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await CryptoIncome.findOneAndUpdate(
+      { userId, assetSubType: updatedData.assetSubType },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const postDeprectationController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const deprectationAssest = new deprectationData({
+      userId,
+      ...req.body,
+    });
+
+    await deprectationAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getDeprectationController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const deprecationAssestData = await deprectationData.findOne({
+      userId,
+    });
+
+    if (deprecationAssestData) {
+      return res.status(200).json(deprecationAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
+
+const updateDeprectationData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await deprectationData.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const postExemptIncomeController = async (req, res) => {
+  try {
+    const { type, data } = req.body;
+    const userId = req.user.id;
+
+    // Validate type
+    if (
+      !["Income from PPF", "Income from NRE", "Other Exempt Income"].includes(
+        type
+      )
+    ) {
+      return res.status(400).json({ error: "Invalid type" });
+    }
+
+    // Upsert: Update if exists, insert if not
+    await ExcemptIncome.findOneAndUpdate(
+      { userId, type },
+      { $set: { data } },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save data" });
+  }
+};
+const getExcemptIncomeController = async (req, res) => {
+  const { type } = req.params; // User ID and Type passed in query parameters
+  const userId = req.user.id;
+  try {
+    // Query the database to get the data for the specified user and type
+
+    const decodedType = decodeURIComponent(type);
+    const data = await ExcemptIncome.findOne({ userId, type: decodedType });
+
+    if (data) {
+      res.status(200).json({ success: true, data: data.data });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "No data found for the specified user and type",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+const postAgriController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const { generalDetails, landDetails } = req.body;
+    const data = await Agriculture.findOneAndUpdate(
+      { userId },
+      { generalDetails, landDetails },
+      { upsert: true, new: true }
+    );
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500).send({ error: "Failed to save data" });
+  }
+};
+
+const getAgriController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const agriAssestData = await Agriculture.findOne({
+      userId,
+    });
+
+    if (agriAssestData) {
+      return res.status(200).json(agriAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -912,4 +1140,15 @@ module.exports = {
   getBalanceSheetController,
   deleteDividendIncomeController,
   deleteAllDividendIncomeController,
+  postCrytoDataController,
+  getCryptoDataController,
+  updateCryptoAssestData,
+  updateNFTAssestData,
+  postDeprectationController,
+  getDeprectationController,
+  updateDeprectationData,
+  postExemptIncomeController,
+  getExcemptIncomeController,
+  postAgriController,
+  getAgriController,
 };

@@ -28,6 +28,7 @@ const ProSubSection: React.FC = () => {
     Add Details</Link>
     </div>
 
+
     <FinancialParticular/>
     </>
   );

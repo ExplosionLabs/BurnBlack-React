@@ -10,6 +10,8 @@ import DividentComponent from "@/ImportantComponent/HousePropertyComponent/Divid
 import ProBussinesIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProBussinnessIncome";
 import Sliderbar from "@/Layout/Sidebar";
 import FinancialParticular from "@/ImportantComponent/FinancialParticular/FinancialParticular";
+import { VirtualAssestMain } from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestMain";
+import { OtherIncome } from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncome";
 
 function Main() {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -20,7 +22,7 @@ function Main() {
   <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
 
    <SectionNavigation/>
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 py-4">
       
     
     <Form16Main/>
@@ -28,8 +30,9 @@ function Main() {
     <CapitalGainMain/>
   <HousePropComponent/>
    <DividentComponent/>
-  {/* <ProBussinesIncome/> */}
-
+  <ProBussinesIncome/>
+<VirtualAssestMain/>
+<OtherIncome/>
   </div>
       
 

@@ -90,6 +90,11 @@ import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMa
 import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
 import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
 import { ReactNode } from "react";
+import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
+import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/DeprectationEntry";
+import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
+import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExemptCom/ExempIncom";
+import AgriIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/AgriIncome";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -289,6 +294,38 @@ function Router() {
           ),
         },
         {
+          path: "virtual-assets",
+          element: (
+            <Layout>
+              <VirtualAssestSubMain />
+            </Layout>
+          ),
+        },
+        {
+          path: "other-income",
+          element: (
+            <Layout>
+              <OtherIncomeSubSection />
+            </Layout>
+          ),
+        },
+        {
+          path: "exempt-other-income",
+          element: (
+            <Layout>
+              <ExemptIncome />
+            </Layout>
+          ),
+        },
+        {
+          path: "agri-income",
+          element: (
+            <Layout>
+              <AgriIncome />
+            </Layout>
+          ),
+        },
+        {
           path: "tax-saving",
           element: (
             <Layout>
@@ -301,6 +338,14 @@ function Router() {
           element: (
             <Layout>
               <TaxSummary/>
+            </Layout>
+          ),
+        },
+        {
+          path: "add-deprectation",
+          element: (
+            <Layout>
+              <DeprectationEntry/>
             </Layout>
           ),
         },
