@@ -16,6 +16,7 @@ const RentalProperty = require("../model/rentalModel");
 const CryptoIncome = require("../model/CryptoIncome/CryptoIncome");
 const deprectationData = require("../model/Professionalncome/deprectationData");
 const ExcemptIncome = require("../model/OtherIncome/ExcemptIncome");
+const Agriculture = require("../model/OtherIncome/AgriIncome");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -1070,6 +1071,42 @@ const getExcemptIncomeController = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+const postAgriController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const { generalDetails, landDetails } = req.body;
+    const data = await Agriculture.findOneAndUpdate(
+      { userId },
+      { generalDetails, landDetails },
+      { upsert: true, new: true }
+    );
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500).send({ error: "Failed to save data" });
+  }
+};
+
+const getAgriController = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const agriAssestData = await Agriculture.findOne({
+      userId,
+    });
+
+    if (agriAssestData) {
+      return res.status(200).json(agriAssestData);
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No data found for the given asset type." });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Server error, please try again later." });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -1112,4 +1149,6 @@ module.exports = {
   updateDeprectationData,
   postExemptIncomeController,
   getExcemptIncomeController,
+  postAgriController,
+  getAgriController,
 };

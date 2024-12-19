@@ -93,7 +93,8 @@ import { ReactNode } from "react";
 import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
 import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/DeprectationEntry";
 import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
-import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExempIncom";
+import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExemptCom/ExempIncom";
+import AgriIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/AgriIncome";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -313,6 +314,14 @@ function Router() {
           element: (
             <Layout>
               <ExemptIncome />
+            </Layout>
+          ),
+        },
+        {
+          path: "agri-income",
+          element: (
+            <Layout>
+              <AgriIncome />
             </Layout>
           ),
         },

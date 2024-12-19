@@ -9,6 +9,7 @@ import SectionNavigation from "@/utils/SectionNavigation"
 import { fetchExemptData, fetchInterestData } from "@/api/incomeSoucre"
 import ExemptField from "./ExemptField"
 
+
 type InterestType = "Income from PPF" | "Income from NRE" | "Other Exempt Income" 
 
 interface InterestItem {
