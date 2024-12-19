@@ -284,6 +284,27 @@ export const fetchDividendData = async (token: string) => {
       return []
     }
   }
+
+  export const fetchExemptRemData = async (token: string, type: string) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getexemprem-income/${type}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response.data.success && response.data.data) {
+        return response.data.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data for ${type}:`, error)
+      return []
+    }
+  }
   export const fetchAgriAssestData = async (token: string) => {
     try {
       console.log("ad");
