@@ -17,6 +17,7 @@ const CryptoIncome = require("../model/CryptoIncome/CryptoIncome");
 const deprectationData = require("../model/Professionalncome/deprectationData");
 const ExcemptIncome = require("../model/OtherIncome/ExcemptIncome");
 const Agriculture = require("../model/OtherIncome/AgriIncome");
+const ExcemptRemIncome = require("../model/OtherIncome/ExempRemIncome");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -1107,6 +1108,59 @@ const getAgriController = async (req, res) => {
       .json({ error: "Server error, please try again later." });
   }
 };
+
+const postExempRemController = async (req, res) => {
+  try {
+    const { type, data } = req.body;
+    const userId = req.user.id;
+
+    // Validate type
+    if (
+      ![
+        "Lottery and Gift",
+        "Online Gaming",
+        "Invoice Discounting",
+        "Income from Other Sources",
+      ].includes(type)
+    ) {
+      return res.status(400).json({ error: "Invalid type" });
+    }
+
+    // Upsert: Update if exists, insert if not
+    await ExcemptRemIncome.findOneAndUpdate(
+      { userId, type },
+      { $set: { data } },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save data" });
+  }
+};
+
+const getExemptRemController = async (req, res) => {
+  const { type } = req.params; // User ID and Type passed in query parameters
+  const userId = req.user.id;
+  try {
+    // Query the database to get the data for the specified user and type
+
+    const decodedType = decodeURIComponent(type);
+    const data = await ExcemptRemIncome.findOne({ userId, type: decodedType });
+
+    if (data) {
+      res.status(200).json({ success: true, data: data.data });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "No data found for the specified user and type",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -1151,4 +1205,6 @@ module.exports = {
   getExcemptIncomeController,
   postAgriController,
   getAgriController,
+  postExempRemController,
+  getExemptRemController,
 };

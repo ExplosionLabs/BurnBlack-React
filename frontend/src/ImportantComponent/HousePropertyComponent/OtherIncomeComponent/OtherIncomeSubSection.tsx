@@ -5,6 +5,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ExemptMain from './ExemptMain'
 import AgriMain from './AgriMain'
+import ExemptRemComponent from './ExemptRemComponent'
 
 const OtherIncomeSubSection = () => {
   return (
@@ -14,6 +15,7 @@ const OtherIncomeSubSection = () => {
         <SectionNavigation/>
      <ExemptMain/>
      <AgriMain/>
+     <ExemptRemComponent/>
       </div>
       <div className="lg:col-span-1">
       <div className="sticky top-0">
