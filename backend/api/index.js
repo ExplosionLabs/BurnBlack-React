@@ -7,6 +7,7 @@ const app = express();
 const authRoute = require("../routes/authRoute");
 const fileITRRoute = require("../routes/fileITRRoute");
 const capitalGainRoute = require("../routes/capitalGainRoute");
+const taxSavingRoute = require("../routes/taxSavingRoute");
 const port = 4000;
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/fillDetail", fileITRRoute);
 app.use("/api/v1/capitalGain", capitalGainRoute);
+app.use("/api/v1/taxSaving", taxSavingRoute);
 app.get("/", (req, res) => {
   res.send("black burn backend running");
 });
