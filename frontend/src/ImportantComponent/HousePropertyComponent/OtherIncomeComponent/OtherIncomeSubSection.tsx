@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import ExemptMain from './ExemptMain'
 import AgriMain from './AgriMain'
 import ExemptRemComponent from './ExemptRemComponent'
+import BussinessFund from './BussinessFund'
 
 const OtherIncomeSubSection = () => {
   return (
@@ -16,6 +17,7 @@ const OtherIncomeSubSection = () => {
      <ExemptMain/>
      <AgriMain/>
      <ExemptRemComponent/>
+     <BussinessFund/>
       </div>
       <div className="lg:col-span-1">
       <div className="sticky top-0">

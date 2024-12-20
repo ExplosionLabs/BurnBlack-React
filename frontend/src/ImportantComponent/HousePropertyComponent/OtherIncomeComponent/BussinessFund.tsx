@@ -1,7 +1,8 @@
 import { Coins } from 'lucide-react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-const ExemptMain = () => {
+const BussinessFund = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
     {/* Header Section */}
@@ -9,10 +10,10 @@ const ExemptMain = () => {
       <div className="flex items-center gap-4">
         <Coins className="w-6 h-6 text-blue-600" />
         <div>
-          <h3 className="font-medium text-gray-900 text-base">Exempt Income</h3>
+          <h3 className="font-medium text-gray-900 text-base">Pass Through Income From Business Fund/Trust</h3>
           <p className="text-sm text-gray-500 mt-1 ">
         
-Incomes which are non taxable - Interest income from PPF, NRE Account etc..
+          Add details if you have any income from a Investment Fund or Business Trust
 
 
           </p>
@@ -20,7 +21,7 @@ Incomes which are non taxable - Interest income from PPF, NRE Account etc..
       </div>
       <div className="flex items-center space-x-4">
         <Link
-                   to="/fileITR/exempt-other-income"
+                   to="/fileITR/bussiness-fund"
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
         >
           Add Details
@@ -57,4 +58,4 @@ Incomes which are non taxable - Interest income from PPF, NRE Account etc..
   )
 }
 
-export default ExemptMain
+export default BussinessFund;

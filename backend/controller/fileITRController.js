@@ -18,6 +18,7 @@ const deprectationData = require("../model/Professionalncome/deprectationData");
 const ExcemptIncome = require("../model/OtherIncome/ExcemptIncome");
 const Agriculture = require("../model/OtherIncome/AgriIncome");
 const ExcemptRemIncome = require("../model/OtherIncome/ExempRemIncome");
+const BussinessFund = require("../model/OtherIncome/BussinessFund");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -1161,6 +1162,69 @@ const getExemptRemController = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
+
+const postBussinesFundController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    console.log("reqb bod", req.body);
+    const bussinessAssest = new BussinessFund({
+      userId,
+      ...req.body,
+    });
+
+    await bussinessAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    console.log("errr", error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getBussinessFundController = async (req, res) => {
+  const { section } = req.params; // User ID and Type passed in query parameters
+  const userId = req.user.id;
+  try {
+    // Query the database to get the data for the specified user and type
+
+    const sectionType = decodeURIComponent(section);
+
+    const data = await BussinessFund.findOne({ userId, section: sectionType });
+
+    if (data) {
+      res.status(200).json({ success: true, data: data });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "No data found for the specified user and type",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const updateBussinessFundData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await BussinessFund.findOneAndUpdate(
+      { userId, section: updatedData.section },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   uploadForm16Controller,
   updatePersonalDetailController,
@@ -1206,5 +1270,9 @@ module.exports = {
   postAgriController,
   getAgriController,
   postExempRemController,
+
   getExemptRemController,
+  postBussinesFundController,
+  getBussinessFundController,
+  updateBussinessFundData,
 };

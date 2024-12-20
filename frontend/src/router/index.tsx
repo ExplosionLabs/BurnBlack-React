@@ -95,6 +95,7 @@ import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/Ac
 import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
 import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExemptCom/ExempIncom";
 import AgriIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/AgriIncome";
+import BussinessFundIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/BussinessFundncome";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -322,6 +323,14 @@ function Router() {
           element: (
             <Layout>
               <AgriIncome />
+            </Layout>
+          ),
+        },
+        {
+          path: "bussiness-fund",
+          element: (
+            <Layout>
+              <BussinessFundIncome/>
             </Layout>
           ),
         },
