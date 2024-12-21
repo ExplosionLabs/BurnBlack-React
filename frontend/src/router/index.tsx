@@ -99,6 +99,9 @@ import BussinessFundIncome from "@/ImportantComponent/HousePropertyComponent/Oth
 import TaxDeduction from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDeduction";
 import TaxDashboard from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDashboard";
 import Sliderbar from "@/Layout/Sidebar";
+import TaxDonation80G from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDonation80G";
+import DonationRurual from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationRurual";
+import DonationParty from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationParty";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -390,6 +393,30 @@ function Router() {
           element: (
             <LayoutTax>
               <TaxDashboard/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "deduction-80g",
+          element: (
+            <LayoutTax>
+              <TaxDonation80G/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "deduction-80gga",
+          element: (
+            <LayoutTax>
+              <DonationRurual/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "contri-party",
+          element: (
+            <LayoutTax>
+              <DonationParty/>
             </LayoutTax>
           ),
         },
