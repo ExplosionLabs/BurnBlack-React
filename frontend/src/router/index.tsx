@@ -95,6 +95,13 @@ import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/Ac
 import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
 import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExemptCom/ExempIncom";
 import AgriIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/AgriIncome";
+import BussinessFundIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/BussinessFundncome";
+import TaxDeduction from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDeduction";
+import TaxDashboard from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDashboard";
+import Sliderbar from "@/Layout/Sidebar";
+import TaxDonation80G from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDonation80G";
+import DonationRurual from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationRurual";
+import DonationParty from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationParty";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -103,6 +110,24 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return <div className="md:mx-44">{children}</div>;
+}
+function LayoutTax({ children }: LayoutProps) {
+  return  <div className="md:mx-44">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+     
+     <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
+     {children}
+     </div>
+     <div className="lg:col-span-1">
+       <div className="sticky top-0">
+         <Sliderbar />
+       </div>
+     </div>
+   
+    
+   
+   </div>;
+  </div>
 }
 
 function Router() {
@@ -326,10 +351,10 @@ function Router() {
           ),
         },
         {
-          path: "tax-saving",
+          path: "bussiness-fund",
           element: (
             <Layout>
-              <TaxSaving/>
+              <BussinessFundIncome/>
             </Layout>
           ),
         },
@@ -347,6 +372,52 @@ function Router() {
             <Layout>
               <DeprectationEntry/>
             </Layout>
+          ),
+        },
+      ],
+    },
+    {
+      path: "/tax-saving",
+      element: <Main></Main>,
+      children: [
+        {
+          path: "",
+          element: (
+            <LayoutTax>
+              <TaxSaving />
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "dashboard",
+          element: (
+            <LayoutTax>
+              <TaxDashboard/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "deduction-80g",
+          element: (
+            <LayoutTax>
+              <TaxDonation80G/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "deduction-80gga",
+          element: (
+            <LayoutTax>
+              <DonationRurual/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "contri-party",
+          element: (
+            <LayoutTax>
+              <DonationParty/>
+            </LayoutTax>
           ),
         },
       ],

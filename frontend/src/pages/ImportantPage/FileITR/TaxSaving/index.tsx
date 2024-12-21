@@ -1,4 +1,5 @@
 
+import TaxDeduction from '@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDeduction';
 import Sliderbar from '@/Layout/Sidebar';
 import { RootState } from '@/stores/store';
 import SectionNavigation from '@/utils/SectionNavigation'
@@ -11,24 +12,10 @@ function Main() {
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-     
-      <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
-        <SectionNavigation />
-      
-<h1>
-    Tax Saving
-</h1>
-      </div>
-      <div className="lg:col-span-1">
-        <div className="sticky top-0">
-          <Sliderbar />
-        </div>
-      </div>
-
-     
-   
-    </div>
+   <div>
+    <SectionNavigation/>
+    <TaxDeduction/>
+   </div>
   );
 }
 

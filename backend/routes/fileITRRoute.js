@@ -44,6 +44,9 @@ const {
   getAgriController,
   postExempRemController,
   getExemptRemController,
+  postBussinesFundController,
+  getBussinessFundController,
+  updateBussinessFundData,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -164,5 +167,11 @@ router.post("/addagri-income", authMiddleware, postAgriController);
 router.get("/getagri-income", authMiddleware, getAgriController);
 router.post("/addexemprem-income", authMiddleware, postExempRemController);
 router.get("/getexemprem-income/:type", authMiddleware, getExemptRemController);
-
+router.post("/addbussinessFund", authMiddleware, postBussinesFundController);
+router.get(
+  "/getBussiness-fund/:section",
+  authMiddleware,
+  getBussinessFundController
+);
+router.post("/updatebussinessFund", authMiddleware, updateBussinessFundData);
 module.exports = router;

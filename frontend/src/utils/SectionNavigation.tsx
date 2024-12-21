@@ -20,7 +20,7 @@ export default function SectionNavigation() {
     },
     {
       title: "Tax Saving",
-      path: "/fileITR/tax-saving",
+      path: "/tax-saving",
       status: "info",
     },
     {
