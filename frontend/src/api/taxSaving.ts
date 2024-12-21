@@ -88,3 +88,69 @@ export const fetchContriPartyData = async (token: string) => {
    
     }
   }
+export const fetchMedical80D = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getMedical80D`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchDisablilty = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getDisablity`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchSpecificDisablilty = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getSpecificDisablity`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }

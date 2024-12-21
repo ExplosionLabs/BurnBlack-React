@@ -25,8 +25,11 @@ const SavingInvestment = () => {
         }
         try {
           
-          const response = await fetchTaxInvestData(token)
-          setFormData(response);
+          const response = await fetchTaxInvestData(token);
+          if(response){
+
+            setFormData(response);
+          }
         } catch (error) {
           console.error('Error fetching personal details:', error);
         }
