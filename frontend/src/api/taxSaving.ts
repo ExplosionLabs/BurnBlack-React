@@ -154,3 +154,91 @@ export const fetchSpecificDisablilty = async (token: string) => {
    
     }
   }
+export const fetchLoanData = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getLoansData`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchOtherDeductionData = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getOtherDeduction`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchSelfTaxData = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getSelfTaxPaid`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
+export const fetchNonTDSData = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getNonSalary`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }

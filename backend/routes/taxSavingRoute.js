@@ -13,6 +13,15 @@ const {
   getDisablilityController,
   postSpecficDieaseController,
   getSpecificDieaseaseController,
+  postLoansController,
+  getLoansController,
+  postOtherDeductionController,
+  getOtherDeductionController,
+  postSelfTaxPaidController,
+  getSelfTaxPaidController,
+  updateSelfTaxData,
+  postNonSalaryController,
+  getNonSalaryController,
 } = require("../controller/taxSavingController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -40,4 +49,13 @@ router.get(
   authMiddleware,
   getSpecificDieaseaseController
 );
+router.put("/postLoansData", authMiddleware, postLoansController);
+router.get("/getLoansData", authMiddleware, getLoansController);
+router.put("/postOtherDeduction", authMiddleware, postOtherDeductionController);
+router.get("/getOtherDeduction", authMiddleware, getOtherDeductionController);
+router.post("/postSelfTaxPaid", authMiddleware, postSelfTaxPaidController);
+router.get("/getSelfTaxPaid", authMiddleware, getSelfTaxPaidController);
+router.post("/updateSelfTaxPaid", authMiddleware, updateSelfTaxData);
+router.put("/postNonSalary", authMiddleware, postNonSalaryController);
+router.get("/getNonSalary", authMiddleware, getNonSalaryController);
 module.exports = router;

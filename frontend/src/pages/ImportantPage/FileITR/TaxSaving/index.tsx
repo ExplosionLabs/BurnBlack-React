@@ -1,5 +1,6 @@
 
 import TaxDeduction from '@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDeduction';
+import TaxPaid from '@/ImportantComponent/TaxSavingComponent/TaxPaid/TaxPaid';
 import Sliderbar from '@/Layout/Sidebar';
 import { RootState } from '@/stores/store';
 import SectionNavigation from '@/utils/SectionNavigation'
@@ -14,7 +15,11 @@ function Main() {
   return (
    <div>
     <SectionNavigation/>
+    <div className='flex flex-col gap-4'>
+
     <TaxDeduction/>
+    <TaxPaid/>
+    </div>
    </div>
   );
 }

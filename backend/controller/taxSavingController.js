@@ -5,6 +5,10 @@ const PoliticalContribution = require("../model/TaxSaving/TaxSavingDeduction/Don
 const Medical80D = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/MedicalInsuranece");
 const Disablility = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Disablility");
 const SpecficDiseasDisablity = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/SpecficDiseasDisablity");
+const Loan = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Loan");
+const OtherDeduction = require("../model/TaxSaving/TaxSavingDeduction/OtherDeduction/OtherDeduction");
+const SelfTaxPaid = require("../model/TaxSaving/TaxPaid/SelfTaxPaid");
+const NonSalary = require("../model/TaxSaving/TaxPaid/NonSalary");
 const posttaxInvestmentController = async (req, res) => {
   const { ...taxInvestDetails } = req.body;
   const userId = req.user.id;
@@ -350,6 +354,210 @@ const getSpecificDieaseaseController = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch personal details" });
   }
 };
+const postLoansController = async (req, res) => {
+  const { ...loansDetails } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      updatedDetail = await Loan.findOneAndUpdate(
+        { userId },
+        { $set: loansDetails },
+        { new: true }
+      );
+    }
+
+    if (!updatedDetail) {
+      const newDetail = new Loan({
+        userId,
+        ...loansDetails,
+      });
+      updatedDetail = await newDetail.save();
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating personal details:", error);
+    res.status(500).json({ error: "Failed to update personal details" });
+  }
+};
+
+const getLoansController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const loansDetails = await Loan.findOne({ userId });
+    if (!loansDetails) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(loansDetails); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
+const postOtherDeductionController = async (req, res) => {
+  const { ...deductionDetails } = req.body;
+  const userId = req.user.id;
+
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      updatedDetail = await OtherDeduction.findOneAndUpdate(
+        { userId },
+        { $set: deductionDetails },
+        { new: true }
+      );
+    }
+
+    if (!updatedDetail) {
+      const newDetail = new OtherDeduction({
+        userId,
+        ...deductionDetails,
+      });
+      updatedDetail = await newDetail.save();
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating personal details:", error);
+    res.status(500).json({ error: "Failed to update personal details" });
+  }
+};
+
+const getOtherDeductionController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const details = await OtherDeduction.findOne({ userId });
+    if (!details) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(details); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
+const postSelfTaxPaidController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const taxAssest = new SelfTaxPaid({
+      userId,
+      ...req.body,
+    });
+
+    await taxAssest.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getSelfTaxPaidController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const details = await SelfTaxPaid.findOne({ userId });
+    if (!details) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(details); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
+
+const updateSelfTaxData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await SelfTaxPaid.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res
+        .status(200)
+        .json({ message: "Foreign Assest data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const postNonSalaryController = async (req, res) => {
+  const { ...details } = req.body;
+  const userId = req.user.id; // Get the userId from the authenticated user middleware
+
+  try {
+    // Find a record for the userId
+    let existingDetail = await NonSalary.findOne({ userId });
+
+    if (existingDetail) {
+      // If a record exists, update it
+      existingDetail = await NonSalary.findOneAndUpdate(
+        { userId },
+        { $set: details },
+        { new: true }
+      );
+      return res.status(200).json({
+        message: "Details updated successfully",
+        data: existingDetail,
+      });
+    }
+
+    // If no record exists, create a new one
+    const newDetail = new NonSalary({
+      userId,
+      ...details,
+    });
+    const savedDetail = await newDetail.save();
+
+    return res.status(201).json({
+      message: "Details created successfully",
+      data: savedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating or creating personal details:", error);
+    res.status(500).json({ error: "Failed to process the request" });
+  }
+};
+
+const getNonSalaryController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const details = await NonSalary.findOne({ userId });
+    if (!details) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(details); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
 module.exports = {
   posttaxInvestmentController,
   getTaxInvestmentController,
@@ -365,4 +573,13 @@ module.exports = {
   getDisablilityController,
   postSpecficDieaseController,
   getSpecificDieaseaseController,
+  postLoansController,
+  getLoansController,
+  postOtherDeductionController,
+  getOtherDeductionController,
+  postSelfTaxPaidController,
+  getSelfTaxPaidController,
+  updateSelfTaxData,
+  postNonSalaryController,
+  getNonSalaryController,
 };
