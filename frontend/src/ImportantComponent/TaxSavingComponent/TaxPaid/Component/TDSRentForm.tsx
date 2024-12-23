@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-import { fetchNonTDSData } from '@/api/taxSaving';
+import { fetchNonTDSData, fetchTDSRentData } from '@/api/taxSaving';
 import { RootState } from '@/stores/store';
 import { useSelector } from 'react-redux';
 
-const NonSalaryForm = () => {
+const TDSRentForm = () => {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
     const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const [formData, setFormData] = useState({
-    tan: '',
+    pan: '',
     name: '',
     totalTax: '',
     transferTDS: false,
@@ -32,7 +32,7 @@ const NonSalaryForm = () => {
             }
             try {
               
-              const response = await fetchNonTDSData(token);
+              const response = await fetchTDSRentData(token);
               if(response){
   
                   setFormData(response);
@@ -50,7 +50,7 @@ const NonSalaryForm = () => {
   const autoSave = debounce(async (data) => {
     const token = localStorage.getItem("token")
     try {
-      await axios.put(          `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/postNonSalary`, data,
+      await axios.put(          `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/postTDSRent`, data,
         {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -68,17 +68,16 @@ const NonSalaryForm = () => {
     setFormData(updatedData);
     autoSave(updatedData);
   };
-
   return (
     <form className="max-w-2xl mx-auto p-4 bg-white border rounded-lg">
       <h2 className="text-lg font-semibold mb-4">Tax Deducted at Source</h2>
       
-      <label className="block mb-2">TAN of Deductor *</label>
+      <label className="block mb-2">pan of Deductor *</label>
       <input
         type="text"
-        value={formData.tan}
-        name="tan"
-        onChange={(e) => handleChange('tan', e.target.value)}
+        value={formData.pan}
+        name="pan"
+        onChange={(e) => handleChange('pan', e.target.value)}
         className="w-full border px-3 py-2 rounded mb-4"
       />
 
@@ -197,4 +196,4 @@ const NonSalaryForm = () => {
   );
 };
 
-export default NonSalaryForm;
+export default TDSRentForm;

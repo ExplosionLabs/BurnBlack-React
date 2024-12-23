@@ -9,6 +9,8 @@ const Loan = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Lo
 const OtherDeduction = require("../model/TaxSaving/TaxSavingDeduction/OtherDeduction/OtherDeduction");
 const SelfTaxPaid = require("../model/TaxSaving/TaxPaid/SelfTaxPaid");
 const NonSalary = require("../model/TaxSaving/TaxPaid/NonSalary");
+const TDSRent = require("../model/TaxSaving/TaxPaid/TDSRent");
+const taxCollected = require("../model/TaxSaving/TaxPaid/taxCollected");
 const posttaxInvestmentController = async (req, res) => {
   const { ...taxInvestDetails } = req.body;
   const userId = req.user.id;
@@ -558,6 +560,106 @@ const getNonSalaryController = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch personal details" });
   }
 };
+const postTDSRentController = async (req, res) => {
+  const { ...details } = req.body;
+  const userId = req.user.id; // Get the userId from the authenticated user middleware
+
+  try {
+    let existingDetail = await TDSRent.findOne({ userId });
+
+    if (existingDetail) {
+      existingDetail = await TDSRent.findOneAndUpdate(
+        { userId },
+        { $set: details },
+        { new: true }
+      );
+      return res.status(200).json({
+        message: "Details updated successfully",
+        data: existingDetail,
+      });
+    }
+
+    // If no record exists, create a new one
+    const newDetail = new TDSRent({
+      userId,
+      ...details,
+    });
+    const savedDetail = await newDetail.save();
+
+    return res.status(201).json({
+      message: "Details created successfully",
+      data: savedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating or creating personal details:", error);
+    res.status(500).json({ error: "Failed to process the request" });
+  }
+};
+
+const getTDSRentController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const details = await TDSRent.findOne({ userId });
+    if (!details) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(details); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
+const postTaxCollectedController = async (req, res) => {
+  const { ...details } = req.body;
+  const userId = req.user.id; // Get the userId from the authenticated user middleware
+
+  try {
+    let existingDetail = await taxCollected.findOne({ userId });
+
+    if (existingDetail) {
+      existingDetail = await taxCollected.findOneAndUpdate(
+        { userId },
+        { $set: details },
+        { new: true }
+      );
+      return res.status(200).json({
+        message: "Details updated successfully",
+        data: existingDetail,
+      });
+    }
+
+    // If no record exists, create a new one
+    const newDetail = new taxCollected({
+      userId,
+      ...details,
+    });
+    const savedDetail = await newDetail.save();
+
+    return res.status(201).json({
+      message: "Details created successfully",
+      data: savedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating or creating personal details:", error);
+    res.status(500).json({ error: "Failed to process the request" });
+  }
+};
+
+const getTaxCollectedController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const details = await taxCollected.findOne({ userId });
+    if (!details) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(details); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
 module.exports = {
   posttaxInvestmentController,
   getTaxInvestmentController,
@@ -582,4 +684,8 @@ module.exports = {
   updateSelfTaxData,
   postNonSalaryController,
   getNonSalaryController,
+  postTDSRentController,
+  getTDSRentController,
+  postTaxCollectedController,
+  getTaxCollectedController,
 };

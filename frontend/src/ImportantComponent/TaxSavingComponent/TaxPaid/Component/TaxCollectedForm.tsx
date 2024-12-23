@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-import { fetchNonTDSData } from '@/api/taxSaving';
+import { fetchNonTDSData, fetchTaxCollectedData, fetchTDSRentData } from '@/api/taxSaving';
 import { RootState } from '@/stores/store';
 import { useSelector } from 'react-redux';
 
-const NonSalaryForm = () => {
+const TaxCollectedForm = () => {
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
     const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ const NonSalaryForm = () => {
             }
             try {
               
-              const response = await fetchNonTDSData(token);
+              const response = await fetchTaxCollectedData(token);
               if(response){
   
                   setFormData(response);
@@ -50,7 +50,7 @@ const NonSalaryForm = () => {
   const autoSave = debounce(async (data) => {
     const token = localStorage.getItem("token")
     try {
-      await axios.put(          `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/postNonSalary`, data,
+      await axios.put(          `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/postTaxCollected`, data,
         {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -197,4 +197,4 @@ const NonSalaryForm = () => {
   );
 };
 
-export default NonSalaryForm;
+export default TaxCollectedForm;
