@@ -1,5 +1,6 @@
 
 import TaxDeduction from '@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDeduction';
+import TaxLoss from '@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLoss';
 import TaxPaid from '@/ImportantComponent/TaxSavingComponent/TaxPaid/TaxPaid';
 import Sliderbar from '@/Layout/Sidebar';
 import { RootState } from '@/stores/store';
@@ -19,6 +20,7 @@ function Main() {
 
     <TaxDeduction/>
     <TaxPaid/>
+    <TaxLoss/>
     </div>
    </div>
   );

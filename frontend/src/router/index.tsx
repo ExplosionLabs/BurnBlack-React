@@ -106,6 +106,7 @@ import TaxPaidSub from "@/ImportantComponent/TaxSavingComponent/TaxPaid/TaxPaidS
 import NonSalaryForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/NonSalaryForm";
 import TDSRentForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TDSRentForm";
 import TaxCollectedForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TaxCollectedForm";
+import TaxLossSub from "@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLossSub";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -445,6 +446,14 @@ function Router() {
           element: (
             <LayoutTax>
               <TaxPaidSub/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "other-tax",
+          element: (
+            <LayoutTax>
+              <TaxLossSub/>
             </LayoutTax>
           ),
         },

@@ -26,6 +26,9 @@ const {
   getTDSRentController,
   postTaxCollectedController,
   getTaxCollectedController,
+  postDepLossController,
+  getDepLossController,
+  updateDeptLoss,
 } = require("../controller/taxSavingController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -66,4 +69,7 @@ router.put("/postTDSRent", authMiddleware, postTDSRentController);
 router.get("/getTDSRent", authMiddleware, getTDSRentController);
 router.put("/postTaxCollected", authMiddleware, postTaxCollectedController);
 router.get("/getTaxCollected", authMiddleware, getTaxCollectedController);
+router.post("/postDepLoss", authMiddleware, postDepLossController);
+router.get("/getDepLoss", authMiddleware, getDepLossController);
+router.post("/updateDepLoss", authMiddleware, updateDeptLoss);
 module.exports = router;
