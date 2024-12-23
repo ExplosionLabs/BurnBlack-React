@@ -102,6 +102,10 @@ import Sliderbar from "@/Layout/Sidebar";
 import TaxDonation80G from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDonation80G";
 import DonationRurual from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationRurual";
 import DonationParty from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationParty";
+import TaxPaidSub from "@/ImportantComponent/TaxSavingComponent/TaxPaid/TaxPaidSub";
+import NonSalaryForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/NonSalaryForm";
+import TDSRentForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TDSRentForm";
+import TaxCollectedForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TaxCollectedForm";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -126,7 +130,7 @@ function LayoutTax({ children }: LayoutProps) {
    
     
    
-   </div>;
+   </div>
   </div>
 }
 
@@ -417,6 +421,38 @@ function Router() {
           element: (
             <LayoutTax>
               <DonationParty/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "tds-nonsalary",
+          element: (
+            <LayoutTax>
+              <NonSalaryForm/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "tds-rent",
+          element: (
+            <LayoutTax>
+              <TDSRentForm/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "tax-paid",
+          element: (
+            <LayoutTax>
+              <TaxPaidSub/>
+            </LayoutTax>
+          ),
+        },
+        {
+          path: "tax-collected",
+          element: (
+            <LayoutTax>
+              <TaxCollectedForm/>
             </LayoutTax>
           ),
         },
