@@ -62,7 +62,7 @@ const OtherDeduction = () => {
       }
     
       return (
-        <div className=" rounded-xl p-6 shadow-sm">
+        <div className="border rounded-2xl p-6 shadow-sm">
           <div
             className="flex items-center justify-between gap-3 cursor-pointer"
             onClick={() => setShowForm(!showForm)} // Toggle the form visibility

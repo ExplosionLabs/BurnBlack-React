@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export default function TaxDonation() {
       const [showForm, setShowForm] = useState(false);
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border">
     <div
         className="flex items-center justify-between gap-3 cursor-pointer"
         onClick={() => setShowForm(!showForm)} // Toggle the form visibility

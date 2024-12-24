@@ -126,7 +126,7 @@ const handleFormChange = (
 
 
   return (
-    <div className=" p-6 space-y-8">
+    <div className=" p-6 space-y-8 border rounded-2xl">
    <div
         className="flex items-center justify-between gap-3 cursor-pointer"
         onClick={() => setShowForm(!showForm)} // Toggle the form visibility

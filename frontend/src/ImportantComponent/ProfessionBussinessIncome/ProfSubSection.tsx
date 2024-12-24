@@ -2,12 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import FinancialParticular from "../FinancialParticular/FinancialParticular";
-import { Currency } from "lucide-react";
+import { ArrowLeft, Currency } from "lucide-react";
 const ProSubSection: React.FC = () => {
  
 
   return (
     <>
+      <div className="flex items-center gap-4 mb-4">
+          <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
+          <div>
+          <h1 className="text-2xl font-semibold">Add Professional, Freelancing and Business Income</h1>
+          <p className="text-sm text-gray-500 mt-1">
+          Doctors, Lawyers, FnO investors, Businesses, Tutors, Influencers etc.
+                </p>
+                </div>
+        </div>
     <div className="flex flex-col gap-4">
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
