@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
+import { ArrowLeft, PlusCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const BalanceSheet: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -134,80 +136,101 @@ const BalanceSheet: React.FC = () => {
   };
 
   
+  const InputField = ({ label, name, value }: { label: string; name: string; value: string }) => (
+    <div className="space-y-1.5">
+      <label className="text-sm text-gray-600">{label}</label>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+        <input
+          type="number"
+          name={name}
+          value={value}
+          onChange={handleChange}
+          className="w-full rounded-lg border border-gray-200 bg-white px-8 py-2.5 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+  )
+  
 
   return (
-    <div>
-      <form>
-        <h1>Balance Sheet</h1>
-    
-        <div>
-          <h1>Assets</h1>
-          <p>Total Assests: {formData.totalAssest}</p>
-          <label>Long-term holdings(Shares/MFs)</label>
-          <input
-            type="number"
-            name="longTermHold"
-            value={formData.longTermHold}
-            onChange={handleChange}
-          />
-
-          <label>
-Short-term holdings(Shares/MFs)</label>
-          <input
-            type="number"
-            name="shortTermHold"
-            value={formData.shortTermHold}
-            onChange={handleChange}
-          />
-
-          <label>Cash you have</label>
-          <input
-            type="number"
-            name="cash"
-            value={formData.cash}
-            onChange={handleChange}
-          />
-
-          <label>Balance in bank</label>
-          <input
-            type="number"
-            name="balanceBank"
-            value={formData.balanceBank}
-            onChange={handleChange}
-          />
-          <label>Other Assets</label>
-          <input
-            type="number"
-            name="otherAssets"
-            value={formData.otherAssets}
-            onChange={handleChange}
-          />
-        
+    <div className="p-6">
+        <div className="mb-6 flex items-center gap-4">
+        <Link to="/fileITR/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
+          <ArrowLeft className="h-6 w-6" />
+        </Link>
+        <h1 className="text-2xl font-semibold text-gray-900">Balance Sheet</h1>
+      </div>
+      <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <div className="mb-6 flex items-center gap-3">
+          <PlusCircle className="h-6 w-6 text-red-500" />
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-semibold text-gray-900">Balance Sheet</h1>
+              <span className="rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                Simplified Sheet
+              </span>
+            </div>
+            <p className="mt-1 text-sm text-gray-600">
+              Details of assets and liabilities of your business/profession for the period - April 2023 to March 2024.
+            </p>
+          </div>
         </div>
 
-        <div>
-          <h1>Liabilities</h1>
-          <p>Total Liablilites: {formData.totatLiablities}</p>
-
-          <label>Capital Investment</label>
-          <input
-            type="number"
-            name="capitalInvestment"
-            value={formData.capitalInvestment}
-            onChange={handleChange}
-          />
-
-          <label>Secured Loan</label>
-          <input
-            type="number"
-            name="securedLoan"
-            value={formData.securedLoan}
-            onChange={handleChange}
-          />
-
-
+        <div className="mb-6 grid gap-4 md:grid-cols-2">
+          <div className="rounded-lg bg-blue-50 p-4">
+            <div className="flex items-center justify-between">
+              <span className="font-medium text-gray-700">Total Assets</span>
+              <span className="text-lg font-semibold">₹{formData.totalAssest}</span>
+            </div>
+          </div>
+          <div className="rounded-lg bg-gray-50 p-4">
+            <div className="flex items-center justify-between">
+              <span className="font-medium text-gray-700">Total Liabilities</span>
+              <span className="text-lg font-semibold">₹{formData.totatLiablities}</span>
+            </div>
+          </div>
         </div>
-      </form>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-gray-200 p-4">
+            <div className="mb-4 flex items-center gap-2">
+              <PlusCircle className="h-5 w-5 text-blue-500" />
+              <h2 className="font-medium text-gray-900">Assets</h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <InputField
+                label="Long-term holdings (Shares/MFs)"
+                name="longTermHold"
+                value={formData.longTermHold}
+              />
+              <InputField
+                label="Short-term holdings (Shares/MFs)"
+                name="shortTermHold"
+                value={formData.shortTermHold}
+              />
+              <InputField label="Cash you have" name="cash" value={formData.cash} />
+              <InputField label="Balance in bank" name="balanceBank" value={formData.balanceBank} />
+              <InputField label="Other Assets" name="otherAssets" value={formData.otherAssets} />
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-gray-200 p-4">
+            <div className="mb-4 flex items-center gap-2">
+              <PlusCircle className="h-5 w-5 text-blue-500" />
+              <h2 className="font-medium text-gray-900">Liabilities</h2>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <InputField
+                label="Capital Investment"
+                name="capitalInvestment"
+                value={formData.capitalInvestment}
+              />
+              <InputField label="Secured Loan" name="securedLoan" value={formData.securedLoan} />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

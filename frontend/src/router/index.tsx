@@ -320,25 +320,25 @@ function Router() {
         {
           path: "profit-and-loss-boa",
           element: (
-            <Layout>
+            <LayoutTax>
               <ProfitLoss />
-            </Layout>
+            </LayoutTax>
           ),
         },
         {
           path: "balance-sheet-boa",
           element: (
-            <Layout>
+            <LayoutTax>
               <BalanceSheet />
-            </Layout>
+            </LayoutTax>
           ),
         },
         {
           path: "financial-particulars",
           element: (
-            <Layout>
+            <LayoutTax>
               <FinanceSubSection />
-            </Layout>
+            </LayoutTax>
           ),
         },
         {
@@ -392,9 +392,9 @@ function Router() {
         {
           path: "add-deprectation",
           element: (
-            <Layout>
+            <LayoutTax>
               <DeprectationEntry/>
-            </Layout>
+            </LayoutTax>
           ),
         },
       ],
