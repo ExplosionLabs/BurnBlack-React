@@ -16,7 +16,7 @@ const FinancialParticular = () => {
           <div>
             <h3 className="font-medium text-gray-900 text-base">    Financial Particulars</h3>
             <p className="text-sm text-gray-500 mt-1 ">
-            Mandatory if you've presumptive income(44ADA/44AD) from professions or businesses
+            Mandatory if you've presumptive income(44ADA/44AD) from <br />professions or businesses
             </p>
           </div>
         </div>

@@ -6,7 +6,7 @@ import TaxCollected from './Component/TaxCollected'
 
 const TaxPaidSub = () => {
   return (
-    <div>
+    <div className='flex flex-col gap-4'>
         <SelfTax/>
         <NonSalary/>
         <TDSRent/>
