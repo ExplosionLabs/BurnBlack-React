@@ -4,6 +4,7 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import { ArrowLeft, PlusCircle, Trash2, Info } from 'lucide-react'
 import { Link } from "react-router-dom";
+import { fetchProfessionalData } from "@/api/professionalIncome";
 
 interface ProfessionDetail {
   professionTypes: string;
@@ -50,16 +51,13 @@ const ProfessionalIncome: React.FC = () => {
   useEffect(() => {
     const fetchProfessionalIncome = async () => {
       const token = localStorage.getItem("token");
+      if(!token){
+        return ;
+      }
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getProfesionalIncomeData`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = response.data.data;
+        const response = await fetchProfessionalData(token);
+        console.log("Repsons",response.data);
+        const data = response.data;
         setFormData({
           revenueCash: data.revenueCash || "",
           revenueMode: data.revenueMode || "",

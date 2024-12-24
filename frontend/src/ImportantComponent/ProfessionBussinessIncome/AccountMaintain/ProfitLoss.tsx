@@ -4,6 +4,7 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import { ArrowLeft, PlusCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { fetchProfitLossData } from "@/api/professionalIncome";
 
 const ProfitLoss: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -104,17 +105,17 @@ const ProfitLoss: React.FC = () => {
   useEffect(() => {
     const fetchProfessionalIncome = async () => {
       const token = localStorage.getItem("token");
+      if(!token){
+        return;
+      }
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getProfitLossData`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = response.data.data;
+        const response = await fetchProfitLossData(token);
+        if(response){
+
+        
+        const data = response.data;
         setFormData(data);
+      }
       } catch (error) {
         console.error("Error fetching personal details:", error);
       }

@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { fetchAllInterestData, fetchBondData, fetchCryptoAssestData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 import { fetchLandPropertyData, fetchRentPropertyData } from '@/api/landProperty';
+import { fetchBussinessData, fetchProfessionalData, fetchProfitLossData } from '@/api/professionalIncome';
 interface InterestItem {
   fieldType?: string;
   name?: string;
@@ -34,11 +35,14 @@ const IncomeSourceComponent = () => {
   const [dividendData, setDividendData] = useState<any>(null);
   const [propertyData, setPropertyData] = useState<any>(null);
   const [virtualAssestsData, setVirtualAssestData] = useState<any>(null);
+  const [profData, setProfData] = useState<any>(null);
+  const [bussinessData,setBussiessData]=useState<any>(null);
+  const [profitLossData,setProfitLossData]=useState<any>(null);
   const [rentPropertyData, setRentPropertyData] = useState<any>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [expandedProfitSections, setExpandedProfitSections] = useState<Record<string, boolean>>({});
   const [expandedLandsSections, setExpandedLandSections] = useState<Record<string, boolean>>({});
-
+  const [expandedProfSections, setExpandedProfSections] = useState<Record<string, boolean>>({});
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,6 +63,9 @@ const IncomeSourceComponent = () => {
         const propertyResponse=await fetchLandPropertyData(token);
         const rentPropertyResponse=await fetchRentPropertyData(token);
         const virtualAssestsResponse=await fetchCryptoAssestData(token);
+        const profResponse=await fetchProfessionalData(token);
+        const bussinessReponse=await fetchBussinessData(token);
+        const profitLossResponse=await fetchProfitLossData(token);
         if (interestResponse?.data && Array.isArray(interestResponse.data)) {
           setInterestData(interestResponse.data);
         }
@@ -104,6 +111,21 @@ const IncomeSourceComponent = () => {
           setVirtualAssestData(combinedTotalGain);
         }
   
+        if(profResponse){
+          setProfData(profResponse.data.
+            totalRevenue);
+         
+        }
+        if(bussinessReponse){
+        
+          const {profitcash,profitMode,profitDigitalMode }=bussinessReponse.data;
+          const sum=profitcash+profitMode+profitDigitalMode;
+       
+          setBussiessData(sum);
+        }
+        if(profitLossResponse){
+          setProfitLossData(profitLossResponse.data);
+        }
       } catch (err: any) {
         console.error("Error fetching data:", err.message);
       }
@@ -122,6 +144,9 @@ const IncomeSourceComponent = () => {
   const togglePropertySection = (id: string) => {
     setExpandedLandSections(prev => ({ ...prev, [id]: !prev[id] }));
   };
+  const toggleProf = (id: string) => {
+   setExpandedProfSections(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const totalIncome = interestData.reduce(
     (sum, section) =>
@@ -130,6 +155,7 @@ const IncomeSourceComponent = () => {
   );
 
   const totalIncomeOther = totalIncome + (dividendData?.totalAmount || 0);
+  const totalIncomeProff=(profData||0)  + (bussinessData || 0) +(profitLossData.totalProfit|| 0);
 
   // const totalCapitalGain = stockMutualData.reduce((sum, item) => sum + item.totalProfit, 0);
   const totalIncomeLand=(propertyData? propertyData.netTaxableIncome :0)+(rentPropertyData? rentPropertyData.netTaxableIncome:0)
@@ -146,7 +172,7 @@ const totalGrossProfit =
   (Number(longTermData?.longOtherAmountDeemed) > 0 ? Number(longTermData?.longOtherAmountDeemed) : 0);
 
   // Calculate Gross Income as the sum of Other Income and Gross Profit
-  const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand+virtualAssestsData;
+  const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand+virtualAssestsData +totalIncomeProff;
 
   return (
 
@@ -467,10 +493,60 @@ standardDeduction
             </div>
           )}
 
-{virtualAssestsData &&
-(
+
+
+{(profData || bussinessData) && (
+  <button
+  onClick={() => toggleProf('profSection')}
+    className="w-full flex items-center justify-between py-2"
+  >
+    <span className="text-indigo-600 font-medium">Business and Profession</span>
+    <div className="flex items-center gap-4">
+      <span className="text-gray-900">₹{totalIncomeProff}</span>
+      {expandedSections['profSection'] ? (
+        <ChevronUp className="w-5 h-5 text-gray-400" />
+      ) : (
+        <ChevronDown className="w-5 h-5 text-gray-400" />
+      )}
+    </div>
+  </button>
+)}
+         
+  
+         {expandedProfSections['profSection'] && (
+            <div className="pl-4 space-y-3 mb-4">
+              {profData > 0 && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Proffesional income
+   </span>
+   <span className="text-gray-900">₹{profData}</span>
+ </div>
+)}
+              {bussinessData > 0 && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Bussiness Income
+   </span>
+   <span className="text-gray-900">₹{bussinessData}</span>
+ </div>
+)}
+              { profitLossData && profitLossData.totalProfit > 0 && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+  Profit & Loss
+   </span>
+   <span className="text-gray-900">₹{profitLossData.
+totalProfit
+}</span>
+ </div>
+)}
+           </div>
+
+          )}
+{virtualAssestsData &&(
 <button
-           onClick={() => toggleProfitSection('grossProfit')}
+          
             className="w-full flex items-center justify-between py-2"
           >
             <span className="text-indigo-600 font-medium">Virtual Assest Profit</span>
@@ -480,6 +556,7 @@ standardDeduction
             </div>
           </button>
           )}
+
         </div>
 
         {/* Gross Total Income */}
@@ -491,6 +568,7 @@ standardDeduction
             <span className="font-semibold text-gray-900">₹{grossIncome.toLocaleString()}</span>
           </div>
         </div>
+     
       </div>
     </div></>
   );

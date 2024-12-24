@@ -4,6 +4,7 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import { ArrowLeft, PlusCircle, Trash2, Info } from 'lucide-react'
 import { Link } from "react-router-dom";
+import { fetchBussinessData } from "@/api/professionalIncome";
 
 const BussinessIncome: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -50,16 +51,12 @@ const BussinessIncome: React.FC = () => {
   useEffect(() => {
     const fetchProfessionalIncome = async () => {
       const token = localStorage.getItem("token");
+      if(!token){
+        return ;
+      }
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getBussinessIncomeData`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = response.data.data;
+        const response = await fetchBussinessData(token);
+        const data = response.data;
         setFormData({
           revenueCash: data.revenueCash || "",
           revenueMode: data.revenueMode || "",
