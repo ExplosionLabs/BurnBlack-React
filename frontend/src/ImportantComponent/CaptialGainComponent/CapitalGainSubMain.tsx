@@ -11,8 +11,9 @@ import LongShortTerm from "./LongShortTerm/LongShortTerm";
 import GoldAssestsForm from "./GoldAssestComponent/GoldAssetsForm";
 import { fetchBondData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockRsuData } from "@/api/incomeSoucre";
 import Sliderbar from "@/Layout/Sidebar";
-import { BarChart2 } from "lucide-react";
+import { ArrowLeft, BarChart2 } from "lucide-react";
 import { ChangeEvent } from "react"
+import { Link } from "react-router-dom";
 const CapitalGainSubMain: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"Stocks" | "Mutual Funds">("Stocks");
@@ -677,9 +678,16 @@ setIsGoldModalOpen(false);
     <>
      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
       <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
-   <SectionNavigation/>
+      <div className="flex items-center gap-4 mb-4">
+          <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
+          <div>
+          <h1 className="text-2xl font-semibold">Add Capital Gains Income</h1>
+                </div>
+        </div>
   
-    <div className="">
+    <div className="flex flex-col gap-4">
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">

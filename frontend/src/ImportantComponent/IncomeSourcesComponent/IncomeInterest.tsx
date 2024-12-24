@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from "react"
 
 import axios from "axios"
-import { BanknoteIcon as BankIcon, FileTextIcon, UsersIcon, FileIcon, WalletIcon, ChevronDownIcon, ChevronRightIcon, ChevronUp } from 'lucide-react'
+import { BanknoteIcon as BankIcon, FileTextIcon, UsersIcon, FileIcon, WalletIcon, ChevronDownIcon, ChevronRightIcon, ChevronUp, ArrowLeft } from 'lucide-react'
 import Fields from "./Field"
 import Sliderbar from "@/Layout/Sidebar"
 import SectionNavigation from "@/utils/SectionNavigation"
 import { fetchInterestData } from "@/api/incomeSoucre"
+import { Link } from "react-router-dom"
 
 type InterestType = "Savings Bank" | "Fixed Deposits" | "P2P Investments" | "Bond Investments" | "Provident Fund" | "Income Tax Refund" | "Other Interest Income"
 
@@ -125,7 +126,18 @@ export default function IncomeInterest() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
       <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
-        <SectionNavigation/>
+
+        <div className="flex items-center gap-4 mb-4">
+          <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
+          <div>
+          <h1 className="text-2xl font-semibold">Interest Income</h1>
+          <p className="text-sm text-gray-500 mt-1">
+          Interest earned from Savings Bank, FDs, Post Office Deposits, P2P, Bonds etc.
+                </p>
+                </div>
+        </div>
       {interestData.map((section) => (
         <div 
           key={section.type}

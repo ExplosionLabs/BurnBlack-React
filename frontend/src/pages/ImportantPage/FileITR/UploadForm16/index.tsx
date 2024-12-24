@@ -90,7 +90,7 @@ const navigate=useNavigate();
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex items-center gap-4 mb-8">
-        <Link to="/dashboard" className="text-gray-600 hover:text-gray-800">
+        <Link to="/fileITR/incomeSources" className="text-gray-600 hover:text-gray-800">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>

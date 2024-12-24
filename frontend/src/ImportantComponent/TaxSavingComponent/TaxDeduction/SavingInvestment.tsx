@@ -66,7 +66,7 @@ const SavingInvestment = () => {
     }
   
   return (
-    <div className="rounded-xl p-6 shadow-sm">
+    <div className="rounded-xl p-6 shadow-sm border">
    <div
         className="flex items-center justify-between gap-3 cursor-pointer"
         onClick={() => setShowForm(!showForm)} // Toggle the form visibility
