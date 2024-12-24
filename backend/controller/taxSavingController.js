@@ -11,6 +11,7 @@ const SelfTaxPaid = require("../model/TaxSaving/TaxPaid/SelfTaxPaid");
 const NonSalary = require("../model/TaxSaving/TaxPaid/NonSalary");
 const TDSRent = require("../model/TaxSaving/TaxPaid/TDSRent");
 const taxCollected = require("../model/TaxSaving/TaxPaid/taxCollected");
+const DeprectationLoss = require("../model/TaxSaving/TaxLoss/DeprectationLoss");
 const posttaxInvestmentController = async (req, res) => {
   const { ...taxInvestDetails } = req.body;
   const userId = req.user.id;
@@ -660,6 +661,58 @@ const getTaxCollectedController = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch personal details" });
   }
 };
+
+const postDepLossController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const depLoss = new DeprectationLoss({
+      userId,
+      ...req.body,
+    });
+
+    await depLoss.save();
+    res.status(201).json({ message: "Data saved successfully!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getDepLossController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const details = await DeprectationLoss.findOne({ userId });
+    if (!details) {
+      return res.status(404).json({ error: "Personal details not found" });
+    }
+    res.status(200).json(details); // Return the personal details
+  } catch (error) {
+    console.error("Error fetching personal details:", error);
+    res.status(500).json({ error: "Failed to fetch personal details" });
+  }
+};
+
+const updateDeptLoss = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const updatedData = req.body;
+
+    // Find the user's existing data and update it
+    const existingData = await DeprectationLoss.findOneAndUpdate(
+      { userId },
+      updatedData,
+      { new: true }
+    );
+
+    if (existingData) {
+      return res.status(200).json({ message: "Data updated successfully!" });
+    } else {
+      return res.status(404).json({ message: "No data found to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   posttaxInvestmentController,
   getTaxInvestmentController,
@@ -688,4 +741,7 @@ module.exports = {
   getTDSRentController,
   postTaxCollectedController,
   getTaxCollectedController,
+  postDepLossController,
+  getDepLossController,
+  updateDeptLoss,
 };

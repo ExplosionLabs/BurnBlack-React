@@ -286,3 +286,26 @@ export const fetchTaxCollectedData = async (token: string) => {
    
     }
   }
+
+  export const fetchDepLoss = async (token: string) => {
+    try {
+     
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/taxSaving/getDepLoss`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if (response) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }
