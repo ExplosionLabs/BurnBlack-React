@@ -117,6 +117,24 @@ function Layout({ children }: LayoutProps) {
   return <div className="md:mx-44">{children}</div>;
 }
 function LayoutTax({ children }: LayoutProps) {
+  return  <div className="md:mx-40">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+     
+     <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
+     {children}
+     </div>
+     <div className="lg:col-span-1">
+       <div className="sticky top-0">
+         <Sliderbar />
+       </div>
+     </div>
+   
+    
+   
+   </div>
+  </div>
+}
+function LayoutTaxProf({ children }: LayoutProps) {
   return  <div className="md:mx-44">
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
      
@@ -270,33 +288,33 @@ function Router() {
         {
           path: "income-professional-freelancing-business",
           element: (
-            <Layout>
+            <LayoutTaxProf>
               <ProSubSection />
-            </Layout>
+            </LayoutTaxProf>
           ),
         },
         {
           path: "professional-income",
           element: (
-            <Layout>
+            <LayoutTax>
               <ProfessionalIncome />
-            </Layout>
+            </LayoutTax>
           ),
         },
         {
           path: "bussiness-income",
           element: (
-            <Layout>
+            <LayoutTax>
               <BussinessIncome />
-            </Layout>
+            </LayoutTax>
           ),
         },
         {
           path: "book-of-account-dashboard",
           element: (
-            <Layout>
+            <LayoutTax>
               <ProfBussinessSection />
-            </Layout>
+            </LayoutTax>
           ),
         },
         {
