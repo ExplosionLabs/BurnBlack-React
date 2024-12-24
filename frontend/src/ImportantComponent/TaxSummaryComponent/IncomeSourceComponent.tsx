@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { fetchAllInterestData, fetchBondData, fetchCryptoAssestData, fetchDividendData, fetchForeignAssetsData, fetchGoldData, fetchLandFormData, fetchLongShortData, fetchStockMututalData, fetchStockRsuData } from '@/api/incomeSoucre';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 import { fetchLandPropertyData, fetchRentPropertyData } from '@/api/landProperty';
-import { fetchBussinessData, fetchProfessionalData } from '@/api/professionalIncome';
+import { fetchBussinessData, fetchProfessionalData, fetchProfitLossData } from '@/api/professionalIncome';
 interface InterestItem {
   fieldType?: string;
   name?: string;
@@ -37,6 +37,7 @@ const IncomeSourceComponent = () => {
   const [virtualAssestsData, setVirtualAssestData] = useState<any>(null);
   const [profData, setProfData] = useState<any>(null);
   const [bussinessData,setBussiessData]=useState<any>(null);
+  const [profitLossData,setProfitLossData]=useState<any>(null);
   const [rentPropertyData, setRentPropertyData] = useState<any>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [expandedProfitSections, setExpandedProfitSections] = useState<Record<string, boolean>>({});
@@ -64,6 +65,7 @@ const IncomeSourceComponent = () => {
         const virtualAssestsResponse=await fetchCryptoAssestData(token);
         const profResponse=await fetchProfessionalData(token);
         const bussinessReponse=await fetchBussinessData(token);
+        const profitLossResponse=await fetchProfitLossData(token);
         if (interestResponse?.data && Array.isArray(interestResponse.data)) {
           setInterestData(interestResponse.data);
         }
@@ -115,11 +117,14 @@ const IncomeSourceComponent = () => {
          
         }
         if(bussinessReponse){
-          console.log("busine",bussinessReponse.data);
+        
           const {profitcash,profitMode,profitDigitalMode }=bussinessReponse.data;
           const sum=profitcash+profitMode+profitDigitalMode;
-          console.log("sume",sum);
+       
           setBussiessData(sum);
+        }
+        if(profitLossResponse){
+          setProfitLossData(profitLossResponse.data);
         }
       } catch (err: any) {
         console.error("Error fetching data:", err.message);
@@ -150,7 +155,7 @@ const IncomeSourceComponent = () => {
   );
 
   const totalIncomeOther = totalIncome + (dividendData?.totalAmount || 0);
-  const totalIncomeProff=(profData||0)  + (bussinessData || 0);
+  const totalIncomeProff=(profData||0)  + (bussinessData || 0) +(profitLossData.totalProfit|| 0);
 
   // const totalCapitalGain = stockMutualData.reduce((sum, item) => sum + item.totalProfit, 0);
   const totalIncomeLand=(propertyData? propertyData.netTaxableIncome :0)+(rentPropertyData? rentPropertyData.netTaxableIncome:0)
@@ -524,6 +529,16 @@ standardDeduction
    Bussiness Income
    </span>
    <span className="text-gray-900">₹{bussinessData}</span>
+ </div>
+)}
+              { profitLossData && profitLossData.totalProfit > 0 && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+  Profit & Loss
+   </span>
+   <span className="text-gray-900">₹{profitLossData.
+totalProfit
+}</span>
  </div>
 )}
            </div>
