@@ -155,7 +155,7 @@ const IncomeSourceComponent = () => {
   );
 
   const totalIncomeOther = totalIncome + (dividendData?.totalAmount || 0);
-  const totalIncomeProff=(profData||0)  + (bussinessData || 0) +(profitLossData.totalProfit|| 0);
+  const totalIncomeProff=(profData||0)  + (bussinessData || 0) +(profitLossData?.totalProfit|| 0);
 
   // const totalCapitalGain = stockMutualData.reduce((sum, item) => sum + item.totalProfit, 0);
   const totalIncomeLand=(propertyData? propertyData.netTaxableIncome :0)+(rentPropertyData? rentPropertyData.netTaxableIncome:0)
