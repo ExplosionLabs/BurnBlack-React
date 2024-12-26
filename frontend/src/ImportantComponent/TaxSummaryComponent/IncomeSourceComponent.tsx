@@ -3,6 +3,7 @@ import { fetchAllInterestData, fetchBondData, fetchCryptoAssestData, fetchDivide
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 import { fetchLandPropertyData, fetchRentPropertyData } from '@/api/landProperty';
 import { fetchBussinessData, fetchProfessionalData, fetchProfitLossData } from '@/api/professionalIncome';
+import { fetchForm16, fetchIncomeCal } from '@/api/calculateIncome';
 interface InterestItem {
   fieldType?: string;
   name?: string;
@@ -23,6 +24,7 @@ interface ProfitData {
 }
 
 const IncomeSourceComponent = () => {
+  const [grossIncome,setGrossIncome]=useState("");
   const [interestData, setInterestData] = useState<InterestData[]>([]);
   const [stockMutualData, setStockMutualData] = useState<ProfitData[]>([]);
   const [foreignAssetsData, setForeignAssetsData] = useState<any>(null); // Now a single object
@@ -39,10 +41,12 @@ const IncomeSourceComponent = () => {
   const [bussinessData,setBussiessData]=useState<any>(null);
   const [profitLossData,setProfitLossData]=useState<any>(null);
   const [rentPropertyData, setRentPropertyData] = useState<any>(null);
+  const [form16Data, setForm16Data] = useState<any>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
   const [expandedProfitSections, setExpandedProfitSections] = useState<Record<string, boolean>>({});
   const [expandedLandsSections, setExpandedLandSections] = useState<Record<string, boolean>>({});
   const [expandedProfSections, setExpandedProfSections] = useState<Record<string, boolean>>({});
+  const [expandedForm16Sections, setExpandedForm16Sections] = useState<Record<string, boolean>>({});
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,6 +54,7 @@ const IncomeSourceComponent = () => {
         if (!token) {
           throw new Error("Token is missing from localStorage");
         }
+       
   
         const interestResponse = await fetchAllInterestData(token);
         const stockMutualResponse = await fetchStockMututalData(token);
@@ -66,6 +71,7 @@ const IncomeSourceComponent = () => {
         const profResponse=await fetchProfessionalData(token);
         const bussinessReponse=await fetchBussinessData(token);
         const profitLossResponse=await fetchProfitLossData(token);
+        const form16Response=await fetchForm16(token);
         if (interestResponse?.data && Array.isArray(interestResponse.data)) {
           setInterestData(interestResponse.data);
         }
@@ -126,6 +132,9 @@ const IncomeSourceComponent = () => {
         if(profitLossResponse){
           setProfitLossData(profitLossResponse.data);
         }
+        if(form16Response){
+          setForm16Data(form16Response);
+        }
       } catch (err: any) {
         console.error("Error fetching data:", err.message);
       }
@@ -147,6 +156,9 @@ const IncomeSourceComponent = () => {
   const toggleProf = (id: string) => {
    setExpandedProfSections(prev => ({ ...prev, [id]: !prev[id] }));
   };
+  const toggleForm16 = (id: string) => {
+   setExpandedForm16Sections(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const totalIncome = interestData.reduce(
     (sum, section) =>
@@ -154,6 +166,28 @@ const IncomeSourceComponent = () => {
     0
   );
 
+    useEffect(() => {
+      const fetchGrossIncome = async () => {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            return;
+          }
+          const response = await fetchIncomeCal(token);
+          const data = await response;
+          if(data){
+  
+          
+          setGrossIncome(data.grossIncome);
+       
+        }
+        } catch (error) {
+          console.error('Error fetching gross income:', error);
+        }
+      };
+  
+      fetchGrossIncome();
+    }, []);
   const totalIncomeOther = totalIncome + (dividendData?.totalAmount || 0);
   const totalIncomeProff=(profData||0)  + (bussinessData || 0) +(profitLossData?.totalProfit|| 0);
 
@@ -172,7 +206,7 @@ const totalGrossProfit =
   (Number(longTermData?.longOtherAmountDeemed) > 0 ? Number(longTermData?.longOtherAmountDeemed) : 0);
 
   // Calculate Gross Income as the sum of Other Income and Gross Profit
-  const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand+virtualAssestsData +totalIncomeProff;
+  // const grossIncome =totalIncomeOther + totalGrossProfit+totalIncomeLand+virtualAssestsData +totalIncomeProff;
 
   return (
 
@@ -541,6 +575,16 @@ totalProfit
 }</span>
  </div>
 )}
+              { profitLossData && profitLossData.totalProfit > 0 && (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+  Profit & Loss
+   </span>
+   <span className="text-gray-900">₹{profitLossData.
+totalProfit
+}</span>
+ </div>
+)}
            </div>
 
           )}
@@ -556,7 +600,46 @@ totalProfit
             </div>
           </button>
           )}
+{form16Data &&(
+<button
+         onClick={() => toggleForm16('form16Section')}   
+            className="w-full flex items-center justify-between py-2"
+          >
+            <span className="text-indigo-600 font-medium">Salary Income</span>
+            <div className="flex items-center gap-4">
+              <span className="text-gray-900">₹{form16Data.balance-50000}</span>
+              {expandedForm16Sections['form16Section'] ? (
+        <ChevronUp className="w-5 h-5 text-gray-400" />
+      ) : (
+        <ChevronDown className="w-5 h-5 text-gray-400" />
+      )}
+            </div>
+          </button>
+          )}
 
+{expandedForm16Sections['form16Section'] && (
+            <div className="pl-4 space-y-3 mb-4">
+              {form16Data > 0 && (
+                <>
+             
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Net Salary
+   </span>
+   <span className="text-gray-900">₹{form16Data.balance}</span>
+ </div>
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Standard Deduction
+   </span>
+   <span className="text-gray-900">₹50000</span>
+ </div>
+ </>
+)}
+  
+           </div>
+
+          )}
         </div>
 
         {/* Gross Total Income */}
@@ -565,7 +648,7 @@ totalProfit
             <span className="font-semibold text-gray-900">
               Gross Total Income
             </span>
-            <span className="font-semibold text-gray-900">₹{grossIncome.toLocaleString()}</span>
+            <span className="font-semibold text-gray-900">₹{grossIncome?grossIncome:0}</span>
           </div>
         </div>
      

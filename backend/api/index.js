@@ -8,6 +8,7 @@ const authRoute = require("../routes/authRoute");
 const fileITRRoute = require("../routes/fileITRRoute");
 const capitalGainRoute = require("../routes/capitalGainRoute");
 const taxSavingRoute = require("../routes/taxSavingRoute");
+const calculateIncomeRoute = require("../routes/calculateIncomeRoute");
 const port = 4000;
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/fillDetail", fileITRRoute);
 app.use("/api/v1/capitalGain", capitalGainRoute);
 app.use("/api/v1/taxSaving", taxSavingRoute);
+app.use("/api/v1/calculateIncome", calculateIncomeRoute);
 app.get("/", (req, res) => {
   res.send("black burn backend running");
 });

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { RootState } from '@/stores/store';
 import { useSelector } from 'react-redux';
 import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
+import { fetchForm16 } from '@/api/calculateIncome';
 const  Form16Manually = () => {
   const [formData, setFormData] = useState({
     employerName: '',
@@ -135,18 +136,16 @@ const  Form16Manually = () => {
   ]);
   useEffect(() => {
     const fetchDetail = async () => {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
+      if(!token){
+        return ;
+      }
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getForm16Data`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        const data = response.data
-        setFormData(data)
+        const response = await fetchForm16(token);
+      if(response){
+        setFormData(response)
+
+      }
       } catch (error) {
         console.error("Error fetching personal details:", error)
       }
