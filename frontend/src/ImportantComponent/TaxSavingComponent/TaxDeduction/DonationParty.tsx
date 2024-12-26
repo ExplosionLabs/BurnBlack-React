@@ -2,8 +2,10 @@ import { fetchContriPartyData, fetchRuralDonationData, fetchTaxDonation80GData }
 import { RootState } from '@/stores/store';
 import axios from 'axios';
 import { debounce } from 'lodash';
+import { ArrowLeft } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const DonationParty = () => {
   const [formData, setFormData] = useState({
@@ -68,8 +70,17 @@ const DonationParty = () => {
 
   return (
     <div>
-    <h2 className="text-xl font-semibold">Add contribution to political party (80GGC)</h2>
+   
   
+    <div className="flex items-center gap-4 mb-4">
+          <Link to="/tax-saving/dashboard" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
+          <div>
+          <h1 className="text-2xl font-semibold">Add contribution to political party (80GGC)</h1>
+         
+                </div>
+        </div>
     <div className="space-y-6 mt-8">
     
   

@@ -1,6 +1,8 @@
 import IncomeSourceComponent from '@/ImportantComponent/TaxSummaryComponent/IncomeSourceComponent';
 import PersonalDetailComponent from '@/ImportantComponent/TaxSummaryComponent/PersonalDetailComponent';
+import TaxPaidComponent from '@/ImportantComponent/TaxSummaryComponent/TaxPaidComponent';
 import TaxSaving from '@/ImportantComponent/TaxSummaryComponent/TaxSaving';
+import TaxSummarySection from '@/ImportantComponent/TaxSummaryComponent/TaxSummarySection';
 import Sliderbar from '@/Layout/Sidebar';
 import { RootState } from '@/stores/store';
 import SectionNavigation from '@/utils/SectionNavigation'
@@ -18,9 +20,11 @@ function Main() {
       <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
         <SectionNavigation />
       
+      <TaxSummarySection/>
         <PersonalDetailComponent/>
         <IncomeSourceComponent/>
         <TaxSaving/>
+        <TaxPaidComponent/>
       </div>
       <div className="lg:col-span-1">
         <div className="sticky top-0">

@@ -122,7 +122,7 @@ setDonationRurual(sum);
             <Pencil className="w-5 h-5" />
           </button>
         </div>
-        <button
+        {/* <button
     onClick={() => setIsExpanded(!isExpanded)}
     className="w-full flex items-center justify-between py-2"
   >
@@ -139,7 +139,7 @@ setDonationRurual(sum);
   
         {isExpanded && (
           <>
-        {/* Display total sum */}
+      
         {totalSum > 0 && (
           <div className="flex justify-between items-center">
             <span className="text-gray-600">Saving</span>
@@ -175,8 +175,17 @@ setDonationRurual(sum);
           </div>
         )}
                   </>
-        )}
-
+        )} */}
+  <button
+    onClick={() => setIsExpanded(!isExpanded)}
+    className="w-full flex items-center justify-between py-2"
+  >
+    <span className="text-indigo-600 font-medium">Tax Deduction</span>
+    <div className="flex items-center gap-4">
+      <span className="text-gray-900">0</span>
+     
+    </div>
+  </button>
       </div>
     </div>
   </>

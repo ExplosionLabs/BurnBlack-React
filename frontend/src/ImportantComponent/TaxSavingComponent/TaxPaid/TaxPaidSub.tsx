@@ -5,6 +5,7 @@ import TDSRent from './Component/TDSRent'
 import TaxCollected from './Component/TaxCollected'
 import { Link } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import Form16Main from '@/ImportantComponent/IncomeSourcesComponent/Form16Main'
 
 const TaxPaidSub = () => {
   return (
@@ -24,6 +25,7 @@ const TaxPaidSub = () => {
         </div>
     <div className='flex flex-col gap-4'>
         <SelfTax/>
+        <Form16Main/>
         <NonSalary/>
         <TDSRent/>
         <TaxCollected/>
