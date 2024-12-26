@@ -19,6 +19,7 @@ const ExcemptIncome = require("../model/OtherIncome/ExcemptIncome");
 const Agriculture = require("../model/OtherIncome/AgriIncome");
 const ExcemptRemIncome = require("../model/OtherIncome/ExempRemIncome");
 const BussinessFund = require("../model/OtherIncome/BussinessFund");
+const Form16DataManual = require("../model/form16Data");
 
 const uploadForm16Controller = async (req, res) => {
   try {
@@ -79,7 +80,54 @@ const updatePersonalDetailController = async (req, res) => {
     res.status(500).json({ error: "Failed to update personal details" });
   }
 };
+const updateForm16DataController = async (req, res) => {
+  const { ...Details } = req.body;
+  const userId = req.user.id;
 
+  try {
+    let updatedDetail;
+
+    if (userId) {
+      // Try to find and update the record if it already exists
+      updatedDetail = await Form16DataManual.findOneAndUpdate(
+        { userId }, // Find by userId instead of _id
+        { $set: Details },
+        { new: true } // Return the updated document
+      );
+    }
+
+    if (!updatedDetail) {
+      // If userId is not provided or doesn't exist, create a new record without the _id field
+      const newDetail = new Form16DataManual({ userId, ...Details });
+      updatedDetail = await newDetail.save(); // MongoDB will auto-generate the _id
+    }
+
+    res.status(200).json({
+      message: userId
+        ? "Details updated successfully"
+        : "Details created successfully",
+      data: updatedDetail,
+    });
+  } catch (error) {
+    console.error("Error updating personal details:", error);
+    res.status(500).json({ error: "Failed to update personal details" });
+  }
+};
+
+const getForm16ManualController = async (req, res) => {
+  const userId = req.user.id; // Assume userId is available from the token
+
+  try {
+    const form16Details = await Form16DataManual.findOne({ userId });
+    if (!form16Details) {
+      return res.status(404).json({ error: "Details not found" });
+    }
+    res.status(200).json(form16Details);
+  } catch (error) {
+    console.error("Error fetching  details:", error);
+    res.status(500).json({ error: "Failed to fetch details" });
+  }
+};
 const getPersonalDetailController = async (req, res) => {
   const userId = req.user.id; // Assume userId is available from the token
 
@@ -1275,4 +1323,6 @@ module.exports = {
   postBussinesFundController,
   getBussinessFundController,
   updateBussinessFundData,
+  updateForm16DataController,
+  getForm16ManualController,
 };

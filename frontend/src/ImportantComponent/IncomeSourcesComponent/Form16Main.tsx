@@ -28,6 +28,12 @@ function Form16Main() {
         Add Manually
       </button> */}
       <Link
+        to="/fileITR/fill-detail"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
+      >
+      Add Manually
+      </Link>
+      <Link
         to="/fileITR/uploadForm16"
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
       >
