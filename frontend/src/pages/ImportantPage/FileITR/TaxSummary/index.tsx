@@ -1,5 +1,6 @@
 import IncomeSourceComponent from '@/ImportantComponent/TaxSummaryComponent/IncomeSourceComponent';
 import PersonalDetailComponent from '@/ImportantComponent/TaxSummaryComponent/PersonalDetailComponent';
+import TaxPaidComponent from '@/ImportantComponent/TaxSummaryComponent/TaxPaidComponent';
 import TaxSaving from '@/ImportantComponent/TaxSummaryComponent/TaxSaving';
 import TaxSummarySection from '@/ImportantComponent/TaxSummaryComponent/TaxSummarySection';
 import Sliderbar from '@/Layout/Sidebar';
@@ -23,6 +24,7 @@ function Main() {
         <PersonalDetailComponent/>
         <IncomeSourceComponent/>
         <TaxSaving/>
+        <TaxPaidComponent/>
       </div>
       <div className="lg:col-span-1">
         <div className="sticky top-0">

@@ -44,3 +44,25 @@ export const fetchForm16 = async (token: string) => {
    
     }
   }
+export const fetchTaxPaid = async (token: string) => {
+    try {
+      console.log("ad");
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/calculateIncome/getTaxPaid`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+  
+      if ( response.data) {
+        return response.data
+      }
+      return []
+    } catch (error) {
+      console.error(`Error fetching data `, error)
+      console.log("eror",error);
+   
+    }
+  }

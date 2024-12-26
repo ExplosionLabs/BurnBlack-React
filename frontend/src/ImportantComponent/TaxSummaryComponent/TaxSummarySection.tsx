@@ -25,6 +25,8 @@ const TaxSummarySection = () => {
         setGrossIncome(data.grossIncome);
         setTaxableIncome(data.taxableIncome);
         setTaxLiability(data.taxLiability);
+        setTaxPaid(data.taxPaid)
+        setTaxDue(data.taxDue)
       }
       } catch (error) {
         console.error('Error fetching gross income:', error);

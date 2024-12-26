@@ -126,6 +126,7 @@ const handleFormChange = (
 
 
   return (
+    <>
     <div className=" p-6 space-y-8 border rounded-2xl">
    <div
         className="flex items-center justify-between gap-3 cursor-pointer"
@@ -345,7 +346,16 @@ const handleFormChange = (
         </div>
       </section>
     </div>)}
+    
   </div>
+  <Modal isOpen={is80GModalOpen} onClose={() => setIs80DModalOpen(false)}>
+    <Medical80D/>
+  </Modal>
+  <Modal isOpen={isDisablitiyModalOpen} onClose={() => setIsDisabliltyModelOpen(false)}>
+    <Disablitiy/>
+  </Modal>
+  </>
+
   )
 }
 

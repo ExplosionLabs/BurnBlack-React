@@ -16,6 +16,7 @@ const {
   getProfitLossData,
   getTDSData,
 } = require("../helper/IncomeCalculator/IntererstIncome");
+const { getTotalTaxPaid } = require("../helper/IncomeCalculator/taxPaid");
 
 // Function to round to the nearest 10
 function roundToNearestTen(value) {
@@ -47,6 +48,9 @@ const taxableIncomeController = async (req, res) => {
     const virtualData = await getVirtualData(userId);
     const professData = await getProfessionalData(userId);
     const busData = await getBussinessData(userId);
+
+    const tax = await getTotalTaxPaid(userId);
+    const totalTax = tax.success !== false ? tax.data : 0;
 
     const tdsIncome = await getTDSData(userId);
     const profitLossData = await getProfitLossData(userId);
@@ -211,14 +215,17 @@ const taxableIncomeController = async (req, res) => {
 
     // Include cess (e.g., health and education cess @ 4%)
     const cess = taxLiability * 0.04;
-    const totalTaxLiability = taxLiability + cess;
+    const totalTaxLiability = roundToNearestTen(taxLiability + cess);
 
+    const taxDue = totalTaxLiability - totalTax;
     // Send response
     res.status(200).json({
       success: true,
       grossIncome, // Before rounding
       taxableIncome, // After rounding
       taxLiability: totalTaxLiability,
+      taxPaid: totalTax,
+      taxDue: taxDue,
     });
   } catch (error) {
     console.error("Error calculating gross income and tax liability:", error);
@@ -226,4 +233,15 @@ const taxableIncomeController = async (req, res) => {
   }
 };
 
-module.exports = taxableIncomeController;
+const getTaxPaidController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const taxPaidResult = await getTotalTaxPaid(userId);
+    const totalTax = taxPaidResult.success !== false ? taxPaidResult.data : 0;
+    res.status(200).json(totalTax);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = { taxableIncomeController, getTaxPaidController };
