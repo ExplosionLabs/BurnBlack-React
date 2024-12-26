@@ -107,6 +107,7 @@ import NonSalaryForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Compo
 import TDSRentForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TDSRentForm";
 import TaxCollectedForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TaxCollectedForm";
 import TaxLossSub from "@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLossSub";
+import Form16Manually from "@/ImportantComponent/IncomeSourcesComponent/Form16Manually/Form16Manually";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -203,6 +204,14 @@ function Router() {
             <Layout>
               <ITRMainPage />
             </Layout>
+          ),
+        },
+        {
+          path: "fill-detail",
+          element: (
+            <LayoutTax>
+              <Form16Manually/>
+            </LayoutTax>
           ),
         },
         {
@@ -483,6 +492,7 @@ function Router() {
             </LayoutTax>
           ),
         },
+     
       ],
     },
   ];

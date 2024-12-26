@@ -47,6 +47,8 @@ const {
   postBussinesFundController,
   getBussinessFundController,
   updateBussinessFundData,
+  updateForm16DataController,
+  getForm16ManualController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -59,12 +61,13 @@ router.post(
   upload.single("file"),
   uploadForm16Controller
 );
-
+router.put("/updateForm16", authMiddleware, updateForm16DataController);
 router.put(
   "/updatePersonalDetail",
   authMiddleware,
   updatePersonalDetailController
 );
+router.get("/getForm16Data", authMiddleware, getForm16ManualController);
 router.get("/getPersonalDetail", authMiddleware, getPersonalDetailController);
 router.put(
   "/updateContactDetails",
