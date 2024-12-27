@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { ChevronDown, Share2, Menu } from 'lucide-react'
+import { ChevronDown, Share2, Menu, Wallet } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '@/stores/store';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/stores/userSlice';
+import mainlogo from '@/assets/images/burnblacklogo.png';
+
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const navigate=useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
     const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
     const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
     const selectUserData = (state: RootState) => state.user.user;
@@ -32,24 +36,25 @@ const Navbar = () => {
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
+            
             <div className="flex-shrink-0">
               <Link to="/" className="text-xl font-semibold text-gray-700">
-                BurnBlack
+              <img src={mainlogo} alt="Logo" className="h-8 w-auto" />
               </Link>
             </div>
   
             {/* Center Menu */}
             <div className="hidden md:block">
-                {isUserLoggedIn ? (   <div className="relative inline-block text-left">
+              {isUserLoggedIn ? (   
+              <div className="relative inline-block text-left">
                 <button
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="inline-flex items-center gap-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   Filing for: {userData?.name}
                   <ChevronDown className="h-4 w-4" />
                 </button>
-  
-                {isOpen && (
+                {isDropdownOpen && (
                   <div className="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                     <div className="py-1">
                       <a
@@ -67,7 +72,8 @@ const Navbar = () => {
                     </div>
                   </div>
                 )}
-              </div>):(
+              </div>
+              ):(
    <div className="flex gap-8 text-left">
    <h1  className="inline-flex items-center gap-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Products </h1>
    <h1  className="inline-flex items-center gap-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Resources  </h1>
@@ -81,8 +87,8 @@ const Navbar = () => {
        {isUserLoggedIn ? (
   <div className="hidden md:flex md:items-center md:space-x-4">
   <button className="inline-flex items-center gap-x-2 rounded-md bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-100">
-    <Share2 className="h-4 w-4" />
-    Share
+    <Wallet className="h-4 w-4" />
+    Wallet Balance : ₹9823 
   </button>
 
   <div className="relative">
@@ -149,8 +155,8 @@ const Navbar = () => {
               Filing for: {userData?.name}
               </button>
               <button className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-base font-medium text-blue-600 hover:bg-gray-100">
-                <Share2 className="h-4 w-4" />
-                Share
+                <Wallet className="h-4 w-4" />
+                Wallet Balance : ₹9823
               </button>
               <button className="block w-full rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">
                 Your Profile

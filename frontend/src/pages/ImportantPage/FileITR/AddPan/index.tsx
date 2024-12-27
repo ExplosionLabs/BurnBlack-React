@@ -199,7 +199,7 @@ function Main() {
           <div className="flex items-center gap-2 bg-blue-50 p-4 rounded-lg">
             <Shield className="w-5 h-5 text-blue-600" />
             <p className="text-sm text-blue-600">
-              Cleartax is a Government authorized ERI license holder. Your data is 100% secure with Cleartax.
+              Burnblack is a Government authorized ERI license holder. Your data is 100% secure with Cleartax.
             </p>
           </div>
 

@@ -83,7 +83,7 @@ function ContactDetail() {
   }
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="w-full bg-white rounded-lg border overflow-hidden">
     <div className="cursor-pointer p-4 sm:p-6 border-b border-gray-200" onClick={toggleOpen}>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">

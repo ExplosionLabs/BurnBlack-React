@@ -34,12 +34,12 @@ export default function SectionNavigation() {
   const activeSection = sections.find((section) => section.path === location.pathname) || sections[0];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 p-4 md:p-8">
       {/* Mobile View Dropdown */}
       <div className="block md:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium focus:outline-none"
+          className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium focus:outline-none bg-dark text-white"
         >
           <span>{activeSection.title}</span>
           {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -54,11 +54,11 @@ export default function SectionNavigation() {
                 className={({ isActive }) =>
                   `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-blue-800 text-white"
+                      ? "bg-dark text-white"
                       : section.status === "completed"
-                      ? "bg-blue-800 text-white"
+                      ? "bg-dark text-white"
                       : section.status === "info"
-                      ? "border border-gray-300"
+                      ? "border border-gray-300 bg-white"
                       : "border border-gray-300 bg-white"
                   }`
                 }
@@ -78,7 +78,7 @@ export default function SectionNavigation() {
       </div>
 
       {/* Desktop View */}
-      <div className="hidden md:flex justify-between">
+      <div className="hidden md:flex justify-between space-x-4">
         {sections.map((section) => (
           <NavLink
             key={section.path}
@@ -86,11 +86,11 @@ export default function SectionNavigation() {
             className={({ isActive }) =>
               `flex items-center gap-2 rounded-full px-6 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-blue-800 text-white"
+                  ? "bg-dark text-white"
                   : section.status === "completed"
-                  ? "bg-blue-800 text-white"
+                  ? "bg-dark text-white"
                   : section.status === "info"
-                  ? "border border-gray-300"
+                  ? "border border-gray-300 bg-white"
                   : "border border-gray-300 bg-white"
               }`
             }
