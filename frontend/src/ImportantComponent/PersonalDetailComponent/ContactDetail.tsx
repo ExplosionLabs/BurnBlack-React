@@ -89,7 +89,7 @@ function ContactDetail() {
         <div className="flex items-center space-x-4">
           <CircleUserRound className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
           <div>
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Identification & Contact details</h2>
+            <h2 className="text-lg sm:text-base font-semibold text-gray-800">Identification & Contact details</h2>
             <p className="text-xs sm:text-sm text-gray-600">
               To e-file your returns, please provide your Aadhaar, PAN and contact details.
             </p>

@@ -90,7 +90,7 @@ export default function BankDetails() {
           <div className="flex items-center space-x-4">
             <BuildingBankIcon className="h-8 w-8 text-blue-500" />
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">Bank Details</h2>
+              <h2 className="text-base font-semibold text-gray-800">Bank Details</h2>
               <p className="text-sm text-gray-600">
               Provide all the bank accounts. You will receive refund in any one of the accounts mentioned.
               </p>

@@ -100,7 +100,7 @@ const Navbar = () => {
     >
    {getInitials(userData?.name)} 
     </button>
-    {userData?.name}
+    {userData?.email}
 
     </div>
     

@@ -79,7 +79,7 @@ export default function PersonalDetails() {
         <div className="flex items-center space-x-4">
           <CircleUserRound className="w-8 h-8 text-blue-500" />
           <div>
-            <h2 className="text-lg md:text-2xl font-bold text-gray-800">Permanent Information</h2>
+            <h2 className="text-lg md:text-base font-bold text-gray-800">Permanent Information</h2>
             <p className="text-xs md:text-sm text-gray-600">
               Please provide all info as per your government identity documents (PAN, Aadhaar, etc.)
             </p>

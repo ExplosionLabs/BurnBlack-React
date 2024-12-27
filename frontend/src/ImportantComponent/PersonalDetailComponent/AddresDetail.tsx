@@ -115,7 +115,7 @@ export default function AddressSection() {
           <div className="flex items-center space-x-4">
             <MapPin className="h-8 w-8 text-blue-500" />
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">Your Address</h2>
+              <h2 className="text-base font-semibold text-gray-800">Your Address</h2>
               <p className="text-sm text-gray-600">
               You can provide either your current address or permanent address of residence
               </p>
