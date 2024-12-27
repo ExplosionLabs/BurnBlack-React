@@ -600,7 +600,11 @@ totalProfit
             </div>
           </button>
           )}
-{form16Data &&(
+
+
+        </div>
+
+        {form16Data &&(
 <button
          onClick={() => toggleForm16('form16Section')}   
             className="w-full flex items-center justify-between py-2"
@@ -616,10 +620,9 @@ totalProfit
             </div>
           </button>
           )}
-
-{expandedForm16Sections['form16Section'] && (
+{expandedForm16Sections['form16Section']&& (
             <div className="pl-4 space-y-3 mb-4">
-              {form16Data > 0 && (
+              {form16Data && (
                 <>
              
    <div  className="flex justify-between items-center">
@@ -640,7 +643,6 @@ totalProfit
            </div>
 
           )}
-        </div>
 
         {/* Gross Total Income */}
         <div className="mt-4 bg-gray-50 -mx-6 -mb-6 p-4 rounded-b-lg">

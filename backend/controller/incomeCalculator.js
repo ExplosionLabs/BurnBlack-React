@@ -189,43 +189,56 @@ const taxableIncomeController = async (req, res) => {
     // Define New Regime tax slabs
     const taxSlabsNewRegime = [
       { limit: 250000, rate: 0 },
-      { limit: 300000, rate: 0.05 },
+      { limit: 300000, rate: 0 },
       { limit: 500000, rate: 0.05 },
       { limit: 750000, rate: 0.1 },
-      { limit: 1000000, rate: 0.1 },
-      { limit: 1250000, rate: 0.15 },
+      { limit: 1000000, rate: 0.15 },
+      { limit: 1250000, rate: 0.2 },
       { limit: 1500000, rate: 0.2 },
       { limit: Infinity, rate: 0.3 },
     ];
 
-    // Calculate tax liability
-    let taxLiability = 0;
+    // Calculate tax liability (Income Tax at Normal Rates)
+    let incomeTaxAtNormalRates = 0;
 
     for (let i = 0; i < taxSlabsNewRegime.length; i++) {
       const { limit, rate } = taxSlabsNewRegime[i];
       const previousLimit = taxSlabsNewRegime[i - 1]?.limit || 0;
 
       if (taxableIncome > limit) {
-        taxLiability += (limit - previousLimit) * rate;
+        incomeTaxAtNormalRates += (limit - previousLimit) * rate;
       } else {
-        taxLiability += (taxableIncome - previousLimit) * rate;
+        incomeTaxAtNormalRates += (taxableIncome - previousLimit) * rate;
         break;
       }
     }
 
-    // Include cess (e.g., health and education cess @ 4%)
-    const cess = taxLiability * 0.04;
-    const totalTaxLiability = roundToNearestTen(taxLiability + cess);
+    // Include Health and Education Cess @ 4%
+    const healthAndEducationCess = incomeTaxAtNormalRates * 0.04;
+
+    console.log("inceome tax", incomeTaxAtNormalRates);
+    console.log("Health ", healthAndEducationCess);
+    // Calculate total tax liability
+    const totalTaxLiability = roundToNearestTen(
+      incomeTaxAtNormalRates + healthAndEducationCess
+    );
 
     const taxDue = totalTaxLiability - totalTax;
+
+    const totalTaxI = roundToNearestTen(
+      incomeTaxAtNormalRates + healthAndEducationCess
+    );
     // Send response
     res.status(200).json({
       success: true,
       grossIncome, // Before rounding
       taxableIncome, // After rounding
-      taxLiability: totalTaxLiability,
+      incomeTaxAtNormalRates, // Tax calculated at normal rates
+      healthAndEducationCess, // Additional cess
+      taxLiability: totalTaxLiability, // Final liability after adding cess
       taxPaid: totalTax,
       taxDue: taxDue,
+      totalTaxI,
     });
   } catch (error) {
     console.error("Error calculating gross income and tax liability:", error);
