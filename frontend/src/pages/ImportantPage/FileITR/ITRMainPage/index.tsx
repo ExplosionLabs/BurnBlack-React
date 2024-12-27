@@ -14,8 +14,8 @@ function Main() {
   const [panDetail, setPanDetails] = useState("");
   const [images, setImages] = useState<string[]>([
     "https://i.ibb.co/QKSJMyp/itrdemo.png",
-    "https://thumbs.dreamstime.com/b/blond-fashion-model-russian-girl-close-up-photo-red-square-background-moscow-center-blond-fashion-model-russian-girl-close-127188521.jpg",
-    "https://as1.ftcdn.net/v2/jpg/02/31/01/98/1000_F_231019886_U9CtSBmtxzo8k8fa6rFeCda49YR6scPD.jpg"
+    "https://img.freepik.com/premium-vector/tax-preparation-social-media-design-income-tax-return-service-social-media-banner-template_600957-335.jpg",
+    "https://img.freepik.com/premium-vector/tax-preparation-social-media-design-income-tax-return-service-social-media-banner-template_600957-334.jpg"
   ]);
   const [currentImage, setCurrentImage] = useState(0);
   const [sessionYear, setSessionYear] = useState("");
