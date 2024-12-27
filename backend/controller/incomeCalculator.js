@@ -17,11 +17,119 @@ const {
   getTDSData,
 } = require("../helper/IncomeCalculator/IntererstIncome");
 const { getTotalTaxPaid } = require("../helper/IncomeCalculator/taxPaid");
+const Disablility = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Disablility");
+const MedicalInsuranece = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/MedicalInsuranece");
 
 // Function to round to the nearest 10
 function roundToNearestTen(value) {
   return Math.round(value / 10) * 10;
 }
+
+// Helper function to calculate deductions from medical insurance
+const calculateSection80DDeduction = (medical80DData) => {
+  let section80DDeduction = 0;
+
+  if (medical80DData) {
+    const { selfAndFamily, parents } = medical80DData;
+
+    // Deduction for self and family
+    if (selfAndFamily) {
+      const selfPremium = parseFloat(selfAndFamily.premium) || 0;
+      const selfHealthCheckup = parseFloat(selfAndFamily.healthCheckup) || 0;
+      const selfMedicalExpenditure =
+        parseFloat(selfAndFamily.medicalExpenditure) || 0;
+      const selfAndFamilyMaxLimit = selfAndFamily.isSeniorCitizen
+        ? 50000
+        : 25000;
+
+      section80DDeduction += Math.min(
+        selfPremium + selfHealthCheckup + selfMedicalExpenditure,
+        selfAndFamilyMaxLimit
+      );
+    }
+
+    // Deduction for parents
+    if (parents) {
+      const parentPremium = parseFloat(parents.premium) || 0;
+      const parentHealthCheckup = parseFloat(parents.healthCheckup) || 0;
+      const parentMedicalExpenditure =
+        parseFloat(parents.medicalExpenditure) || 0;
+      const parentsMaxLimit = parents.isSeniorCitizen ? 50000 : 25000;
+
+      section80DDeduction += Math.min(
+        parentPremium + parentHealthCheckup + parentMedicalExpenditure,
+        parentsMaxLimit
+      );
+    }
+  }
+
+  return section80DDeduction;
+};
+
+const calculateTaxLiability = (taxableIncome, taxSlabs) => {
+  let incomeTaxAtNormalRates = 0;
+
+  for (let i = 0; i < taxSlabs.length; i++) {
+    const { limit, rate } = taxSlabs[i];
+    const previousLimit = taxSlabs[i - 1]?.limit || 0;
+
+    if (taxableIncome > limit) {
+      incomeTaxAtNormalRates += (limit - previousLimit) * rate;
+    } else {
+      incomeTaxAtNormalRates += (taxableIncome - previousLimit) * rate;
+      break;
+    }
+  }
+
+  const healthAndEducationCess = incomeTaxAtNormalRates * 0.04;
+  const totalTaxLiability = roundToNearestTen(
+    incomeTaxAtNormalRates + healthAndEducationCess
+  );
+
+  return { incomeTaxAtNormalRates, healthAndEducationCess, totalTaxLiability };
+};
+
+const calculateInterestIncome = (interestData) => {
+  return interestData.reduce((sum, item) => {
+    const amount =
+      item.data && Array.isArray(item.data) ? item.data[0]?.amount || 0 : 0;
+    return sum + (amount > 0 ? amount : 0);
+  }, 0);
+};
+
+const calculateTotalProfit = (data) => {
+  return Array.isArray(data)
+    ? data.reduce(
+        (sum, item) => sum + (item.totalProfit > 0 ? item.totalProfit : 0),
+        0
+      )
+    : 0;
+};
+
+const calculateSection80DD = async (userId) => {
+  try {
+    const disabilityData = await Disablility.findOne({ userId }).exec();
+
+    if (!disabilityData) {
+      return 0; // No disability data found
+    }
+
+    const { disabilityNature } = disabilityData.disabilityDetails;
+
+    let section80DDeduction = 0;
+
+    if (disabilityNature === "SevereDisability") {
+      section80DDeduction = 125000;
+    } else if (disabilityNature === "40%Disablility") {
+      section80DDeduction = 75000;
+    }
+
+    return section80DDeduction;
+  } catch (error) {
+    console.error("Error calculating Section 80DD deduction:", error);
+    return 0;
+  }
+};
 
 const taxableIncomeController = async (req, res) => {
   try {
@@ -55,29 +163,13 @@ const taxableIncomeController = async (req, res) => {
     const tdsIncome = await getTDSData(userId);
     const profitLossData = await getProfitLossData(userId);
 
-    // Prepare interest array
-    const interestArray = Array.isArray(interestData.data)
-      ? interestData.data
-      : [];
-
     const dividenData = await getDivdendData(userId);
 
     // Calculate total stock data (ensure no negative values are added)
-    const stockData = stockMututaldata.data
-      ? stockMututaldata.data.reduce(
-          (sum, item) => sum + (item.totalProfit > 0 ? item.totalProfit : 0),
-          0
-        ) || 0
-      : 0;
+    const stockData = calculateTotalProfit(stockMututaldata.data);
 
     // Calculate total interest income (ensure no negative values are added)
-    const totalInterestIncome = interestArray.reduce((sum, item) => {
-      if (item.data && Array.isArray(item.data)) {
-        const amount = item.data[0]?.amount || 0; // Adjust based on your data structure
-        return sum + (amount > 0 ? amount : 0);
-      }
-      return sum;
-    }, 0);
+    const totalInterestIncome = calculateInterestIncome(interestData.data);
 
     // Fallbacks for other data points, excluding negatives
     const foreignV = foreignData.data
@@ -163,6 +255,11 @@ const taxableIncomeController = async (req, res) => {
       }, 0);
     }
 
+    const medical80DData = (await MedicalInsuranece.findOne({ userId })) || {};
+    const section80DDeduction = calculateSection80DDeduction(medical80DData);
+    const section80DDeductionFor80D = await calculateSection80DD(userId);
+
+    const totalDeductions = section80DDeduction + section80DDeductionFor80D;
     // Calculate gross income, excluding negative values
     const grossIncome =
       totalInterestIncome +
@@ -183,8 +280,11 @@ const taxableIncomeController = async (req, res) => {
       Number(shortTermV) +
       Number(longTermV);
 
-    // Round gross income to the nearest 10 to get taxable income
     const taxableIncome = roundToNearestTen(grossIncome);
+    const grossIncomeAfterDeductions = Math.max(
+      grossIncome - totalDeductions,
+      0
+    );
 
     // Define New Regime tax slabs
     const taxSlabsNewRegime = [
@@ -199,35 +299,14 @@ const taxableIncomeController = async (req, res) => {
     ];
 
     // Calculate tax liability (Income Tax at Normal Rates)
-    let incomeTaxAtNormalRates = 0;
+    const {
+      incomeTaxAtNormalRates,
+      healthAndEducationCess,
+      totalTaxLiability,
+    } = calculateTaxLiability(grossIncomeAfterDeductions, taxSlabsNewRegime);
 
-    for (let i = 0; i < taxSlabsNewRegime.length; i++) {
-      const { limit, rate } = taxSlabsNewRegime[i];
-      const previousLimit = taxSlabsNewRegime[i - 1]?.limit || 0;
-
-      if (taxableIncome > limit) {
-        incomeTaxAtNormalRates += (limit - previousLimit) * rate;
-      } else {
-        incomeTaxAtNormalRates += (taxableIncome - previousLimit) * rate;
-        break;
-      }
-    }
-
-    // Include Health and Education Cess @ 4%
-    const healthAndEducationCess = incomeTaxAtNormalRates * 0.04;
-
-    console.log("inceome tax", incomeTaxAtNormalRates);
-    console.log("Health ", healthAndEducationCess);
-    // Calculate total tax liability
-    const totalTaxLiability = roundToNearestTen(
-      incomeTaxAtNormalRates + healthAndEducationCess
-    );
-
+    // Calculate tax due
     const taxDue = totalTaxLiability - totalTax;
-
-    const totalTaxI = roundToNearestTen(
-      incomeTaxAtNormalRates + healthAndEducationCess
-    );
     // Send response
     res.status(200).json({
       success: true,
@@ -238,7 +317,7 @@ const taxableIncomeController = async (req, res) => {
       taxLiability: totalTaxLiability, // Final liability after adding cess
       taxPaid: totalTax,
       taxDue: taxDue,
-      totalTaxI,
+      totalTaxI: totalTaxLiability,
     });
   } catch (error) {
     console.error("Error calculating gross income and tax liability:", error);
