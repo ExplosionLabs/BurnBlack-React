@@ -39,7 +39,7 @@ export default function SectionNavigation() {
       <div className="block md:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex w-full items-center justify-between rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium focus:outline-none bg-dark text-white"
+          className="flex w-full items-center justify-between rounded-md border border-gray-300 px-4 py-2 text-sm font-medium focus:outline-none bg-dark text-white"
         >
           <span>{activeSection.title}</span>
           {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -52,7 +52,7 @@ export default function SectionNavigation() {
                 key={section.path}
                 to={section.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  `flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                     isActive
                       ? "bg-dark text-white"
                       : section.status === "completed"
@@ -106,7 +106,7 @@ export default function SectionNavigation() {
         ))}
       </div>
 
-      <div className="flex items-center justify-between rounded-lg bg-blue-50 p-4">
+      <div className="flex items-center justify-between rounded-md bg-blue-50 p-4">
         <div className="flex items-center gap-2 text-sm">
           <CheckCircle size={20} className="text-green-600" />
           <span>File your taxes confidently with 100% accuracy — We've got you covered.</span>

@@ -68,7 +68,7 @@ const OtherDeduction = () => {
             onClick={() => setShowForm(!showForm)} // Toggle the form visibility
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-red-50 rounded-md flex items-center justify-center">
                 <svg
                   className="w-6 h-6 text-red-400"
                   fill="none"
@@ -133,7 +133,7 @@ const OtherDeduction = () => {
                   name="copyRightFee"
                   value={formData.copyRightFee}
                   onChange={(e) => handleChange('copyRightFee', e.target.value)}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -159,7 +159,7 @@ const OtherDeduction = () => {
                   name="patentIncome"
                   value={formData.patentIncome}
                   onChange={(e) => handleChange('patentIncome', e.target.value)}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -183,7 +183,7 @@ const OtherDeduction = () => {
                   name="bioWasteIncome"
                   value={formData.bioWasteIncome}
                   onChange={(e) => handleChange('bioWasteIncome', e.target.value)}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -206,7 +206,7 @@ const OtherDeduction = () => {
                   name="agniPathContri"
                   value={formData.agniPathContri}
                   onChange={(e) => handleChange('agniPathContri', e.target.value)}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -226,7 +226,7 @@ const OtherDeduction = () => {
                   name="rentPerMonth"
                   value={formData.rentPerMonth}
                   onChange={(e) => handleChange('rentPerMonth', e.target.value)}
-                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -241,7 +241,7 @@ const OtherDeduction = () => {
       name="noOFMonth"
       value={formData.noOFMonth}
       onChange={(e) => handleChange('noOFMonth', e.target.value)}
-      className="w-full pl-4 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      className="w-full pl-4 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
     >
       <option value="" disabled>Select months</option>
       {[...Array(12)].map((_, index) => (

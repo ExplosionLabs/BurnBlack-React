@@ -70,7 +70,7 @@ const TaxCollectedForm = () => {
   };
 
   return (
-    <form className="max-w-2xl mx-auto p-4 bg-white border rounded-lg">
+    <form className="max-w-2xl mx-auto p-4 bg-white border rounded-md">
       <h2 className="text-lg font-semibold mb-4">Tax Deducted at Source</h2>
       
       <label className="block mb-2">TAN of Deductor *</label>

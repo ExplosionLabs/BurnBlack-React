@@ -127,7 +127,7 @@ function Main() {
             </div>
 
             <div className="flex items-center  mb-8">
-              <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center">
+              <div className="w-14 h-14 bg-white rounded-md flex items-center justify-center">
                 <CreditCard className="w-6 h-6 text-blue-600" />
               </div>
               <div className="gap-3 row-span-2 ml-4">
@@ -169,7 +169,7 @@ function Main() {
                           updateDatabase(value);
                         }
                       }}
-                      className="w-full px-6 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                      className="w-full px-6 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                       maxLength={10}
                     />
                     <p className="mt-1 text-xs text-gray-500">
@@ -191,7 +191,7 @@ function Main() {
                         setDob(e.target.value);
                         updateDatabaseDob(e.target.value);
                       }}
-                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                      className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     />
                     <p className="mt-1 text-xs text-gray-500">
                       Specify date in a format like DD/MM/YYYY
@@ -210,7 +210,7 @@ function Main() {
                   </p>
                   <div className="flex flex-col lg:flex-row gap-4 mt-5">
                     <label
-                      className={`flex flex-col items-center gap-2 p-3 cursor-pointer border rounded-lg ${
+                      className={`flex flex-col items-center gap-2 p-3 cursor-pointer border rounded-md ${
                         verificationMethod === "it"
                           ? "border-blue-500 bg-blue-50"
                           : "border-gray-300"
@@ -235,7 +235,7 @@ function Main() {
                     </label>
 
                     <label
-                      className={`flex flex-col items-center gap-2 p-3 cursor-pointer border rounded-lg ${
+                      className={`flex flex-col items-center gap-2 p-3 cursor-pointer border rounded-md ${
                         verificationMethod === "aadhaar"
                           ? "border-blue-500 bg-blue-50"
                           : "border-gray-300"
@@ -264,7 +264,7 @@ function Main() {
                 {/* Buttons */}
                 <div className="flex gap-5 pt-6">
                   <button
-                    className="w-full  border text-dark  py-4 px-6  rounded-lg hover:bg-gray-200 focus:ring-4 focus:ring-blue-200 transition-colors"
+                    className="w-full  border text-dark  py-4 px-6  rounded-md hover:bg-gray-200 focus:ring-4 focus:ring-blue-200 transition-colors"
                     onClick={() => navigate("/fileITR/uploadForm16")}
                   >
                     Skip
@@ -277,7 +277,7 @@ function Main() {
                   </button>
                 </div>
               </div>
-              <div className="flex items-center gap-2 mt-5 rounded-lg">
+              <div className="flex items-center gap-2 mt-5 rounded-md">
                 <Shield className="w-5 h-5 text-gray-600" />
                 <p className="text-xs">
                   Burnblack is a Government authorized ERI license holder. Your

@@ -113,7 +113,7 @@ export default function Form16Upload() {
         </div>
 
         <div className="flex items-center  mb-8">
-          <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center">
+          <div className="w-14 h-14 bg-white rounded-md flex items-center justify-center">
             <UploadCloud className="w-6 h-6 text-blue-600" />
           </div>
           <div className="gap-3 row-span-2 ml-4">
@@ -133,7 +133,7 @@ export default function Form16Upload() {
           >
         <div className="bg-white rounded-xl p-6 shadow-sm border">
         <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
             <div className="flex items-start gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +166,7 @@ export default function Form16Upload() {
 
           <div className="">
             <div
-              className={`border-2 border-dashed rounded-lg p-12 text-center ${
+              className={`border-2 border-dashed rounded-md p-12 text-center ${
                 isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300"
               }`}
               onDragOver={handleDragOver}
@@ -194,7 +194,7 @@ export default function Form16Upload() {
               
               <label
                 htmlFor="fileInput"
-                className="bg-blue-900 hover:bg-dark text-white font-semibold py-4 px-6  rounded cursor-pointer flex items-center justify-center w-half mx-auto max-w-[250px]"
+                className="bg-blue-900 hover:bg-dark text-white font-semibold py-4 px-6  rounded-md cursor-pointer flex items-center justify-center w-half mx-auto max-w-[250px]"
               >
                                 <UploadCloud className="w-5 h-5 mr-2" />
 
@@ -226,7 +226,7 @@ export default function Form16Upload() {
             <div className="text-center mt-8 mb-3">
               <Link
                 to="/fileITR/personalDetail"
-                className="w-full  border text-dark  py-4 px-6  rounded-lg hover:bg-dark focus:ring-4 hover:text-white focus:ring-blue-200 transition-colors"
+                className="w-full  border text-dark  py-4 px-6  rounded-md hover:bg-dark focus:ring-4 hover:text-white focus:ring-blue-200 transition-colors"
               >
                 Continue Manual →
               </Link>
@@ -245,7 +245,7 @@ export default function Form16Upload() {
 
       <div className="lg:col-span-1">
 
-      <div className="bg-white text-white rounded-lg p-6">
+      <div className="bg-white text-white rounded-md p-6">
           <div className="flex items-center gap-2 mb-4 text-dark">
             <svg
               xmlns="http://www.w3.org/2000/svg"

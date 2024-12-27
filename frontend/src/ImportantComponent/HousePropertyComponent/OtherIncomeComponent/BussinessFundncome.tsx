@@ -118,7 +118,7 @@ const BussinessFundIncome = () => {
           name="entityType"
           value={formValues.entityType}
           onChange={handleInputChange}
-          className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
           <option value="">Select</option>
           <option value="115UA- Business Trust">115UA- Business Trust</option>
@@ -133,7 +133,7 @@ const BussinessFundIncome = () => {
           value={formValues.entityName}
           onChange={handleInputChange}
           placeholder="Enter name"
-          className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
       <div>
@@ -144,7 +144,7 @@ const BussinessFundIncome = () => {
           value={formValues.entityPAN}
           onChange={handleInputChange}
           placeholder="Enter PAN"
-          className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
       <div>
@@ -155,7 +155,7 @@ const BussinessFundIncome = () => {
           value={formValues.incomeShare}
           onChange={handleInputChange}
           placeholder="Enter share of income"
-          className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
       <div>
@@ -166,7 +166,7 @@ const BussinessFundIncome = () => {
           value={formValues.lossShare}
           onChange={handleInputChange}
           placeholder="Enter share of loss"
-          className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
       <div>
@@ -177,7 +177,7 @@ const BussinessFundIncome = () => {
           value={formValues.tdsAmount}
           onChange={handleInputChange}
           placeholder="Enter TDS amount"
-          className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
       {["Other Sources", "Capital Gains"].includes(selectedSection) && (
@@ -188,7 +188,7 @@ const BussinessFundIncome = () => {
               name="incomeNature"
               value={formValues.incomeNature}
               onChange={handleInputChange}
-              className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
               <option value="">Select Option</option>
               <option value="OtherSourceDividendIncome">OS- Dividend Income</option>
@@ -210,7 +210,7 @@ const BussinessFundIncome = () => {
                 name="receiptPeriod"
                 value={formValues.receiptPeriod}
                 onChange={handleInputChange}
-                className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
               >
                 <option value="">Select Option</option>
                 <option value="AprilToMidJune">April to mid June</option>
@@ -232,7 +232,7 @@ const BussinessFundIncome = () => {
             value={formValues.descriptionCode}
             onChange={handleInputChange}
             placeholder="Enter description code"
-            className="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
           />
         </div>
       )}
@@ -242,7 +242,7 @@ const BussinessFundIncome = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-3xl mx-auto p-6 bg-white border rounded-lg shadow-md"
+      className="max-w-3xl mx-auto p-6 bg-white border rounded-md shadow-md"
     >
       <div className="flex border-b">
         {["House Property", "Other Sources", "Capital Gains", "Exempt Income"].map((section) => (
@@ -264,13 +264,13 @@ const BussinessFundIncome = () => {
       <div className="flex justify-end space-x-4 mt-6">
         <button
           type="button"
-          className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+          className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
         >
           Back
         </button>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
           Save
         </button>

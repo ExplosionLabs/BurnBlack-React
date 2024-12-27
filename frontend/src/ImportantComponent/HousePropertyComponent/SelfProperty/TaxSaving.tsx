@@ -59,7 +59,7 @@ export default function TaxSavingsDetails({ data, onChange }: TaxSavingsDetailsP
               id="construction-year"
               value={data.constructionYear}
               onChange={(e) => handleChange("constructionYear", e.target.value)}
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Year</option>
               {years.map((year) => (
@@ -87,7 +87,7 @@ export default function TaxSavingsDetails({ data, onChange }: TaxSavingsDetailsP
                 id="interest-during-construction"
                 value={data.interestDuringConstruction || ''}
                 onChange={(e) => handleChange("interestDuringConstruction", Number(e.target.value))}
-                className="w-full pl-8 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-8 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter amount"
               />
             </div>
@@ -110,7 +110,7 @@ export default function TaxSavingsDetails({ data, onChange }: TaxSavingsDetailsP
                 id="interest-after-completion"
                 value={data.interestAfterCompletion || ''}
                 onChange={(e) => handleChange("interestAfterCompletion", Number(e.target.value))}
-                className="w-full pl-8 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-8 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter amount"
               />
             </div>
@@ -129,7 +129,7 @@ export default function TaxSavingsDetails({ data, onChange }: TaxSavingsDetailsP
                 id="total-deduction"
                 value={data.totalDeduction || '0'}
                 readOnly
-                className="w-full pl-8 p-2 bg-gray-50 border rounded-lg"
+                className="w-full pl-8 p-2 bg-gray-50 border rounded-md"
               />
             </div>
             <p className="text-sm text-gray-500">Maximum deduction that can be claimed in a FY is Rs. 2,00,000</p>

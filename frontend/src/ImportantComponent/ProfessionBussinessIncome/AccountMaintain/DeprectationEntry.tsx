@@ -76,7 +76,7 @@ const DeprectationEntry = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-lg">
             <div className="mb-6 flex items-center gap-4">
         <Link to="/fileITR/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
           <ArrowLeft className="h-6 w-6" />

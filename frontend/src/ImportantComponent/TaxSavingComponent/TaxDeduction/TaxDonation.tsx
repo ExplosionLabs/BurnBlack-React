@@ -10,7 +10,7 @@ export default function TaxDonation() {
         onClick={() => setShowForm(!showForm)} // Toggle the form visibility
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-red-50 rounded-md flex items-center justify-center">
             <svg
               className="w-6 h-6 text-red-400"
               fill="none"
@@ -60,7 +60,7 @@ export default function TaxDonation() {
           </div>
           <Link
             to="/tax-saving/deduction-80g"
-            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
           >
             Add Details
           </Link>
@@ -73,7 +73,7 @@ export default function TaxDonation() {
           </div>
           <Link
             to="/tax-saving/deduction-80gga"
-            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
           >
             Add Details
           </Link>
@@ -86,7 +86,7 @@ export default function TaxDonation() {
           </div>
           <Link
             to="/tax-saving/contri-party"
-            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
           >
             Add Details
           </Link>

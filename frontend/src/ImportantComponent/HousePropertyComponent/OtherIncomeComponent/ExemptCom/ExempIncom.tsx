@@ -103,7 +103,7 @@ export default function ExemptIncome() {
       {interestData.map((section) => (
         <div 
           key={section.type}
-          className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
+          className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden"
         >
           <div
             className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50"

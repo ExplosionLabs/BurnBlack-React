@@ -85,7 +85,7 @@ export default function BankDetails() {
  
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-6 w-full">
+    <div className="bg-white rounded-md shadow-sm border p-6 w-full">
     <div className="flex items-center justify-between"   onClick={() => setIsExpanded(!isExpanded)}>
           <div className="flex items-center space-x-4">
             <BuildingBankIcon className="h-8 w-8 text-blue-500" />

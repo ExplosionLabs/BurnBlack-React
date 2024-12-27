@@ -172,7 +172,7 @@ const BussinessIncome: React.FC = () => {
       </div>
 
       {/* Main Form */}
-      <div className="rounded-lg border bg-white p-6 shadow-sm">
+      <div className="rounded-md border bg-white p-6 shadow-sm">
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span className="text-blue-600">

@@ -74,7 +74,7 @@ export default function PersonalDetails() {
   }
 
   return (
-    <div className="mx-auto bg-white border rounded-lg overflow-hidden shadow-lg max-w-4xl">
+    <div className="mx-auto bg-white border rounded-md overflow-hidden shadow-lg max-w-4xl">
       <div onClick={toggleOpen} className="cursor-pointer p-6 border-b border-gray-200 flex items-center justify-between bg-gray-50">
         <div className="flex items-center space-x-4">
           <CircleUserRound className="w-8 h-8 text-blue-500" />

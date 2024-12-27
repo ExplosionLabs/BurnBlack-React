@@ -8,7 +8,7 @@ function Sliderbar() {
   return (
     <>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4 sm:p-6">
-      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-sm p-4 sm:p-6">
       <div className="flex items-start gap-4">
         <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
         <div>
@@ -21,7 +21,7 @@ function Sliderbar() {
       </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-sm p-4 sm:p-6">
       <div className="flex items-start gap-4">
         <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
         <div>
@@ -34,7 +34,7 @@ function Sliderbar() {
       </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-sm p-4 sm:p-6">
       <div className="flex items-start gap-4">
         <PlayCircle className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
         <div>
@@ -46,7 +46,7 @@ function Sliderbar() {
       </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-sm p-4 sm:p-6">
       <div className="flex items-start gap-4">
         <PlayCircle className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
         <div>
