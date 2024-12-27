@@ -4,6 +4,7 @@ import { RootState } from "@/stores/store";
 import { uploadForm16 } from "@/api/fileITR";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, CreditCard, UploadCloud } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface FAQItem {
   id: string;
@@ -125,6 +126,11 @@ export default function Form16Upload() {
           </div>
         </div>
 
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          >
         <div className="bg-white rounded-xl p-6 shadow-sm border">
         <div className="space-y-6">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -185,11 +191,14 @@ export default function Form16Upload() {
                 Drop PDF file here or click to select
               </p>
               <p className="text-sm text-gray-500 mb-6">OR</p>
+              
               <label
                 htmlFor="fileInput"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6  rounded cursor-pointer"
+                className="bg-blue-900 hover:bg-dark text-white font-semibold py-4 px-6  rounded cursor-pointer flex items-center justify-center w-half mx-auto max-w-[250px]"
               >
-                Browse Files
+                                <UploadCloud className="w-5 h-5 mr-2" />
+
+                Browse Files 
               </label>
               <input
                 id="fileInput"
@@ -227,6 +236,8 @@ export default function Form16Upload() {
           
         </div>
       </div>
+
+      </motion.div>
 
       </div>
 

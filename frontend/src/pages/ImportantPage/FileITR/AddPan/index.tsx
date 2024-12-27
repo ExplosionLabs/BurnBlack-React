@@ -8,6 +8,7 @@ import axios from "axios";
 import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
 function Main() {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
@@ -140,6 +141,11 @@ function Main() {
             </div>
 
             {/* Main Form */}
+            <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          >
             <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="space-y-6">
                 {/* PAN and DOB Fields */}
@@ -279,6 +285,7 @@ function Main() {
                 </p>
               </div>
             </div>
+            </motion.div>
           </div>
         </div>
 

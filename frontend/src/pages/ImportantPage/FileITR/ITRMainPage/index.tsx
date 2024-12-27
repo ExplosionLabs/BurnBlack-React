@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle, MessageCircle, PlayCircle, Shield, CircleDashe
 import Sliderbar from "@/Layout/Sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 function Main() {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -101,6 +102,12 @@ function Main() {
           <ArrowRight className="w-4 h-4 text-blue-500" />
           </div>
 
+          <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          >
+
           <div className="flex flex-col sm:flex-row gap-4 w-full">
           <Link to="/fileITR/addPanCardDetail" className="flex-1">
             <button className="w-full flex items-center bg-orange-500		 hover:bg-grey-500 text-white font-semibold py-4 px-6 rounded-md transition duration-300 ease-in-out">
@@ -121,6 +128,7 @@ function Main() {
             </button>
           </Link>
           </div>
+          </motion.div>
 
           <div className="flex items-center mt-5 gap-2">
           <Shield className="w-5 h-5" />
