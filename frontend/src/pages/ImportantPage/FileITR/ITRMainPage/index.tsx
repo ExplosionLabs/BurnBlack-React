@@ -105,7 +105,7 @@ function Main() {
           <Link to="/fileITR/addPanCardDetail" className="flex-1">
             <button className="w-full flex items-center bg-orange-500		 hover:bg-grey-500 text-white font-semibold py-4 px-6 rounded-md transition duration-300 ease-in-out">
             <AlertCircle className="w-5 h-5 mr-2" />
-            Complete Your E-Filing
+            Complete Your E-Filing →
             </button>
           </Link>
           <Link to="/fileITR/addPanCardDetail" className="flex-1">
@@ -124,7 +124,7 @@ function Main() {
 
           <div className="flex items-center mt-5 gap-2">
           <Shield className="w-5 h-5" />
-          <span className="text-xs">Burnblack is a Govt. authorized ERI license holder. Your data is 100% secure with Cleartax.</span>
+          <span className="text-xs">Burnblack is a Govt. authorized ERI license holder. Your data is 100% secure with Burnblack.</span>
           </div>
         </div>
         </div>

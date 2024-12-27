@@ -33,7 +33,7 @@ const Navbar = () => {
       };
     return (
       <nav className="border-b bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-4">
+        <div className="mx-auto max-w-screen-2xl px-4">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             
@@ -92,12 +92,18 @@ const Navbar = () => {
   </button>
 
   <div className="relative">
+    <div className="flex col-span-1 items-center gap-2"  onClick={() => setIsProfileOpen(!isProfileOpen)}>
+
     <button
-      onClick={() => setIsProfileOpen(!isProfileOpen)}
+     
       className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-medium text-gray-700"
     >
-   {getInitials(userData?.name)}
+   {getInitials(userData?.name)} 
     </button>
+    {userData?.name}
+
+    </div>
+    
 
     {isProfileOpen && (
       <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
