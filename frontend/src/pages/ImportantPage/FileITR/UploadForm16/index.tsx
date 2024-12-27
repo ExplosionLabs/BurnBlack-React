@@ -36,6 +36,7 @@ const faqs: FAQItem[] = [
     answer:
       "Yes, if you have switched jobs during the financial year, you can upload Form 16 from each employer.",
   },
+  
 ];
 
 export default function Form16Upload() {
@@ -93,8 +94,10 @@ export default function Form16Upload() {
   };
 
   return (
-    <div className="lg:col-span-2 p-6">
-      <div className="flex items-center gap-4 mb-8 mx-auto p-6 lg:p-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 items-center">
+        <div className="lg:col-span-2">
+      
+      <div className="mx-auto p-6 lg:p-8">
         <div className="flex items-center justify-between gap-3 mb-6">
           <button
             className="flex bg-gray-200 p-1 hover:bg-gray-300 border border-gray-300 rounded-full items-center gap-2 text-gray-600 pr-3"
@@ -104,7 +107,7 @@ export default function Form16Upload() {
           </button>
 
           <p className="ml-auto text-blue-600 text-sm font-medium bg-blue-100 border border-blue-200 rounded-full px-4 py-1">
-            Step 1/3
+            Step 2/3
           </p>
         </div>
 
@@ -121,9 +124,8 @@ export default function Form16Upload() {
             </p>
           </div>
         </div>
-      </div>
 
-      <div className="grid md:grid-cols-[1fr,300px] gap-6">
+        <div className="bg-white rounded-xl p-6 shadow-sm border">
         <div className="space-y-6">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start gap-2">
@@ -156,7 +158,7 @@ export default function Form16Upload() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm border">
+          <div className="">
             <div
               className={`border-2 border-dashed rounded-lg p-12 text-center ${
                 isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300"
@@ -182,10 +184,10 @@ export default function Form16Upload() {
               <p className="text-lg mb-2">
                 Drop PDF file here or click to select
               </p>
-              <p className="text-sm text-gray-500 mb-4">OR</p>
+              <p className="text-sm text-gray-500 mb-6">OR</p>
               <label
                 htmlFor="fileInput"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-6  rounded cursor-pointer"
               >
                 Browse Files
               </label>
@@ -212,19 +214,28 @@ export default function Form16Upload() {
               </div>
             )}
 
-            <div className="text-center">
+            <div className="text-center mt-8 mb-3">
               <Link
                 to="/fileITR/personalDetail"
-                className="w-full  border text-dark  py-4 px-6  rounded-lg hover:bg-gray-200 focus:ring-4 focus:ring-blue-200 transition-colors"
+                className="w-full  border text-dark  py-4 px-6  rounded-lg hover:bg-dark focus:ring-4 hover:text-white focus:ring-blue-200 transition-colors"
               >
-                Continue without Form 16 (Manual Entry)
+                Continue Manual →
               </Link>
             </div>
+            
           </div>
+          
         </div>
+      </div>
 
-        <div className="bg-gray-800 text-white rounded-lg p-6">
-          <div className="flex items-center gap-2 mb-4">
+      </div>
+
+      </div>
+
+      <div className="lg:col-span-1">
+
+      <div className="bg-white text-white rounded-lg p-6">
+          <div className="flex items-center gap-2 mb-4 text-dark">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -239,7 +250,7 @@ export default function Form16Upload() {
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h2 className="font-semibold">FAQs</h2>
+            <h2 className="font-semibold text-dark">FAQs</h2>
           </div>
           <div className="space-y-2">
             {faqs.map((faq) => (
@@ -248,11 +259,11 @@ export default function Form16Upload() {
                   onClick={() => toggleFaq(faq.id)}
                   className="flex justify-between items-center w-full text-left py-2"
                 >
-                  <span className="text-sm">{faq.question}</span>
-                  <span>{openFaqId === faq.id ? "−" : "+"}</span>
+                  <span className="text-sm text-dark font-medium">{faq.question}</span>
+                  <span className="text-dark">{openFaqId === faq.id ? "−" : "+"}</span>
                 </button>
                 {openFaqId === faq.id && (
-                  <p className="text-sm text-gray-300 mt-2 mb-4">
+                  <p className="text-sm text-gray-800 mt-2 mb-4">
                     {faq.answer}
                   </p>
                 )}
@@ -260,7 +271,8 @@ export default function Form16Upload() {
             ))}
           </div>
         </div>
-      </div>
+        </div>
+
     </div>
   );
 }

@@ -109,7 +109,7 @@ function Main() {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-3 items-center">
         <div className="lg:col-span-2">
           <div className=" mx-auto p-6 lg:p-8">
             <div className="flex items-center justify-between gap-3 mb-6">
