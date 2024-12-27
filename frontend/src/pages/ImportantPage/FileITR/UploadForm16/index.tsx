@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/stores/store'
 import { uploadForm16 } from '@/api/fileITR'
 import { Link, useNavigate } from 'react-router-dom'
+import { ArrowLeft, CreditCard, UploadCloud } from 'lucide-react'
 
 interface FAQItem {
   id: string
@@ -88,8 +89,34 @@ const navigate=useNavigate();
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <div className="flex items-center gap-4 mb-8">
+    <div className="lg:col-span-2 p-6">
+      <div className="flex items-center gap-4 mb-8 mx-auto p-6 lg:p-8">
+      <div className="flex items-center justify-between gap-3 mb-6">
+              <button
+                className="flex bg-gray-200 p-1 hover:bg-gray-300 border border-gray-300 rounded-full items-center gap-2 text-gray-600 pr-3"
+                onClick={() => navigate("/fileITR")}
+              >
+                <ArrowLeft className="pl-2 w-5 h-5 text-gray-600" /> Back
+              </button>
+
+              <p className="ml-auto text-blue-600 text-sm font-medium bg-blue-100 border border-blue-200 rounded-full px-4 py-1">
+                Step 1/3
+              </p>
+            </div>
+
+            <div className="flex items-center  mb-8">
+              <div className="w-14 h-14 bg-white rounded-lg flex items-center justify-center">
+                <UploadCloud className="w-6 h-6 text-blue-600" />
+              </div>
+              <div className="gap-3 row-span-2 ml-4">
+                <h1 className="flex text-xl font-semibold text-gray-800 items-center gap-2">
+                  Link your PAN to auto-fill details{" "}
+                </h1>
+                <p className="text-sm text-gray-500">
+                  This will help us fetch your details from the IT department.
+                </p>
+              </div>
+            </div>
         <Link to="/fileITR/incomeSources" className="text-gray-600 hover:text-gray-800">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
