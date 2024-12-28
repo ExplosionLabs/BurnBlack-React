@@ -18,6 +18,8 @@ const Loans = require("../../model/TaxSaving/TaxSavingDeduction/MedicalInsuratio
 const MedicalInsuranece = require("../../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/MedicalInsuranece");
 const SpecificDiseases = require("../../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/SpecficDiseasDisablity");
 const Disablility = require("../../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Disablility");
+const TaxSavingInvestment = require("../../model/TaxSaving/TaxSavingDeduction/TaxSavingInvestment");
+const OtherDeduction = require("../../model/TaxSaving/TaxSavingDeduction/OtherDeduction/OtherDeduction");
 // Function to get all interest data for a user
 const getAllInterestData = async (userId) => {
   try {
@@ -434,6 +436,149 @@ const getMedicalInsuranceData = async (userId) => {
     return { success: false, message: "Internal Server Error" };
   }
 };
+const getTaxSavingData = async (userId) => {
+  try {
+    // Query the database to get the data for the specified user
+
+    const taxInvestments = await TaxSavingInvestment.findOne({ userId });
+    const employernps = await calculateSection80CCD2(userId);
+    const totalEmployernps =
+      employernps.success !== false ? employernps.data : 0;
+    let totalDeductions = 0;
+    if (taxInvestments) {
+      totalDeductions += Math.min(taxInvestments.section80C, 150000);
+      totalDeductions += Math.min(
+        taxInvestments.pensionContribution80CCC,
+        150000
+      );
+      totalDeductions += Math.min(
+        taxInvestments.npsEmployeeContribution,
+        50000
+      );
+      totalDeductions += taxInvestments.savingsInterest80TTA;
+      totalDeductions += totalEmployernps;
+    }
+
+    if (totalDeductions) {
+      return { success: true, data: totalDeductions };
+    } else {
+      return {
+        success: false,
+        message: "No data found for the specified user",
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Internal Server Error" };
+  }
+};
+const getTaxSection80GG = async (userId) => {
+  try {
+    const form16Data = await Form16DataManual.findOne({ userId });
+
+    // Fetch the other deduction data (rent details) for the user
+    const otherDeduction = await OtherDeduction.findOne({ userId });
+
+    if (!otherDeduction) {
+      return {
+        success: false,
+        message: "Rent details not found for the specified user",
+      };
+    }
+
+    // Check if there is no House Rent Allowance (HRA) in the salary breakup
+    const hasHRA = form16Data.salaryBreakup.some(
+      (item) => item.type.toLowerCase() === "house rent allowance"
+    );
+
+    if (hasHRA) {
+      return { message: "HRA is present. Section 80GG is not applicable." };
+    }
+
+    // Calculate rent paid during the year
+    const totalRentPaid =
+      otherDeduction.rentPerMonth * otherDeduction.noOFMonth;
+
+    // Calculate the net taxable income
+    const netTaxableIncome =
+      form16Data.grossSalary -
+      form16Data.standardDeduction -
+      form16Data.professionalTax;
+
+    // Calculate the deductions under Section 80GG
+    const deduction1 = totalRentPaid - 0.1 * netTaxableIncome; // Rent paid minus 10% of taxable income
+    const deduction2 = 5000 * 12;
+    const deduction3 = 0.25 * netTaxableIncome; // 25% of net taxable income
+
+    // Find the least of the three deductions
+    const section80GGDeduction = Math.min(deduction1, deduction2, deduction3);
+    const data = Math.max(0, section80GGDeduction);
+    if (data) {
+      return { success: true, data: data };
+    } else {
+      return {
+        success: false,
+        message: "No applicable deduction found",
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Internal Server Error" };
+  }
+};
+
+const calculateSection80CCD2 = async (userId) => {
+  try {
+    const form16Data = await Form16DataManual.findOne({ userId });
+
+    // Ensure basic salary and dearness allowance are available
+    const basicSalary = form16Data.salaryBreakup.find(
+      (item) => item.type.toLowerCase() === "Basic Pay"
+    )?.amount;
+    const dearnessAllowance = form16Data.salaryBreakup.find(
+      (item) => item.type.toLowerCase() === "Dearness Allowance"
+    )?.amount;
+
+    if (!basicSalary || !dearnessAllowance) {
+      return {
+        message:
+          "Basic Salary or Dearness Allowance is missing. Section 80CCD(2) calculation cannot be done.",
+      };
+    }
+
+    // Employer contribution to NPS (if available)
+    const employerContribution = form16Data.salaryBreakup.find(
+      (item) => item.type.toLowerCase() === "nps"
+    )?.amount;
+
+    if (!employerContribution) {
+      return {
+        message:
+          "Employer contribution to NPS is missing. No deduction under Section 80CCD(2).",
+      };
+    }
+
+    // Calculate the maximum contribution allowed under Section 80CCD(2)
+    const maxContribution = 0.1 * (basicSalary + dearnessAllowance); // 10% of (Basic + DA)
+
+    // The deduction will be the lesser of employer's contribution or the maximum allowed
+    const section80CCD2Deduction = Math.min(
+      employerContribution,
+      maxContribution
+    );
+    if (section80CCD2Deduction) {
+      return { success: true, data: section80CCD2Deduction };
+    } else {
+      return {
+        success: false,
+        message: "No data found for the specified user",
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Internal Server Error" };
+  }
+};
 
 module.exports = {
   getAllInterestData,
@@ -454,4 +599,6 @@ module.exports = {
   getTDSData,
   getLoansData,
   getMedicalInsuranceData,
+  getTaxSavingData,
+  getTaxSection80GG,
 };
