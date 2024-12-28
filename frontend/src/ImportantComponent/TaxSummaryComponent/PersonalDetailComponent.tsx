@@ -4,14 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import { CircleUserRound, Pencil } from 'lucide-react';
+import { useTaxData } from '@/api/taxCaluatorhook';
 
 const PersonalDetailComponent = () => {
   const [personalDetails, setPersonalDetails] = useState<any>({});
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 const [panNumber,setPanNumber]=useState("");
+const {itrType}=useTaxData() || {};
+const currentYear = new Date().getFullYear();
+const sessionYear = `${currentYear}-${currentYear + 1}`;
 
-  
   useEffect(() => {
 
     const fetchContactDetail = async () => {
@@ -122,7 +125,7 @@ const [panNumber,setPanNumber]=useState("");
           >
             <span className="text-indigo-600 font-medium">Assessment Year</span>
             <div className="flex items-center gap-4">
-              <span className="text-gray-900">2023-2024</span>
+              <span className="text-gray-900">{sessionYear}</span>
             
             </div>
           </button>
@@ -136,7 +139,7 @@ const [panNumber,setPanNumber]=useState("");
           >
             <span className="text-indigo-600 font-medium">ITR Type</span>
             <div className="flex items-center gap-4">
-              <span className="text-gray-900">ITR 3</span>
+              <span className="text-gray-900">{itrType?itrType:null}</span>
             
             </div>
           </button>

@@ -10,7 +10,7 @@ export function useTaxData() {
   const [incomeTaxAtNormalRates,setIncomeTaxAtNormalRates]=useState("");
   const [healthAndEducationCess,setHealthAndEducationCess]=useState("");
   const [totalTaxI,setTotalTaxI]=useState("");
-
+ const [itrType,setITRType]=useState("");
   useEffect(() => {
     const fetchGrossIncome = async () => {
       try {
@@ -29,6 +29,7 @@ export function useTaxData() {
           setIncomeTaxAtNormalRates(data.incomeTaxAtNormalRates);
           setHealthAndEducationCess(data.healthAndEducationCess);
           setTotalTaxI(data.totalTaxI);
+          setITRType(data.itrType);
         }
       } catch (error) {
         console.error('Error fetching gross income:', error);
@@ -38,5 +39,5 @@ export function useTaxData() {
     fetchGrossIncome();
   }, []);
 
-  return { grossIncome, taxableIncome, taxLiability, taxPaid, taxDue ,incomeTaxAtNormalRates,healthAndEducationCess,totalTaxI};
+  return { grossIncome, taxableIncome, taxLiability, taxPaid, taxDue ,incomeTaxAtNormalRates,healthAndEducationCess,totalTaxI,itrType};
 }
