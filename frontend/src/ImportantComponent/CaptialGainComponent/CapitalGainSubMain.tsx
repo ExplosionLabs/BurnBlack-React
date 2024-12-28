@@ -688,7 +688,7 @@ setIsGoldModalOpen(false);
         </div>
   
     <div className="flex flex-col gap-4">
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -713,7 +713,7 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
 
     
     </div>
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <BarChart2  className="w-6 h-6 text-blue-600" />
@@ -734,7 +734,7 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
   </div>
 
   {/* Sale of Land or Building */}
-  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+  <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <BarChart2  className="w-6 h-6 text-blue-600" />
@@ -755,7 +755,7 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
   </div>
 
   {/* Stock Options & RSUs */}
-  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+  <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <BarChart2  className="w-6 h-6 text-blue-600" />
@@ -776,7 +776,7 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
   </div>
 
   {/* Bonds and Debentures */}
-  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+  <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <BarChart2 className="w-6 h-6 text-blue-600" />
@@ -797,7 +797,7 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
   </div>
 
   {/* Gold, Jewellery, and Others */}
-  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+  <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <BarChart2  className="w-6 h-6 text-blue-600" />
@@ -816,7 +816,7 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
       </button>
     </div>
   </div>
-  <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+  <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <BarChart2  className="w-6 h-6 text-blue-600" />

@@ -135,7 +135,7 @@ const HouseAddressComponent: React.FC<{
               value={data.flatNo}
               onChange={(e) => handleChange('flatNo', e.target.value)}
               required
-              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
             />
           </div>
 
@@ -145,7 +145,7 @@ const HouseAddressComponent: React.FC<{
               type="text"
               value={data.premiseName}
               onChange={(e) => handleChange('premiseName', e.target.value)}
-              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
             />
           </div>
 
@@ -155,7 +155,7 @@ const HouseAddressComponent: React.FC<{
               type="text"
               value={data.road}
               onChange={(e) => handleChange('road', e.target.value)}
-              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
             />
           </div>
 
@@ -169,7 +169,7 @@ const HouseAddressComponent: React.FC<{
               value={data.area}
               onChange={(e) => handleChange('area', e.target.value)}
               required
-              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
             />
           </div>
 
@@ -183,7 +183,7 @@ const HouseAddressComponent: React.FC<{
               value={data.pincode}
               onChange={(e) => handleChange('pincode', e.target.value)}
               required
-              className="mt-1 w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
             />
           </div>
 
@@ -222,7 +222,7 @@ const HouseAddressComponent: React.FC<{
                 type="text"
                 value={data.city}
                 onChange={(e) => handleChange('city', e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-300"
+                className="w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
               />
             </div>
           </div>

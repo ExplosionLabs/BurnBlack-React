@@ -109,13 +109,13 @@ export default function AddressSection() {
   
 
   return (
-    <div className="w-full  mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="w-full  mx-auto bg-white border rounded-md overflow-hidden">
           <div className="cursor-pointer p-6 border-b border-gray-200" onClick={toggleOpen}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <MapPin className="h-8 w-8 text-blue-500" />
             <div>
-              <h2 className="text-xl font-semibold text-gray-800">Your Address</h2>
+              <h2 className="text-base font-semibold text-gray-800">Your Address</h2>
               <p className="text-sm text-gray-600">
               You can provide either your current address or permanent address of residence
               </p>

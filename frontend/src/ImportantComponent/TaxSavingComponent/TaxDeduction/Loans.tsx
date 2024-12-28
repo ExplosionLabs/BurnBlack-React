@@ -69,7 +69,7 @@ const Loans = () => {
         onClick={() => setShowForm(!showForm)} // Toggle the form visibility
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-red-50 rounded-md flex items-center justify-center">
             <svg
               className="w-6 h-6 text-red-400"
               fill="none"
@@ -134,7 +134,7 @@ const Loans = () => {
               name="eduLoans"
               value={formData.eduLoans}
               onChange={(e) => handleChange('eduLoans', e.target.value)}
-              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -163,7 +163,7 @@ const Loans = () => {
               name="homeLoans1617"
               value={formData.homeLoans1617}
               onChange={(e) => handleChange('homeLoans1617', e.target.value)}
-              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -192,7 +192,7 @@ const Loans = () => {
               name="homeLoans1922"
               value={formData.homeLoans1922}
               onChange={(e) => handleChange('homeLoans1922', e.target.value)}
-              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -218,7 +218,7 @@ const Loans = () => {
               name="electricVehicle"
               value={formData.electricVehicle}
               onChange={(e) => handleChange('electricVehicle', e.target.value)}
-              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-8 pr-4 py-2 border border-gray-200 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>

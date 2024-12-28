@@ -43,7 +43,7 @@ const TaxSummarySection = () => {
   };
 
   return (
-    <div className="w-full bg-white rounded-lg p-6 border">
+    <div className="w-full bg-white rounded-md p-6 border">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center">
           <IndianRupee className="w-4 h-4 text-blue-600" />

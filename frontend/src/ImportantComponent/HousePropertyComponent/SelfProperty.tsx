@@ -153,7 +153,7 @@ const SelfProperty: React.FC = () => {
           id="propertyType"
           value={formData.propertyType}
           onChange={handlePropertyTypeChange}
-          className="w-full md:w-[400px] p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full md:w-[400px] p-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         >
           <option value="Self Occupied House Property">Self Occupied House Property</option>
           <option value="Deemed Let Out Property">Deemed Let Out Property</option>

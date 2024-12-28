@@ -41,9 +41,9 @@ const RentalIncomeDetails: React.FC<{
 
   return (
     <>
-      <div className="rounded-lg border bg-white p-6">
+      <div className="rounded-md border bg-white p-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-50">
+          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-red-50">
             <svg
               className="h-6 w-6 text-red-500"
               fill="none"

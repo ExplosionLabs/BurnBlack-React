@@ -133,7 +133,7 @@ const handleFormChange = (
         onClick={() => setShowForm(!showForm)} // Toggle the form visibility
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-red-50 rounded-md flex items-center justify-center">
             <svg
               className="w-6 h-6 text-red-400"
               fill="none"

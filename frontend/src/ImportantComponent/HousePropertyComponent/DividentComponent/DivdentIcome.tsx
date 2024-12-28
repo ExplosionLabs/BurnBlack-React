@@ -198,14 +198,14 @@ const DividentIncome: React.FC = () => {
         </p>
 
         {/* Main Card */}
-        <div className="border rounded-lg p-6 bg-white shadow-sm">
+        <div className="border rounded-md p-6 bg-white shadow-sm">
           <div className="flex items-start gap-2 mb-6">
             <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm">✓</div>
             <h2 className="text-lg font-medium">Dividend Income from Equities, Stocks, Mutual Funds, etc.</h2>
           </div>
 
           {/* Total and Actions */}
-          <div className="bg-gray-50 p-6 rounded-lg mb-6">
+          <div className="bg-gray-50 p-6 rounded-md mb-6">
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center gap-2">
                 <span className="text-gray-600">Total Dividend Income</span>

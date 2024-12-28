@@ -194,7 +194,7 @@ const  Form16Manually = () => {
 
     <div className="space-y-6 sm:space-y-8">
       {/* Employer & TDS Details */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">Employer & TDS Details</h2>
         <div className="space-y-4 sm:space-y-6">
           <div>
@@ -260,7 +260,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Salary Breakup */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">Salary Breakup</h2>
 
         <div className="space-y-4 sm:space-y-6">
@@ -343,7 +343,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Perquisites */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">1(b) Perquisites under section 17(2)*</h2>
         <div className="space-y-4">
           <div className="relative">
@@ -393,7 +393,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Profits in lieu of salary */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">1(c) Profits in lieu of salary under section 17(3)*</h2>
         <div className="space-y-4">
           <div className="relative">
@@ -443,7 +443,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Income under section 89A - notified country */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">Income under section 89A - notified country</h2>
         <div className="space-y-4">
           <div className="relative">
@@ -492,7 +492,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Income under section 89A - other than notified country */}
-      <div className="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+      <div className="bg-white rounded-md shadow-md p-4 flex justify-between items-center">
         <h2 className="font-semibold  text-gray-700">1(e) Income under section 89A - other than notified country</h2>
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
@@ -507,7 +507,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Income taxable during the previous year */}
-      <div className="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+      <div className="bg-white rounded-md shadow-md p-4 flex justify-between items-center">
         <h2 className="font-semibold text-gray-700">1(f) Income taxable during the previous year on which relief u/s 89A was claimed in any earlier previous year</h2>
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
@@ -522,7 +522,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Exempt allowances under section 10 */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">2. Exempt allowances under section 10*</h2>
         <div className="space-y-4">
           <div className="relative">
@@ -573,7 +573,7 @@ const  Form16Manually = () => {
       </div>
 
       {/* Balance */}
-      <div className="flex justify-between bg-white rounded-lg shadow-md p-4 items-center">
+      <div className="flex justify-between bg-white rounded-md shadow-md p-4 items-center">
         <h2 className="font-semibold text-gray-700">Balance (1 - 2)</h2>
         <div className="">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
@@ -585,7 +585,7 @@ const  Form16Manually = () => {
           />
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">4. Deductions and Relief</h2>
         <div className="space-y-4 sm:space-y-6">
           <div>
@@ -649,7 +649,7 @@ const  Form16Manually = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+      <div className="bg-white rounded-md shadow-md p-4 sm:p-6">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-700">Employer & TDS Details</h2>
         <div className="space-y-4 sm:space-y-6">
           <div>

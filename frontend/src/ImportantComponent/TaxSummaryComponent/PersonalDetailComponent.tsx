@@ -57,10 +57,10 @@ const [panNumber,setPanNumber]=useState("");
  
 
       <div className="">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+      <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-50 rounded-lg">
+            <div className="p-2 bg-red-50 rounded-md">
             <CircleUserRound className="w-5 h-5" />
             </div>
             <h1 className="text-xl font-semibold text-gray-900">Personal Information</h1>
