@@ -10,7 +10,7 @@ function Form16Main() {
 
   return (
 
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
   {/* Header Section */}
   <div className="flex items-center justify-between">
     <div className="flex items-center gap-4">
@@ -43,7 +43,7 @@ function Form16Main() {
   </div>
 
   {/* Salary Details Section */}
-  {/* <div className="mt-4 bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+  {/* <div className="mt-4 bg-gray-50 rounded-md p-4 flex items-center justify-between">
     <div className="flex items-center space-x-2">
       <span className="font-medium text-gray-900">Tata Consultancy Services Ltd.</span>
     </div>
@@ -55,7 +55,7 @@ function Form16Main() {
   </div> */}
 </div>
 
-    // <div className="p-6 bg-white rounded-lg shadow-sm border">
+    // <div className="p-6 bg-white rounded-md shadow-sm border">
     //   <div className="space-y-4">
     //     {/* Header Section */}
     //     <div className="flex items-center justify-between">
@@ -86,7 +86,7 @@ function Form16Main() {
     //     </div>
 
     //     {/* Salary Entry */}
-    //     <div className="mt-4 ml-4 p-4 bg-gray-50 rounded-lg flex items-center justify-between">
+    //     <div className="mt-4 ml-4 p-4 bg-gray-50 rounded-md flex items-center justify-between">
     //       <div className="flex items-center space-x-2">
     //         <span className="font-medium text-gray-900">Tata Consultancy Services Ltd.</span>
     //         {/* <ExclamationTriangleIcon className="w-5 h-5 text-orange-500" /> */}

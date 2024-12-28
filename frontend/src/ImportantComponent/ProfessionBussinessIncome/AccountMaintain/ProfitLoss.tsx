@@ -165,7 +165,7 @@ const ProfitLoss: React.FC = () => {
           name={name}
           value={value}
           onChange={handleChange}
-          className="w-full rounded-lg border border-gray-200 bg-white px-8 py-2.5 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-200 bg-white px-8 py-2.5 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
       </div>
     </div>
@@ -178,7 +178,7 @@ const ProfitLoss: React.FC = () => {
         </Link>
         <h1 className="text-2xl font-semibold text-gray-900">Profit And Loss</h1>
       </div>
-    <div className="rounded-lg border bg-white p-6 shadow-sm">
+    <div className="rounded-md border bg-white p-6 shadow-sm">
       <div className="mb-6 flex items-center gap-3">
         <PlusCircle className="h-12 w-12 text-red-500" />
         <div>
@@ -195,7 +195,7 @@ const ProfitLoss: React.FC = () => {
         </div>
       </div>
 
-      <div className="mb-6 rounded-lg bg-gray-50 p-4">
+      <div className="mb-6 rounded-md bg-gray-50 p-4">
         <div className="flex items-center justify-between">
           <span className="font-medium text-gray-700">Profit(Income - Expenses)</span>
           <span className="text-lg font-semibold">₹{formData.totalProfit}</span>
@@ -203,7 +203,7 @@ const ProfitLoss: React.FC = () => {
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-lg border border-gray-200 p-4">
+        <div className="rounded-md border border-gray-200 p-4">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <PlusCircle className="h-5 w-5 text-blue-500" />
@@ -233,7 +233,7 @@ const ProfitLoss: React.FC = () => {
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 p-4">
+        <div className="rounded-md border border-gray-200 p-4">
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <PlusCircle className="h-5 w-5 text-blue-500" />

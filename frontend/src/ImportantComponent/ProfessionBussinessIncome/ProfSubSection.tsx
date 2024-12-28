@@ -20,7 +20,7 @@ const ProSubSection: React.FC = () => {
                 </div>
         </div>
     <div className="flex flex-col gap-4">
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -51,7 +51,7 @@ const ProSubSection: React.FC = () => {
             return (
               <div
                 key={section._id}
-                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
               >
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-900">{section.type}</span>
@@ -69,7 +69,7 @@ const ProSubSection: React.FC = () => {
         )}
       </div> */}
     </div>
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ const ProSubSection: React.FC = () => {
             return (
               <div
                 key={section._id}
-                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
               >
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-900">{section.type}</span>
@@ -118,7 +118,7 @@ const ProSubSection: React.FC = () => {
         )}
       </div> */}
     </div>
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -149,7 +149,7 @@ const ProSubSection: React.FC = () => {
             return (
               <div
                 key={section._id}
-                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
               >
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-900">{section.type}</span>

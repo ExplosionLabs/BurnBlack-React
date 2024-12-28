@@ -83,13 +83,13 @@ function ContactDetail() {
   }
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="w-full bg-white rounded-md border overflow-hidden">
     <div className="cursor-pointer p-4 sm:p-6 border-b border-gray-200" onClick={toggleOpen}>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <CircleUserRound className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
           <div>
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Identification & Contact details</h2>
+            <h2 className="text-lg sm:text-base font-semibold text-gray-800">Identification & Contact details</h2>
             <p className="text-xs sm:text-sm text-gray-600">
               To e-file your returns, please provide your Aadhaar, PAN and contact details.
             </p>

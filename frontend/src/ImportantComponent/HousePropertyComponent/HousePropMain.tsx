@@ -23,7 +23,7 @@ const HousePropMain: React.FC = () => {
           </div>
         </div>
 
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
   <div className="flex items-center justify-between">
     <div className="flex items-start gap-4">
       <Home className="w-6 h-6 text-blue-600 mt-1" />
@@ -44,7 +44,7 @@ const HousePropMain: React.FC = () => {
     </Link>
   </div>
 </div>
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
   <div className="flex items-center justify-between">
     <div className="flex items-start gap-4">
       <Home className="w-6 h-6 text-blue-600 mt-1" />

@@ -118,7 +118,7 @@ const FinanceSubSection: React.FC = () => {
       </div>
 
     <div className="py-8 px-4 sm:px-6 lg:px-8">
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-md shadow">
         <div className="px-6 py-5 border-b border-gray-200">
           <h1 className="text-xl font-semibold text-gray-900">Please add the financial particulars of your Business(es) and Profession(s)</h1>
           <div className="mt-4 space-y-2">

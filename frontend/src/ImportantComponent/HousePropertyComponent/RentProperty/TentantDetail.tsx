@@ -31,9 +31,9 @@ export default function TenantDetailsComponent({ data, onChange }: TenantDetails
   }
 
   return (
-    <div className="rounded-lg border bg-white p-6">
+    <div className="rounded-md border bg-white p-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
+        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-blue-50">
           <Building2 className="h-6 w-6 text-blue-500" />
         </div>
         <div className="flex flex-1 items-center justify-between">

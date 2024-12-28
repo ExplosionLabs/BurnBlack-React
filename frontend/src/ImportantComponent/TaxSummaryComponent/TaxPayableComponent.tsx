@@ -18,10 +18,10 @@ const TaxPayableComponent = () => {
 
   return (
     <div className="mx-auto">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+      <div className="bg-white rounded-md shadow-sm border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-50 rounded-lg">
+            <div className="p-2 bg-red-50 rounded-md">
               <svg
                 className="w-5 h-5 text-red-500"
                 fill="none"

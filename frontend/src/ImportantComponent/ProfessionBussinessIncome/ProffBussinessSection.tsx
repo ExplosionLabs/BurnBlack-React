@@ -126,7 +126,7 @@ const ProfBussinessSection: React.FC = () => {
         <h1 className="text-xl font-semibold text-gray-900">Regular Business & Professional Income (Books of Accounts maintained)</h1>
       </div>
 
-      <div className="rounded-lg border bg-white p-6 shadow-sm">
+      <div className="rounded-md border bg-white p-6 shadow-sm">
       <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span className="text-blue-600">
@@ -231,7 +231,7 @@ const ProfBussinessSection: React.FC = () => {
     </div>
 
     
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -262,7 +262,7 @@ Details of income and expenses of your business/profession for the <br /> period
             return (
               <div
                 key={section._id}
-                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
               >
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-900">{section.type}</span>
@@ -280,7 +280,7 @@ Details of income and expenses of your business/profession for the <br /> period
         )}
       </div> */}
     </div>
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -311,7 +311,7 @@ Details of income and expenses of your business/profession for the <br /> period
             return (
               <div
                 key={section._id}
-                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
               >
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-900">{section.type}</span>
@@ -331,7 +331,7 @@ Details of income and expenses of your business/profession for the <br /> period
     </div>
    
 
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
+    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -363,7 +363,7 @@ Summary of depreciation on all assets under the Income-Tax Act.
             return (
               <div
                 key={section._id}
-                className="bg-gray-50 rounded-lg p-4 flex items-center justify-between mb-2"
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
               >
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-900">{section.type}</span>

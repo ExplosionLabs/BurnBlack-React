@@ -146,7 +146,7 @@ const BalanceSheet: React.FC = () => {
           name={name}
           value={value}
           onChange={handleChange}
-          className="w-full rounded-lg border border-gray-200 bg-white px-8 py-2.5 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-200 bg-white px-8 py-2.5 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
       </div>
     </div>
@@ -161,7 +161,7 @@ const BalanceSheet: React.FC = () => {
         </Link>
         <h1 className="text-2xl font-semibold text-gray-900">Balance Sheet</h1>
       </div>
-      <div className="rounded-lg border bg-white p-6 shadow-sm">
+      <div className="rounded-md border bg-white p-6 shadow-sm">
         <div className="mb-6 flex items-center gap-3">
           <PlusCircle className="h-6 w-6 text-red-500" />
           <div>
@@ -178,13 +178,13 @@ const BalanceSheet: React.FC = () => {
         </div>
 
         <div className="mb-6 grid gap-4 md:grid-cols-2">
-          <div className="rounded-lg bg-blue-50 p-4">
+          <div className="rounded-md bg-blue-50 p-4">
             <div className="flex items-center justify-between">
               <span className="font-medium text-gray-700">Total Assets</span>
               <span className="text-lg font-semibold">₹{formData.totalAssest}</span>
             </div>
           </div>
-          <div className="rounded-lg bg-gray-50 p-4">
+          <div className="rounded-md bg-gray-50 p-4">
             <div className="flex items-center justify-between">
               <span className="font-medium text-gray-700">Total Liabilities</span>
               <span className="text-lg font-semibold">₹{formData.totatLiablities}</span>
@@ -193,7 +193,7 @@ const BalanceSheet: React.FC = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-gray-200 p-4">
+          <div className="rounded-md border border-gray-200 p-4">
             <div className="mb-4 flex items-center gap-2">
               <PlusCircle className="h-5 w-5 text-blue-500" />
               <h2 className="font-medium text-gray-900">Assets</h2>
@@ -215,7 +215,7 @@ const BalanceSheet: React.FC = () => {
             </div>
           </div>
 
-          <div className="rounded-lg border border-gray-200 p-4">
+          <div className="rounded-md border border-gray-200 p-4">
             <div className="mb-4 flex items-center gap-2">
               <PlusCircle className="h-5 w-5 text-blue-500" />
               <h2 className="font-medium text-gray-900">Liabilities</h2>
