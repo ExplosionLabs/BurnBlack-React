@@ -100,21 +100,20 @@ function Main() {
           </div>
         </div>
 
-<div className="bg-white p-4 rounded-md shadow-sm mb-8">
+<div className="bg-white px-4 py-px rounded-md shadow-sm mb-8">
   <SectionNavigation />
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-    <div className="col-span-1">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+    <div className="row-span-1">
       <PersonalDetail />
-    </div>
-    <div className="col-span-1">
-      <ContactDetail />
-    </div>
-    <div className="col-span-1">
+      <div className="my-2"></div>
       <AddressSection />
     </div>
-    <div className="col-span-1">
+    <div className="row-span-1">
+      <ContactDetail />
+      <div className="my-2"></div>
       <BankDetails />
     </div>
+    
   </div>
 </div>
         

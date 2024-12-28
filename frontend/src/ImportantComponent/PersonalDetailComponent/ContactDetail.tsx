@@ -6,6 +6,7 @@ import { RootState } from "@/stores/store"
 import { ChevronDown, ChevronUp, ChevronUpIcon, CircleUserRound, HelpCircle } from 'lucide-react'
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
+import { motion } from "framer-motion"
 
 function ContactDetail() {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null
@@ -83,25 +84,32 @@ function ContactDetail() {
   }
 
   return (
-    <div className="w-full bg-white rounded-md border overflow-hidden">
-    <div className="cursor-pointer p-4 sm:p-6 border-b border-gray-200" onClick={toggleOpen}>
-      <div className="flex items-center justify-between">
+    <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl ">
+      <div onClick={toggleOpen} className="cursor-pointer p-2 border-b border-gray-200 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
+      
         <div className="flex items-center space-x-4">
-          <CircleUserRound className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
+          <CircleUserRound className="h-7 w-7 sm:h-8 sm:w-8 text-blue-500 ml-2" />
           <div>
             <h2 className="text-lg sm:text-base font-semibold text-gray-800">Identification & Contact details</h2>
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-xs text-gray-600">
               To e-file your returns, please provide your Aadhaar, PAN and contact details.
             </p>
           </div>
-        </div>
+          </div>
         <button className="text-gray-500 hover:text-gray-700" onClick={toggleOpen}>
           <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? '' : 'rotate-180'}`} />
         </button>
-      </div>
+      
     </div>
     {isOpen && (
-      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.3 }}
+      className="p-6 space-y-6"
+    >
+      <div className=" space-y-4 sm:space-y-6">
         <div className="space-y-4">
           <div>
             <label className="block text-base sm:text-lg font-medium text-gray-700 mb-2">Aadhaar Details *</label>
@@ -229,6 +237,7 @@ function ContactDetail() {
           </div>
         </div>
       </div>
+      </motion.div>
     )}
   </div>
   )
