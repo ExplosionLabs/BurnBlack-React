@@ -4,6 +4,7 @@ import { ChevronDown, ChevronUp, Pencil } from 'lucide-react'
 import { fetchLandPropertyData, fetchRentPropertyData } from '@/api/landProperty';
 import { fetchBussinessData, fetchProfessionalData, fetchProfitLossData } from '@/api/professionalIncome';
 import { fetchForm16, fetchIncomeCal } from '@/api/calculateIncome';
+import { formatCurrency } from '@/helper/currentFormat';
 interface InterestItem {
   fieldType?: string;
   name?: string;
@@ -272,7 +273,7 @@ const totalGrossProfit =
    <span className="text-gray-600">
    Rent
    </span>
-   <span className="text-gray-900">₹{propertyData.rentalIncomeDetails.annualRent
+   <span className="text-gray-900">₹{ formatCurrency( propertyData.rentalIncomeDetails.annualRent)
 
 }</span>
  </div>
@@ -332,7 +333,7 @@ standardDeduction
    <span className="text-gray-600">
    Rent
    </span>
-   <span className="text-gray-900">₹{rentPropertyData.rentalIncomeDetails.annualRent
+   <span className="text-gray-900">{ formatCurrency(rentPropertyData.rentalIncomeDetails.annualRent)
 
 }</span>
  </div>
@@ -343,7 +344,7 @@ standardDeduction
    <span className="text-gray-600">
    Less: Municipal Tax
    </span>
-   <span className="text-gray-900">₹{rentPropertyData.rentalIncomeDetails.taxPaid
+   <span className="text-gray-900">{  formatCurrency(rentPropertyData.rentalIncomeDetails.taxPaid)
 
 }</span>
  </div>
@@ -352,14 +353,14 @@ standardDeduction
  && (
    <div  className="flex justify-between items-center">
    <span className="text-gray-600">
-   Net Annual Rent (Less 30% of ₹ {rentPropertyData.rentalIncomeDetails.annualRent
-
-}-{rentPropertyData.rentalIncomeDetails.taxPaid
+   Net Annual Rent (Less 30% of  {  formatCurrency(rentPropertyData.rentalIncomeDetails.annualRent
+   )
+}-{  formatCurrency(rentPropertyData.rentalIncomeDetails.taxPaid)
 
 })
    </span>
-   <span className="text-gray-900">₹{rentPropertyData.rentalIncomeDetails.
-standardDeduction
+   <span className="text-gray-900">{  formatCurrency( rentPropertyData.rentalIncomeDetails.
+standardDeduction)
 
 
 }</span>
@@ -371,7 +372,7 @@ standardDeduction
    <span className="font-bold text-black">
    Income from House Property 2
    </span>
-   <span className="text-gray-900">₹{rentPropertyData.netTaxableIncome}</span>
+   <span className="text-gray-900">{  formatCurrency( rentPropertyData.netTaxableIncome)}</span>
  </div>
 )}
 
@@ -382,7 +383,7 @@ standardDeduction
    <span className="font-bold text-black">
    Total Income from House Property
    </span>
-   <span className="text-gray-900">₹{totalIncomeLand}</span>
+   <span className="text-gray-900">{ formatCurrency(totalIncomeLand)}</span>
  </div>
             </>
           )}
@@ -401,7 +402,7 @@ standardDeduction
   >
     <span className="text-indigo-600 font-medium">Other Income</span>
     <div className="flex items-center gap-4">
-      <span className="text-gray-900">₹{totalIncomeOther.toLocaleString()}</span>
+      <span className="text-gray-900">{totalIncomeOther.toLocaleString()}</span>
       {expandedSections['otherIncome'] ? (
         <ChevronUp className="w-5 h-5 text-gray-400" />
       ) : (
@@ -512,7 +513,7 @@ standardDeduction
    <span className="text-gray-600">
    Short Term
    </span>
-   <span className="text-gray-900">₹{shortTermData.shortOtherAmountDeemed}</span>
+   <span className="text-gray-900">₹{shortTermData.shortOtherAmountDeemed.toLocaleString()}</span>
  </div>
 )}
 {longTermData && longTermData.totalProfit > 0 && (
@@ -520,7 +521,7 @@ standardDeduction
    <span className="text-gray-600">
    Long Term
    </span>
-   <span className="text-gray-900">₹{longTermData.longOtherAmountDeemed}</span>
+   <span className="text-gray-900">₹{longTermData.longOtherAmountDeemed.toLocaleString()}</span>
  </div>
 )}
 
@@ -536,7 +537,7 @@ standardDeduction
   >
     <span className="text-indigo-600 font-medium">Business and Profession</span>
     <div className="flex items-center gap-4">
-      <span className="text-gray-900">₹{totalIncomeProff}</span>
+      <span className="text-gray-900">₹{totalIncomeProff.toLocaleString()}</span>
       {expandedSections['profSection'] ? (
         <ChevronUp className="w-5 h-5 text-gray-400" />
       ) : (
@@ -554,7 +555,7 @@ standardDeduction
    <span className="text-gray-600">
    Proffesional income
    </span>
-   <span className="text-gray-900">₹{profData}</span>
+   <span className="text-gray-900">₹{profData.toLocaleString()}</span>
  </div>
 )}
               {bussinessData > 0 && (
@@ -562,7 +563,7 @@ standardDeduction
    <span className="text-gray-600">
    Bussiness Income
    </span>
-   <span className="text-gray-900">₹{bussinessData}</span>
+   <span className="text-gray-900">₹{bussinessData.toLocaleString()}</span>
  </div>
 )}
               { profitLossData && profitLossData.totalProfit > 0 && (
@@ -571,7 +572,7 @@ standardDeduction
   Profit & Loss
    </span>
    <span className="text-gray-900">₹{profitLossData.
-totalProfit
+totalProfit.toLocaleString()
 }</span>
  </div>
 )}
@@ -581,7 +582,7 @@ totalProfit
   Profit & Loss
    </span>
    <span className="text-gray-900">₹{profitLossData.
-totalProfit
+totalProfit.toLocaleString()
 }</span>
  </div>
 )}
@@ -595,7 +596,7 @@ totalProfit
           >
             <span className="text-indigo-600 font-medium">Virtual Assest Profit</span>
             <div className="flex items-center gap-4 mr-9">
-              <span className="text-gray-900">₹{virtualAssestsData}</span>
+              <span className="text-gray-900">₹{virtualAssestsData.toLocaleString()}</span>
             
             </div>
           </button>
@@ -611,7 +612,9 @@ totalProfit
           >
             <span className="text-indigo-600 font-medium">Salary Income</span>
             <div className="flex items-center gap-4">
-              <span className="text-gray-900">₹{form16Data.balance-50000}</span>
+              <span className="text-gray-900">₹{form16Data.balance-50000 -(form16Data.incomeClaimed
+?form16Data.incomeClaimed
+:0) -(form16Data.excemptAllowanceV ?form16Data.excemptAllowanceV :0) }</span>
               {expandedForm16Sections['form16Section'] ? (
         <ChevronUp className="w-5 h-5 text-gray-400" />
       ) : (
@@ -627,10 +630,27 @@ totalProfit
              
    <div  className="flex justify-between items-center">
    <span className="text-gray-600">
-   Net Salary
+   Gross Salary
    </span>
    <span className="text-gray-900">₹{form16Data.balance}</span>
  </div>
+ 
+ {form16Data.incomeClaimed&& (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Less: Income claimed for relief u/s 89A
+   </span>
+   <span className="text-gray-900">₹{form16Data.incomeClaimed}</span>
+ </div>
+ ) }
+ {form16Data.incomeClaimed&& (
+   <div  className="flex justify-between items-center">
+   <span className="text-gray-600">
+   Net Salary
+   </span>
+   <span className="text-gray-900">₹{form16Data.balance-form16Data.incomeClaimed}</span>
+ </div>
+ ) }
    <div  className="flex justify-between items-center">
    <span className="text-gray-600">
    Standard Deduction

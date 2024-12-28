@@ -15,6 +15,8 @@ const {
   getBussinessData,
   getProfitLossData,
   getTDSData,
+  getLoansData,
+  getMedicalInsuranceData,
 } = require("../helper/IncomeCalculator/IntererstIncome");
 const { getTotalTaxPaid } = require("../helper/IncomeCalculator/taxPaid");
 const Disablility = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Disablility");
@@ -273,9 +275,14 @@ const taxableIncomeController = async (req, res) => {
         ? profitLossData.data[0].totalProfit
         : 0
       : 0;
+    const incomeClaimedV = tdsIncome.data ? tdsIncome.data[0].incomeClaimed : 0;
+    const excemptAllowanceV = tdsIncome.data
+      ? tdsIncome.data[0].exemptAllowance
+      : 0;
+
     const tdsincomeV = tdsIncome.data
       ? tdsIncome.data[0]?.balance > 50000
-        ? tdsIncome.data[0].balance - 50000
+        ? tdsIncome.data[0].balance - 50000 - incomeClaimedV - excemptAllowanceV
         : 0
       : 0;
 
@@ -294,12 +301,16 @@ const taxableIncomeController = async (req, res) => {
     const disabilityData = await SpecificDiseases.findOne({ userId });
     const section80UDeduction = disabilityData
       ? disabilityData.selfDisability?.disabilityType === "severe"
-        ? 125000 // Severe disability deduction
-        : 75000 // General disability deduction
+        ? 125000
+        : 75000
       : 0;
 
-    const totalDeductions =
-      section80DDeduction + section80DDeductionFor80D + section80UDeduction;
+    const loans = await getLoansData(userId);
+    const totalLoans = loans.success !== false ? loans.data : 0;
+
+    const deduction = await getMedicalInsuranceData(userId);
+    const totalDedu = deduction.success !== false ? deduction.data : 0;
+    const totalDeductions = totalDedu + totalLoans;
     // Calculate gross income, excluding negative values
     const grossIncome =
       totalInterestIncome +
@@ -351,7 +362,6 @@ const taxableIncomeController = async (req, res) => {
       busData
     );
 
-    console.log("Fd", itrType);
     // Calculate tax liability (Income Tax at Normal Rates)
     const {
       incomeTaxAtNormalRates,
