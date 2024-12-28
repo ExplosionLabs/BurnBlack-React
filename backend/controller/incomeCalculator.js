@@ -19,11 +19,43 @@ const {
 const { getTotalTaxPaid } = require("../helper/IncomeCalculator/taxPaid");
 const Disablility = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Disablility");
 const MedicalInsuranece = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/MedicalInsuranece");
-
+const SpecificDiseases = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/SpecficDiseasDisablity");
 // Function to round to the nearest 10
 function roundToNearestTen(value) {
   return Math.round(value / 10) * 10;
 }
+
+const identifyItrType = (
+  grossIncome,
+  stockMututaldata,
+  foreignData,
+  landData,
+  bondData,
+  goldData,
+  stockRsuData,
+  longSData,
+  professData,
+  busData
+) => {
+  // Condition for ITR-1
+  if (
+    grossIncome <= 5000000 &&
+    !foreignData &&
+    !stockMututaldata &&
+    !landData &&
+    !bondData &&
+    !goldData &&
+    !stockRsuData &&
+    !longSData &&
+    !professData &&
+    !busData
+  ) {
+    return "ITR-1"; // Eligibility for ITR-1
+  }
+
+  // Default case: If none of the conditions match
+  return "ITR-2";
+};
 
 // Helper function to calculate deductions from medical insurance
 const calculateSection80DDeduction = (medical80DData) => {
@@ -259,7 +291,15 @@ const taxableIncomeController = async (req, res) => {
     const section80DDeduction = calculateSection80DDeduction(medical80DData);
     const section80DDeductionFor80D = await calculateSection80DD(userId);
 
-    const totalDeductions = section80DDeduction + section80DDeductionFor80D;
+    const disabilityData = await SpecificDiseases.findOne({ userId });
+    const section80UDeduction = disabilityData
+      ? disabilityData.selfDisability?.disabilityType === "severe"
+        ? 125000 // Severe disability deduction
+        : 75000 // General disability deduction
+      : 0;
+
+    const totalDeductions =
+      section80DDeduction + section80DDeductionFor80D + section80UDeduction;
     // Calculate gross income, excluding negative values
     const grossIncome =
       totalInterestIncome +
@@ -298,6 +338,20 @@ const taxableIncomeController = async (req, res) => {
       { limit: Infinity, rate: 0.3 },
     ];
 
+    const itrType = identifyItrType(
+      grossIncome,
+      stockMututaldata,
+      foreignData,
+      landData,
+      bondData,
+      goldData,
+      stockRsuData,
+      longSData,
+      professData,
+      busData
+    );
+
+    console.log("Fd", itrType);
     // Calculate tax liability (Income Tax at Normal Rates)
     const {
       incomeTaxAtNormalRates,
@@ -318,6 +372,7 @@ const taxableIncomeController = async (req, res) => {
       taxPaid: totalTax,
       taxDue: taxDue,
       totalTaxI: totalTaxLiability,
+      itrType,
     });
   } catch (error) {
     console.error("Error calculating gross income and tax liability:", error);
