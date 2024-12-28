@@ -85,13 +85,13 @@ export default function BankDetails() {
  
 
   return (
-    <div className="bg-white rounded-md shadow-sm border p-6 w-full">
-    <div className="flex items-center justify-between"   onClick={() => setIsExpanded(!isExpanded)}>
+    <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl">
+      <div onClick={() => setIsExpanded(!isExpanded)} className="cursor-pointer p-2 border-b border-gray-200 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200">  
           <div className="flex items-center space-x-4">
-            <BuildingBankIcon className="h-8 w-8 text-blue-500" />
+            <BuildingBankIcon className="h-7 w-7 text-blue-500 ml-2" />
             <div>
               <h2 className="text-base font-semibold text-gray-800">Bank Details</h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs text-gray-600">
               Provide all the bank accounts. You will receive refund in any one of the accounts mentioned.
               </p>
             </div>
@@ -105,7 +105,7 @@ export default function BankDetails() {
       {isExpanded && (
         <>
          
-
+<div className="mx-auto p-6">
           <div className="mb-4">
             <a href="#" className="text-blue-600 hover:underline">
               How to find Bank account details
@@ -189,6 +189,7 @@ export default function BankDetails() {
             <PlusCircleIcon className="w-5 h-5" />
             Add another account
           </button>
+          </div>  
         </>
       )}
     </div>

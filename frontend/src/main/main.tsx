@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 const Main = () => {
     return (
-        <div className='relative max-w-[1900px] bg-gray-100 h-screen	'>
+        <div className='relative max-w-[1900px] bg-gray-100 h-full	'>
             <Navbar/>
             <Outlet></Outlet>
             

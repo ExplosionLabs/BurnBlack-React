@@ -74,13 +74,13 @@ export default function PersonalDetails() {
   }
 
   return (
-    <div className="mx-auto bg-white border rounded-md overflow-hidden shadow-lg max-w-4xl">
-      <div onClick={toggleOpen} className="cursor-pointer p-6 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+    <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl">
+      <div onClick={toggleOpen} className="cursor-pointer p-2 border-b border-gray-200 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
         <div className="flex items-center space-x-4">
-          <CircleUserRound className="w-8 h-8 text-blue-500" />
+          <CircleUserRound className="h-7 w-7 text-blue-500 ml-2" />
           <div>
             <h2 className="text-lg md:text-base font-bold text-gray-800">Permanent Information</h2>
-            <p className="text-xs md:text-sm text-gray-600">
+            <p className="text-xs md:text-xs text-gray-600">
               Please provide all info as per your government identity documents (PAN, Aadhaar, etc.)
             </p>
           </div>
@@ -88,6 +88,7 @@ export default function PersonalDetails() {
         <button onClick={toggleOpen} className="text-gray-600 hover:text-gray-800">
           <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? '' : 'rotate-180'}`} />
         </button>
+        
       </div>
       <AnimatePresence>
         {isOpen && (
