@@ -11,6 +11,7 @@ import { registerRequest, registerSuccess, registerFailure,googleLoginRequest, g
 import { registerUser, registerUserWithGoogle } from '../../../api/userApi';
 import { RootState } from '../../../stores/store';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { motion } from 'framer-motion';
 
 function Main() {
   const [formData, setFormData] = useState({
@@ -92,149 +93,190 @@ function Main() {
   };
 
   return (
-    <>
-      <div
-        className={clsx([
-          "p-3 sm:px-8 relative h-screen lg:overflow-hidden bg-primary xl:bg-white dark:bg-darkmode-800 xl:dark:bg-darkmode-600",
-          "before:hidden before:xl:block before:content-[''] before:w-[57%] before:-mt-[28%] before:-mb-[16%] before:-ml-[13%] before:absolute before:inset-y-0 before:left-0 before:transform before:rotate-[-4.5deg] before:bg-primary/20 before:rounded-[100%] before:dark:bg-darkmode-400",
-          "after:hidden after:xl:block after:content-[''] after:w-[57%] after:-mt-[20%] after:-mb-[13%] after:-ml-[13%] after:absolute after:inset-y-0 after:left-0 after:transform after:rotate-[-4.5deg] after:bg-primary after:rounded-[100%] after:dark:bg-darkmode-700",
-        ])}
-      >
-        <ThemeSwitcher />
-        <div className="container relative z-10 sm:px-10">
-          <div className="block grid-cols-2 gap-4 xl:grid">
-            {/* BEGIN: Register Info */}
-            <div className="flex-col hidden min-h-screen xl:flex">
-              <a href="" className="flex items-center pt-5 -intro-x">
-                <img
-                  alt="Midone Tailwind HTML Admin Template"
-                  className="w-6"
-                  src={logoUrl}
-                />
-                <span className="ml-3 text-lg text-white"> BurnBlack </span>
-              </a>
-              <div className="my-auto">
-                <img
-                  alt="Midone Tailwind HTML Admin Template"
-                  className="w-1/2 -mt-16 -intro-x"
-                  src={illustrationUrl}
-                />
-                <div className="mt-10 text-4xl font-medium leading-tight text-white -intro-x">
-                  A few more clicks to <br />
-                  sign up to your account.
-                </div>
-                <div className="mt-5 text-lg text-white -intro-x text-opacity-70 dark:text-slate-400">
-                  Manage all your e-commerce accounts in one place
-                </div>
-              </div>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-xl">
+        <motion.div
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
+          className="text-center"
+        >
+          
+          <h2 className=" text-3xl font-extrabold text-gray-900 dark:text-white">
+            Create Account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Join millions of Indians filing taxes with ease
+          </p>
+        </motion.div>
+
+        <motion.form 
+          className="mt-8 space-y-6"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="rounded-md shadow-sm space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Full Name
+              </label>
+              <FormInput
+                name="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleInputChange}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                placeholder="Enter your full name"
+              />
             </div>
-            {/* END: Register Info */}
-            {/* BEGIN: Register Form */}
-            <div className="flex h-screen py-5 my-10 xl:h-auto xl:py-0 xl:my-0">
-              <div className="w-full px-5 py-8 mx-auto my-auto bg-white rounded-md shadow-md xl:ml-20 dark:bg-darkmode-600 xl:bg-transparent sm:px-8 xl:p-0 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto">
-                <h2 className="text-2xl font-bold text-center intro-x xl:text-3xl xl:text-left">
-                  Sign Up
-                </h2>
-                <div className="mt-2 text-center intro-x text-slate-400 dark:text-slate-400 xl:hidden">
-                  A few more clicks to sign in to your account. Manage all your
-                  e-commerce accounts in one place
-                </div>
-                <div className="mt-8 intro-x">
-                  <FormInput
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="block px-4 py-3 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="Name"
-                  />
-                  <FormInput
-                    type="number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="Phone No"
-                  />
-                  <FormInput
-                    type="text"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="Email"
-                  />
-                  <FormInput
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="Password"
-                  />
-                  <div className="grid w-full h-1 grid-cols-12 gap-4 mt-3 intro-x">
-                    <div className="h-full col-span-3 rounded bg-success"></div>
-                    <div className="h-full col-span-3 rounded bg-success"></div>
-                    <div className="h-full col-span-3 rounded bg-success"></div>
-                    <div className="h-full col-span-3 rounded bg-slate-100 dark:bg-darkmode-800"></div>
-                  </div>
-                  <FormInput
-                    type="password"
-                    name="passwordConfirmation"
-                    value={formData.passwordConfirmation}
-                    onChange={handleInputChange}
-                    className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
-                    placeholder="Password Confirmation"
-                  />
-                </div>
-                <div className="flex items-center mt-4 text-xs intro-x text-slate-600 dark:text-slate-500 sm:text-sm">
-                  <FormCheck.Input
-                    id="remember-me"
-                    type="checkbox"
-                    className="mr-2 border"
-                  />
-                  <label
-                    className="cursor-pointer select-none"
-                    htmlFor="remember-me"
-                  >
-                    I agree to the Envato
-                  </label>
-                  <a className="ml-1 text-primary dark:text-slate-200" href="">
-                    Privacy Policy
-                  </a>
-                  .
-                </div>
-                <div className="mt-5 text-center intro-x xl:mt-8 xl:text-left">
-                  <Button
-                    variant="primary"
-                    className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
-                    onClick={handleSubmit}
-                    disabled={loading}
-                  >
-                    {loading ? 'Registering...' : 'Register'}
-                  </Button>
-                  <Button
-                  onClick={()=>{
-                    navigate("/login")
-                  }}
-                    variant="outline-secondary"
-                    className="w-full px-4 py-3 mt-3 align-top xl:w-32 xl:mt-0"
-                  >
-                    Sign in
-                  </Button>
-                </div>
-              </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Phone Number
+              </label>
+              <FormInput
+                name="phone"
+                type="tel"
+                required
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                placeholder="+91"
+              />
             </div>
-            <GoogleLogin
-          onSuccess={handleGoogleLoginSuccess}
-          onError={handleGoogleLoginFailure}
-          useOneTap
-        />
-            {/* END: Register Form */}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Email address
+              </label>
+              <FormInput
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleInputChange}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Password
+              </label>
+              <FormInput
+                name="password"
+                type="password"
+                required
+                value={formData.password}
+                onChange={handleInputChange}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Confirm Password
+              </label>
+              <FormInput
+                name="passwordConfirmation"
+                type="password"
+                required
+                value={formData.passwordConfirmation}
+                onChange={handleInputChange}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                placeholder="••••••••"
+              />
+            </div>
           </div>
-        </div>
+
+          <div className="flex items-center">
+            <FormCheck.Input
+              id="terms"
+              name="terms"
+              type="checkbox"
+              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+            <FormCheck.Label htmlFor="terms" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+              I agree to the{' '}
+              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Terms of Service
+              </a>
+              {' '}and{' '}
+              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Privacy Policy
+              </a>
+            </FormCheck.Label>
+          </div>
+
+          <div className="space-y-4">
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              type="submit"
+              onClick={handleSubmit}
+              disabled={loading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {loading ? (
+                <span className="flex items-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Creating account...
+                </span>
+              ) : (
+                'Create Account'
+              )}
+            </motion.button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-600" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <div className="relative flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={handleGoogleLoginFailure}
+                  useOneTap
+                  type="standard"
+                  theme="filled_black"
+                  size="large"
+                  shape="rectangular"
+                  width="100%"
+                />
+              </div>
+            </div>
+          </div>
+        </motion.form>
+
+        <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+          Already have an account?{' '}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/login')}
+            className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+          >
+            Sign in
+          </motion.button>
+        </p>
       </div>
-    </>
+    </motion.div>
   );
 }
 

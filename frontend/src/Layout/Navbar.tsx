@@ -135,7 +135,7 @@ const Navbar = () => {
     {
         navigate("/register")
     }
-} className='inline-flex items-center gap-x-1 bg-blue-700 border rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-blue-900'>Sign Up</button>
+} className='inline-flex items-center gap-x-1 bg-dark border rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-blue-900'>Sign Up</button>
 </>
        )}
           

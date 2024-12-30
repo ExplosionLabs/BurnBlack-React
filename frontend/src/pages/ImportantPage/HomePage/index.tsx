@@ -60,13 +60,13 @@ function Main() {
                         >
                             <Link
                                 to="/fileITR"
-                                className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors text-lg font-medium"
+                                className="bg-dark text-white px-8 py-3 rounded-lg hover:bg-blue-900 transition-colors text-lg font-medium"
                             >
                                 Start Filing Now
                             </Link>
                             <Link
                                 to="#features"
-                                className="bg-white text-indigo-600 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors text-lg font-medium border-2 border-indigo-600"
+                                className="bg-white text-dark px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors text-lg font-medium border-2 border-dark"
                             >
                                 Learn More
                             </Link>
