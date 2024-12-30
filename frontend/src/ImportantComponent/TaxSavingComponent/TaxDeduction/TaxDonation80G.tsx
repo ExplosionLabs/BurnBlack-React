@@ -113,7 +113,7 @@ const TaxDonation80G = () => {
           name="section80G"
           value={formData.section80G}
           onChange={(e) => handleChange("section80G", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Select 80G Organization</option>
           {Object.keys(section80GData).map((key) => (
@@ -134,7 +134,7 @@ const TaxDonation80G = () => {
             name="nameDonee"
             value={formData.nameDonee}
             onChange={(e) => handleChange("nameDonee", e.target.value)}
-            className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -149,7 +149,7 @@ const TaxDonation80G = () => {
           name="cashAmount"
           value={formData.cashAmount}
           onChange={(e) => handleChange("cashAmount", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
   
@@ -163,7 +163,7 @@ const TaxDonation80G = () => {
           name="nonCashAmount"
           value={formData.nonCashAmount}
           onChange={(e) => handleChange("nonCashAmount", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
   
@@ -177,7 +177,7 @@ const TaxDonation80G = () => {
             name="panDonee"
             value={formData.panDonee}
             onChange={(e) => handleChange("panDonee", e.target.value)}
-            className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -190,7 +190,7 @@ const TaxDonation80G = () => {
           name="limitDeduction"
           value={formData.limitDeduction}
           onChange={(e) => handleChange("limitDeduction", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Select Deduction Limit</option>
           <option value="No Limit">No Limit</option>
@@ -207,7 +207,7 @@ const TaxDonation80G = () => {
           name="qualifyPercent"
           value={formData.qualifyPercent}
           onChange={(e) => handleChange("qualifyPercent", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Select Qualifying Percentage</option>
           <option value="50">50%</option>
@@ -225,7 +225,7 @@ const TaxDonation80G = () => {
           name="pinCode"
           value={formData.pinCode}
           onChange={(e) => handleChange("pinCode", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
   
@@ -239,7 +239,7 @@ const TaxDonation80G = () => {
           name="state"
           value={formData.state}
           onChange={(e) => handleChange("state", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
   
@@ -253,7 +253,7 @@ const TaxDonation80G = () => {
           name="city"
           value={formData.city}
           onChange={(e) => handleChange("city", e.target.value)}
-          className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
     </div>

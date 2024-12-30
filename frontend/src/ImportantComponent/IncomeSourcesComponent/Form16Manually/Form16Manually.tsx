@@ -207,7 +207,7 @@ const  Form16Manually = () => {
               placeholder="Search for Employer Name"
               value={formData.employerName}
               onChange={(e) => handleChange(e, 'employerName')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -221,7 +221,7 @@ const  Form16Manually = () => {
               type="text"
               value={formData.employerTAN}
               onChange={(e) => handleChange(e, 'employerTAN')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -233,7 +233,7 @@ const  Form16Manually = () => {
               id="employerCategory"
               value={formData.employerCategory}
               onChange={(e) => handleChange(e, 'employerCategory')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="Private">Private</option>
               <option value="Public">Public</option>
@@ -599,7 +599,7 @@ const  Form16Manually = () => {
               value={50000}
               readOnly
               onChange={(e) => handleChange(e, 'standardDeduction')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -613,7 +613,7 @@ const  Form16Manually = () => {
               type="number"
               value={formData.professionalTax}
               onChange={(e) => handleChange(e, 'professionalTax')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -626,7 +626,7 @@ const  Form16Manually = () => {
               type="number"
               value={formData.reliefUnder89}
               onChange={(e) => handleChange(e, 'reliefUnder89')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -662,7 +662,7 @@ const  Form16Manually = () => {
               placeholder=""
               value={formData.pincode}
               onChange={(e) => handleChange(e, 'pincode')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -676,7 +676,7 @@ const  Form16Manually = () => {
               type="text"
               value={formData.addressLine}
               onChange={(e) => handleChange(e, 'addressLine')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -689,7 +689,7 @@ const  Form16Manually = () => {
               type="text"
               value={formData.country}
               onChange={(e) => handleChange(e, 'country')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 

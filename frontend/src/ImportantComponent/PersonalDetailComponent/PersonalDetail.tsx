@@ -97,7 +97,7 @@ export default function PersonalDetails() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="p-6 space-y-6"
+            className="p-4 space-y-6"
           >
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -109,9 +109,9 @@ export default function PersonalDetails() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={(e) => handleChange("firstName", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <span className="text-xs text-gray-500">First Name</span>
+                  {/* <span className="text-xs text-gray-500">First Name</span> */}
                 </div>
                 <div className="space-y-2">
                   <input
@@ -120,9 +120,9 @@ export default function PersonalDetails() {
                     name="middleName"
                     value={formData.middleName}
                     onChange={(e) => handleChange("middleName", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <span className="text-xs text-gray-500">Middle Name</span>
+                  {/* <span className="text-xs text-gray-500">Middle Name</span> */}
                 </div>
                 <div className="space-y-2">
                   <input
@@ -131,9 +131,9 @@ export default function PersonalDetails() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={(e) => handleChange("lastName", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <span className="text-xs text-gray-500">Last Name</span>
+                  {/* <span className="text-xs text-gray-500">Last Name</span> */}
                 </div>
               </div>
               <p className="text-sm text-gray-500">
@@ -149,7 +149,7 @@ export default function PersonalDetails() {
                 name="dob"
                 value={formData.dob}
                 onChange={(e) => handleChange("dob", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <p className="text-sm text-gray-500">
                 Specify date in a format like DD/MM/YYYY

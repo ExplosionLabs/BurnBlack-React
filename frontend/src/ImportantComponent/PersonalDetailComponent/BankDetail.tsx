@@ -121,7 +121,7 @@ export default function BankDetails() {
                     type="text"
                     value={detail.accountNo}
                     onChange={(e) => handleChange(index, "accountNo", e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -135,7 +135,7 @@ export default function BankDetails() {
                     type="text"
                     value={detail.ifscCode}
                     onChange={(e) => handleChange(index, "ifscCode", e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -146,7 +146,7 @@ export default function BankDetails() {
                     type="text"
                     value={detail.bankName}
                     onChange={(e) => handleChange(index, "bankName", e.target.value)}
-                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -157,7 +157,7 @@ export default function BankDetails() {
                     <select
                       value={detail.type}
                       onChange={(e) => handleChange(index, "type", e.target.value)}
-                      className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select Type</option>
                       <option value="CASH CREDIT">CASH CREDIT</option>
