@@ -88,7 +88,7 @@ function ContactDetail() {
       <div onClick={toggleOpen} className="cursor-pointer p-2 border-b border-gray-200 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
       
         <div className="flex items-center space-x-4">
-          <CircleUserRound className="h-7 w-7 sm:h-8 sm:w-8 text-blue-500 ml-2" />
+          <CircleUserRound className="h-7 w-7  text-blue-500 ml-2" />
           <div>
             <h2 className="text-lg sm:text-base font-semibold text-gray-800">Identification & Contact details</h2>
             <p className="text-xs sm:text-xs text-gray-600">
@@ -107,12 +107,12 @@ function ContactDetail() {
       animate={{ opacity: 1, height: "auto" }}
       exit={{ opacity: 0, height: 0 }}
       transition={{ duration: 0.3 }}
-      className="p-6 space-y-6"
+      className="p-4 space-y-6"
     >
       <div className=" space-y-4 sm:space-y-6">
         <div className="space-y-4">
           <div>
-            <label className="block text-base sm:text-lg font-medium text-gray-700 mb-2">Aadhaar Details *</label>
+            {/* <label className="block text-base sm:text-lg font-medium text-gray-700 mb-2">Aadhaar Details *</label> */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
@@ -123,7 +123,7 @@ function ContactDetail() {
                   onChange={handleChange}
                   placeholder="XXXX XXXX XXXX"
                   disabled={useEnrollment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
@@ -135,13 +135,13 @@ function ContactDetail() {
                   onChange={handleChange}
                   placeholder="Enter 28 digit number"
                   disabled={!useEnrollment}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
             <div className="mt-1 flex items-center space-x-2">
               <HelpCircle className="h-4 w-4 text-gray-400" />
-              <span className="text-xs sm:text-sm text-gray-500">
+              <span className="text-xs sm:text-xs text-gray-500">
                 Don't remember your Aadhaar number or Enrollment number?{" "}
                 <button className="text-blue-500 hover:underline">Search it here</button>
               </span>
@@ -155,7 +155,7 @@ function ContactDetail() {
               name="panNumber"
               value={formData.panNumber}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
               placeholder="Enter PAN"
             />
           </div>
@@ -166,7 +166,7 @@ function ContactDetail() {
               country="in"
               value={formData.mobileNumber}
               onChange={(value) => handlePhoneChange(value, "mobileNumber")}
-              inputClass="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              inputClass="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               containerClass="w-full"
             />
           </div>
@@ -178,7 +178,7 @@ function ContactDetail() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
@@ -187,7 +187,7 @@ function ContactDetail() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-base sm:text-lg font-medium text-gray-700 mb-2">Additional Information (Optional)</label>
+            <label className="block text-base sm:text-base font-medium text-gray-700">Additional Information (Optional)</label>
             <p className="text-xs sm:text-sm text-gray-500">Leave empty if you don't have additional information</p>
           </div>
 
@@ -197,7 +197,7 @@ function ContactDetail() {
               country="in"
               value={formData.secondaryMobileNumber}
               onChange={(value) => handlePhoneChange(value, "secondaryMobileNumber")}
-              inputClass="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              inputClass="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               containerClass="w-full"
             />
           </div>
@@ -210,7 +210,7 @@ function ContactDetail() {
               value={formData.secondaryEmail}
               onChange={handleChange}
               placeholder="eg: email@gmail.com"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -223,7 +223,7 @@ function ContactDetail() {
                 value={formData.landlineStd}
                 onChange={handleChange}
                 placeholder="STD code"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="text"
@@ -231,7 +231,7 @@ function ContactDetail() {
                 value={formData.landlineNumber}
                 onChange={handleChange}
                 placeholder="Enter your landline telephone number"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>

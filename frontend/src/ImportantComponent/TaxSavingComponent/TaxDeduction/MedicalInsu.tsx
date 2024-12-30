@@ -284,7 +284,7 @@ const handleFormChange = (
                       type="date"
                       value={formData.selfDisability.form10IA.fillingDate}
                       onChange={(e) => handleFormChange(e, 'selfDisability', 'form10IA.fillingDate')}
-                      className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-1 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                   <div className="space-y-2">
@@ -293,7 +293,7 @@ const handleFormChange = (
                       type="text"
                       value={formData.selfDisability.form10IA.ackNo}
                       onChange={(e) => handleFormChange(e, 'selfDisability', 'form10IA.ackNo')}
-                      className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-1 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                   <div className="space-y-2">
@@ -302,7 +302,7 @@ const handleFormChange = (
                       type="text"
                       value={formData.selfDisability.form10IA.uuidNo}
                       onChange={(e) => handleFormChange(e, 'selfDisability', 'form10IA.uuidNo')}
-                      className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-1 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -323,7 +323,7 @@ const handleFormChange = (
             <select
               value={formData.specificDisease.age}
               onChange={(e) => handleFormChange(e, 'specificDisease', 'age')}
-              className="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-1 border rounded-md focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select Age Group</option>
               <option value="Below 60 year">Below 60 years</option>
