@@ -65,7 +65,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
                 value={data.ownerName}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
+                className="mt-1 w-full px-3 py-1 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div>
@@ -77,7 +77,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
                 value={data.ownerPan}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
+                className="mt-1 w-full px-3 py-1 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div>
@@ -89,7 +89,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
                 value={data.ownerShare}
                 onChange={handleChange}
                 required
-                className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
+                className="mt-1 w-full px-3 py-1 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div className="space-y-4">
@@ -132,7 +132,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
                         name="coOwnerName"
                         value={coOwner.coOwnerName}
                         onChange={(e) => handleCoOwnerChange(index, e)}
-                        className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
+                        className="mt-1 w-full px-3 py-1 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
                       />
                     </div>
                     <div>
@@ -143,7 +143,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
                         name="coOwnerPan"
                         value={coOwner.coOwnerPan}
                         onChange={(e) => handleCoOwnerChange(index, e)}
-                        className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
+                        className="mt-1 w-full px-3 py-1 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
                       />
                     </div>
                     <div>
@@ -154,7 +154,7 @@ const OwnerDetails: React.FC<{ data: any; onChange: (data: any) => void }> = ({
                         name="coOwnerShare"
                         value={coOwner.coOwnerShare}
                         onChange={(e) => handleCoOwnerChange(index, e)}
-                        className="mt-1 w-full px-3 py-2 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
+                        className="mt-1 w-full px-3 py-1 rounded-md border border-gray-200 focus:outline-none focus:border-gray-300"
                       />
                     </div>
                     <button

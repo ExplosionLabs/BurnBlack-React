@@ -119,16 +119,12 @@ function Layout({ children }: LayoutProps) {
 }
 function LayoutTax({ children }: LayoutProps) {
   return  <div className="md:mx-40">
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+    <div className="grid  gap-6 mt-8">
      
      <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
      {children}
      </div>
-     <div className="lg:col-span-1">
-       <div className="sticky top-0">
-         <Sliderbar />
-       </div>
-     </div>
+     
    
     
    
@@ -137,16 +133,12 @@ function LayoutTax({ children }: LayoutProps) {
 }
 function LayoutTaxProf({ children }: LayoutProps) {
   return  <div className="md:mx-44">
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+    <div className="grid  gap-6 mt-8">
      
      <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
      {children}
      </div>
-     <div className="lg:col-span-1">
-       <div className="sticky top-0">
-         <Sliderbar />
-       </div>
-     </div>
+     
    
     
    

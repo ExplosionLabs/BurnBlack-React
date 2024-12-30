@@ -1,7 +1,7 @@
 import { useState, useEffect, SetStateAction } from "react"
 import axios from "axios"
 import debounce from "lodash.debounce"
-import { MapPin , ChevronDown, ChevronUp, ChevronUpIcon} from 'lucide-react'
+import { MapPin, ChevronUp as ChevronUpIcon } from 'lucide-react'
 import {
   CitySelect,
   CountrySelect,
@@ -22,12 +22,12 @@ export default function AddressSection() {
     road: "",
     area: "",
     pincode: "",
-    country: "",
+    country: "India",
     state: "",
     city: "",
   })
 
-  const [countryid, setCountryid] = useState(null)
+  const [countryid, setCountryid] = useState(101) // India country ID
   const [stateid, setStateid] = useState(null)
   const toggleOpen = () => setIsOpen((prev) => !prev)
 
@@ -110,7 +110,7 @@ export default function AddressSection() {
   
 
   return (
-    <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl ">
+    <div className="relative mx-auto bg-white border rounded-md overflow-visible max-w-4xl">
       <div onClick={toggleOpen} className="cursor-pointer p-2 border-b border-gray-200 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
       <div className="flex items-center space-x-4">
         <MapPin className="h-7 w-7 text-blue-500 ml-2" />
@@ -127,11 +127,11 @@ export default function AddressSection() {
       </div>
       <motion.div
       initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? 'auto' : 0 }}
+      animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? 'auto' : 0 } }
       transition={{ duration: 0.3 }}
-      className="overflow-hidden"
+      className="z-10 overflow-visible"
       >
-      <div className="p-6 space-y-6">
+      <div className="z-10 p-4 space-y-6">
         <div className="space-y-6">
         <div className="grid gap-4">
           <div>
@@ -145,7 +145,7 @@ export default function AddressSection() {
             placeholder="Charde Layout Near Ganesh"
             value={formData.flatNo}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
           />
           </div>
 
@@ -160,7 +160,7 @@ export default function AddressSection() {
             placeholder="For ex: Vivekanand Colony"
             value={formData.premiseName}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
 
@@ -175,7 +175,7 @@ export default function AddressSection() {
             placeholder="For ex: Shivaji Road"
             value={formData.road}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
 
@@ -190,7 +190,7 @@ export default function AddressSection() {
             placeholder="Dhantol"
             value={formData.area}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
 
@@ -205,12 +205,12 @@ export default function AddressSection() {
             placeholder="441302"
             value={formData.pincode}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-          <div>
+          <div className="relative">
             <label className="block text-sm font-medium text-gray-700 mb-1">
             Country <span className="text-red-500">*</span>
             </label>
@@ -218,11 +218,11 @@ export default function AddressSection() {
             onChange={handleCountrySelect}
             value={formData.country}
             placeHolder="Select Country"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label className="block text-sm font-medium text-gray-700 mb-1">
             State <span className="text-red-500">*</span>
             </label>
@@ -231,11 +231,11 @@ export default function AddressSection() {
             countryid={countryid ?? 0}
             onChange={handleStateSelect}
             placeHolder="Select State"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label className="block text-sm font-medium text-gray-700 mb-1">
             City <span className="text-red-500">*</span>
             </label>
@@ -244,7 +244,7 @@ export default function AddressSection() {
             stateid={stateid ?? 0}
             onChange={handleCitySelect}
             placeHolder="Select City"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-1  rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           </div>

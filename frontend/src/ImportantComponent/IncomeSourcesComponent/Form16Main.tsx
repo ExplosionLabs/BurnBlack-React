@@ -17,7 +17,7 @@ function Form16Main() {
       <Banknote className="w-6 h-6 text-blue-600" />
       <div>
         <h3 className="font-medium text-gray-900 text-base">Salary Income</h3>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 mt-1">
           Add details manually or Upload Form 16 to auto-fill your salary details. <br />
           You can add salary income from multiple jobs as well.
         </p>
