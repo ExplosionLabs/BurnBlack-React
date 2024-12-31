@@ -267,7 +267,6 @@ const taxableIncomeController = async (req, res) => {
     );
     const taxableIncome = roundToNearestTen(grossIncomeAfterDeductions);
 
-    // Define New Regime tax slabs
     const taxSlabsNewRegime = [
       { limit: 250000, rate: 0 },
       { limit: 300000, rate: 0 },

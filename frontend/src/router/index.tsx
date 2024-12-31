@@ -117,34 +117,7 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return <div className="md:mx-44">{children}</div>;
 }
-function LayoutTax({ children }: LayoutProps) {
-  return  <div className="md:mx-40">
-    <div className="grid  gap-6 mt-8">
-     
-     <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
-     {children}
-     </div>
-     
-   
-    
-   
-   </div>
-  </div>
-}
-function LayoutTaxProf({ children }: LayoutProps) {
-  return  <div className="md:mx-44">
-    <div className="grid  gap-6 mt-8">
-     
-     <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
-     {children}
-     </div>
-     
-   
-    
-   
-   </div>
-  </div>
-}
+
 
 function Router() {
   const routes = [
@@ -201,9 +174,9 @@ function Router() {
         {
           path: "fill-detail",
           element: (
-            <LayoutTax>
+            <Layout>
               <Form16Manually/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
@@ -289,57 +262,57 @@ function Router() {
         {
           path: "income-professional-freelancing-business",
           element: (
-            <LayoutTaxProf>
+            <Layout>
               <ProSubSection />
-            </LayoutTaxProf>
+            </Layout>
           ),
         },
         {
           path: "professional-income",
           element: (
-            <LayoutTax>
+            <Layout>
               <ProfessionalIncome />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "bussiness-income",
           element: (
-            <LayoutTax>
+            <Layout>
               <BussinessIncome />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "book-of-account-dashboard",
           element: (
-            <LayoutTax>
+            <Layout>
               <ProfBussinessSection />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "profit-and-loss-boa",
           element: (
-            <LayoutTax>
+            <Layout>
               <ProfitLoss />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "balance-sheet-boa",
           element: (
-            <LayoutTax>
+            <Layout>
               <BalanceSheet />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "financial-particulars",
           element: (
-            <LayoutTax>
+            <Layout>
               <FinanceSubSection />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
@@ -393,9 +366,9 @@ function Router() {
         {
           path: "add-deprectation",
           element: (
-            <LayoutTax>
+            <Layout>
               <DeprectationEntry/>
-            </LayoutTax>
+            </Layout>
           ),
         },
       ],
@@ -407,81 +380,81 @@ function Router() {
         {
           path: "",
           element: (
-            <LayoutTax>
+            <Layout>
               <TaxSaving />
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "dashboard",
           element: (
-            <LayoutTax>
+            <Layout>
               <TaxDashboard/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "deduction-80g",
           element: (
-            <LayoutTax>
+            <Layout>
               <TaxDonation80G/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "deduction-80gga",
           element: (
-            <LayoutTax>
+            <Layout>
               <DonationRurual/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "contri-party",
           element: (
-            <LayoutTax>
+            <Layout>
               <DonationParty/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "tds-nonsalary",
           element: (
-            <LayoutTax>
+            <Layout>
               <NonSalaryForm/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "tds-rent",
           element: (
-            <LayoutTax>
+            <Layout>
               <TDSRentForm/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "tax-paid",
           element: (
-            <LayoutTax>
+            <Layout>
               <TaxPaidSub/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "other-tax",
           element: (
-            <LayoutTax>
+            <Layout>
               <TaxLossSub/>
-            </LayoutTax>
+            </Layout>
           ),
         },
         {
           path: "tax-collected",
           element: (
-            <LayoutTax>
+            <Layout>
               <TaxCollectedForm/>
-            </LayoutTax>
+            </Layout>
           ),
         },
      
