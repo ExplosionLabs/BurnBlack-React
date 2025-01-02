@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Sliderbar from "@/Layout/Sidebar";
 import { ArrowLeft, Home } from "lucide-react";
-import { fetchAllLandPropertyData, fetchLandPropertyData } from "@/api/landProperty";
+import { fetchAllLandPropertyData, fetchAllRentalData, fetchLandPropertyData } from "@/api/landProperty";
 
 interface PropertyData {
   _id: string;
@@ -13,6 +13,7 @@ netTaxableIncome
 }
 const HousePropMain: React.FC = () => {
  const [propertyData, setPropertyData] = useState<PropertyData[]>([]);
+ const [rentalData, setRentalData] = useState<PropertyData[]>([]);
       const [loading, setLoading] = useState<boolean>(true);
      useEffect(() => {
        
@@ -32,8 +33,25 @@ const HousePropMain: React.FC = () => {
            console.error("Error fetching property data:", error);
          }
        };
+       const fetchRentalData = async () => {
+         try {
+           const token = localStorage.getItem("token");
+           if (!token) {
+             throw new Error("Token is missing from localStorage");
+           }
+           const response = await fetchAllRentalData(token);
+           if (response.data) {
+      
+             setRentalData(response.data);
+           
+           }
+         } catch (error) {
+           console.error("Error fetching property data:", error);
+         }
+       };
    
        fetchData();
+       fetchRentalData();
      }, []);
    
 
@@ -116,13 +134,41 @@ const HousePropMain: React.FC = () => {
       </div>
     </div>
     <Link
-      to="/fileITR/incomeSources/rental-property"
+    to={`/fileITR/incomeSources/rental-property/${rentalData.length === 0 ? 0 : rentalData.length}`}
+     
       className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
     >
       Add Details
     </Link>
   </div>
- 
+  <div className="mt-4 ml-10">
+ {rentalData ? ( // Check if propertyData has elements
+    rentalData.map((section, index) => (
+      <div
+        key={section._id}
+        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+      >
+        <div className="flex items-center space-x-2">
+          <span className="font-medium text-gray-900">Rent Property {index + 1}</span>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="font-medium text-gray-900">
+            ₹{section.netTaxableIncome.toLocaleString()}
+          </span>
+          <Link
+       to={`/fileITR/incomeSources/rental-property/${index}`}
+            className="text-gray-700 hover:text-gray-900 font-medium"
+          >
+            Edit
+          </Link>
+        </div>
+      </div>
+    ))
+  ) : (
+   <>
+   </>
+  )}
+      </div>
 </div>
 
 

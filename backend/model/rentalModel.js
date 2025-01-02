@@ -7,6 +7,9 @@ const rentalSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  propertyIndex: {
+    type: String,
+  },
   propertyType: String,
   netTaxableIncome: Number,
   houseAddress: {

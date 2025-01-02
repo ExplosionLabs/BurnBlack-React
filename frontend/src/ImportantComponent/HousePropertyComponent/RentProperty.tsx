@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import HouseAddresComponent from "./SelfProperty/HouseAddressComponent";
 import OwnerDetails from "./SelfProperty/OwnerDetail";
@@ -14,8 +14,10 @@ import { fetchRentPropertyData } from "@/api/landProperty";
 
 const RentProperty: React.FC = () => {
   
+    const { propertyIndex } = useParams<{ propertyIndex: string }>();
   const [rentFormData, setRentFormData] = useState({
     netTaxableIncome:0,
+    propertyIndex:propertyIndex,
     houseAddress: {
       flatNo: "",
       premiseName: "",
@@ -61,7 +63,10 @@ const RentProperty: React.FC = () => {
         if (!token) {
           throw new Error("Token is missing from localStorage");
         }
-        const response = await fetchRentPropertyData(token)
+        if(!propertyIndex){
+          return;
+                  }
+        const response = await fetchRentPropertyData(token,propertyIndex)
 
 
         if (response.data) {
@@ -108,7 +113,7 @@ const RentProperty: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Data saved successfully");
+      
     } catch (error) {
       console.error("Error saving data:", error);
     }

@@ -50,6 +50,7 @@ const {
   updateForm16DataController,
   getForm16ManualController,
   getAllPropertyDataController,
+  getAllRentalController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -94,8 +95,13 @@ router.get(
   getPropertyDataController
 );
 router.get("/getAllPropertyData", authMiddleware, getAllPropertyDataController);
+router.get("/getAllRentData", authMiddleware, getAllRentalController);
 router.post("/addRentalData", authMiddleware, postRentalDataController);
-router.get("/getRentalData", authMiddleware, getRentalDataController);
+router.get(
+  "/getRentalData/:propertyIndex",
+  authMiddleware,
+  getRentalDataController
+);
 router.post("/addDividentData", authMiddleware, postDividendIncomeController);
 router.get("/getDividentData", authMiddleware, getDividendIncomeController);
 router.delete(

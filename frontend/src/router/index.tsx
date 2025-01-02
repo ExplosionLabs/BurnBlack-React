@@ -258,7 +258,7 @@ function Router() {
           ),
         },
         {
-          path: "incomeSources/rental-property",
+          path: "incomeSources/rental-property/:propertyIndex",
           element: (
             <UserDetailLayout
             backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"

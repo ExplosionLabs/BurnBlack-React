@@ -105,161 +105,141 @@ const taxableIncomeController = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Fetch data with fallbacks
-    const interestData = (await getAllInterestData(userId)) || { data: [] };
-    const stockMututaldata = (await getAllStockMutualData(userId)) || {
-      data: [],
-    };
-    const foreignData = (await getForeignData(userId)) || { data: [] };
-    const landData = (await getLandFormData(userId)) || { data: [] };
-    const bondData = (await getBondData(userId)) || { data: [] };
-    const goldData = (await getGoldData(userId)) || {
-      data: { totalProfit: 0 },
-    };
-    const stockRsuData = (await getStockRsuData(userId)) || {
-      data: { totalProfit: 0 },
-    };
+    // Parallelize all API calls using Promise.all
+    const [
+      interestData,
+      stockMutualData,
+      foreignData,
+      landData,
+      bondData,
+      goldData,
+      stockRsuData,
+      longSData,
+      propertyData,
+      rentalData,
+      virtualData,
+      professData,
+      busData,
+      tax,
+      tdsIncome,
+      profitLossData,
+      dividendData,
+      loans,
+      deduction,
+      savingInvestment,
+      hRA,
+    ] = await Promise.all([
+      getAllInterestData(userId).catch(() => ({ data: [] })),
+      getAllStockMutualData(userId).catch(() => ({ data: [] })),
+      getForeignData(userId).catch(() => ({ data: [] })),
+      getLandFormData(userId).catch(() => ({ data: [] })),
+      getBondData(userId).catch(() => ({ data: [] })),
+      getGoldData(userId).catch(() => ({ data: { totalProfit: 0 } })),
+      getStockRsuData(userId).catch(() => ({ data: { totalProfit: 0 } })),
+      getLongShortData(userId).catch(() => ({ data: [] })),
+      getPropertyData(userId).catch(() => ({ data: [] })),
+      getRentalData(userId).catch(() => ({ data: [] })),
+      getVirtualData(userId).catch(() => ({ data: [] })),
+      getProfessionalData(userId).catch(() => ({ data: [] })),
+      getBussinessData(userId).catch(() => ({ data: [] })),
+      getTotalTaxPaid(userId).catch(() => ({ success: false, data: 0 })),
+      getTDSData(userId).catch(() => ({ data: [] })),
+      getProfitLossData(userId).catch(() => ({ data: [] })),
+      getDivdendData(userId).catch(() => ({ data: [] })),
+      getLoansData(userId).catch(() => ({ success: false, data: 0 })),
+      getMedicalInsuranceData(userId).catch(() => ({
+        success: false,
+        data: 0,
+      })),
+      getTaxSavingData(userId).catch(() => ({ success: false, data: 0 })),
+      getTaxSection80GG(userId).catch(() => ({ success: false, data: 0 })),
+    ]);
 
-    const longSData = await getLongShortData(userId);
-    const propertyData = await getPropertyData(userId);
-    const rentalData = await getRentalData(userId);
-    const virtualData = await getVirtualData(userId);
-    const professData = await getProfessionalData(userId);
-    const busData = await getBussinessData(userId);
+    // Helper function to safely get positive numbers
+    const safePositiveNumber = (value) => Math.max(0, value || 0);
 
-    const tax = await getTotalTaxPaid(userId);
-    const totalTax = tax.success !== false ? tax.data : 0;
-
-    const tdsIncome = await getTDSData(userId);
-    const profitLossData = await getProfitLossData(userId);
-
-    const dividenData = await getDivdendData(userId);
-
-    // Calculate total stock data (ensure no negative values are added)
-    const stockData = calculateTotalProfit(stockMututaldata.data);
-
-    // Calculate total interest income (ensure no negative values are added)
+    // Calculate values with safe defaults
+    const stockData = calculateTotalProfit(stockMutualData.data);
     const totalInterestIncome = calculateInterestIncome(interestData.data);
+    const foreignV = safePositiveNumber(foreignData.data?.[0]?.totalProfit);
+    const landFormV = safePositiveNumber(landData.data?.[0]?.totalProfit);
+    const bondDataV = safePositiveNumber(bondData.data?.[0]?.totalProfit);
+    const goldDataV = safePositiveNumber(goldData.data?.[0]?.totalProfit);
+    const stockRsuV = safePositiveNumber(stockRsuData.data?.totalProfit);
+    const shortTermV = safePositiveNumber(
+      longSData.data?.[0]?.shortTermDetails?.shortOtherAmountDeemed
+    );
+    const longTermV = safePositiveNumber(
+      longSData.data?.[0]?.longTermDetails?.longOtherAmountDeemed
+    );
+    const dividendDataV = safePositiveNumber(
+      dividendData.data?.[0]?.totalAmount
+    );
+    const propertyDataV = safePositiveNumber(
+      propertyData.data?.[0]?.netTaxableIncome
+    );
+    const rentalDataV = safePositiveNumber(
+      rentalData.data?.[0]?.netTaxableIncome
+    );
+    const profDataV = safePositiveNumber(professData.data?.[0]?.totalRevenue);
 
-    // Fallbacks for other data points, excluding negatives
-    const foreignV = foreignData.data
-      ? foreignData.data[0]?.totalProfit > 0
-        ? foreignData.data[0]?.totalProfit
-        : 0
-      : 0;
-    const landFormV = landData.data
-      ? landData.data[0]?.totalProfit > 0
-        ? landData.data[0]?.totalProfit
-        : 0
-      : 0;
-    const bondDataV = bondData.data
-      ? bondData.data[0]?.totalProfit > 0
-        ? bondData.data[0]?.totalProfit
-        : 0
-      : 0;
-    const goldDataV = goldData.data
-      ? goldData.data[0]?.totalProfit > 0
-        ? goldData.data[0]?.totalProfit
-        : 0
-      : 0;
-    const stockRsuV = stockRsuData.data
-      ? stockRsuData.data?.totalProfit > 0
-        ? stockRsuData.data.totalProfit
-        : 0
-      : 0;
-    const shortTermV = longSData.data
-      ? longSData.data[0].shortTermDetails.shortOtherAmountDeemed > 0
-        ? longSData.data[0].shortTermDetails.shortOtherAmountDeemed
-        : 0
-      : 0;
-    const longTermV = longSData.data
-      ? longSData.data[0].longTermDetails.longOtherAmountDeemed > 0
-        ? longSData.data[0].longTermDetails.longOtherAmountDeemed
-        : 0
+    // Calculate business data
+    const busDataV = busData.data?.[0]
+      ? safePositiveNumber(busData.data[0].profitcash) +
+        safePositiveNumber(busData.data[0].profitMode) +
+        safePositiveNumber(busData.data[0].profitDigitalMode)
       : 0;
 
-    const dividendDataV = dividenData.data
-      ? dividenData.data[0]?.totalAmount > 0
-        ? dividenData.data[0].totalAmount
-        : 0
-      : 0;
-    const propertDataV = propertyData.data
-      ? propertyData.data[0]?.netTaxableIncome > 0
-        ? propertyData.data[0].netTaxableIncome
-        : 0
-      : 0;
-    const rentalDataV = rentalData.data
-      ? rentalData.data[0]?.netTaxableIncome > 0
-        ? rentalData.data[0].netTaxableIncome
-        : 0
-      : 0;
-    const profDataV = professData.data
-      ? professData.data[0]?.totalRevenue > 0
-        ? professData.data[0].totalRevenue
-        : 0
-      : 0;
-    const busDataV = busData.data
-      ? (busData.data[0].profitcash > 0 ? busData.data[0].profitcash : 0) +
-        (busData.data[0].profitMode > 0 ? busData.data[0].profitMode : 0) +
-        (busData.data[0].profitDigitalMode > 0
-          ? busData.data[0].profitDigitalMode
-          : 0)
-      : 0;
+    const profitV = safePositiveNumber(profitLossData.data?.[0]?.totalProfit);
+    const incomeClaimedV = safePositiveNumber(
+      tdsIncome.data?.[0]?.incomeClaimed
+    );
+    const excemptAllowanceV = safePositiveNumber(
+      tdsIncome.data?.[0]?.exemptAllowance
+    );
 
-    const profitV = profitLossData.data
-      ? profitLossData.data[0]?.totalProfit > 0
-        ? profitLossData.data[0].totalProfit
-        : 0
-      : 0;
-    const incomeClaimedV = tdsIncome.data ? tdsIncome.data[0].incomeClaimed : 0;
-    const excemptAllowanceV = tdsIncome.data
-      ? tdsIncome.data[0].exemptAllowance
-      : 0;
-
-    const tdsincomeV = tdsIncome.data
-      ? tdsIncome.data[0]?.balance > 50000
+    // Calculate TDS income
+    const tdsincomeV =
+      tdsIncome.data?.[0]?.balance > 50000
         ? tdsIncome.data[0].balance - 50000 - incomeClaimedV - excemptAllowanceV
-        : 0
+        : 0;
+
+    // Calculate virtual gains
+    const totalVirtualGains = Array.isArray(virtualData?.data)
+      ? virtualData.data.reduce(
+          (sum, item) => sum + safePositiveNumber(item.totalGains),
+          0
+        )
       : 0;
 
-    let totalVirtualGains = 0;
-
-    if (virtualData?.success && Array.isArray(virtualData.data)) {
-      totalVirtualGains = virtualData.data.reduce((sum, item) => {
-        return sum + (item.totalGains > 0 ? item.totalGains : 0);
-      }, 0);
-    }
-
-    const loans = await getLoansData(userId);
-    const totalLoans = loans.success !== false ? loans.data : 0;
-
-    const deduction = await getMedicalInsuranceData(userId);
+    // Calculate totals
+    const totalTax = tax.success !== false ? tax.data : 0;
     const totalDedu = deduction.success !== false ? deduction.data : 0;
-    const savingInvestment = await getTaxSavingData(userId);
+    const totalLoans = loans.success !== false ? loans.data : 0;
     const totalInvestment =
       savingInvestment.success !== false ? savingInvestment.data : 0;
-    const hRA = await getTaxSection80GG(userId);
     const totalHRA = hRA.success !== false ? hRA.data : 0;
     const totalDeductions = totalDedu + totalLoans + totalInvestment + totalHRA;
 
-    const grossIncome =
-      totalInterestIncome +
-      stockData +
-      foreignV +
-      landFormV +
-      bondDataV +
-      goldDataV +
-      stockRsuV +
-      dividendDataV +
-      propertDataV +
-      rentalDataV +
-      totalVirtualGains +
-      profDataV +
-      busDataV +
-      profitV +
-      tdsincomeV +
-      Number(shortTermV) +
-      Number(longTermV);
+    const grossIncome = [
+      totalInterestIncome,
+      stockData,
+      foreignV,
+      landFormV,
+      bondDataV,
+      goldDataV,
+      stockRsuV,
+      dividendDataV,
+      propertyDataV,
+      rentalDataV,
+      totalVirtualGains,
+      profDataV,
+      busDataV,
+      profitV,
+      tdsincomeV,
+      shortTermV,
+      longTermV,
+    ].reduce((sum, value) => sum + Number(value), 0);
 
     const grossIncomeAfterDeductions = Math.max(
       grossIncome - totalDeductions,
@@ -278,9 +258,16 @@ const taxableIncomeController = async (req, res) => {
       { limit: Infinity, rate: 0.3 },
     ];
 
+    // Calculate tax liability
+    const {
+      incomeTaxAtNormalRates,
+      healthAndEducationCess,
+      totalTaxLiability,
+    } = calculateTaxLiability(grossIncomeAfterDeductions, taxSlabsNewRegime);
+
     const itrType = identifyItrType(
       grossIncome,
-      stockMututaldata,
+      stockMutualData,
       foreignData,
       landData,
       bondData,
@@ -291,25 +278,15 @@ const taxableIncomeController = async (req, res) => {
       busData
     );
 
-    // Calculate tax liability (Income Tax at Normal Rates)
-    const {
-      incomeTaxAtNormalRates,
-      healthAndEducationCess,
-      totalTaxLiability,
-    } = calculateTaxLiability(grossIncomeAfterDeductions, taxSlabsNewRegime);
-
-    // Calculate tax due
-    const taxDue = totalTaxLiability - totalTax;
-    // Send response
     res.status(200).json({
       success: true,
       grossIncome,
       taxableIncome,
-      incomeTaxAtNormalRates, // Tax calculated at normal rates
-      healthAndEducationCess, // Additional cess
-      taxLiability: totalTaxLiability, // Final liability after adding cess
+      incomeTaxAtNormalRates,
+      healthAndEducationCess,
+      taxLiability: totalTaxLiability,
       taxPaid: totalTax,
-      taxDue: taxDue,
+      taxDue: totalTaxLiability - totalTax,
       totalTaxI: totalTaxLiability,
       itrType,
       totalDeductions,

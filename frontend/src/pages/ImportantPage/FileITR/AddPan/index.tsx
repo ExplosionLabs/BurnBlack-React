@@ -17,7 +17,7 @@ function Main() {
   >("it");
   const [panNumber, setPanNumber] = useState("");
   const [dob, setDob] = useState("");
-
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const updateDatabase = debounce(async (panNumber) => {
     const token = localStorage.getItem("token");
@@ -62,6 +62,7 @@ function Main() {
     }
   }, 3000);
 
+  
   useEffect(() => {
     const fetchContactDetail = async () => {
       const token = localStorage.getItem("token");
@@ -107,6 +108,28 @@ function Main() {
       fetchPersonalDetail();
     }
   }, [isUserLoggedIn]);
+
+  const handleVerify = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/v1/verificationApi/verifyPan`, {
+        panNumber,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("res",response);
+      // setResult(response.data);
+      alert("verification Succes");
+      setError(null)
+    } catch (err) {
+      setError(err.response?.data || 'An error occurred');
+      // setResult(null);
+    }
+  };
 
   return (
     <>
@@ -271,7 +294,8 @@ function Main() {
                   </button>
                   <button
                     className="w-full  items-center bg-dark  border hover:text-white hover:bg-blue-900 text-white font-semibold py-4 px-6 rounded-md transition duration-300 ease-in-out"
-                    onClick={() => navigate("/fileITR/uploadForm16")}
+                   onClick={handleVerify}
+                    // onClick={() => navigate("/fileITR/uploadForm16")}
                   >
                     Proceed →
                   </button>
