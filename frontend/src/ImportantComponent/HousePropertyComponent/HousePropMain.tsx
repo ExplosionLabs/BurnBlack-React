@@ -67,7 +67,7 @@ const HousePropMain: React.FC = () => {
       </div>
     </div>
     <Link
-      to={`/fileITR/self-occupied-property/${propertyData.length === 0 ? 0 : propertyData.length}`}
+      to={`/fileITR/incomeSources/self-occupied-property/${propertyData.length === 0 ? 0 : propertyData.length}`}
       className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
     >
       Add Details
@@ -88,7 +88,7 @@ const HousePropMain: React.FC = () => {
             ₹{section.netTaxableIncome.toLocaleString()}
           </span>
           <Link
-            to="/fileITR/incomeInterest"
+       to={`/fileITR/incomeSources/self-occupied-property/${index}`}
             className="text-gray-700 hover:text-gray-900 font-medium"
           >
             Edit
@@ -116,7 +116,7 @@ const HousePropMain: React.FC = () => {
       </div>
     </div>
     <Link
-      to="/fileITR/rental-property"
+      to="/fileITR/incomeSources/rental-property"
       className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
     >
       Add Details

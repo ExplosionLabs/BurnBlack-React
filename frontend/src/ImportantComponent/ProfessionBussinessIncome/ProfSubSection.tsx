@@ -8,7 +8,7 @@ const ProSubSection: React.FC = () => {
 
   return (
     <>
-      <div className="flex items-center gap-4 mb-4">
+      {/* <div className="flex items-center gap-4 mb-4">
           <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
@@ -18,8 +18,8 @@ const ProSubSection: React.FC = () => {
           Doctors, Lawyers, FnO investors, Businesses, Tutors, Influencers etc.
                 </p>
                 </div>
-        </div>
-    <div className="flex flex-col gap-4">
+        </div> */}
+ 
     <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
@@ -169,7 +169,7 @@ const ProSubSection: React.FC = () => {
     </div>
     
     <FinancialParticular/>
-    </div>
+ 
     
 
 

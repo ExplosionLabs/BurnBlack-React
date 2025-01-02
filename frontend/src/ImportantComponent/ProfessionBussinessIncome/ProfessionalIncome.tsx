@@ -162,7 +162,7 @@ const ProfessionalIncome: React.FC = () => {
     <div className="mx-auto max-w-4xl">
       {/* Header */}
       <div className="mb-6 flex items-center gap-4">
-        <Link to="/fileITR/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
+        <Link to="/fileITR/incomeSources/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
           <ArrowLeft className="h-6 w-6" />
         </Link>
         <h1 className="text-xl font-semibold text-gray-900">Professional Income under Section 44ADA</h1>

@@ -246,19 +246,25 @@ function Router() {
           ),
         },
         {
-          path: "self-occupied-property/:propertyIndex",
+          path: "incomeSources/self-occupied-property/:propertyIndex",
           element: (
-            <Layout>
+            <UserDetailLayout
+          backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+          >
+
               <SelfProperty />
-            </Layout>
+          </UserDetailLayout>
+            
           ),
         },
         {
-          path: "rental-property",
+          path: "incomeSources/rental-property",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
               <RentProperty />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
@@ -272,11 +278,13 @@ function Router() {
           ),
         },
         {
-          path: "income-professional-freelancing-business",
+          path: "incomeSources/income-professional-freelancing-business",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
               <ProSubSection />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
@@ -328,19 +336,23 @@ function Router() {
           ),
         },
         {
-          path: "virtual-assets",
+          path: "incomeSources/virtual-assets",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
               <VirtualAssestSubMain />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
-          path: "other-income",
+          path: "incomeSources/other-income",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
               <OtherIncomeSubSection />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {

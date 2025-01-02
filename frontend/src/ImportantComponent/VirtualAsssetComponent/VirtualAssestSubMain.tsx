@@ -180,16 +180,15 @@ const VirtualAssestSubMain = () => {
   return (
     <>
 
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
-      <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
+ 
         {/* Header */}
-        <div className="flex items-center gap-4 mb-4">
+        {/* <div className="flex items-center gap-4 mb-4">
           <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <h1 className="text-2xl font-semibold">Crypto Income (Virtual Digital Assets - VDA)</h1>
 
-        </div>
+        </div> */}
 
         <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
          {/* Header Section */}
@@ -293,11 +292,7 @@ Choose this option in-case you don't have reports shared by your Crypto exchange
 
        
       
-      </div>
-
-      {/* Sidebar */}
-      <Sliderbar />
-    </div>
+  
     <Modal isOpen={isCryptoModalOpen} onClose={() => setIsCryptoModalOpen(false)}>
     <CryptoVDAComponent
           formData={cryptoFormData}

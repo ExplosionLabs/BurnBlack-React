@@ -179,11 +179,7 @@ const RentProperty: React.FC = () => {
       </div>
 
       </div>
-    <div className="lg:col-span-1">
-        <div className="sticky top-0">
-          <Sliderbar />
-        </div>
-      </div>
+ 
     </div>
   );
 };
