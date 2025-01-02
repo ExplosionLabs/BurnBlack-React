@@ -121,12 +121,12 @@ function Main() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("res",response);
+    
       // setResult(response.data);
       alert("verification Succes");
       setError(null)
     } catch (err) {
-      setError(err.response?.data || 'An error occurred');
+      console.error(err || 'An error occurred');
       // setResult(null);
     }
   };
