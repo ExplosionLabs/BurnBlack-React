@@ -130,7 +130,7 @@ const RentProperty: React.FC = () => {
   <div className="w-full max-w-4xl p-6">
       <div className="mb-6">
         <div className="flex items-center mb-4">
-        <Link to="/fileITR/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
+        <Link to="/fileITR/incomeSources/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <h1 className="text-2xl font-semibold text-gray-900">

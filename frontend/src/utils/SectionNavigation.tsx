@@ -31,7 +31,10 @@ export default function SectionNavigation() {
     },
   ];
 
-  const activeSection = sections.find((section) => section.path === location.pathname) || sections[0];
+  const activeSection =
+    sections.find((section) =>
+      location.pathname.startsWith(section.path)
+    ) || sections[0];
 
   return (
     <div className="space-y-6">
@@ -57,9 +60,9 @@ export default function SectionNavigation() {
                 <NavLink
                   key={section.path}
                   to={section.path}
-                  className={({ isActive }) =>
+                  className={() =>
                     `flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-                      isActive
+                      location.pathname.startsWith(section.path)
                         ? "bg-dark text-white"
                         : section.status === "completed"
                         ? "bg-dark text-white"
@@ -90,9 +93,9 @@ export default function SectionNavigation() {
           <NavLink
             key={section.path}
             to={section.path}
-            className={({ isActive }) =>
+            className={() =>
               `flex flex-row items-center justify-center px-4 py-3 text-sm font-medium transition-colors ${
-                isActive
+                location.pathname.startsWith(section.path)
                   ? "rounded-md bg-dark text-white"
                   : section.status === "completed"
                   ? "rounded-md bg-dark text-white"

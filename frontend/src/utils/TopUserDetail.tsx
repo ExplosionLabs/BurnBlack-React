@@ -110,7 +110,7 @@ function TopUserDetail({ backLink, nextLink }: TopUserDetailProps) {
                         </div>
                         <div>
                             <h3 className="text-xs font-medium text-gray-200">Phone:</h3>
-                            <p className="text-sm font-semibold text-white">{contactDetails?contactDetails.mobileNumber:"N/A"}</p>
+                            <p className="text-sm font-semibold text-white">{contactDetails?.mobileNumber || "N/A"}</p>
                         </div>
                         <div>
                             <h3 className="text-xs font-medium text-gray-200">Tax Regime:</h3>
@@ -122,7 +122,7 @@ function TopUserDetail({ backLink, nextLink }: TopUserDetailProps) {
                         </div>
                         <div>
                             <h3 className="text-xs font-medium text-gray-200">PAN:</h3>
-                            <p className="text-sm font-semibold text-white">{contactDetails ? contactDetails.panNumber :"N/A"}</p>
+                            <p className="text-sm font-semibold text-white">{contactDetails?.panNumber || "N/A"}</p>
                         </div>
                         <div>
                             <h3 className="text-xs font-medium text-gray-200">Total Taxable Income</h3>
@@ -160,7 +160,7 @@ function TopUserDetail({ backLink, nextLink }: TopUserDetailProps) {
                                 </div>
                                 <div>
                                     <h3 className="text-xs font-medium text-gray-200">Phone:</h3>
-                                    <p className="text-sm font-semibold text-white">{contactDetails?contactDetails.mobileNumber:"N/A"}</p>
+                                    <p className="text-sm font-semibold text-white">{contactDetails?.mobileNumber || "N/A"}</p>
                                 </div>
                                 <div>
                                     <h3 className="text-xs font-medium text-gray-200">Tax Regime:</h3>
@@ -172,7 +172,7 @@ function TopUserDetail({ backLink, nextLink }: TopUserDetailProps) {
                                 </div>
                                 <div>
                                     <h3 className="text-xs font-medium text-gray-200">PAN:</h3>
-                                    <p className="text-sm font-semibold text-white">{contactDetails ? contactDetails.panNumber :"N/A"}</p>
+                                    <p className="text-sm font-semibold text-white">{contactDetails?.panNumber || "N/A"}</p>
                                 </div>
                                 <div>
                                     <h3 className="text-xs font-medium text-gray-200">Total Taxable Income</h3>

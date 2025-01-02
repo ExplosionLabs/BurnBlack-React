@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { ArrowLeft, ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import { fetchForm16 } from '@/api/calculateIncome';
 import { Link } from 'react-router-dom';
+import TopUserDetail from '@/utils/TopUserDetail';
 const  Form16Manually = () => {
   const [formData, setFormData] = useState({
     employerName: '',
@@ -180,6 +181,11 @@ const  Form16Manually = () => {
   };
   return (
     <>
+    <div className="lg:col-span-2">
+  
+      {/* <TopUserDetail backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest" /> */}
+      
+      <div className="bg-white px-4 py-4 rounded-md shadow-sm mb-4">
     <div className="flex items-center gap-4 mb-4">
           <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
@@ -188,9 +194,9 @@ const  Form16Manually = () => {
           <h1 className="text-2xl font-semibold">View / Edit Salary</h1>
                 </div>
         </div>
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-gray-50">
+    <div className="">
 
-    <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-gray-800">Form 16 Manual Entry</h1>
+
 
     <div className="space-y-6 sm:space-y-8">
       {/* Employer & TDS Details */}
@@ -732,6 +738,8 @@ const  Form16Manually = () => {
         Saving...
       </div>
     )}
+  </div>
+  </div>
   </div>
   </>
   );

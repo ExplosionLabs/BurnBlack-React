@@ -179,23 +179,23 @@ const DividentIncome: React.FC = () => {
   const totalDividend = dividends.reduce((sum, item) => sum + (Number(item.amount) || 0), 0)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
+ 
       <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-4">
+        {/* <div className="flex items-center gap-4 mb-4">
           <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <h1 className="text-2xl font-semibold">Dividend Income</h1>
-        </div>
+        </div> */}
 
         {/* Info Text */}
-        <p className="text-gray-600 mb-8">
+        {/* <p className="text-gray-600 mb-8">
           You may see your dividend income details in your{' '}
           <Link to="#" className="text-gray-700 underline">Form 26AS</Link>,
           P&L Reports (Eg:{' '}
           <Link to="#" className="text-gray-700 underline">Zerodha P&L</Link>)
-        </p>
+        </p> */}
 
         {/* Main Card */}
         <div className="border rounded-md p-6 bg-white shadow-sm">
@@ -295,9 +295,7 @@ const DividentIncome: React.FC = () => {
         </div>
       </div>
 
-      {/* Sidebar */}
-      <Sliderbar />
-    </div>
+    
   );
 };
 

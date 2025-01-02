@@ -22,7 +22,7 @@ export const fetchInterestData = async (token: string, type: string) => {
   }
 export const fetchAllInterestData = async (token: string) => {
     try {
-      console.log("ad");
+     
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getInterestIncomeData`,
         {

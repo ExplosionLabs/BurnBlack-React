@@ -676,18 +676,8 @@ setIsGoldModalOpen(false);
   }, []);
   return (
     <>
-     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-      <div className="lg:col-span-2 space-y-4 overflow-y-auto h-screen pr-4 scrollbar-hide">
-      <div className="flex items-center gap-4 mb-4">
-          <Link to="/fileITR/incomeSources" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <ArrowLeft className="w-6 h-6" />
-          </Link>
-          <div>
-          <h1 className="text-2xl font-semibold">Add Capital Gains Income</h1>
-                </div>
-        </div>
-  
-    <div className="flex flex-col gap-4">
+   
+      
     <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between">
@@ -949,15 +939,9 @@ Import Stocks, Mutual Funds, Futures & Options (F&O), Derivatives,<br /> Currenc
 
       </Modal>
       
-    </div>
+
     
-      </div>
-      <div className="lg:col-span-1">
-        <div className="sticky top-0">
-          <Sliderbar />
-        </div>
-      </div>
-    </div>
+      
     </>
   );
 };

@@ -72,7 +72,7 @@ const InterestIncomeMain: React.FC = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-            to="/fileITR/incomeInterest"
+            to="/fileITR/incomeSources/incomeInterest"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
           >
             Add Details
@@ -95,7 +95,7 @@ const InterestIncomeMain: React.FC = () => {
                 </div>
                 <div className="flex items-center space-x-4">
                   <span className="font-medium text-gray-900">₹{totalAmount.toLocaleString()}</span>
-                  <Link    to="/fileITR/incomeInterest" className="text-gray-700 hover:text-gray-900 font-medium">Edit</Link>
+                  <Link    to="/fileITR/incomeSources/incomeInterest" className="text-gray-700 hover:text-gray-900 font-medium">Edit</Link>
 
                 </div>
               </div>

@@ -349,13 +349,14 @@ const postPropertyDataController = async (req, res) => {
       taxSavings,
       rentalIncomeDetails,
       netTaxableIncome,
+      propertyIndex,
     } = req.body;
 
     const userId = req.user.id;
 
     // Find an existing entry for the user and update or create a new one
     const property = await Property.findOneAndUpdate(
-      { userId }, // Filter by userId
+      { userId, propertyIndex }, // Filter by userId
       {
         $set: {
           propertyType,
@@ -364,6 +365,7 @@ const postPropertyDataController = async (req, res) => {
           taxSavings,
           rentalIncomeDetails,
           netTaxableIncome,
+          propertyIndex,
         },
       },
       {
@@ -388,7 +390,27 @@ const getPropertyDataController = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const property = await Property.findOne({ userId });
+    const { propertyIndex } = req.params;
+    const property = await Property.findOne({ userId, propertyIndex });
+
+    if (!property) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Property data not found." });
+    }
+
+    res.status(200).json({ success: true, data: property });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching data.", error });
+  }
+};
+const getAllPropertyDataController = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const property = await Property.find({ userId: userId });
 
     if (!property) {
       return res
@@ -1325,4 +1347,5 @@ module.exports = {
   updateBussinessFundData,
   updateForm16DataController,
   getForm16ManualController,
+  getAllPropertyDataController,
 };

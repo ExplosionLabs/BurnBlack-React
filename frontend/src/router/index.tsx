@@ -108,6 +108,7 @@ import TDSRentForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Compone
 import TaxCollectedForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TaxCollectedForm";
 import TaxLossSub from "@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLossSub";
 import Form16Manually from "@/ImportantComponent/IncomeSourcesComponent/Form16Manually/Form16Manually";
+import UserDetailLayout from "@/utils/UserDetailLayout";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -115,7 +116,7 @@ interface LayoutProps {
 }
 
 function Layout({ children }: LayoutProps) {
-  return <div className="md:mx-44">{children}</div>;
+  return <div className="">{children}</div>;
 }
 
 
@@ -172,11 +173,14 @@ function Router() {
           ),
         },
         {
-          path: "fill-detail",
+          path: "incomeSources/fill-detail",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources"
+            nextLink="/fileITR/incomeSources/incomeInterest"
+          >
               <Form16Manually/>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
@@ -212,31 +216,37 @@ function Router() {
           ),
         },
         {
-          path: "incomeInterest",
+          path: "incomeSources/incomeInterest",
           element: (
-            <Layout>
+            <UserDetailLayout
+          backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+          >
               <IncomeInterest />
-            </Layout>
+           </UserDetailLayout>
           ),
         },
         {
-          path: "capitalGain",
+          path: "incomeSources/capitalGain",
           element: (
-            <Layout>
+            <UserDetailLayout
+          backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+          >
               <CapitalGainSubMain />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
-          path: "income-house-property",
+          path: "incomeSources/income-house-property",
           element: (
-            <Layout>
+            <UserDetailLayout
+          backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+          >
               <HousePropMain />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
-          path: "self-occupied-property",
+          path: "self-occupied-property/:propertyIndex",
           element: (
             <Layout>
               <SelfProperty />
@@ -252,11 +262,13 @@ function Router() {
           ),
         },
         {
-          path: "dividend-income",
+          path: "incomeSources/dividend-income",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
               <DividentIncome />
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
@@ -388,9 +400,12 @@ function Router() {
         {
           path: "dashboard",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/fileITR/incomeSources"
+            nextLink="/fileITR/incomeInterest"
+          >
               <TaxDashboard/>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {

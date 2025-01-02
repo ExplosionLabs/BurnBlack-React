@@ -24,7 +24,7 @@ const HousePropComponent: React.FC = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-           to="/fileITR/income-house-property"
+           to="/fileITR/incomeSources/income-house-property"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
           >
             Add Details
@@ -32,31 +32,7 @@ const HousePropComponent: React.FC = () => {
         </div>
       </div>
 
-      {/* Interest Details Section */}
-      {/* <div className="mt-4 ml-10">
-        {interestData.length > 0 ? (
-          interestData.map((section) => {
-            const totalAmount = section.data.reduce((sum, item) => sum + (item.amount || 0), 0);
-            return (
-              <div
-                key={section._id}
-                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-              >
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium text-gray-900">{section.type}</span>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <span className="font-medium text-gray-900">₹{totalAmount.toLocaleString()}</span>
-                  <Link    to="/fileITR/incomeInterest" className="text-gray-700 hover:text-gray-900 font-medium">Edit</Link>
-
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <div>No interest income details available.</div>
-        )}
-      </div> */}
+   
     </div>
     </>
   );

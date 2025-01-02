@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import HouseAddresComponent from "./SelfProperty/HouseAddressComponent";
 import OwnerDetails from "./SelfProperty/OwnerDetail";
@@ -13,8 +13,10 @@ import { fetchLandPropertyData } from "@/api/landProperty";
 
 const SelfProperty: React.FC = () => {
   const [propertyType, setPropertyType] = useState<string>("Self Occupied House Property");
+  const { propertyIndex } = useParams<{ propertyIndex: string }>();
   const [formData, setFormData] = useState({
     propertyType: "Self Occupied House Property",
+    propertyIndex:propertyIndex,
     netTaxableIncome: 0,
     houseAddress: {
       flatNo: "",
@@ -58,7 +60,10 @@ const SelfProperty: React.FC = () => {
         if (!token) {
           throw new Error("Token is missing from localStorage");
         }
-        const response = await fetchLandPropertyData(token);
+        if(!propertyIndex){
+return;
+        }
+        const response = await fetchLandPropertyData(token,propertyIndex);
         if (response.data) {
           setFormData(response.data);
         
@@ -131,7 +136,7 @@ const SelfProperty: React.FC = () => {
     <div className="w-full max-w-4xl p-6">
       <div className="mb-6">
         <div className="flex items-center mb-4">
-        <Link to="/fileITR/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
+        <Link to="/fileITR/incomeSources/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <h1 className="text-2xl font-semibold text-gray-900">

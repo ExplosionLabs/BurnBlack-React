@@ -3,15 +3,45 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Sliderbar from "@/Layout/Sidebar";
 import { ArrowLeft, Home } from "lucide-react";
-const HousePropMain: React.FC = () => {
+import { fetchAllLandPropertyData, fetchLandPropertyData } from "@/api/landProperty";
+
+interface PropertyData {
+  _id: string;
  
+netTaxableIncome
+: number;
+}
+const HousePropMain: React.FC = () => {
+ const [propertyData, setPropertyData] = useState<PropertyData[]>([]);
+      const [loading, setLoading] = useState<boolean>(true);
+     useEffect(() => {
+       
+       const fetchData = async () => {
+         try {
+           const token = localStorage.getItem("token");
+           if (!token) {
+             throw new Error("Token is missing from localStorage");
+           }
+           const response = await fetchAllLandPropertyData(token);
+           if (response.data) {
+      
+             setPropertyData(response.data);
+           
+           }
+         } catch (error) {
+           console.error("Error fetching property data:", error);
+         }
+       };
+   
+       fetchData();
+     }, []);
+   
 
   return (
     <>
     
-<div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
-<div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
-<div className="flex items-center space-x-6">
+
+{/* <div className="flex items-center space-x-6">
           <Link to="/fileITR/incomeSources" className="text-gray-600 hover:text-gray-900">
             <ArrowLeft className="w-6 h-6" />
           </Link>
@@ -21,7 +51,7 @@ const HousePropMain: React.FC = () => {
               Add details if you earned rent from your property or paid interest on home loan
             </p>
           </div>
-        </div>
+        </div> */}
 
     <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
   <div className="flex items-center justify-between">
@@ -37,12 +67,40 @@ const HousePropMain: React.FC = () => {
       </div>
     </div>
     <Link
-      to="/fileITR/self-occupied-property"
+      to={`/fileITR/self-occupied-property/${propertyData.length === 0 ? 0 : propertyData.length}`}
       className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
     >
       Add Details
     </Link>
   </div>
+  <div className="mt-4 ml-10">
+ {propertyData ? ( // Check if propertyData has elements
+    propertyData.map((section, index) => (
+      <div
+        key={section._id}
+        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+      >
+        <div className="flex items-center space-x-2">
+          <span className="font-medium text-gray-900">House Property {index + 1}</span>
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="font-medium text-gray-900">
+            ₹{section.netTaxableIncome.toLocaleString()}
+          </span>
+          <Link
+            to="/fileITR/incomeInterest"
+            className="text-gray-700 hover:text-gray-900 font-medium"
+          >
+            Edit
+          </Link>
+        </div>
+      </div>
+    ))
+  ) : (
+   <>
+   </>
+  )}
+      </div>
 </div>
     <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
   <div className="flex items-center justify-between">
@@ -64,14 +122,10 @@ const HousePropMain: React.FC = () => {
       Add Details
     </Link>
   </div>
+ 
 </div>
-</div>
-<div className="lg:col-span-1">
-        <div className="sticky top-0">
-          <Sliderbar />
-        </div>
-      </div>
-</div>
+
+
     </>
   );
 };

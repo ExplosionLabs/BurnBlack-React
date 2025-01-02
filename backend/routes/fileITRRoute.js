@@ -49,6 +49,7 @@ const {
   updateBussinessFundData,
   updateForm16DataController,
   getForm16ManualController,
+  getAllPropertyDataController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -87,7 +88,12 @@ router.get("/getBankDetails", authMiddleware, getBankDetailsController);
 router.post("/interest-income", authMiddleware, postInterestController);
 router.get("/get-interest-income/:type", authMiddleware, getInterestController);
 router.post("/addPropertyData", authMiddleware, postPropertyDataController);
-router.get("/getPropertyData", authMiddleware, getPropertyDataController);
+router.get(
+  "/getPropertyData/:propertyIndex",
+  authMiddleware,
+  getPropertyDataController
+);
+router.get("/getAllPropertyData", authMiddleware, getAllPropertyDataController);
 router.post("/addRentalData", authMiddleware, postRentalDataController);
 router.get("/getRentalData", authMiddleware, getRentalDataController);
 router.post("/addDividentData", authMiddleware, postDividendIncomeController);
