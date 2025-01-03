@@ -103,7 +103,13 @@ export default function PersonalDetails() {
     const updatedData = { ...formData, [name]: value };
     setFormData(updatedData);
     setSaveStatus("unsaved"); // Mark as unsaved on input change
-    updateDatabase(updatedData);
+    // updateDatabase(updatedData);
+  };
+  const handleInputBlur = (name: string, value: string) => {
+    const updatedData = { ...formData, [name]: value };
+    setFormData(updatedData);
+    // setSaveStatus("unsaved"); // Mark as unsaved on input blur
+    updateDatabase(updatedData); // Save the data on blur
   };
   return (
     <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl">
@@ -162,6 +168,7 @@ export default function PersonalDetails() {
                     name="firstName"
                     value={formData.firstName}
                     onChange={(e) => handleChange("firstName", e.target.value)}
+                    onBlur={(e) => handleInputBlur("firstName", e.target.value)}
                     className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {/* <span className="text-xs text-gray-500">First Name</span> */}
@@ -173,6 +180,7 @@ export default function PersonalDetails() {
                     name="middleName"
                     value={formData.middleName}
                     onChange={(e) => handleChange("middleName", e.target.value)}
+                    onBlur={(e) => handleInputBlur("middleName", e.target.value)}
                     className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {/* <span className="text-xs text-gray-500">Middle Name</span> */}
@@ -184,6 +192,7 @@ export default function PersonalDetails() {
                     name="lastName"
                     value={formData.lastName}
                     onChange={(e) => handleChange("lastName", e.target.value)}
+                    onBlur={(e) => handleInputBlur("lastName", e.target.value)}
                     className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {/* <span className="text-xs text-gray-500">Last Name</span> */}
@@ -202,6 +211,7 @@ export default function PersonalDetails() {
                 name="dob"
                 value={formData.dob}
                 onChange={(e) => handleChange("dob", e.target.value)}
+                onBlur={(e) => handleInputBlur("dob", e.target.value)}
                 className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <p className="text-sm text-gray-500">
@@ -219,6 +229,7 @@ export default function PersonalDetails() {
                     value="male"
                     checked={formData.gender === "male"}
                     onChange={(e) => handleChange("gender", e.target.value)}
+                    onBlur={(e) => handleInputBlur("gender", e.target.value)}
                     className="form-radio text-blue-500"
                   />
                   <span className="ml-2">Male</span>
@@ -230,6 +241,7 @@ export default function PersonalDetails() {
                     value="female"
                     checked={formData.gender === "female"}
                     onChange={(e) => handleChange("gender", e.target.value)}
+                    onBlur={(e) => handleInputBlur("gender", e.target.value)}
                     className="form-radio text-blue-500"
                   />
                   <span className="ml-2">Female</span>
@@ -247,6 +259,7 @@ export default function PersonalDetails() {
                     value="married"
                     checked={formData.maritalStatus === "married"}
                     onChange={(e) => handleChange("maritalStatus", e.target.value)}
+                    onBlur={(e) => handleInputBlur("maritalStatus", e.target.value)}
                     className="form-radio text-blue-500"
                   />
                   <span className="ml-2">Married</span>
@@ -258,6 +271,7 @@ export default function PersonalDetails() {
                     value="unmarried"
                     checked={formData.maritalStatus === "unmarried"}
                     onChange={(e) => handleChange("maritalStatus", e.target.value)}
+                    onBlur={(e) => handleInputBlur("maritalStatus", e.target.value)}
                     className="form-radio text-blue-500"
                   />
                   <span className="ml-2">Unmarried</span>
@@ -269,6 +283,7 @@ export default function PersonalDetails() {
                     value="prefernottodisclose"
                     checked={formData.maritalStatus === "prefernottodisclose"}
                     onChange={(e) => handleChange("maritalStatus", e.target.value)}
+                    onBlur={(e) => handleInputBlur("maritalStatus", e.target.value)}
                     className="form-radio text-blue-500"
                   />
                   <span className="ml-2">Prefer not to disclose</span>

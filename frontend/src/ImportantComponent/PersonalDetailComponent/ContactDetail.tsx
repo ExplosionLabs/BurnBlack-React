@@ -68,7 +68,7 @@ function ContactDetail() {
     } catch (error) {
       console.error("Error updating contact details:", error)
     }
-  }, 3000)
+  }, 1000)
 
   useEffect(() => {
     const fetchContactDetail = async () => {
@@ -100,6 +100,13 @@ function ContactDetail() {
     const updatedData = { ...formData, [name]: value }
     setFormData(updatedData);
     setSaveStatus("unsaved");
+    // updateDatabase(updatedData)
+  }
+  const handleInputBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    const updatedData = { ...formData, [name]: value }
+    setFormData(updatedData);
+    // setSaveStatus("unsaved");
     updateDatabase(updatedData)
   }
 
@@ -107,8 +114,12 @@ function ContactDetail() {
     const updatedData = { ...formData, [name]: value }
     setFormData(updatedData);
     setSaveStatus("unsaved");
-    updateDatabase(updatedData)
+    // updateDatabase(updatedData)
   }
+  const handleInputBlurPhone = () => {
+    // Since we already have the latest value in formData, we can just use that
+    updateDatabase(formData);
+}
 
   return (
     <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl ">
@@ -168,6 +179,7 @@ function ContactDetail() {
                   name="aadharNumber"
                   value={formData.aadharNumber}
                   onChange={handleChange}
+                  onBlur={handleInputBlur}
                   placeholder="XXXX XXXX XXXX"
                   disabled={useEnrollment}
                   className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -179,6 +191,7 @@ function ContactDetail() {
                   type="text"
                   name="aadharEnrollment"
                   value={formData.aadharEnrollment}
+                  onBlur={handleInputBlur}
                   onChange={handleChange}
                   placeholder="Enter 28 digit number"
                   disabled={!useEnrollment}
@@ -202,6 +215,7 @@ function ContactDetail() {
               name="panNumber"
               value={formData.panNumber}
               onChange={handleChange}
+              onBlur={handleInputBlur}
               className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
               placeholder="Enter PAN"
             />
@@ -213,6 +227,7 @@ function ContactDetail() {
               country="in"
               value={formData.mobileNumber}
               onChange={(value) => handlePhoneChange(value, "mobileNumber")}
+              onBlur={handleInputBlurPhone}
               inputClass="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               containerClass="w-full"
             />
@@ -225,6 +240,7 @@ function ContactDetail() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              onBlur={handleInputBlur}
               className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -244,6 +260,7 @@ function ContactDetail() {
               country="in"
               value={formData.secondaryMobileNumber}
               onChange={(value) => handlePhoneChange(value, "secondaryMobileNumber")}
+            onBlur={handleInputBlurPhone}
               inputClass="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               containerClass="w-full"
             />
@@ -256,6 +273,7 @@ function ContactDetail() {
               name="secondaryEmail"
               value={formData.secondaryEmail}
               onChange={handleChange}
+              onBlur={handleInputBlur}
               placeholder="eg: email@gmail.com"
               className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -269,6 +287,7 @@ function ContactDetail() {
                 name="landlineStd"
                 value={formData.landlineStd}
                 onChange={handleChange}
+                onBlur={handleInputBlur}
                 placeholder="STD code"
                 className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -277,6 +296,7 @@ function ContactDetail() {
                 name="landlineNumber"
                 value={formData.landlineNumber}
                 onChange={handleChange}
+                onBlur={handleInputBlur}
                 placeholder="Enter your landline telephone number"
                 className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />

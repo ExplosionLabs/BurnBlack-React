@@ -101,8 +101,15 @@ export default function AddressSection() {
     const { name, value } = e.target
     const updatedData = { ...formData, [name]: value }
     setFormData(updatedData)
-    updateDatabase(updatedData);
+    // updateDatabase(updatedData);
     setSaveStatus("unsaved");
+  }
+  const handleInputBlur = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target
+    const updatedData = { ...formData, [name]: value }
+    setFormData(updatedData)
+    updateDatabase(updatedData);
+    // setSaveStatus("unsaved");
   }
 
   const handleCountrySelect = (selectedCountry: any) => {
@@ -193,6 +200,7 @@ export default function AddressSection() {
             placeholder="Charde Layout Near Ganesh"
             value={formData.flatNo}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
           />
           </div>
@@ -208,6 +216,7 @@ export default function AddressSection() {
             placeholder="For ex: Vivekanand Colony"
             value={formData.premiseName}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
@@ -223,6 +232,7 @@ export default function AddressSection() {
             placeholder="For ex: Shivaji Road"
             value={formData.road}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
@@ -238,6 +248,7 @@ export default function AddressSection() {
             placeholder="Dhantol"
             value={formData.area}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>
@@ -253,6 +264,7 @@ export default function AddressSection() {
             placeholder="441302"
             value={formData.pincode}
             onChange={handleChange}
+            onBlur={handleInputBlur}
             className="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           </div>

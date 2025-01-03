@@ -85,6 +85,13 @@ export default function BankDetails() {
     updatedDetails[index][field] = value
     setBankDetails(updatedDetails);
     setSaveStatus("unsaved");
+    // autoSave(updatedDetails)
+  }
+  const handleInputBlur = (index: number, field: keyof BankDetail, value: string) => {
+    const updatedDetails = [...bankDetails]
+    updatedDetails[index][field] = value
+    setBankDetails(updatedDetails);
+    // setSaveStatus("unsaved");
     autoSave(updatedDetails)
   }
 
@@ -159,6 +166,7 @@ export default function BankDetails() {
                     type="text"
                     value={detail.accountNo}
                     onChange={(e) => handleChange(index, "accountNo", e.target.value)}
+                    onBlur={(e) => handleInputBlur(index, "accountNo", e.target.value)}
                     className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
@@ -173,6 +181,7 @@ export default function BankDetails() {
                     type="text"
                     value={detail.ifscCode}
                     onChange={(e) => handleChange(index, "ifscCode", e.target.value)}
+                    onBlur={(e) => handleInputBlur(index, "ifscCode", e.target.value)}
                     className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
@@ -184,6 +193,7 @@ export default function BankDetails() {
                     type="text"
                     value={detail.bankName}
                     onChange={(e) => handleChange(index, "bankName", e.target.value)}
+                    onBlur={(e) => handleInputBlur(index, "bankName", e.target.value)}
                     className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
@@ -195,6 +205,7 @@ export default function BankDetails() {
                     <select
                       value={detail.type}
                       onChange={(e) => handleChange(index, "type", e.target.value)}
+                      onBlur={(e) => handleInputBlur(index, "type", e.target.value)}
                       className="w-full px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select Type</option>
