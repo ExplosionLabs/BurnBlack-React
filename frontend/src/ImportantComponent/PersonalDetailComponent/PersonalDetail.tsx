@@ -1,30 +1,53 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
-import debounce from "lodash.debounce"
-import { useSelector } from "react-redux"
-import { format } from "date-fns"
-import { ChevronUpIcon, User } from 'lucide-react'
-import { ChevronDown, ChevronUp ,CircleUserRound} from "lucide-react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import debounce from "lodash.debounce";
+import { useSelector } from "react-redux";
+import { format } from "date-fns";
+import { ChevronUpIcon, CircleUserRound } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion"; // Import framer-motion
-import type { RootState } from "@/stores/store"
+import type { RootState } from "@/stores/store";
 
+
+interface FormData {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dob: string;
+  gender: string;
+  maritalStatus: string;
+}
+
+// Define type for tracked field keys
+type TrackedField = 'firstName' | 'middleName'| 'lastName' | 'dob' | 'gender' | 'maritalStatus';
 export default function PersonalDetails() {
-  const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null
+  const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: "",
     middleName: "",
     lastName: "",
     dob: "",
     gender: "",
     maritalStatus: "",
-  })
+  });
+  const [saveStatus, setSaveStatus] = useState<"saved" | "unsaved" | "saving">("saved");
+
+  const trackedFields: TrackedField[] = ['firstName', 'middleName','lastName', 'dob', 'gender', 'maritalStatus'];
+  const getFilledFieldsCount = () => {
+    return trackedFields.filter(field => formData[field] && formData[field].trim() !== "").length;
+  };
+
+  const getTotalFieldsCount = () => {
+    return trackedFields.length;
+  };
+
+
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
     const fetchPersonalDetails = async () => {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getPersonalDetail`,
@@ -33,24 +56,31 @@ export default function PersonalDetails() {
               Authorization: `Bearer ${token}`,
             },
           }
-        )
-        const data = response.data
-        setFormData({
-          ...data,
+        );
+        const data = response.data;
+        const formFields = {
+          firstName: data.firstName || "",
+          middleName: data.middleName || "",
+          lastName: data.lastName || "",
           dob: data.dob ? format(new Date(data.dob), "yyyy-MM-dd") : "",
-        })
+          gender: data.gender || "",
+          maritalStatus: data.maritalStatus || "",
+        };
+        setFormData(formFields);
+        setSaveStatus("saved"); // Mark as saved on initial fetch
       } catch (error) {
-        console.error("Error fetching personal details:", error)
+        console.error("Error fetching personal details:", error);
       }
-    }
+    };
 
     if (isUserLoggedIn) {
-      fetchPersonalDetails()
+      fetchPersonalDetails();
     }
-  }, [isUserLoggedIn])
+  }, [isUserLoggedIn]);
 
   const updateDatabase = debounce(async (data) => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
+    setSaveStatus("saving"); // Mark as saving
     try {
       await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/updatePersonalDetail`,
@@ -60,19 +90,21 @@ export default function PersonalDetails() {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
-      
+      );
+      setSaveStatus("saved"); // Mark as saved on success
     } catch (error) {
-      console.error("Error updating data:", error)
+      console.error("Error updating data:", error);
+      setSaveStatus("unsaved"); // Mark as unsaved on error
     }
-  }, 300)
+  }, 1000);
 
+  
   const handleChange = (name: string, value: string) => {
-    const updatedData = { ...formData, [name]: value }
-    setFormData(updatedData)
-    updateDatabase(updatedData)
-  }
-
+    const updatedData = { ...formData, [name]: value };
+    setFormData(updatedData);
+    setSaveStatus("unsaved"); // Mark as unsaved on input change
+    updateDatabase(updatedData);
+  };
   return (
     <div className="mx-auto bg-white border rounded-md overflow-hidden max-w-4xl">
       <div onClick={toggleOpen} className="cursor-pointer p-2 border-b border-gray-200 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
@@ -85,11 +117,32 @@ export default function PersonalDetails() {
             </p>
           </div>
         </div>
-        <button onClick={toggleOpen} className="text-gray-600 hover:text-gray-800">
-          <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? '' : 'rotate-180'}`} />
-        </button>
-        
+        <div className="flex items-center space-x-4">
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">{getFilledFieldsCount()}</span>
+            <span className="mx-1">/</span>
+            <span>{getTotalFieldsCount()}</span>
+            <span className="ml-1">fields filled</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`text-xs font-medium ${
+                saveStatus === "saved"
+                  ? "text-green-500"
+                  : saveStatus === "saving"
+                  ? "text-yellow-500"
+                  : "text-red-500"
+              }`}
+            >
+              {saveStatus === "saved" && "Saved"}
+              {saveStatus === "saving" && "Saving..."}
+              {saveStatus === "unsaved" && "Unsaved"}
+            </span>
+            <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? "" : "rotate-180"}`} />
+          </div>
+        </div>
       </div>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div

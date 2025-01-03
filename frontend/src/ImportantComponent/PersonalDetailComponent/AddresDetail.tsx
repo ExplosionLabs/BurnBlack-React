@@ -12,25 +12,46 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import { motion } from "framer-motion"
 
+
+interface FormData {
+  flatNo: string,
+  premiseName: string,
+  road: string,
+  area: string,
+  pincode:string,
+  country: string,
+  state: string,
+  city: string,
+}
+type TrackedField = 'flatNo' | 'premiseName'| 'road' | 'area' | 'pincode' | 'country' | 'state'|'city';
+
 export default function AddressSection() {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
   const [isOpen, setIsOpen] = useState(true)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     flatNo: "",
     premiseName: "",
     road: "",
     area: "",
     pincode: "",
-    country: "India",
+    country: "",
     state: "",
     city: "",
   })
-
+  const [saveStatus, setSaveStatus] = useState<"saved" | "unsaved" | "saving">("saved");
   const [countryid, setCountryid] = useState(101) // India country ID
   const [stateid, setStateid] = useState(null)
   const toggleOpen = () => setIsOpen((prev) => !prev)
 
+  const trackedFields: TrackedField[] = ['flatNo', 'premiseName', 'road' ,'area' , 'pincode' , 'country' ,'state','city'];
+  const getFilledFieldsCount = () => {
+    return trackedFields.filter(field => formData[field] && formData[field].trim() !== "").length;
+  };
+
+  const getTotalFieldsCount = () => {
+    return trackedFields.length;
+  };
   useEffect(() => {
     const fetchContactDetail = async () => {
       const token = localStorage.getItem("token")
@@ -44,7 +65,8 @@ export default function AddressSection() {
           }
         )
         const data = response.data
-        setFormData(data)
+        setFormData(data);
+        setSaveStatus("saved");
       } catch (error) {
         console.error("Error fetching personal details:", error)
       }
@@ -56,7 +78,8 @@ export default function AddressSection() {
   }, [isUserLoggedIn])
 
   const updateDatabase = debounce(async (data) => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
+    setSaveStatus("saving");
     try {
       await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/updateAddressDetails`,
@@ -67,17 +90,19 @@ export default function AddressSection() {
           },
         }
       )
-      
+      setSaveStatus("saved");
     } catch (error) {
-      console.error("Error updating address:", error)
+      console.error("Error updating address:", error);
+      setSaveStatus("unsaved");
     }
-  }, 300)
+  }, 1000)
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target
     const updatedData = { ...formData, [name]: value }
     setFormData(updatedData)
-    updateDatabase(updatedData)
+    updateDatabase(updatedData);
+    setSaveStatus("unsaved");
   }
 
   const handleCountrySelect = (selectedCountry: any) => {
@@ -98,6 +123,7 @@ export default function AddressSection() {
     setStateid(selectedState.id);
     const updatedData = { ...formData, state: selectedState.name, city: "" };
     setFormData(updatedData);
+    setSaveStatus("unsaved");
     updateDatabase(updatedData);
   };
   
@@ -105,6 +131,7 @@ export default function AddressSection() {
     if (!selectedCity) return;
     const updatedData = { ...formData, city: selectedCity.name };
     setFormData(updatedData);
+    setSaveStatus("unsaved");
     updateDatabase(updatedData);
   };
   
@@ -121,9 +148,30 @@ export default function AddressSection() {
         </p>
         </div>
       </div>
-      <button className="text-gray-500 hover:text-gray-700 transition-colors duration-200" onClick={toggleOpen}>
-        <ChevronUpIcon className={`w-6 h-6 transition-transform duration-300 ${isOpen ? '' : 'rotate-180'}`} />
-      </button>
+      <div className="flex items-center space-x-4">
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">{getFilledFieldsCount()}</span>
+            <span className="mx-1">/</span>
+            <span>{getTotalFieldsCount()}</span>
+            <span className="ml-1">fields filled</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`text-xs font-medium ${
+                saveStatus === "saved"
+                  ? "text-green-500"
+                  : saveStatus === "saving"
+                  ? "text-yellow-500"
+                  : "text-red-500"
+              }`}
+            >
+              {saveStatus === "saved" && "Saved"}
+              {saveStatus === "saving" && "Saving..."}
+              {saveStatus === "unsaved" && "Unsaved"}
+            </span>
+            <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? "" : "rotate-180"}`} />
+          </div>
+        </div>
       </div>
       <motion.div
       initial={{ opacity: 0, height: 0 }}

@@ -67,7 +67,7 @@ const IncomeSourceComponent = () => {
         const longShortResponse = await fetchLongShortData(token);
         const dividendDataResponse=await fetchDividendData(token);
         const propertyResponse=await fetchLandPropertyData(token,"0");
-        const rentPropertyResponse=await fetchRentPropertyData(token);
+        const rentPropertyResponse=await fetchRentPropertyData(token,"0");
         const virtualAssestsResponse=await fetchCryptoAssestData(token);
         const profResponse=await fetchProfessionalData(token);
         const bussinessReponse=await fetchBussinessData(token);

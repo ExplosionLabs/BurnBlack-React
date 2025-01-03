@@ -8,12 +8,26 @@ import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { motion } from "framer-motion"
 
+
+interface FormData {
+  aadharNumber: string,
+    aadharEnrollment: string,
+    panNumber: string,
+    mobileNumber:string,
+    email: string,
+    secondaryMobileNumber: string,
+    secondaryEmail: string,
+    landlineStd: string,
+    landlineNumber: string
+}
+type TrackedField = 'aadharNumber' | 'panNumber'| 'mobileNumber' | 'email' | 'secondaryMobileNumber' | 'secondaryEmail'|'landlineStd'|'landlineNumber';
 function ContactDetail() {
-  const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null
+  const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
+  const [saveStatus, setSaveStatus] = useState<"saved" | "unsaved" | "saving">("saved");
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn)
   const [isOpen, setIsOpen] = useState(true)
   const [useEnrollment, setUseEnrollment] = useState(false)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     aadharNumber: "",
     aadharEnrollment: "",
     panNumber: "",
@@ -27,9 +41,19 @@ function ContactDetail() {
 
   const toggleOpen = () => setIsOpen((prev) => !prev)
 
+  const trackedFields: TrackedField[] = ['aadharNumber' , 'panNumber', 'mobileNumber' , 'email' , 'secondaryMobileNumber' , 'secondaryEmail','landlineStd','landlineNumber'];
+  const getFilledFieldsCount = () => {
+    return trackedFields.filter(field => formData[field] && formData[field].trim() !== "").length;
+  };
+
+  
+  const getTotalFieldsCount = () => {
+    return trackedFields.length;
+  };
   // Debounced function to update the database
   const updateDatabase = debounce(async (data) => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
+    setSaveStatus("saving");
     try {
       await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/updateContactDetails`,
@@ -40,7 +64,7 @@ function ContactDetail() {
           },
         }
       )
-      console.log("Data updated in database:", data)
+      setSaveStatus("saved");
     } catch (error) {
       console.error("Error updating contact details:", error)
     }
@@ -59,7 +83,8 @@ function ContactDetail() {
           }
         )
         const data = response.data
-        setFormData(data)
+        setFormData(data);
+        setSaveStatus("saved");
       } catch (error) {
         console.error("Error fetching personal details:", error)
       }
@@ -73,13 +98,15 @@ function ContactDetail() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     const updatedData = { ...formData, [name]: value }
-    setFormData(updatedData)
+    setFormData(updatedData);
+    setSaveStatus("unsaved");
     updateDatabase(updatedData)
   }
 
   const handlePhoneChange = (value: string, name: string) => {
     const updatedData = { ...formData, [name]: value }
-    setFormData(updatedData)
+    setFormData(updatedData);
+    setSaveStatus("unsaved");
     updateDatabase(updatedData)
   }
 
@@ -96,11 +123,31 @@ function ContactDetail() {
             </p>
           </div>
           </div>
-        <button className="text-gray-500 hover:text-gray-700" onClick={toggleOpen}>
-          <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? '' : 'rotate-180'}`} />
-        </button>
-      
-    </div>
+          <div className="flex items-center space-x-4">
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">{getFilledFieldsCount()}</span>
+            <span className="mx-1">/</span>
+            <span>{getTotalFieldsCount()}</span>
+            <span className="ml-1">fields filled</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`text-xs font-medium ${
+                saveStatus === "saved"
+                  ? "text-green-500"
+                  : saveStatus === "saving"
+                  ? "text-yellow-500"
+                  : "text-red-500"
+              }`}
+            >
+              {saveStatus === "saved" && "Saved"}
+              {saveStatus === "saving" && "Saving..."}
+              {saveStatus === "unsaved" && "Unsaved"}
+            </span>
+            <ChevronUpIcon className={`w-5 h-5 transition-transform ${isOpen ? "" : "rotate-180"}`} />
+          </div>
+        </div>
+      </div>
     {isOpen && (
       <motion.div
       initial={{ opacity: 0, height: 0 }}

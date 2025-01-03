@@ -9,15 +9,31 @@ type BankDetail = {
   bankName: string
   type: string
 }
-
+type TrackedField = 'accountNo'|'ifscCode'|'bankName'|'type';
 export default function BankDetails() {
   const [bankDetails, setBankDetails] = useState<BankDetail[]>([
     { accountNo: "", ifscCode: "", bankName: "", type: "" },
   ])
+  const [saveStatus, setSaveStatus] = useState<"saved" | "unsaved" | "saving">("saved");
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [isExpanded, setIsExpanded] = useState(true)
 
+  const trackedFields: TrackedField[] = ['accountNo','ifscCode','bankName','type'];
+  const getFilledFieldsCount = () => {
+    return bankDetails.reduce((count, detail) => {
+      return (
+        count +
+        trackedFields.filter(
+          (field) => detail[field] && detail[field].trim() !== ""
+        ).length
+      );
+    }, 0);
+  };
+  
+  const getTotalFieldsCount = () => {
+    return bankDetails.length * trackedFields.length;
+  };
   // Fetch bank details from the backend
   useEffect(() => {
     const fetchBankDetails = async () => {
@@ -56,9 +72,10 @@ export default function BankDetails() {
           },
         }
       )
-   
+      setSaveStatus("saved");
     } catch (error) {
-      console.error("Error saving bank details:", error)
+      console.error("Error saving bank details:", error);
+      setSaveStatus("unsaved");
     }
   }, 300)
 
@@ -66,7 +83,8 @@ export default function BankDetails() {
   const handleChange = (index: number, field: keyof BankDetail, value: string) => {
     const updatedDetails = [...bankDetails]
     updatedDetails[index][field] = value
-    setBankDetails(updatedDetails)
+    setBankDetails(updatedDetails);
+    setSaveStatus("unsaved");
     autoSave(updatedDetails)
   }
 
@@ -96,12 +114,32 @@ export default function BankDetails() {
               </p>
             </div>
           </div>
-          <button className="text-gray-500 hover:text-gray-700"   onClick={() => setIsExpanded(!isExpanded)}>
-            {/* {? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />} */}
+        
+        <div className="flex items-center space-x-4">
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">{getFilledFieldsCount()}</span>
+            <span className="mx-1">/</span>
+            <span>{getTotalFieldsCount()}</span>
+            <span className="ml-1">fields filled</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span
+              className={`text-xs font-medium ${
+                saveStatus === "saved"
+                  ? "text-green-500"
+                  : saveStatus === "saving"
+                  ? "text-yellow-500"
+                  : "text-red-500"
+              }`}
+            >
+              {saveStatus === "saved" && "Saved"}
+              {saveStatus === "saving" && "Saving..."}
+              {saveStatus === "unsaved" && "Unsaved"}
+            </span>
             <ChevronUpIcon className={`w-5 h-5 transition-transform ${isExpanded ? '' : 'rotate-180'}`} />
-          </button>
+          </div>
         </div>
-
+      </div>
       {isExpanded && (
         <>
          
