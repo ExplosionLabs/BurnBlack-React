@@ -169,7 +169,10 @@ function Router() {
           path: "",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <ITRMainPage />
+                </RequiredAuth>
             </Layout>
           ),
         },
