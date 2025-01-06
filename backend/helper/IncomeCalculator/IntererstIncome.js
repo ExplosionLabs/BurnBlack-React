@@ -186,10 +186,21 @@ const getDivdendData = async (userId) => {
 const getPropertyData = async (userId) => {
   try {
     // Query the database to get the data for the specified user
-    const data = await Property.find({ userId });
+    const data = await Property.find({ userId }).select("netTaxableIncome");
 
     if (data && data.length > 0) {
-      return { success: true, data: data };
+      // Calculate the total taxable income
+      const totalTaxableIncome = data.reduce(
+        (total, item) => total + (item.netTaxableIncome || 0),
+        0
+      );
+
+      return {
+        success: true,
+
+        data: totalTaxableIncome,
+        length: data.length,
+      };
     } else {
       return {
         success: false,
@@ -201,13 +212,20 @@ const getPropertyData = async (userId) => {
     return { success: false, message: "Internal Server Error" };
   }
 };
+
 const getRentalData = async (userId) => {
   try {
     // Query the database to get the data for the specified user
-    const data = await RentalProperty.find({ userId });
+    const data = await RentalProperty.find({ userId }).select(
+      "netTaxableIncome"
+    );
 
     if (data && data.length > 0) {
-      return { success: true, data: data };
+      const totalTaxableIncome = data.reduce(
+        (total, item) => total + (item.netTaxableIncome || 0),
+        0
+      );
+      return { success: true, data: totalTaxableIncome, length: data.length };
     } else {
       return {
         success: false,

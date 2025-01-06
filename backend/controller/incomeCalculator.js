@@ -175,12 +175,10 @@ const taxableIncomeController = async (req, res) => {
     const dividendDataV = safePositiveNumber(
       dividendData.data?.[0]?.totalAmount
     );
-    const propertyDataV = safePositiveNumber(
-      propertyData.data?.[0]?.netTaxableIncome
-    );
-    const rentalDataV = safePositiveNumber(
-      rentalData.data?.[0]?.netTaxableIncome
-    );
+
+    const propertyDataV = safePositiveNumber(propertyData.data);
+
+    const rentalDataV = safePositiveNumber(rentalData.data);
     const profDataV = safePositiveNumber(professData.data?.[0]?.totalRevenue);
 
     // Calculate business data

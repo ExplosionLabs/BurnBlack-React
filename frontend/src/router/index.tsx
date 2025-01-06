@@ -109,6 +109,7 @@ import TaxCollectedForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Co
 import TaxLossSub from "@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLossSub";
 import Form16Manually from "@/ImportantComponent/IncomeSourcesComponent/Form16Manually/Form16Manually";
 import UserDetailLayout from "@/utils/UserDetailLayout";
+import RequiredAuth from "@/route/RequiredAuth";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -179,7 +180,10 @@ function Router() {
             backLink="/fileITR/incomeSources"
             nextLink="/fileITR/incomeSources/incomeInterest"
           >
+              <RequiredAuth>
+
               <Form16Manually/>
+              </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -187,7 +191,9 @@ function Router() {
           path: "addPanCardDetail",
           element: (
             <Layout>
+                <RequiredAuth>
               <AddPan />
+              </RequiredAuth>
             </Layout>
           ),
         },
@@ -195,7 +201,10 @@ function Router() {
           path: "uploadForm16",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <UploadForm16 />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -203,7 +212,9 @@ function Router() {
           path: "personalDetail",
           element: (
             <Layout>
+              <RequiredAuth>
               <PersonalDetail />
+              </RequiredAuth>
             </Layout>
           ),
         },
@@ -211,7 +222,10 @@ function Router() {
           path: "incomeSources",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <IncomeSources />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -221,7 +235,10 @@ function Router() {
             <UserDetailLayout
           backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
           >
+              <RequiredAuth>
+
               <IncomeInterest />
+              </RequiredAuth>
            </UserDetailLayout>
           ),
         },
@@ -231,7 +248,10 @@ function Router() {
             <UserDetailLayout
           backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
           >
+              <RequiredAuth>
+
               <CapitalGainSubMain />
+              </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -241,19 +261,24 @@ function Router() {
             <UserDetailLayout
           backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
           >
+              <RequiredAuth>
+
               <HousePropMain />
+              </RequiredAuth>
             </UserDetailLayout>
           ),
         },
         {
           path: "incomeSources/self-occupied-property/:propertyIndex",
           element: (
-            <UserDetailLayout
-          backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
-          >
+          //   <UserDetailLayout
+          // backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+          // >
+          <RequiredAuth>  
 
               <SelfProperty />
-          </UserDetailLayout>
+          </RequiredAuth>
+          // </UserDetailLayout>
             
           ),
         },
@@ -263,7 +288,10 @@ function Router() {
             <UserDetailLayout
             backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
             >
+                <RequiredAuth>
+
               <RentProperty />
+                </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -273,7 +301,10 @@ function Router() {
             <UserDetailLayout
             backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
             >
+                <RequiredAuth>
+
               <DividentIncome />
+                </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -283,7 +314,10 @@ function Router() {
             <UserDetailLayout
             backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
             >
+                <RequiredAuth>
+
               <ProSubSection />
+                </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -291,7 +325,10 @@ function Router() {
           path: "professional-income",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <ProfessionalIncome />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -299,7 +336,10 @@ function Router() {
           path: "bussiness-income",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <BussinessIncome />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -307,7 +347,10 @@ function Router() {
           path: "book-of-account-dashboard",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <ProfBussinessSection />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -315,7 +358,10 @@ function Router() {
           path: "profit-and-loss-boa",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <ProfitLoss />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -323,7 +369,10 @@ function Router() {
           path: "balance-sheet-boa",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <BalanceSheet />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -331,7 +380,10 @@ function Router() {
           path: "financial-particulars",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <FinanceSubSection />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -341,7 +393,10 @@ function Router() {
             <UserDetailLayout
             backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
             >
+                <RequiredAuth>
+
               <VirtualAssestSubMain />
+                </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -351,7 +406,10 @@ function Router() {
             <UserDetailLayout
             backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
             >
+                <RequiredAuth>
+
               <OtherIncomeSubSection />
+                </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -359,7 +417,10 @@ function Router() {
           path: "exempt-other-income",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <ExemptIncome />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -367,7 +428,10 @@ function Router() {
           path: "agri-income",
           element: (
             <Layout>
+                <RequiredAuth>
+                  
               <AgriIncome />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -375,7 +439,10 @@ function Router() {
           path: "bussiness-fund",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <BussinessFundIncome/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -383,7 +450,10 @@ function Router() {
           path: "tax-summary",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <TaxSummary/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -391,7 +461,10 @@ function Router() {
           path: "add-deprectation",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <DeprectationEntry/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -405,7 +478,10 @@ function Router() {
           path: "",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <TaxSaving />
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -416,7 +492,10 @@ function Router() {
             backLink="/fileITR/incomeSources"
             nextLink="/fileITR/incomeInterest"
           >
+              <RequiredAuth>
+
               <TaxDashboard/>
+              </RequiredAuth>
             </UserDetailLayout>
           ),
         },
@@ -424,7 +503,10 @@ function Router() {
           path: "deduction-80g",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <TaxDonation80G/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -432,7 +514,10 @@ function Router() {
           path: "deduction-80gga",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <DonationRurual/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -440,7 +525,10 @@ function Router() {
           path: "contri-party",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <DonationParty/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -448,7 +536,10 @@ function Router() {
           path: "tds-nonsalary",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <NonSalaryForm/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -456,7 +547,10 @@ function Router() {
           path: "tds-rent",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <TDSRentForm/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -464,7 +558,11 @@ function Router() {
           path: "tax-paid",
           element: (
             <Layout>
+
+<RequiredAuth>
+
               <TaxPaidSub/>
+</RequiredAuth>
             </Layout>
           ),
         },
@@ -472,7 +570,10 @@ function Router() {
           path: "other-tax",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <TaxLossSub/>
+                </RequiredAuth>
             </Layout>
           ),
         },
@@ -480,7 +581,10 @@ function Router() {
           path: "tax-collected",
           element: (
             <Layout>
+                <RequiredAuth>
+
               <TaxCollectedForm/>
+                </RequiredAuth>
             </Layout>
           ),
         },

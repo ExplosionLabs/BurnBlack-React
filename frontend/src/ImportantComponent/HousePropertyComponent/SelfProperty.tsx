@@ -8,6 +8,8 @@ import RentalIncomeDetails from "./SelfProperty/RentalIncomeDetails";
 import { ArrowLeft, HelpCircle } from "lucide-react";
 import Sliderbar from "@/Layout/Sidebar";
 import { fetchLandPropertyData } from "@/api/landProperty";
+import TopUserDetail from "@/utils/TopUserDetail";
+import SectionNavigation from "@/utils/SectionNavigation";
 
 
 
@@ -130,12 +132,18 @@ return;
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-8">
+    <>
+       <div className="lg:col-span-2">
+       <div className="mx-auto p-3 lg:p-5">
+   <TopUserDetail backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"/>
+   <div className="bg-white px-4 py-4 rounded-md shadow-sm mb-4">
+    <SectionNavigation />
+    <div className="">
   <div className="lg:col-span-3 space-y-4 overflow-y-auto h-screen scrollbar-hide">
     {/* Header */}
-    <div className="w-full max-w-4xl p-6">
+    <div className="w-full  p-6">
       <div className="mb-6">
-        <div className="flex items-center mb-4">
+        <div className="flex items-center mb-4 justify-center">
         <Link to="/fileITR/incomeSources/income-house-property" className="inline-flex items-center text-gray-600 hover:text-gray-900 mr-4">
             <ArrowLeft className="w-5 h-5" />
           </Link>
@@ -143,11 +151,11 @@ return;
             Self Occupied Properties (not given on rent)
           </h1>
         </div>
-        <p className="text-gray-600">
+        <p className="text-gray-600 text-center">
           Enter the home loan interest, address and other details. You can get the interest details from the home loan certificate issued by the bank.
         </p>
       </div>
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8 justify-center">
         <div className="flex items-center gap-2 min-w-[180px]">
           <label htmlFor="propertyType" className="font-medium text-gray-700">
             Your property type
@@ -177,7 +185,7 @@ return;
 
 
       {/* Render components */}
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
         <HouseAddresComponent
           data={formData.houseAddress}
           onChange={(updatedData: any) => handleFormChange("houseAddress", updatedData)}
@@ -197,8 +205,11 @@ return;
       {/* Navigation links */}
       
     </div>
-   
     </div>
+    </div>
+    </div>
+    </div>
+    </>
   );
 };
 
