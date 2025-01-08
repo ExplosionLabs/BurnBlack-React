@@ -27,18 +27,34 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const router = require("express").Router();
 
 router.post("/postStockMutualData", authMiddleware, postStockMutualControler);
-router.post("/editStockMutualData", authMiddleware, updateStockMutualData);
+router.post(
+  "/editStockMutualData/:stockMutualId",
+  authMiddleware,
+  updateStockMutualData
+);
 router.get("/getStockMutualData", authMiddleware, getStockMututalData);
 router.get("/getAllStockMutualData", authMiddleware, getAllMututalData);
 router.post("/addForeignAssest", authMiddleware, postForeignAssestControler);
 router.get("/getForeignAssest", authMiddleware, getForeignAssetsData);
-router.post("/editForeignAssest", authMiddleware, updateForeignAssestData);
+router.post(
+  "/editForeignAssest/:foreignId",
+  authMiddleware,
+  updateForeignAssestData
+);
 router.post("/addLandBuildAssest", authMiddleware, postLandFormController);
 router.get("/getLandFormAssest", authMiddleware, getLandFormData);
-router.post("/editLandFormAssest", authMiddleware, updateLandFormAssestData);
+router.post(
+  "/editLandFormAssest/:landId",
+  authMiddleware,
+  updateLandFormAssestData
+);
 router.post("/addStockRsuAssest", authMiddleware, postStockRsuAssestControler);
 router.get("/getStockRsuAssest", authMiddleware, getStockRsuAssetsData);
-router.post("/editStockRsuAssest", authMiddleware, updateStockRsuAssestData);
+router.post(
+  "/editStockRsuAssest/:stockRsuId",
+  authMiddleware,
+  updateStockRsuAssestData
+);
 router.post(
   "/addBondDebentureAssest",
   authMiddleware,
@@ -50,7 +66,7 @@ router.get(
   getBondDebentureAssetsData
 );
 router.post(
-  "/editBondDebenture",
+  "/editBondDebenture/:bondId",
   authMiddleware,
   updateBondDebentureAssestData
 );
@@ -63,5 +79,9 @@ router.get("/getShortLongAssest", authMiddleware, getShortLongAssetsData);
 router.post("/editLongShortGain", authMiddleware, updateLongShortData);
 router.post("/postsGoldAssests", authMiddleware, postGoldAssestControler);
 router.get("/getGoldAssest", authMiddleware, getGoldAssetsData);
-router.post("/editGoldAssest", authMiddleware, updateGoldFormAssestData);
+router.post(
+  "/editGoldAssest/:goldId",
+  authMiddleware,
+  updateGoldFormAssestData
+);
 module.exports = router;

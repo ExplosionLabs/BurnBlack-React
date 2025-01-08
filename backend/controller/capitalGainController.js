@@ -27,8 +27,7 @@ const getStockMututalData = async (req, res) => {
   const userId = req.user.id; // Assuming user is authenticated
 
   try {
-    const capitalGainData = await stockMututalassest.findOne({
-      assetType,
+    const capitalGainData = await stockMututalassest.find({
       userId,
     });
 
@@ -74,9 +73,10 @@ const updateStockMutualData = async (req, res) => {
     const userId = req.user.id;
     const updatedData = req.body;
 
+    const { stockMutualId } = req.params;
     // Find the user's existing data and update it
     const existingData = await stockMututalassest.findOneAndUpdate(
-      { userId, assetType: updatedData.assetType },
+      { userId, _id: stockMutualId },
       updatedData,
       { new: true }
     );
@@ -112,7 +112,7 @@ const postForeignAssestControler = async (req, res) => {
 const getForeignAssetsData = async (req, res) => {
   const userId = req.user.id;
   try {
-    const foreignAssestData = await ForeignAssest.findOne({
+    const foreignAssestData = await ForeignAssest.find({
       userId,
     });
 
@@ -136,9 +136,10 @@ const updateForeignAssestData = async (req, res) => {
     const userId = req.user.id;
     const updatedData = req.body;
 
+    const { foreignId } = req.params;
     // Find the user's existing data and update it
     const existingData = await ForeignAssest.findOneAndUpdate(
-      { userId },
+      { _id: foreignId, userId: userId },
       updatedData,
       { new: true }
     );
@@ -185,7 +186,7 @@ const postLandFormController = async (req, res) => {
 const getLandFormData = async (req, res) => {
   const userId = req.user.id;
   try {
-    const landFormData = await LandForm.findOne({
+    const landFormData = await LandForm.find({
       userId,
     });
 
@@ -209,9 +210,10 @@ const updateLandFormAssestData = async (req, res) => {
     const userId = req.user.id;
     const updatedData = req.body;
 
+    const { landId } = req.params;
     // Find the user's existing data and update it
     const existingData = await LandForm.findOneAndUpdate(
-      { userId },
+      { _id: landId, userId },
       updatedData,
       { new: true }
     );
@@ -243,7 +245,7 @@ const postStockRsuAssestControler = async (req, res) => {
 const getStockRsuAssetsData = async (req, res) => {
   const userId = req.user.id;
   try {
-    const stockRsuAssestData = await stockRsuData.findOne({
+    const stockRsuAssestData = await stockRsuData.find({
       userId,
     });
 
@@ -267,9 +269,10 @@ const updateStockRsuAssestData = async (req, res) => {
     const userId = req.user.id;
     const updatedData = req.body;
 
+    const { stockRsuId } = req.params;
     // Find the user's existing data and update it
     const existingData = await stockRsuData.findOneAndUpdate(
-      { userId },
+      { _id: stockRsuId, userId },
       updatedData,
       { new: true }
     );
@@ -300,7 +303,7 @@ const postBondDebentureAssestControler = async (req, res) => {
 const getBondDebentureAssetsData = async (req, res) => {
   const userId = req.user.id;
   try {
-    const bondDebentureAssestData = await bondDebenture.findOne({
+    const bondDebentureAssestData = await bondDebenture.find({
       userId,
     });
 
@@ -324,9 +327,10 @@ const updateBondDebentureAssestData = async (req, res) => {
     const userId = req.user.id;
     const updatedData = req.body;
 
+    const { bondId } = req.params;
     // Find the user's existing data and update it
     const existingData = await bondDebenture.findOneAndUpdate(
-      { userId },
+      { _id: bondId, userId },
       updatedData,
       { new: true }
     );
@@ -422,7 +426,7 @@ const postGoldAssestControler = async (req, res) => {
 const getGoldAssetsData = async (req, res) => {
   const userId = req.user.id;
   try {
-    const goldFormAssestData = await GoldForm.findOne({
+    const goldFormAssestData = await GoldForm.find({
       userId,
     });
 
@@ -446,9 +450,10 @@ const updateGoldFormAssestData = async (req, res) => {
     const userId = req.user.id;
     const updatedData = req.body;
 
+    const { goldId } = req.params;
     // Find the user's existing data and update it
     const existingData = await GoldForm.findOneAndUpdate(
-      { userId },
+      { _id: goldId, userId },
       updatedData,
       { new: true }
     );

@@ -160,12 +160,13 @@ const taxableIncomeController = async (req, res) => {
 
     // Calculate values with safe defaults
     const stockData = calculateTotalProfit(stockMutualData.data);
+
     const totalInterestIncome = calculateInterestIncome(interestData.data);
-    const foreignV = safePositiveNumber(foreignData.data?.[0]?.totalProfit);
-    const landFormV = safePositiveNumber(landData.data?.[0]?.totalProfit);
-    const bondDataV = safePositiveNumber(bondData.data?.[0]?.totalProfit);
-    const goldDataV = safePositiveNumber(goldData.data?.[0]?.totalProfit);
-    const stockRsuV = safePositiveNumber(stockRsuData.data?.totalProfit);
+    const foreignV = calculateTotalProfit(foreignData.data);
+    const landFormV = calculateTotalProfit(landData.data);
+    const bondDataV = calculateTotalProfit(bondData.data);
+    const goldDataV = calculateTotalProfit(goldData.data);
+    const stockRsuV = calculateTotalProfit(stockRsuData.data);
     const shortTermV = safePositiveNumber(
       longSData.data?.[0]?.shortTermDetails?.shortOtherAmountDeemed
     );
