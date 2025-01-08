@@ -334,9 +334,13 @@ const getLoansData = async (userId) => {
 
     const eduLoanDeduction = loansData?.eduLoans > 0 ? loansData.eduLoans : 0; // Section 80E
     const homeLoanDeduction1617 =
-      loansData?.homeLoans1617 > 0 ? loansData.homeLoans1617 : 0; // Section 80EE
+      loansData?.homeLoans1617 > 0
+        ? Math.min(loansData.homeLoans1617, 50000)
+        : 0; // Section 80EE (Max 50,000)
     const homeLoanDeduction1922 =
-      loansData?.homeLoans1922 > 0 ? loansData.homeLoans1922 : 0; // Section 80EEA
+      loansData?.homeLoans1922 > 0
+        ? Math.min(loansData.homeLoans1922, 150000)
+        : 0; // Section 80EEA (Max 1,50,000)
     const electricVehicleDeduction =
       loansData?.electricVehicle > 0 ? loansData.electricVehicle : 0; // Section 80EEB
 
@@ -345,7 +349,8 @@ const getLoansData = async (userId) => {
       homeLoanDeduction1617 +
       homeLoanDeduction1922 +
       electricVehicleDeduction;
-    if (totalLoans) {
+
+    if (totalLoans > 0) {
       return { success: true, data: totalLoans };
     } else {
       return {
