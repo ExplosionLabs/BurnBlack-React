@@ -69,22 +69,13 @@ const DonationParty = () => {
   };
 
   return (
-    <div>
+  
    
+
   
-    <div className="flex items-center gap-4 mb-4">
-          <Link to="/tax-saving/dashboard" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <ArrowLeft className="w-6 h-6" />
-          </Link>
-          <div>
-          <h1 className="text-2xl font-semibold">Add contribution to political party (80GGC)</h1>
-         
-                </div>
-        </div>
-    <div className="space-y-6 mt-8">
     
-  
-  
+  <>
+ 
       <div>
         <label htmlFor="cashAmount" className="block text-sm font-medium text-gray-700">
           Donation Amount (Cash)
@@ -155,9 +146,9 @@ const DonationParty = () => {
           className="w-full px-3 py-1 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
+
+      </>
   
-    </div>
-  </div>
   
   );
 };

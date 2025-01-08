@@ -492,8 +492,8 @@ function Router() {
           path: "dashboard",
           element: (
             <UserDetailLayout
-            backLink="/fileITR/incomeSources"
-            nextLink="/fileITR/incomeInterest"
+            backLink="/tax-saving"
+            nextLink="/tax-saving"
           >
               <RequiredAuth>
 
@@ -505,34 +505,43 @@ function Router() {
         {
           path: "deduction-80g",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/tax-saving/dashboard"
+            nextLink="/tax-saving"
+          >
                 <RequiredAuth>
 
               <TaxDonation80G/>
                 </RequiredAuth>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
           path: "deduction-80gga",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/tax-saving/dashboard"
+            nextLink="/tax-saving"
+          >
                 <RequiredAuth>
 
               <DonationRurual/>
                 </RequiredAuth>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
           path: "contri-party",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/tax-saving/dashboard"
+            nextLink="/tax-saving"
+          >
                 <RequiredAuth>
 
               <DonationParty/>
                 </RequiredAuth>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
@@ -560,24 +569,29 @@ function Router() {
         {
           path: "tax-paid",
           element: (
-            <Layout>
-
+            <UserDetailLayout
+            backLink="/tax-saving"
+            nextLink="/tax-saving"
+          >
 <RequiredAuth>
 
               <TaxPaidSub/>
 </RequiredAuth>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {
           path: "other-tax",
           element: (
-            <Layout>
+            <UserDetailLayout
+            backLink="/tax-saving"
+            nextLink="/fileITR/tax-summary"
+          >
                 <RequiredAuth>
 
               <TaxLossSub/>
                 </RequiredAuth>
-            </Layout>
+            </UserDetailLayout>
           ),
         },
         {

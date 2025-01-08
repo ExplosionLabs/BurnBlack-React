@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 const TaxLossSub = () => {
   return (
     <>
-        <div className="flex items-center gap-4 mb-4">
+        {/* <div className="flex items-center gap-4 mb-4">
           <Link to="/tax-saving" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
@@ -19,7 +19,7 @@ const TaxLossSub = () => {
 
                 </p>
                 </div>
-        </div>
+        </div> */}
     <DeprectationLoss/>
     <ForeignAssets/>
     </>

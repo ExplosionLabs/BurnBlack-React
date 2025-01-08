@@ -10,7 +10,7 @@ import Form16Main from '@/ImportantComponent/IncomeSourcesComponent/Form16Main'
 const TaxPaidSub = () => {
   return (
     <>
-    <div className="flex items-center gap-4 mb-4">
+    {/* <div className="flex items-center gap-4 mb-4">
           <Link to="/tax-saving" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
@@ -22,14 +22,14 @@ const TaxPaidSub = () => {
 
                 </p>
                 </div>
-        </div>
-    <div className='flex flex-col gap-4'>
+        </div> */}
+   
         <SelfTax/>
         <Form16Main/>
         <NonSalary/>
         <TDSRent/>
         <TaxCollected/>
-    </div>
+   
     </>
   )
 }
