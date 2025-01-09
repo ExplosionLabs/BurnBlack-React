@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import _ from "lodash";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import TopUserDetail from "@/utils/TopUserDetail";
+import SectionNavigation from "@/utils/SectionNavigation";
 const FinanceSubSection: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
   const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
@@ -109,12 +111,18 @@ const FinanceSubSection: React.FC = () => {
   )
 
   return (
+
     <>
-      <div className=" flex items-center gap-4">
+       <div className="lg:col-span-2">
+       <div className="mx-auto p-3 lg:p-5">
+       <TopUserDetail backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"/>
+      <div className="bg-white px-4 py-4 rounded-md shadow-sm mb-4">
+        <SectionNavigation/>
+      <div className=" flex items-center gap-4 mt-4">
         <Link to="/fileITR/incomeSources/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
           <ArrowLeft className="h-6 w-6" />
         </Link>
-        <h1 className="text-xl font-semibold text-gray-900">Add Financial Particulars</h1>
+        <h1 className="text-xl font-semibold text-gray-900 ">Add Financial Particulars</h1>
       </div>
 
     <div className="py-8 px-4 sm:px-6 lg:px-8">
@@ -212,6 +220,9 @@ const FinanceSubSection: React.FC = () => {
           </div>
         </form>
       </div>
+    </div>
+    </div>
+    </div>
     </div>
     </>
   )

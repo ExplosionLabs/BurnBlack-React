@@ -4,6 +4,8 @@ import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Coins, Info, Trash2 } from "lucide-react";
+import SectionNavigation from "@/utils/SectionNavigation";
+import TopUserDetail from "@/utils/TopUserDetail";
 
 const ProfBussinessSection: React.FC = () => {
   const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
@@ -116,10 +118,15 @@ const ProfBussinessSection: React.FC = () => {
 
   return (
     <>
-   
+       <div className="lg:col-span-2">
+       <div className="mx-auto p-3 lg:p-5">
+       <TopUserDetail backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"/>
+       <div className="bg-white px-4 py-4 rounded-md shadow-sm mb-4">
+  <SectionNavigation />
+  
     <div>
       {/* Header */}
-      <div className="mb-6 flex items-center gap-4">
+      <div className="my-6 flex items-center gap-4">
         <Link to="/fileITR/incomeSources/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
           <ArrowLeft className="h-6 w-6" />
         </Link>
@@ -381,7 +388,9 @@ Summary of depreciation on all assets under the Income-Tax Act.
         )}
       </div> */}
     </div>
- 
+    </div>
+    </div>
+    </div>
     </>
   );
 };

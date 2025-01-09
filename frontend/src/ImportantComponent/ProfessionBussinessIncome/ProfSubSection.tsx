@@ -35,7 +35,7 @@ const ProSubSection: React.FC = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-                         to="/fileITR/professional-income"
+                         to="/fileITR/incomeSources/professional-income"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
           >
             Add Details
@@ -84,7 +84,7 @@ const ProSubSection: React.FC = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-                          to="/fileITR/bussiness-income"
+                          to="/fileITR/incomeSources/bussiness-income"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
           >
             Add Details
@@ -133,7 +133,7 @@ const ProSubSection: React.FC = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-                        to="/fileITR/book-of-account-dashboard"
+                        to="/fileITR/incomeSources/book-of-account-dashboard"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium"
           >
             Add Details

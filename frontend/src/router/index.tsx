@@ -325,36 +325,38 @@ function Router() {
           ),
         },
         {
-          path: "professional-income",
+          path: "incomeSources/professional-income",
           element: (
-            <Layout>
+            // <UserDetailLayout
+            // backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            // >
                 <RequiredAuth>
 
               <ProfessionalIncome />
                 </RequiredAuth>
-            </Layout>
+            // </UserDetailLayout>
           ),
         },
         {
-          path: "bussiness-income",
+          path: "incomeSources/bussiness-income",
           element: (
-            <Layout>
+            // <Layout>
                 <RequiredAuth>
 
               <BussinessIncome />
                 </RequiredAuth>
-            </Layout>
+            // </Layout>
           ),
         },
         {
-          path: "book-of-account-dashboard",
+          path: "incomeSources/book-of-account-dashboard",
           element: (
-            <Layout>
+        
                 <RequiredAuth>
 
               <ProfBussinessSection />
                 </RequiredAuth>
-            </Layout>
+           
           ),
         },
         {
@@ -380,7 +382,7 @@ function Router() {
           ),
         },
         {
-          path: "financial-particulars",
+          path: "incomeSources/financial-particulars",
           element: (
             <Layout>
                 <RequiredAuth>

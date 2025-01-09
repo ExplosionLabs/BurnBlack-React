@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { ArrowLeft, PlusCircle, Trash2, Info } from 'lucide-react'
 import { Link } from "react-router-dom";
 import { fetchProfessionalData } from "@/api/professionalIncome";
+import TopUserDetail from "@/utils/TopUserDetail";
+import SectionNavigation from "@/utils/SectionNavigation";
 
 interface ProfessionDetail {
   professionTypes: string;
@@ -158,8 +160,13 @@ const ProfessionalIncome: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
-    <div className="mx-auto max-w-4xl">
+    <div className="lg:col-span-2">
+       <div className="mx-auto p-3 lg:p-5">
+       <TopUserDetail backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"/>
+       <div className="bg-white px-4 py-4 rounded-md shadow-sm mb-4">
+            <SectionNavigation />
+    <div className="min-h-screen  p-4 md:p-6 w-full">
+    <div className="mx-auto">
       {/* Header */}
       <div className="mb-6 flex items-center gap-4">
         <Link to="/fileITR/incomeSources/income-professional-freelancing-business" className="rounded-full p-2 hover:bg-gray-100">
@@ -169,7 +176,7 @@ const ProfessionalIncome: React.FC = () => {
       </div>
 
       {/* Main Form */}
-      <div className="rounded-md border bg-white p-6 shadow-sm">
+      <div className="rounded-md border p-6 shadow-sm">
         <div className="mb-6">
           <div className="mb-2 flex items-center gap-2">
             <span className="text-blue-600">
@@ -366,6 +373,9 @@ const ProfessionalIncome: React.FC = () => {
       </div>
     </div>
   </div>
+  </div>
+    </div>
+    </div>
   );
 };
 
