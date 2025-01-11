@@ -5,7 +5,7 @@ const {
 
 const router = require("express").Router();
 
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 router.get("/getTaxableIncome", authMiddleware, taxableIncomeController);
 router.get("/getTaxPaid", authMiddleware, getTaxPaidController);

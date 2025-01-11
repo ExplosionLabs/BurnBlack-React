@@ -53,7 +53,7 @@ const {
   getAllRentalController,
 } = require("../controller/fileITRController");
 const multer = require("multer");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 const router = require("express").Router();
 const storage = multer.memoryStorage(); // Alternatively, use diskStorage if required
 const upload = multer({ storage });

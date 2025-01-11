@@ -1,6 +1,9 @@
+const GSTData = require("../model/GSTData");
 const personalDetailModel = require("../model/personalDetailModel");
 const axios = require("axios");
 const SUREPASS_API_URL = "https://kyc-api.surepass.io/api/v1/pan/pan";
+const SUREPASS_API_URL_GSTIN =
+  "https://kyc-api.surepass.io/api/v1/corporate/gstin-advanced";
 
 const getPanNameController = async (req, res) => {
   const { panNumber } = req.body;
@@ -48,5 +51,54 @@ const getPanNameController = async (req, res) => {
     });
   }
 };
+const getGSTDataController = async (req, res) => {
+  const { gstin } = req.body;
 
-module.exports = getPanNameController;
+  const token = process.env.SUREPASS_TOKEN;
+
+  if (!gstin) {
+    return res.status(400).json({ error: "Gstin number is required." });
+  }
+
+  try {
+    // Make API request to SurePass
+    const response = await axios.post(
+      SUREPASS_API_URL_GSTIN,
+      { id_number: gstin },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = response.data.data;
+    const gstData = new GSTData(data);
+    const result = await gstData.save();
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error("Error verifying ", error.response?.data || error.message);
+    res.status(500).json({
+      error: "Failed to verify Gst in. Please try again later.",
+      details: error.response?.data,
+    });
+  }
+};
+const getAllGSTDataController = async (req, res) => {
+  try {
+    const result = await GSTData.find();
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to get data",
+      details: error.response?.data,
+    });
+  }
+};
+
+module.exports = {
+  getPanNameController,
+  getGSTDataController,
+  getAllGSTDataController,
+};

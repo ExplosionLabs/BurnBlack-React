@@ -30,7 +30,7 @@ const {
   getDepLossController,
   updateDeptLoss,
 } = require("../controller/taxSavingController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
 

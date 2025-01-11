@@ -110,6 +110,8 @@ import TaxLossSub from "@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLossS
 import Form16Manually from "@/ImportantComponent/IncomeSourcesComponent/Form16Manually/Form16Manually";
 import UserDetailLayout from "@/utils/UserDetailLayout";
 import RequiredAuth from "@/route/RequiredAuth";
+import AdminDashboard from "@/pages/ImportantPage/AdminDashboard/AdminDashboard";
+import RequiredAdmin from "@/route/RequiredAdmin";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -149,6 +151,16 @@ function Router() {
             <Layout>
               <Register />
             </Layout>
+          ),
+        },
+        {
+          path: "/admin",
+          element: (
+            // <Layout>
+              <RequiredAdmin>
+              <AdminDashboard />
+              </RequiredAdmin>
+            // </Layout>
           ),
         },
         {

@@ -22,7 +22,7 @@ const {
   updateGoldFormAssestData,
   getAllMututalData,
 } = require("../controller/capitalGainController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const router = require("express").Router();
 
