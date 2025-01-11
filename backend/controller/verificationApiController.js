@@ -57,10 +57,20 @@ const getGSTDataController = async (req, res) => {
   const token = process.env.SUREPASS_TOKEN;
 
   if (!gstin) {
-    return res.status(400).json({ error: "Gstin number is required." });
+    return res.status(400).json({ error: "GSTIN number is required." });
   }
 
   try {
+    // Check if GSTIN already exists in the database
+    const existingData = await GSTData.findOne({ gstin });
+    if (existingData) {
+      return res.json({
+        success: true,
+        result: existingData,
+        message: "GSTIN already exists in the database.",
+      });
+    }
+
     // Make API request to SurePass
     const response = await axios.post(
       SUREPASS_API_URL_GSTIN,
@@ -74,17 +84,24 @@ const getGSTDataController = async (req, res) => {
     );
 
     const data = response.data.data;
+
+    // Save the fetched data to the database
     const gstData = new GSTData(data);
     const result = await gstData.save();
+
     res.json({ success: true, result });
   } catch (error) {
-    console.error("Error verifying ", error.response?.data || error.message);
+    console.error(
+      "Error verifying GSTIN:",
+      error.response?.data || error.message
+    );
     res.status(500).json({
-      error: "Failed to verify Gst in. Please try again later.",
+      error: "Failed to verify GSTIN. Please try again later.",
       details: error.response?.data,
     });
   }
 };
+
 const getAllGSTDataController = async (req, res) => {
   try {
     const result = await GSTData.find();

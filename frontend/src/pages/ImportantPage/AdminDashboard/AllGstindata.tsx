@@ -36,8 +36,7 @@ const AllGSTData: React.FC = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("gst",response.data);
-        setGstData(response.data.result); // Assuming the API returns { results: GSTData[] }
+        setGstData(response.data.result); // Assuming the API returns { result: GSTData[] }
         setError(null);
       } catch (err) {
         console.error(err || 'An error occurred');
@@ -49,59 +48,62 @@ const AllGSTData: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">All GST Data</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold text-center mb-8">All GST Data</h1>
+
+      {error && <p className="text-red-500 text-center mb-6">{error}</p>}
+
       {gstData.length === 0 && !error ? (
-        <p className="text-gray-700">No data available.</p>
+        <p className="text-center text-gray-700">No data available.</p>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {gstData.map((data, index) => (
             <div
               key={index}
-              className="border p-4 rounded-md shadow-md bg-white hover:shadow-lg transition duration-300"
+              className="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg bg-white transition duration-300"
             >
-              <h2 className="text-xl font-semibold mb-2">{data.business_name}</h2>
-              <p>
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">{data.business_name}</h2>
+
+              <p className="mb-2">
                 <strong>Legal Name:</strong> {data.legal_name}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>GSTIN:</strong> {data.gstin}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>PAN Number:</strong> {data.pan_number}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Constitution of Business:</strong> {data.constitution_of_business}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Taxpayer Type:</strong> {data.taxpayer_type}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>GSTIN Status:</strong> {data.gstin_status}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Date of Registration:</strong>{' '}
                 {new Date(data.date_of_registration).toLocaleDateString()}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Annual Turnover:</strong> {data.annual_turnover}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Principal Address:</strong> {data.contact_details?.principal?.address}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Principal Email:</strong> {data.contact_details?.principal?.email}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Principal Mobile:</strong> {data.contact_details?.principal?.mobile}
               </p>
-              <p>
+              <p className="mb-2">
                 <strong>Nature of Core Business:</strong>{' '}
                 {data.nature_of_core_business_activity_description}
               </p>
               <p>
-                <strong>Promoters:</strong> {data.promoters?.join(', ')}
+                <strong>Promoters:</strong> {data.promoters?.join(', ') || 'N/A'}
               </p>
             </div>
           ))}
