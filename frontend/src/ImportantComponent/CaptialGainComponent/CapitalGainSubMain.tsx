@@ -213,7 +213,7 @@ const CapitalGainSubMain: React.FC = () => {
       const token = localStorage.getItem("token");
       const assetType = activeTab === "Stocks" ? "Stock" : "Mutual Fund";
 
-      const url = (activeTab === "Stocks" && editStockMutualMode ) ||
+      const url = (activeTab === "Stocks" && editStockMutualMode) ||
         (activeTab === "Mutual Funds" && editStockMutualMode)
         ? `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/editStockMutualData/${currentEditStockMutualId}`
         : `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/postStockMutualData`;
@@ -243,7 +243,7 @@ const CapitalGainSubMain: React.FC = () => {
   ) => {
     const { name, value } = e.target;
 
-  
+
 
     // Ensure `index` is a number if provided
     const numericIndex = typeof index === "string" ? parseInt(index, 10) : index;
@@ -370,17 +370,17 @@ const CapitalGainSubMain: React.FC = () => {
   const handleLandForm = async () => {
     try {
       const token = localStorage.getItem("token");
-      const url =editLandMode ? `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/editLandFormAssest/${currentEditLandId}` : `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/addLandBuildAssest`;
+      const url = editLandMode ? `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/editLandFormAssest/${currentEditLandId}` : `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/addLandBuildAssest`;
 
       const response = await axios.post(url, landFormData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       alert(response.data.message);
-    
+
       setIsLandBuildModalOpen(false);
       fetchExistingLandFormAssest();
-      
+
     } catch (error: any) {
       alert(error.response?.data?.error || "Error submitting form");
     }
@@ -388,7 +388,7 @@ const CapitalGainSubMain: React.FC = () => {
   const handleStockRsuForm = async () => {
     try {
       const token = localStorage.getItem("token");
-      const url = editStockRsuMode? `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/editStockRsuAssest/${currentEditStockRsuId}` : `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/addStockRsuAssest`;
+      const url = editStockRsuMode ? `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/editStockRsuAssest/${currentEditStockRsuId}` : `${import.meta.env.VITE_BACKEND_URL}/api/v1/capitalGain/addStockRsuAssest`;
 
       const response = await axios.post(url, stockRsuData, {
         headers: { Authorization: `Bearer ${token}` },
@@ -497,8 +497,8 @@ const CapitalGainSubMain: React.FC = () => {
         //   setExistingMutualData(data);
         // }
         setStockMutualAssets(data)
-      //  setFormData(data);
-      setExistingStockMutualData(data);
+        //  setFormData(data);
+        setExistingStockMutualData(data);
       } else {
         resetForm();
       }
@@ -508,7 +508,7 @@ const CapitalGainSubMain: React.FC = () => {
     }
   };
   useEffect(() => {
-    
+
 
     fetchExistingData();
   }, [activeTab]);
@@ -527,9 +527,9 @@ const CapitalGainSubMain: React.FC = () => {
 
       if (data) {
         setExistingForeignData(data);
-     
+
         setForeignAssets(data);
-  
+
       } else {
         resetForm();
       }
@@ -539,7 +539,7 @@ const CapitalGainSubMain: React.FC = () => {
     }
   };
   useEffect(() => {
-   
+
 
     fetchExistingForeignAssest();
   }, []);
@@ -550,8 +550,8 @@ const CapitalGainSubMain: React.FC = () => {
 
       setForeignFormData({
         ...assetToEdit,
-        dateOfSale: assetToEdit.dateOfSale ?formatDate(assetToEdit.dateOfSale): "",
-        dateOfPurchase: assetToEdit.dateOfPurchase? formatDate(assetToEdit.dateOfPurchase) : "",
+        dateOfSale: assetToEdit.dateOfSale ? formatDate(assetToEdit.dateOfSale) : "",
+        dateOfPurchase: assetToEdit.dateOfPurchase ? formatDate(assetToEdit.dateOfPurchase) : "",
       });
       setEditMode(true);
       setCurrentEditId(id);
@@ -564,8 +564,8 @@ const CapitalGainSubMain: React.FC = () => {
 
       setLandFormData({
         ...assetToEdit,
-        dateOfSale: assetToEdit.dateOfSale ?formatDate(assetToEdit.dateOfSale): "",
-        dateOfPurchase: assetToEdit.dateOfPurchase? formatDate(assetToEdit.dateOfPurchase) : "",
+        dateOfSale: assetToEdit.dateOfSale ? formatDate(assetToEdit.dateOfSale) : "",
+        dateOfPurchase: assetToEdit.dateOfPurchase ? formatDate(assetToEdit.dateOfPurchase) : "",
       });
       setEditLandMode(true);
       setCurrentEditLandId(id);
@@ -582,8 +582,8 @@ const CapitalGainSubMain: React.FC = () => {
 
       setStockRsuData({
         ...assetToEdit,
-        dateOfSale: assetToEdit.dateOfSale ?formatDate(assetToEdit.dateOfSale): "",
-        dateOfPurchase: assetToEdit.dateOfPurchase? formatDate(assetToEdit.dateOfPurchase) : "",
+        dateOfSale: assetToEdit.dateOfSale ? formatDate(assetToEdit.dateOfSale) : "",
+        dateOfPurchase: assetToEdit.dateOfPurchase ? formatDate(assetToEdit.dateOfPurchase) : "",
       });
       setEditStockRsuMode(true);
       setCurrentEditStockRsuId(id);
@@ -596,7 +596,7 @@ const CapitalGainSubMain: React.FC = () => {
   };
   const handleEditStockMutual = (id: string) => {
     const assetToEdit = stockMutualAssets.find((asset) => asset._id === id);
-  
+
     if (assetToEdit) {
       setFormData({
         assetType: assetToEdit.assetType || "Stocks",
@@ -609,15 +609,15 @@ const CapitalGainSubMain: React.FC = () => {
         purchasePrice: assetToEdit.purchasePrice || "",
         sttPaid: assetToEdit.sttPaid || "",
       });
-  
+
       setEditStockMutualMode(true);
       setCurrentStockMutualId(id);
-  
+
       // Open the modal after the state has been updated
       setIsModalOpen(true);
     }
   };
-  
+
   const openStockMutualModal = () => {
     setIsModalOpen(true);
     resetForm();
@@ -628,8 +628,8 @@ const CapitalGainSubMain: React.FC = () => {
 
       setBondDebentureData({
         ...assetToEdit,
-        dateOfSale: assetToEdit.dateOfSale ?formatDate(assetToEdit.dateOfSale): "",
-        dateOfPurchase: assetToEdit.dateOfPurchase? formatDate(assetToEdit.dateOfPurchase) : "",
+        dateOfSale: assetToEdit.dateOfSale ? formatDate(assetToEdit.dateOfSale) : "",
+        dateOfPurchase: assetToEdit.dateOfPurchase ? formatDate(assetToEdit.dateOfPurchase) : "",
       });
       setEditBondMode(true);
       setCurrentEditBondId(id);
@@ -646,8 +646,8 @@ const CapitalGainSubMain: React.FC = () => {
 
       setGoldTermDetails({
         ...assetToEdit,
-        dateOfSale: assetToEdit.dateOfSale ?formatDate(assetToEdit.dateOfSale): "",
-        dateOfPurchase: assetToEdit.dateOfPurchase? formatDate(assetToEdit.dateOfPurchase) : "",
+        dateOfSale: assetToEdit.dateOfSale ? formatDate(assetToEdit.dateOfSale) : "",
+        dateOfPurchase: assetToEdit.dateOfPurchase ? formatDate(assetToEdit.dateOfPurchase) : "",
       });
       setEditGoldMode(true);
       setCurrentEditGoldId(id);
@@ -678,7 +678,7 @@ const CapitalGainSubMain: React.FC = () => {
 
       if (data) {
         setExistingLandFormData(data);
-       setLandsBuildAssets(data);
+        setLandsBuildAssets(data);
       } else {
         resetForm();
       }
@@ -688,37 +688,37 @@ const CapitalGainSubMain: React.FC = () => {
     }
   };
   useEffect(() => {
-    
+
     fetchExistingLandFormAssest();
   }, []);
   const fetchExistingStockRsuAssest = async () => {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-      if (!token) {
-        console.error("No token found in localStorage");
-        resetForm();  // Optionally handle the case when there is no token
-        return;
-      }
+    if (!token) {
+      console.error("No token found in localStorage");
+      resetForm();  // Optionally handle the case when there is no token
+      return;
+    }
 
-      try {
-        const data = await fetchStockRsuData(token);
+    try {
+      const data = await fetchStockRsuData(token);
 
 
-        if (data) {
-        
-     
-          setExistingStockRsuData(data);
+      if (data) {
+
+
+        setExistingStockRsuData(data);
         setStockRsuAssets(data);
-        } else {
-          resetForm();
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } else {
         resetForm();
       }
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      resetForm();
+    }
+  };
   useEffect(() => {
-    
+
     fetchExistingStockRsuAssest();
   }, []);
   const fetchExistingBondDebentureAssest = async () => {
@@ -735,9 +735,9 @@ const CapitalGainSubMain: React.FC = () => {
 
       // const data = response.data;
       if (data) {
-       
+
         setExistingBondDebentureData(data);
-      setBondsAssets(data);
+        setBondsAssets(data);
       } else {
         resetForm();
       }
@@ -747,7 +747,7 @@ const CapitalGainSubMain: React.FC = () => {
     }
   };
   useEffect(() => {
-   
+
     fetchExistingBondDebentureAssest();
   }, []);
   useEffect(() => {
@@ -796,9 +796,9 @@ const CapitalGainSubMain: React.FC = () => {
 
 
       if (data) {
-       
+
         setExistingGoldData(data);
-       setGoldsAssets(data);
+        setGoldsAssets(data);
       } else {
         resetForm();
       }
@@ -814,10 +814,10 @@ const CapitalGainSubMain: React.FC = () => {
   useEffect(() => {
     // Fetch new data based on the active tab
     fetchExistingData();
-  
+
     // Reset formData to default values when switching tabs
     resetForm();
-  
+
     // Exit edit mode and reset the current edit ID
     setEditStockMutualMode(false);
     setCurrentStockMutualId(null);
@@ -849,35 +849,35 @@ const CapitalGainSubMain: React.FC = () => {
           </div>
         </div>
         <div className="mt-4 ml-10">
- {stockMutualAssets ? ( // Check if propertyData has elements
-    stockMutualAssets.map((asset) => (
-      <div
-      key={asset._id}
-        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-      >
-        <div className="flex items-center space-x-2">
-          <span className="font-medium text-gray-900">{asset.
-assetType
-}</span>
+          {stockMutualAssets ? ( // Check if propertyData has elements
+            stockMutualAssets.map((asset) => (
+              <div
+                key={asset._id}
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{asset.
+                    assetType
+                  }</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">
+                    ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
+                  </span>
+                  <button
+                    onClick={() => handleEditStockMutual(asset._id)}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">
-            ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
-          </span>
-          <button
-              onClick={() => handleEditStockMutual(asset._id)}
-            className="text-gray-700 hover:text-gray-900 font-medium"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-   <>
-   </>
-  )}
-  </div>
 
       </div>
       <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
@@ -898,35 +898,35 @@ assetType
             Add Foreign Assets
           </button>
         </div>
-       
-      <div className="mt-4 ml-10">
- {foreignAssets ? ( // Check if propertyData has elements
-    foreignAssets.map((asset) => (
-      <div
-      key={asset._id}
-        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-      >
-        <div className="flex items-center space-x-2">
-          <span className="font-medium text-gray-900">{asset.description}</span>
+
+        <div className="mt-4 ml-10">
+          {foreignAssets ? ( // Check if propertyData has elements
+            foreignAssets.map((asset) => (
+              <div
+                key={asset._id}
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{asset.description}</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">
+                    ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
+                  </span>
+                  <button
+                    onClick={() => handleEdit(asset._id)}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">
-            ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
-          </span>
-          <button
-              onClick={() => handleEdit(asset._id)}
-            className="text-gray-700 hover:text-gray-900 font-medium"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-   <>
-   </>
-  )}
-      </div>
       </div>
 
       {/* Sale of Land or Building */}
@@ -949,33 +949,33 @@ assetType
           </button>
         </div>
         <div className="mt-4 ml-10">
- {landBuildAssets ? ( // Check if propertyData has elements
-    landBuildAssets.map((asset) => (
-      <div
-      key={asset._id}
-        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-      >
-        <div className="flex items-center space-x-2">
-          <span className="font-medium text-gray-900">{asset.description}</span>
+          {landBuildAssets ? ( // Check if propertyData has elements
+            landBuildAssets.map((asset) => (
+              <div
+                key={asset._id}
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{asset.description}</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">
+                    ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
+                  </span>
+                  <button
+                    onClick={() => handleEditLand(asset._id)}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">
-            ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
-          </span>
-          <button
-              onClick={() => handleEditLand(asset._id)}
-            className="text-gray-700 hover:text-gray-900 font-medium"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-   <>
-   </>
-  )}
-      </div>
       </div>
 
       {/* Stock Options & RSUs */}
@@ -998,33 +998,33 @@ assetType
           </button>
         </div>
         <div className="mt-4 ml-10">
- {stockRsuAssets ? ( // Check if propertyData has elements
-    stockRsuAssets.map((asset) => (
-      <div
-      key={asset._id}
-        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-      >
-        <div className="flex items-center space-x-2">
-          <span className="font-medium text-gray-900">{asset.description}</span>
+          {stockRsuAssets ? ( // Check if propertyData has elements
+            stockRsuAssets.map((asset) => (
+              <div
+                key={asset._id}
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{asset.description}</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">
+                    ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
+                  </span>
+                  <button
+                    onClick={() => handleEditStockRsu(asset._id)}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">
-            ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
-          </span>
-          <button
-              onClick={() => handleEditStockRsu(asset._id)}
-            className="text-gray-700 hover:text-gray-900 font-medium"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-   <>
-   </>
-  )}
-      </div>
       </div>
 
       {/* Bonds and Debentures */}
@@ -1047,33 +1047,33 @@ assetType
           </button>
         </div>
         <div className="mt-4 ml-10">
- {bondAssets ? ( 
-    bondAssets.map((asset) => (
-      <div
-      key={asset._id}
-        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-      >
-        <div className="flex items-center space-x-2">
-          <span className="font-medium text-gray-900">{asset.description}</span>
+          {bondAssets ? (
+            bondAssets.map((asset) => (
+              <div
+                key={asset._id}
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{asset.description}</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">
+                    ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
+                  </span>
+                  <button
+                    onClick={() => handleEditBond(asset._id)}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">
-            ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
-          </span>
-          <button
-              onClick={() => handleEditBond(asset._id)}
-            className="text-gray-700 hover:text-gray-900 font-medium"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-   <>
-   </>
-  )}
-      </div>
       </div>
 
       {/* Gold, Jewellery, and Others */}
@@ -1096,33 +1096,33 @@ assetType
           </button>
         </div>
         <div className="mt-4 ml-10">
- {goldAssets ? ( // Check if propertyData has elements
-    goldAssets.map((asset) => (
-      <div
-      key={asset._id}
-        className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
-      >
-        <div className="flex items-center space-x-2">
-          <span className="font-medium text-gray-900">{asset.description}</span>
+          {goldAssets ? ( // Check if propertyData has elements
+            goldAssets.map((asset) => (
+              <div
+                key={asset._id}
+                className="bg-gray-50 rounded-md p-4 flex items-center justify-between mb-2"
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-900">{asset.description}</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="font-medium text-gray-900">
+                    ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
+                  </span>
+                  <button
+                    onClick={() => handleEditGold(asset._id)}
+                    className="text-gray-700 hover:text-gray-900 font-medium"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+            </>
+          )}
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="font-medium text-gray-900">
-            ₹  Sale Price: {asset.salePrice} | Purchase Price: {asset.purchasePrice}
-          </span>
-          <button
-              onClick={() => handleEditGold(asset._id)}
-            className="text-gray-700 hover:text-gray-900 font-medium"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-    ))
-  ) : (
-   <>
-   </>
-  )}
-      </div>
       </div>
       <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden p-6">
         <div className="flex items-center justify-between">

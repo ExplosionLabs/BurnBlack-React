@@ -112,6 +112,9 @@ import UserDetailLayout from "@/utils/UserDetailLayout";
 import RequiredAuth from "@/route/RequiredAuth";
 import AdminDashboard from "@/pages/ImportantPage/AdminDashboard/AdminDashboard";
 import RequiredAdmin from "@/route/RequiredAdmin";
+import AllGSTData from "@/pages/ImportantPage/AdminDashboard/AllGstindata";
+import AdminDashboardLayout from "@/Layout/AdminDashboardLayout";
+import AdminUser from "@/pages/ImportantPage/AdminDashboard/AdminUser";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -156,12 +159,45 @@ function Router() {
         {
           path: "/admin",
           element: (
-            // <Layout>
+  
               <RequiredAdmin>
-              <AdminDashboard />
+              <AdminDashboardLayout />
               </RequiredAdmin>
-            // </Layout>
+            
           ),
+          children: [
+            {
+              index: true, // this means /admin will load Dashboard by default
+              element: (
+                <RequiredAdmin>
+              <AdminDashboard/>
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "all-gst-data",
+              element: (
+             
+                  <RequiredAdmin>
+    
+                  <AllGSTData/>
+                  </RequiredAdmin>
+             
+              ),
+            },
+            {
+              path: "users",
+              element: (
+             
+                  <RequiredAdmin>
+    
+                  <AdminUser/>
+                  </RequiredAdmin>
+             
+              ),
+            },
+
+          ],
         },
         {
           path: "/tes",

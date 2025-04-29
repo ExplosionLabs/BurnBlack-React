@@ -24,6 +24,7 @@ const { getTotalTaxPaid } = require("../helper/IncomeCalculator/taxPaid");
 const Disablility = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/Disablility");
 const MedicalInsuranece = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/MedicalInsuranece");
 const SpecificDiseases = require("../model/TaxSaving/TaxSavingDeduction/MedicalInsuration/SpecficDiseasDisablity");
+const taxSumarry = require("../model/taxSumarry");
 // Function to round to the nearest 10
 function roundToNearestTen(value) {
   return Math.round(value / 10) * 10;
@@ -275,6 +276,22 @@ const taxableIncomeController = async (req, res) => {
       longSData,
       professData,
       busData
+    );
+    await taxSumarry.findOneAndUpdate(
+      { userId }, // Find by user
+      {
+        grossIncome,
+        taxableIncome,
+        incomeTaxAtNormalRates,
+        healthAndEducationCess,
+        taxLiability: totalTaxLiability,
+        taxPaid: totalTax,
+        taxDue: totalTaxLiability - totalTax,
+        totalDeductions,
+        itrType,
+        lastUpdated: new Date(),
+      },
+      { upsert: true, new: true }
     );
 
     res.status(200).json({
