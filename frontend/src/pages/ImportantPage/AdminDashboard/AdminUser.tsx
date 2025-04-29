@@ -7,8 +7,10 @@ const AdminUser = () => {
     name: string;
     phone: string;
     email: string;
+    itrType: string;
+    walletBalance: number;
   }
-  
+
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -30,6 +32,18 @@ const AdminUser = () => {
             </p>
             <p className="text-gray-600">
               <strong>Email:</strong> {user.email}
+            </p>
+            <p className="text-gray-600 mt-2">
+              <strong>ITR Type:</strong>{' '}
+              <span className={`${user.itrType === 'Not Filed' ? 'text-red-500' : 'text-green-600'}`}>
+                {user.itrType}
+              </span>
+            </p>
+            <p className="text-gray-600 mt-2">
+              <strong>Wallet Balance:</strong>{' '}
+              <span className="text-indigo-600 font-semibold">
+                ₹{user.walletBalance.toFixed(2)}
+              </span>
             </p>
           </div>
         ))}

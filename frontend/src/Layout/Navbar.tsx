@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDown, Share2, Menu, Wallet } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '@/stores/store';
@@ -6,7 +6,12 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/stores/userSlice';
 import mainlogo from '@/assets/images/burnblacklogo.png';
+import axios from 'axios';
 
+interface WalletData {
+  balance: number;
+
+}
 const Navbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -18,8 +23,29 @@ const Navbar = () => {
     const selectUserData = (state: RootState) => state.user.user;
     const userData=useSelector(selectUserData);
     const dispatch = useDispatch();
+const [loading, setLoading] = useState(true);
+  const [wallet, setWallet] = useState<WalletData | null>(null);
+    const fetchWallet = async () => {
+            try {
+                setLoading(true);
+                const token = localStorage.getItem("token");
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/wallet/getWallet`,  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
+                  setWallet(response.data);
+            } catch (error) {
+                console.error('Error fetching wallet:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
 
+          useEffect(() => {
+                fetchWallet();
+            }, []);
     const handleLogout = () => {
         dispatch(logout());
         alert("Logout Successfully");
@@ -88,7 +114,7 @@ const Navbar = () => {
   <div className="hidden md:flex md:items-center md:space-x-4">
   <button className="inline-flex items-center gap-x-2 rounded-md bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-100">
     <Wallet className="h-4 w-4" />
-    Wallet Balance : ₹9823 
+    Wallet Balance :   ₹{wallet?.balance?.toFixed(2) || '0.00'}
   </button>
 
   <div className="relative">
@@ -162,7 +188,7 @@ const Navbar = () => {
               </button>
               <button className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-base font-medium text-blue-600 hover:bg-gray-100">
                 <Wallet className="h-4 w-4" />
-                Wallet Balance : ₹9823
+                Wallet Balance :  ₹{wallet?.balance?.toFixed(2) || '0.00'}
               </button>
               <button className="block w-full rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100">
                 Your Profile

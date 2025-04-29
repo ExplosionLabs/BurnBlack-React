@@ -11,6 +11,7 @@ const taxSavingRoute = require("../routes/taxSavingRoute");
 const calculateIncomeRoute = require("../routes/calculateIncomeRoute");
 const verificationApiRoute = require("../routes/verificationApiRoute");
 const adminRoute = require("../routes/adminRoute");
+const walletRoute = require("../routes/walletRoutes");
 const port = 4000;
 
 dotenv.config();
@@ -35,6 +36,7 @@ app.use("/api/v1/taxSaving", taxSavingRoute);
 app.use("/api/v1/calculateIncome", calculateIncomeRoute);
 app.use("/api/v1/verificationApi", verificationApiRoute);
 app.use("/api/v1/adminApi", adminRoute);
+app.use("/api/v1/wallet", walletRoute);
 app.get("/", (req, res) => {
   res.send("black burn backend running");
 });
