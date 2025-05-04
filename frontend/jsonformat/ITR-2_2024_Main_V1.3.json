@@ -53,8 +53,8 @@
 					"$ref": "#/definitions/Schedule115AD"
 				},
 				"ScheduleVDA": {
-                    "$ref": "#/definitions/ScheduleVDA"
-                },
+					"$ref": "#/definitions/ScheduleVDA"
+				},
 				"ScheduleOS": {
 					"$ref": "#/definitions/ScheduleOS"
 				},
@@ -80,8 +80,8 @@
 					"$ref": "#/definitions/Schedule80GGC"
 				},
 				"Schedule80DD": {
-						"$ref": "#/definitions/Schedule80DD"
-					},
+					"$ref": "#/definitions/Schedule80DD"
+				},
 				"Schedule80U": {
 					"$ref": "#/definitions/Schedule80U"
 				},
@@ -815,7 +815,7 @@
 					"exclusiveMinimum": false,
 					"default": 11
 				},
-                "OptOutNewTaxRegime": {
+				"OptOutNewTaxRegime": {
 					"pattern": "Y|N",
 					"allOf": [
 						{
@@ -1075,27 +1075,27 @@
 						}
 					}
 				},
-                "LEIDtls": {
+				"LEIDtls": {
 					"type": "object",
 					"additionalProperties": false,
 					"properties": {
 						"LEINumber": {
-                            "maxLength": 20,
-                            "minLength": 20,
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/nonEmptyString"
-                                }
-                            ]
-                        },
-                    "ValidUptoDate": {
-                        "type": "string",
-                        "description": "Date in YYYY-MM-DD format",
-                        "pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-                    }
+							"maxLength": 20,
+							"minLength": 20,
+							"allOf": [
+								{
+									"$ref": "#/definitions/nonEmptyString"
+								}
+							]
+						},
+						"ValidUptoDate": {
+							"type": "string",
+							"description": "Date in YYYY-MM-DD format",
+							"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+						}
 					}
 				},
-				"ItrFilingDueDate":{
+				"ItrFilingDueDate": {
 					"maxLength": 10,
 					"minLength": 9,
 					"pattern": "2024-07-31",
@@ -1104,12 +1104,11 @@
 							"$ref": "#/definitions/nonEmptyString"
 						}
 					]
-
 				}
 			},
 			"required": [
 				"ReturnFileSec",
-                "OptOutNewTaxRegime",
+				"OptOutNewTaxRegime",
 				"SeventhProvisio139",
 				"ResidentialStatus",
 				"HeldUnlistedEqShrPrYrFlg",
@@ -1679,18 +1678,18 @@
 			"description": "Tax deferred on ESOP : Information related to Tax deferred - relatable to income on perquisites referred in section 17(2)(vi) received from employer, being an eligible start-up referred to in section 80-IAC",
 			"additionalProperties": false,
 			"properties": {
-				"PanofStartUp":{
-						"pattern": "[A-Z]{5}[0-9]{4}[A-Z]",
-						"allOf": [
-									{
-									"$ref": "#/definitions/nonEmptyString"
-									}
-								]
-					},
-				"DPIITRegNo":{
-						"type":"string",
-						"pattern": "DIPP[0-9]{3,5}"	
-					},
+				"PanofStartUp": {
+					"pattern": "[A-Z]{5}[0-9]{4}[A-Z]",
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
+				"DPIITRegNo": {
+					"type": "string",
+					"pattern": "DIPP[0-9]{3,5}"
+				},
 				"ScheduleESOP2122_Type": {
 					"type": "object",
 					"additionalProperties": false,
@@ -1732,8 +1731,8 @@
 						}
 					},
 					"required": [
-				"AssessmentYear"
-			]
+						"AssessmentYear"
+					]
 				},
 				"ScheduleESOP2223_Type": {
 					"type": "object",
@@ -1776,8 +1775,8 @@
 						}
 					},
 					"required": [
-				"AssessmentYear"
-				]
+						"AssessmentYear"
+					]
 				},
 				"ScheduleESOP2324_Type": {
 					"type": "object",
@@ -1820,8 +1819,8 @@
 						}
 					},
 					"required": [
-				"AssessmentYear"
-			]
+						"AssessmentYear"
+					]
 				},
 				"ScheduleESOP2425_Type": {
 					"type": "object",
@@ -1843,8 +1842,8 @@
 						}
 					},
 					"required": [
-				"AssessmentYear"
-			]
+						"AssessmentYear"
+					]
 				},
 				"TotalTaxAttributedAmt": {
 					"type": "integer",
@@ -1853,7 +1852,7 @@
 					"exclusiveMinimum": false
 				}
 			},
-			"required":[
+			"required": [
 				"PanofStartUp",
 				"DPIITRegNo",
 				"TotalTaxAttributedAmt"
@@ -3167,7 +3166,6 @@
 					"type": "integer",
 					"maximum": 99999999999999,
 					"minimum": -99999999999999
-					
 				},
 				"TotalIncomeChargeableUnHP": {
 					"type": "integer",
@@ -3475,16 +3473,16 @@
 				"LongTermCapGain23": {
 					"$ref": "#/definitions/LongTermCapGain23"
 				},
-				"SumOfCGIncm":{
+				"SumOfCGIncm": {
 					"type": "integer",
 					"minimum": 0,
 					"maximum": 99999999999999
-				},	
+				},
 				"IncmFromVDATrnsf": {
 					"type": "integer",
 					"minimum": 0,
 					"maximum": 99999999999999
-				},			
+				},
 				"TotScheduleCGFor23": {
 					"type": "integer",
 					"minimum": 0,
@@ -3893,77 +3891,77 @@
 			]
 		},
 		"ScheduleVDA": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "ScheduleVDADtls": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "additionalProperties": false,
-                        "properties": {
-                            "DateofAcquisition": {
-                                "type": "string",
-                                "description": "Date in YYYY-MM-DD format",
-                                "pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-                            },
-                            "DateofTransfer": {
-                                "type": "string",
-                                "description": "Date in YYYY-MM-DD format",
-                                "pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-                            },
-                            "HeadUndIncTaxed": {
-                                "description": "CG : Capital Gain",
-                                "enum": [
-                                    "CG"
-                                ],
-                                "allOf": [
-                                    {
-                                        "$ref": "#/definitions/nonEmptyString"
-                                    }
-                                ]
-                            },
-                            "AcquisitionCost": {
-                                "type": "integer",
-                                "maximum": 99999999999999,
-                                "minimum": 0,
-                                "exclusiveMinimum": false
-                            },
-                            "ConsidReceived": {
-                                "type": "integer",
-                                "maximum": 99999999999999,
-                                "minimum": 0,
-                                "exclusiveMinimum": false
-                            },
-                            "IncomeFromVDA": {
-                                "type": "integer",
-                                "maximum": 99999999999999,
-                                "minimum": 0,
-                                "exclusiveMinimum": false
-                            }
-                        },
-                        "required": [
-                            "DateofAcquisition",
-                            "DateofTransfer",
-                            "HeadUndIncTaxed",
-                            "AcquisitionCost",
-                            "ConsidReceived",
-                            "IncomeFromVDA"
-                        ]
-                    }
-                },
-                "TotIncCapGain": {
-                    "type": "integer",
-                    "maximum": 99999999999999,
-                    "minimum": 0,
-                    "exclusiveMinimum": false
-                }
-            },
-            "required": [
-                "ScheduleVDADtls",
-                "TotIncCapGain"
-            ]
-        },
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"ScheduleVDADtls": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"DateofAcquisition": {
+								"type": "string",
+								"description": "Date in YYYY-MM-DD format",
+								"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+							},
+							"DateofTransfer": {
+								"type": "string",
+								"description": "Date in YYYY-MM-DD format",
+								"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+							},
+							"HeadUndIncTaxed": {
+								"description": "CG : Capital Gain",
+								"enum": [
+									"CG"
+								],
+								"allOf": [
+									{
+										"$ref": "#/definitions/nonEmptyString"
+									}
+								]
+							},
+							"AcquisitionCost": {
+								"type": "integer",
+								"maximum": 99999999999999,
+								"minimum": 0,
+								"exclusiveMinimum": false
+							},
+							"ConsidReceived": {
+								"type": "integer",
+								"maximum": 99999999999999,
+								"minimum": 0,
+								"exclusiveMinimum": false
+							},
+							"IncomeFromVDA": {
+								"type": "integer",
+								"maximum": 99999999999999,
+								"minimum": 0,
+								"exclusiveMinimum": false
+							}
+						},
+						"required": [
+							"DateofAcquisition",
+							"DateofTransfer",
+							"HeadUndIncTaxed",
+							"AcquisitionCost",
+							"ConsidReceived",
+							"IncomeFromVDA"
+						]
+					}
+				},
+				"TotIncCapGain": {
+					"type": "integer",
+					"maximum": 99999999999999,
+					"minimum": 0,
+					"exclusiveMinimum": false
+				}
+			},
+			"required": [
+				"ScheduleVDADtls",
+				"TotIncCapGain"
+			]
+		},
 		"TrnsfImmblPrprtyDtls": {
 			"type": "object",
 			"additionalProperties": false,
@@ -5652,14 +5650,14 @@
 							"exclusiveMinimum": false,
 							"default": 0
 						},
-						"SumRecdPrYrBusTRU562xii":{
+						"SumRecdPrYrBusTRU562xii": {
 							"type": "integer",
 							"maximum": 99999999999999,
 							"minimum": 0,
 							"exclusiveMinimum": false,
 							"default": 0
 						},
-						"SumRecdPrYrLifIns562xiii":{
+						"SumRecdPrYrLifIns562xiii": {
 							"type": "integer",
 							"maximum": 99999999999999,
 							"minimum": 0,
@@ -5794,7 +5792,7 @@
 										"description": "5A1ai - 115A(1)(a)(i)- Dividends interest and income from units purchase in foreign currency; 5A1aA - 115A(1)(a)(A)- Dividend in the case of non-resident received from a unit in an International Financial  Services Centre; 5A1aii - 115A(1)(a)(ii)- Interest received from govt/Indian Concerns received in Foreign Currency; 5A1aiia - 115A(1) (a)(iia) -Interest from Infrastructure Debt Fund; 5A1aiiaa - 115A(1) (a)(iiaa) -Interest as per Sec. 194LC(1); 5A1aiiab - 115A(1) (a)(iiab) -Interest as per Sec. 194LD; 5A1aiiac - 115A(1) (a)(iiac) -Interest as per Sec. 194LBA; 5A1aiii - 115A(1) (a)(iii) -Income received in respect of units of UTI purchased in foreign currency; 5A1bA - 115A(1)(b)(A) & 115A(1)(b)(B)- Income from royalty & technical services; 5AC1ab - 115AC(1)(a) - Income by way of interest on bonds purchased in foreign currency - non-resident; 5AC1abD - 115AC(1)(b) - Income by way of Dividend on GDRs purchased in foreign currency - non-resident; 5ACA1a - 115ACA(1)(a) - Income from GDR purchased in foreign currency -resident; 5AD1i - 115AD(1)(i) -Income (other than Dividend) received by an FII in respect of securities (other than units as per Sec 115AB); 5AD1iP - 115AD(1)(i) -Income received by an FII in respect of bonds or government securities as per Sec 194LD; 5BBA - 115BBA - Tax on non-residents sportsmen or sports associations; 5A1aiiaaP - 115A(1) (a)(iiaa) -Interest as referred in proviso to section 194LC(1); 5BBF - 115BBF - Tax on income from patent; 5BBG - 115BBG - Tax on income from transfer of carbon credits; 5BBC - 115BBC - Anonymous donations; 5Ea - 115E(a) - Investment income; 5AD1iDiv - 115AD(1)(i) - Income (being dividend) received by an FII in respect of securities (other than units referred to in section 115AB)",
 										"enum": [
 											"5A1ai",
-                                            "5A1aA",
+											"5A1aA",
 											"5A1aii",
 											"5A1aiia",
 											"5A1aiiaa",
@@ -5850,7 +5848,7 @@
 										"description": "PTI_5A1ai - PTI-115A(1)(a)(i)- Dividends interest and income from units purchase in foreign currency; PTI_5A1aA - PTI-115A(1)(a)(A)- PTI-Dividends in the case of non-residents received from a unit in an International Financial  Services Centre; PTI_5A1aii - PTI-115A(1)(a)(ii)- Interest received from govt/Indian Concerns received in Foreign Currency; PTI_5A1aiia - PTI-115A(1) (a)(iia) -Interest from Infrastructure Debt Fund; PTI_5A1aiiaa - PTI-115A(1) (a)(iiaa) -Interest as per Sec. 194LC(1); PTI_5A1aiiab - PTI-115A(1) (a)(iiab) -Interest as per Sec. 194LD; PTI_5A1aiiac - PTI-115A(1) (a)(iiac) -Interest as per Sec. 194LBA; PTI_5A1aiii - PTI-115A(1) (a)(iii) -Income received in respect of units of UTI purchased in foreign currency; PTI_5A1bA - PTI-115A(1)(b)(A) & PTI-115A(1)(b)(B)- Income from royalty & technical services; PTI_5AC1ab - PTI-115AC(1)(a) - Income by way of interest on bonds purchased in foreign currency - non-resident; PTI_5AC1abD - PTI-115AC(1)(b) - Income by way of Dividend on GDRs purchased in foreign currency - non-resident; PTI_5ACA1a - PTI-115ACA(1)(a) - Income from GDR purchased in foreign currency - resident; PTI_5AD1i - PTI-115AD(1)(i) -Income (other than dividend) received by an FII in respect of securities (other than units as per Sec 115AB); PTI_5AD1iP - PTI-115AD(1)(i) -Income received by an FII in respect of bonds or government securities as per Sec 194LD; PTI_5BBA - PTI-115BBA - Tax on non-residents sportsmen or sports associations; PTI_5BBF - PTI-115BBF - Tax on income from patent; PTI_5BBG - PTI-115BBG - Tax on income from transfer of carbon credits; PTI_5A1aiiaaP - PTI-115A(1) (a)(iiaa) - Interest as referred in proviso to section 194LC(1); PTI_5AD1iDiv - PTI-115AD(1)(i) - Income (being dividend) received by an FII in respect of securities (other than units referred to in section 115AB)",
 										"enum": [
 											"PTI_5A1ai",
-                                            "PTI_5A1aA",
+											"PTI_5A1aA",
 											"PTI_5A1aii",
 											"PTI_5A1aiia",
 											"PTI_5A1aiiaa",
@@ -6028,7 +6026,7 @@
 					"description": "Income by way of winnings from lotteries, crossword puzzles, races, games, gambling, betting etc. referred to in section 2(24)(ix)",
 					"$ref": "#/definitions/DateRangeType"
 				},
-				"IncFrmOnGames":{
+				"IncFrmOnGames": {
 					"description": "Income by way of winnings from online games u/s 115BBJ",
 					"$ref": "#/definitions/DateRangeType"
 				},
@@ -6295,7 +6293,7 @@
 							"default": 0
 						}
 					},
-					"required":[
+					"required": [
 						"TotHPlossCurYr",
 						"TotOthSrcLossNoRaceHorse"
 					]
@@ -6319,7 +6317,7 @@
 							"default": 0
 						}
 					},
-					"required":[
+					"required": [
 						"TotHPlossCurYrSetoff",
 						"TotOthSrcLossNoRaceHorseSetoff"
 					]
@@ -6343,7 +6341,7 @@
 							"default": 0
 						}
 					},
-					"required":[
+					"required": [
 						"BalHPlossCurYrAftSetoff",
 						"BalOthSrcLossNoRaceHorseAftSetoff"
 					]
@@ -6860,7 +6858,7 @@
 					"default": 0
 				}
 			},
-			"required":[
+			"required": [
 				"TotalHPPTILossCF",
 				"TotalSTCGPTILossCF",
 				"TotalLTCGPTILossCF"
@@ -7377,7 +7375,7 @@
 							"exclusiveMaximum": false
 						}
 					},
-					"required":[
+					"required": [
 						"SelfAndFamily",
 						"SelfAndFamilySeniorCitizen",
 						"Parents",
@@ -7627,8 +7625,8 @@
 						"properties": {
 							"DonationDate": {
 								"description": "Date of Donation in YYYY-MM-DD format",
-					            "type": "string",
-					            "pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+								"type": "string",
+								"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
 							},
 							"DonationAmtCash": {
 								"type": "integer",
@@ -7642,20 +7640,19 @@
 								"minimum": 0,
 								"exclusiveMinimum": false
 							},
-                            "TransactionRefNum":{
-                                "type": "string",
+							"TransactionRefNum": {
+								"type": "string",
 								"maxLength": 50
-
-                            },
-                            "IFSCCode": {
-                                "maxLength": 11,
-                                "pattern": "[A-Z]{4}[0][A-Z0-9]{6}",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/definitions/nonEmptyString"
-                                    }
-                                ]
-                            },
+							},
+							"IFSCCode": {
+								"maxLength": 11,
+								"pattern": "[A-Z]{4}[0][A-Z0-9]{6}",
+								"allOf": [
+									{
+										"$ref": "#/definitions/nonEmptyString"
+									}
+								]
+							},
 							"DonationAmt": {
 								"type": "integer",
 								"maximum": 99999999999999,
@@ -7714,117 +7711,117 @@
 				"TotalEligibleDonationAmt80GGC"
 			]
 		},
-		"Schedule80DD":{
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"NatureOfDisability":{
-						"description": "1 : Dependent person with disability  ; 2 : Dependent person with severe disability",
-						"enum": [
-							"1",
-							"2"
-						],
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
-					"DeductionAmount":{
-						"type":"integer",
-						"maxLength":14
-					},
-					"DependentType":{
-						"description": "1. Spouse; 2. Son; 3. Daughter; 4. Father; 5. Mother; 6. Brother; 7. Sister; 8. Member of the HUF (in case of HUF)",
-						"enum": [
-							"1",
-							"2",
-							"3",
-							"4",
-							"5",
-							"6",
-							"7",
-							"8"
-						],
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
-					"DependentPan":{
-						"pattern": "[A-Z]{5}[0-9]{4}[A-Z]",
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
-					"DependentAadhaar":{
-						"pattern": "[0-9]{12}",
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
-					"Form10IAFilingDate":{
-						"type":"string",
-						"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-					},
-					"Form10IAAckNum":{
-						"type":"string",
-						"maxLength":15
-					},
-					"UDIDNum":{
-						"type":"string",
-						"maxLength":18
-					}
+		"Schedule80DD": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"NatureOfDisability": {
+					"description": "1 : Dependent person with disability  ; 2 : Dependent person with severe disability",
+					"enum": [
+						"1",
+						"2"
+					],
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
 				},
-				"required":[
-					"NatureOfDisability",
-					"DeductionAmount",
-					"DependentType"
-				]
-			},
-			"Schedule80U":{
-				"type": "object",
-				"additionalProperties": false,
-				"properties": {
-					"NatureOfDisability":{
-						"description": "1 : Dependent person with disability  ; 2 : Dependent person with severe disability",
-						"enum": [
-							"1",
-							"2"
-						],
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
-					"DeductionAmount":{
-						"type":"integer",
-						"maxLength":14
-					},
-					"Form10IAFilingDate":{
-						"type":"string",
-						"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-					},
-					"Form10IAAckNum":{
-						"type":"string",
-						"maxLength":15
-					},
-					"UDIDNum":{
-						"type":"string",
-						"maxLength":18
-					}
+				"DeductionAmount": {
+					"type": "integer",
+					"maxLength": 14
 				},
-				"required":[
-					"NatureOfDisability",
-					"DeductionAmount"
-				]
+				"DependentType": {
+					"description": "1. Spouse; 2. Son; 3. Daughter; 4. Father; 5. Mother; 6. Brother; 7. Sister; 8. Member of the HUF (in case of HUF)",
+					"enum": [
+						"1",
+						"2",
+						"3",
+						"4",
+						"5",
+						"6",
+						"7",
+						"8"
+					],
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
+				"DependentPan": {
+					"pattern": "[A-Z]{5}[0-9]{4}[A-Z]",
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
+				"DependentAadhaar": {
+					"pattern": "[0-9]{12}",
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
+				"Form10IAFilingDate": {
+					"type": "string",
+					"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+				},
+				"Form10IAAckNum": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"UDIDNum": {
+					"type": "string",
+					"maxLength": 18
+				}
 			},
+			"required": [
+				"NatureOfDisability",
+				"DeductionAmount",
+				"DependentType"
+			]
+		},
+		"Schedule80U": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"NatureOfDisability": {
+					"description": "1 : Dependent person with disability  ; 2 : Dependent person with severe disability",
+					"enum": [
+						"1",
+						"2"
+					],
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
+				"DeductionAmount": {
+					"type": "integer",
+					"maxLength": 14
+				},
+				"Form10IAFilingDate": {
+					"type": "string",
+					"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+				},
+				"Form10IAAckNum": {
+					"type": "string",
+					"maxLength": 15
+				},
+				"UDIDNum": {
+					"type": "string",
+					"maxLength": 18
+				}
+			},
+			"required": [
+				"NatureOfDisability",
+				"DeductionAmount"
+			]
+		},
 		"Schedule80GGA": {
 			"type": "object",
 			"additionalProperties": false,
@@ -8107,7 +8104,7 @@
 						"additionalProperties": false,
 						"properties": {
 							"SecCode": {
-							"description": "1:111 - Tax on accumulated balance of recognised PF; 1A:111A (STCG on shares where STT paid); 21:112 Long term capital gains (with indexing); 22:112 proviso Long term capital gains (without indexing); 21ciii:112(1)(c)(iii)(Long term capital gains on transfer of unlisted securities in the case of non-residents); 2A:112A-LTCG on equity shares/units of equity oriented fund/units of business trust on which STT is paid; 5A1ai:115A(1)(a)(i)- Dividends interest and income from units purchase in foreign currency; 5A1aA:115A(1)(a)(A)- Dividend in the case of non-resident received from a unit in an International Financial  Services Centre; 5A1aii:115A(1)(a)(ii)- Interest received from govt/Indian Concerns recived in Foreign Currency; 5A1aiia:115A(1) (a)(iia) -Interest from Infrastructure Debt Fund; 5A1aiiaa:115A(1) (a)(iiaa) -Interest as per Sec. 194LC(1); 5A1aiiaaP:115A(1) (a)(iiaa) -Income received by non-resident as referred in proviso to section 194LC(1); 5A1aiiab:115A(1) (a)(iiab) -Interest as per Sec. 194LD; 5A1aiiac: 115A(1)(a)(iiac) -Interest as per Sec. 194LBA;  5A1aiii:115A(1) (a)(iii) - Income received in respect of units of UTI purchased in Foreign Currency; 5A1bA:115A(1)(b)(A) & 115A(1)(b)(B)- Income from royalty & technical services; 5AC1ab:115AC(1)(a) - Income by way of interest on bonds purchased in foreign currency - non-resident; 5AC1abD - 115AC(1)(b) - Income by way of Dividend on GDRs purchased in foreign currency - non-resident; 5AC1c:115AC(1)(c) -LTCG arising from the transfer of bonds or GDR purchased in foreign currency - non-resident; 5ACA1a:115ACA(1)(a) - Income from GDR purchased in foreign currency -resident; 5ACA1b:115ACA(1)(b) - LTCG arising from the transfer of GDR purchased in foreign currency -resident; 5AD1i:115AD(1)(i) -Income (other than Dividend) received by an FII in respect of securities (other than units as per Sec 115AB); 5AD1iDiv - 115AD(1)(i) - Income (being dividend) received by an FII in respect of securities (other than units referred to in section 115AB); 5AD1iP:115AD(1)(i) -Income received by an FII in respect of bonds or government securities as per Sec 194LD ; 5ADii:115AD(1)(ii) -STCG (other than on equity share or equity oriented mutual fund referred to in section 111A) by an FII; 5AD1biip:115AD(1)(b)(ii)- Short term capital gains referred to in section 111A; 5ADiii:115AD(1)(iii)-Long term capital gains by an FII; 5ADiiiP:Proviso to 115AD(iii); 5BB:115BB (Winnings from lotteries, crosswords puzzles, races including horse races, card games and other games of any sort or gambling or betting of any form or nature whatsoever);5BBJ: 115BBJ - Winnings from online games; 5BBA:115BBA - Tax on non-residents sportsmen or sports associations; 5BBC:115BBC - Anonymous donations; 5BBE:115BBE - Tax on income referred to in sections 68 or 69 or 69A or 69B or 69C or 69D; 5BBF:115BBF -Tax on income from patent; 5BBG - 115BBG -Tax on income from transfer of carbon credits; 5BBH - 115BBH - VDA; 5Ea:115E(a) - Investment income; 5Eacg:115E(a)-LTCG on any asset other than a specified asset-non resident Indian; 5Eb:115E(b) - Income by way of long term capital gains; DTAASTCG:STCGDTAARate - STCG Chargeable at special rates in India as per DTAA; DTAALTCG:LTCGDTAARate - LTCG Chargeable at special rates in India as per DTAA; DTAAOS:OSDTAARate - Other source income chargeable under DTAA rates; PTI_STCG15P - Pass Through Income in the nature of Short Term Capital Gain chargeable @ 15% Under Section 111A; PTI_STCG30P - Pass Through Income in the nature of Short Term Capital Gain chargeable @ 30%; PTI_LTCG10P112A - Pass Through Income in the nature of Long Term Capital Gain chargeable @ 10% u/s 112A; PTI_LTCG10P - Pass Through Income in the nature of Long Term Capital Gain chargeable @ 10%; PTI_LTCG20P - Pass Through Income in the nature of Long Term Capital Gain chargeable @ 20%; PTI_5A1ai - PTI-115A(1)(a)(i)- Dividends interest and income from units purchase in foreign currency; PTI_5A1aA - PTI-115A(1)(a)(A)- PTI-Dividend in the case of non-residents received from a unit in an International Financial  Services Centre; PTI_5A1aii - PTI-115A(1)(a)(ii)- Interest received from govt/Indian Concerns received in Foreign Currency; PTI_5A1aiia - PTI-115A(1) (a)(iia) -Interest from Infrastructure Debt Fund; PTI_5A1aiiaa - PTI-115A(1) (a)(iiaa) -Interest as per Sec. 194LC(1); PTI_5A1aiiaaP - PTI-115A(1)(a)(iiaa) -Income received by non-resident as referred in proviso to section 194LC(1); PTI_5A1aiiab - PTI-115A(1) (a)(iiab) -Interest as per Sec. 194LD; PTI_5A1aiiac - PTI-115A(1) (a)(iiac) -Interest as per Sec. 194LBA; PTI_5A1aiii - PTI-115A(1) (a)(iii) -Income received in respect of units of UTI purchased in foreign currency; PTI_5A1bA - PTI-115A(1)(b)(A) & PTI-115A(1)(b)(B)- Income from royalty & technical services; PTI_5AC1ab - PTI-115AC(1)(a) - Income by way of interest on bonds purchased in foreign currency - non-resident; PTI_5AC1abD - PTI-115AC(1)(b) - Income by way of Dividend on GDRs purchased in foreign currency - non-resident; PTI_5ACA1a - PTI-115ACA(1)(a) - Income from GDR purchased in foreign currency - resident; PTI_5AD1i - PTI-115AD(1)(i) -Income(other than Dividend) received by an FII in respect of securities (other than units as per Sec 115AB); PTI_5AD1iDiv - PTI-115AD(1)(i) - Income (being dividend) received by an FII in respect of securities (other than units referred to in section 115AB); PTI_5AD1iP - PTI-115AD(1)(i) -Income received by an FII in respect of bonds or government securities as per Sec 194LD; PTI_5BBA - PTI-115BBA - Tax on non-residents sportsmen or sports associations; PTI_5BBG - PTI-115BBG - Tax on income from transfer of carbon credits; PTI_5Ea - PTI-115E(a) - Investment income",
+								"description": "1:111 - Tax on accumulated balance of recognised PF; 1A:111A (STCG on shares where STT paid); 21:112 Long term capital gains (with indexing); 22:112 proviso Long term capital gains (without indexing); 21ciii:112(1)(c)(iii)(Long term capital gains on transfer of unlisted securities in the case of non-residents); 2A:112A-LTCG on equity shares/units of equity oriented fund/units of business trust on which STT is paid; 5A1ai:115A(1)(a)(i)- Dividends interest and income from units purchase in foreign currency; 5A1aA:115A(1)(a)(A)- Dividend in the case of non-resident received from a unit in an International Financial  Services Centre; 5A1aii:115A(1)(a)(ii)- Interest received from govt/Indian Concerns recived in Foreign Currency; 5A1aiia:115A(1) (a)(iia) -Interest from Infrastructure Debt Fund; 5A1aiiaa:115A(1) (a)(iiaa) -Interest as per Sec. 194LC(1); 5A1aiiaaP:115A(1) (a)(iiaa) -Income received by non-resident as referred in proviso to section 194LC(1); 5A1aiiab:115A(1) (a)(iiab) -Interest as per Sec. 194LD; 5A1aiiac: 115A(1)(a)(iiac) -Interest as per Sec. 194LBA;  5A1aiii:115A(1) (a)(iii) - Income received in respect of units of UTI purchased in Foreign Currency; 5A1bA:115A(1)(b)(A) & 115A(1)(b)(B)- Income from royalty & technical services; 5AC1ab:115AC(1)(a) - Income by way of interest on bonds purchased in foreign currency - non-resident; 5AC1abD - 115AC(1)(b) - Income by way of Dividend on GDRs purchased in foreign currency - non-resident; 5AC1c:115AC(1)(c) -LTCG arising from the transfer of bonds or GDR purchased in foreign currency - non-resident; 5ACA1a:115ACA(1)(a) - Income from GDR purchased in foreign currency -resident; 5ACA1b:115ACA(1)(b) - LTCG arising from the transfer of GDR purchased in foreign currency -resident; 5AD1i:115AD(1)(i) -Income (other than Dividend) received by an FII in respect of securities (other than units as per Sec 115AB); 5AD1iDiv - 115AD(1)(i) - Income (being dividend) received by an FII in respect of securities (other than units referred to in section 115AB); 5AD1iP:115AD(1)(i) -Income received by an FII in respect of bonds or government securities as per Sec 194LD ; 5ADii:115AD(1)(ii) -STCG (other than on equity share or equity oriented mutual fund referred to in section 111A) by an FII; 5AD1biip:115AD(1)(b)(ii)- Short term capital gains referred to in section 111A; 5ADiii:115AD(1)(iii)-Long term capital gains by an FII; 5ADiiiP:Proviso to 115AD(iii); 5BB:115BB (Winnings from lotteries, crosswords puzzles, races including horse races, card games and other games of any sort or gambling or betting of any form or nature whatsoever);5BBJ: 115BBJ - Winnings from online games; 5BBA:115BBA - Tax on non-residents sportsmen or sports associations; 5BBC:115BBC - Anonymous donations; 5BBE:115BBE - Tax on income referred to in sections 68 or 69 or 69A or 69B or 69C or 69D; 5BBF:115BBF -Tax on income from patent; 5BBG - 115BBG -Tax on income from transfer of carbon credits; 5BBH - 115BBH - VDA; 5Ea:115E(a) - Investment income; 5Eacg:115E(a)-LTCG on any asset other than a specified asset-non resident Indian; 5Eb:115E(b) - Income by way of long term capital gains; DTAASTCG:STCGDTAARate - STCG Chargeable at special rates in India as per DTAA; DTAALTCG:LTCGDTAARate - LTCG Chargeable at special rates in India as per DTAA; DTAAOS:OSDTAARate - Other source income chargeable under DTAA rates; PTI_STCG15P - Pass Through Income in the nature of Short Term Capital Gain chargeable @ 15% Under Section 111A; PTI_STCG30P - Pass Through Income in the nature of Short Term Capital Gain chargeable @ 30%; PTI_LTCG10P112A - Pass Through Income in the nature of Long Term Capital Gain chargeable @ 10% u/s 112A; PTI_LTCG10P - Pass Through Income in the nature of Long Term Capital Gain chargeable @ 10%; PTI_LTCG20P - Pass Through Income in the nature of Long Term Capital Gain chargeable @ 20%; PTI_5A1ai - PTI-115A(1)(a)(i)- Dividends interest and income from units purchase in foreign currency; PTI_5A1aA - PTI-115A(1)(a)(A)- PTI-Dividend in the case of non-residents received from a unit in an International Financial  Services Centre; PTI_5A1aii - PTI-115A(1)(a)(ii)- Interest received from govt/Indian Concerns received in Foreign Currency; PTI_5A1aiia - PTI-115A(1) (a)(iia) -Interest from Infrastructure Debt Fund; PTI_5A1aiiaa - PTI-115A(1) (a)(iiaa) -Interest as per Sec. 194LC(1); PTI_5A1aiiaaP - PTI-115A(1)(a)(iiaa) -Income received by non-resident as referred in proviso to section 194LC(1); PTI_5A1aiiab - PTI-115A(1) (a)(iiab) -Interest as per Sec. 194LD; PTI_5A1aiiac - PTI-115A(1) (a)(iiac) -Interest as per Sec. 194LBA; PTI_5A1aiii - PTI-115A(1) (a)(iii) -Income received in respect of units of UTI purchased in foreign currency; PTI_5A1bA - PTI-115A(1)(b)(A) & PTI-115A(1)(b)(B)- Income from royalty & technical services; PTI_5AC1ab - PTI-115AC(1)(a) - Income by way of interest on bonds purchased in foreign currency - non-resident; PTI_5AC1abD - PTI-115AC(1)(b) - Income by way of Dividend on GDRs purchased in foreign currency - non-resident; PTI_5ACA1a - PTI-115ACA(1)(a) - Income from GDR purchased in foreign currency - resident; PTI_5AD1i - PTI-115AD(1)(i) -Income(other than Dividend) received by an FII in respect of securities (other than units as per Sec 115AB); PTI_5AD1iDiv - PTI-115AD(1)(i) - Income (being dividend) received by an FII in respect of securities (other than units referred to in section 115AB); PTI_5AD1iP - PTI-115AD(1)(i) -Income received by an FII in respect of bonds or government securities as per Sec 194LD; PTI_5BBA - PTI-115BBA - Tax on non-residents sportsmen or sports associations; PTI_5BBG - PTI-115BBG - Tax on income from transfer of carbon credits; PTI_5Ea - PTI-115E(a) - Investment income",
 								"enum": [
 									"1",
 									"1A",
@@ -8116,7 +8113,7 @@
 									"21ciii",
 									"2A",
 									"5A1ai",
-                                    "5A1aA",
+									"5A1aA",
 									"5A1aii",
 									"5A1aiia",
 									"5A1aiiaa",
@@ -8157,7 +8154,7 @@
 									"PTI_LTCG10P",
 									"PTI_LTCG20P",
 									"PTI_5A1ai",
-                                    "PTI_5A1aA",
+									"PTI_5A1aA",
 									"PTI_5A1aii",
 									"PTI_5A1aiia",
 									"PTI_5A1aiiaa",
@@ -11204,7 +11201,7 @@
 						"2020-21",
 						"2021-22",
 						"2022-23",
-                        "2023-24"
+						"2023-24"
 					],
 					"allOf": [
 						{
@@ -11916,7 +11913,7 @@
 						}
 					]
 				},
-                "AccountType":{
+				"AccountType": {
 					"type": "string",
 					"description": "SB: Savings Account, CA: Current Account,CC: Cash Credit Account, OD: Over draft account, NRO: Non Resident Account, CGAS - Capital Gain Account Scheme,OTH: Other",
 					"enum": [
@@ -11928,7 +11925,6 @@
 						"CGAS",
 						"OTH"
 					]
-
 				}
 			},
 			"required": [
@@ -12895,24 +12891,24 @@
 					"minimum": 0,
 					"exclusiveMinimum": false
 				},
-				"DepositDate":{
-						"type": "string",
-						"description": "Date of Deposit in format YYYY-MM-DD",
-						"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-					},
-					"AccountNo":{
-						"type":"string",
-						"maxLength": 20,
-						"minLength": 1
-					},
-					"IFSC":{
-						"pattern": "[A-Z]{4}[0][A-Z0-9]{6}",
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
+				"DepositDate": {
+					"type": "string",
+					"description": "Date of Deposit in format YYYY-MM-DD",
+					"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+				},
+				"AccountNo": {
+					"type": "string",
+					"maxLength": 20,
+					"minLength": 1
+				},
+				"IFSC": {
+					"pattern": "[A-Z]{4}[0][A-Z0-9]{6}",
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
 				"AmtDeducted": {
 					"type": "integer",
 					"maximum": 100000000,
@@ -13017,24 +13013,24 @@
 					"minimum": 0,
 					"exclusiveMinimum": false
 				},
-				"DepositDate":{
-						"type": "string",
-						"description": "Date of Deposit in format YYYY-MM-DD",
-						"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
-					},
-					"AccountNo":{
-						"type":"string",
-						"maxLength": 20,
-						"minLength": 1
-					},
-					"IFSC":{
-						"pattern": "[A-Z]{4}[0][A-Z0-9]{6}",
-						"allOf": [
-							{
-								"$ref": "#/definitions/nonEmptyString"
-							}
-						]
-					},
+				"DepositDate": {
+					"type": "string",
+					"description": "Date of Deposit in format YYYY-MM-DD",
+					"pattern": "([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))"
+				},
+				"AccountNo": {
+					"type": "string",
+					"maxLength": 20,
+					"minLength": 1
+				},
+				"IFSC": {
+					"pattern": "[A-Z]{4}[0][A-Z0-9]{6}",
+					"allOf": [
+						{
+							"$ref": "#/definitions/nonEmptyString"
+						}
+					]
+				},
 				"AmtDeducted": {
 					"type": "integer",
 					"maximum": 99999999999999,
@@ -13207,7 +13203,7 @@
 									"562iii",
 									"562x",
 									"5A1ai",
-                                    "5A1aA",
+									"5A1aA",
 									"5A1aii",
 									"5A1aiia",
 									"5A1aiiaa",
@@ -13236,7 +13232,7 @@
 									"PTI_5Ea",
 									"PTI_5ACA1a",
 									"PTI_5A1ai",
-                                    "PTI_5A1aA",
+									"PTI_5A1aA",
 									"PTI_5A1aii",
 									"PTI_5A1aiia",
 									"PTI_5A1aiiaa",

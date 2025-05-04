@@ -1,5 +1,6 @@
 import { fetchUsers } from '@/api/adminApi';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AdminUser = () => {
   interface User {
@@ -16,6 +17,37 @@ const AdminUser = () => {
   useEffect(() => {
     fetchUsers().then(setUsers);
   }, []);
+
+  const handleGenerateJSON = async (userId: string, itrType: string) => {
+    try {
+      const endpoint =
+      itrType === 'ITR-2' ? 'generate-itr2' :
+      itrType === 'ITR-3' ? 'generate-itr3' :
+      itrType === 'ITR-4' ? 'generate-itr4' :
+      'generate-itr';
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/itr/${endpoint}/${userId}`, {
+        responseType: 'blob'
+      });
+
+      // Create blob link to download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${itrType}_${userId}.json`);
+
+      // Append to html link element page
+      document.body.appendChild(link);
+
+      // Start download
+      link.click();
+
+      // Clean up and remove the link
+      link.parentNode?.removeChild(link);
+    } catch (error) {
+      console.error('Error generating JSON:', error);
+      alert('Error generating JSON file');
+    }
+  };
 
   return (
     <div className="p-6">
@@ -45,6 +77,16 @@ const AdminUser = () => {
                 ₹{user.walletBalance.toFixed(2)}
               </span>
             </p>
+            <div className="mt-4 flex space-x-2">
+            
+              <button
+                onClick={() => handleGenerateJSON(user._id, user.itrType)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Generate JSON {user.itrType}
+              </button>
+           
+            </div>
           </div>
         ))}
       </div>
