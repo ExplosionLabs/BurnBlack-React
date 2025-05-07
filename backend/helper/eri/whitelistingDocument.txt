@@ -1,0 +1,90 @@
+======================================================
+ERI API WHITELISTING REQUIREMENTS - ERIP007754
+======================================================
+
+Dear ERI Helpdesk,
+
+Please find below the required information for whitelisting our ERI credentials 
+(ERIP007754) in the UAT environment:
+
+1. IP Details:
+   10.5.52.251
+   (This is the server IP address from which API calls will be made)
+
+2. Primary Email ID for whitelisting in UAT:
+   farhan28mohammed@gmail.com 
+
+
+3. Primary Mobile Number for Whitelisting in UAT:
+   +918656842292
+   
+
+4. Public Key Certificate:
+-----BEGIN CERTIFICATE-----
+MIIDSzCCAjOgAwIBAgIUEKcSKlno1irHBW88thiqdRi9ceQwDQYJKoZIhvcNAQEL
+BQAwNTESMBAGA1UEAwwJQnVybkJsYWNrMRIwEAYDVQQKDAlCdXJuQmxhY2sxCzAJ
+BgNVBAYTAklOMB4XDTI1MDUwNzA4NTQxNFoXDTI2MDUwNzA4NTQxNFowNTESMBAG
+A1UEAwwJQnVybkJsYWNrMRIwEAYDVQQKDAlCdXJuQmxhY2sxCzAJBgNVBAYTAklO
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9n627mK3xxN6YMC2gR0r
+aZWdkLO6LkE6vaaJk+Jxtvb9nfceSDgvCaE9hOOxWiGVxOdA74guIBu+IxIuusnE
+E52ddAWAFrAxGeZoGIgaIUPXertGuZMPjNGEB12jrGEqTNdwdyPWv/Fu5sDLn4DD
+MSx/OVLuW3FY3b/VKJVSoEAYYPnTXYskTRJ54czqYxSISFi7wrJTmIu3QtcACMqN
+Ey8Khwq8az9vFyWc3eoelbVYQJ8l24u1Ke3tkr47ZNjCeJmYYBCwiSh66YJ0vPb3
+cIXdFGVBUbAiKQy/c0NLEuru1W4dPcbK+uNO8dPrrL1KyEFdhCcUTdxQYiIC6xDr
+XwIDAQABo1MwUTAdBgNVHQ4EFgQUXaoHqJVd1e4dOGOPQPgDxRU1CYgwHwYDVR0j
+BBgwFoAUXaoHqJVd1e4dOGOPQPgDxRU1CYgwDwYDVR0TAQH/BAUwAwEB/zANBgkq
+hkiG9w0BAQsFAAOCAQEA3C3P0mcHQapmFBIQeA6oMdUUG6thlR5ZXWLk39rsj+eG
+PkSJHMVrFt0adnTZTC6GdRuCQ4aOuFvU2kwlyfiBtFIAz6OiJ4Gddaj7wQFzmvBz
+qOG6/ZOShReJbSuDLbq6XaLXf6kJ7RTBGH7j5+HQjef06U0qjgbC5y3/SQ9tCBkW
+7wTh3szhSCGCqLySrmYnbTSjfkKE3Q9sZ5Ug16rGwlKoLZiE/aQC65YL+PejVA7T
+j4uyMOs+O+v35UomK0/Mt/KcxVGsxmCne5lcTitB/BTs6M/xOSM3EDlJ0L2rN29W
+zAeZAsrZ3QBHNq2J6/0Hi29YQ3+6fZpEwmpnuedZYQ==
+-----END CERTIFICATE-----
+
+5. Sign Data (Sample):
+{
+  "sign": "MIIFbgYJKoZIhvcNAQcCoIIFXzCCBVsCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGgggNPMIIDSzCCAjOgAwIBA
+gIUEKcSKlno1irHBW88thiqdRi9ceQwDQYJKoZIhvcNAQELBQAwNTESMBAGA1UEAwwJQnVybkJsYWNrMRIwEAYDVQQKDAlCdXJuQmxhY2sxC
+zAJBgNVBAYTAklOMB4XDTI1MDUwNzA4NTQxNFoXDTI2MDUwNzA4NTQxNFowNTESMBAGA1UEAwwJQnVybkJsYWNrMRIwEAYDVQQKDAlCdXJuQ
+mxhY2sxCzAJBgNVBAYTAklOMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9n627mK3xxN6YMC2gR0raZWdkLO6LkE6vaaJk+Jxt
+vb9nfceSDgvCaE9hOOxWiGVxOdA74guIBu+IxIuusnEE52ddAWAFrAxGeZoGIgaIUPXertGuZMPjNGEB12jrGEqTNdwdyPWv/Fu5sDLn4DDM
+Sx/OVLuW3FY3b/VKJVSoEAYYPnTXYskTRJ54czqYxSISFi7wrJTmIu3QtcACMqNEy8Khwq8az9vFyWc3eoelbVYQJ8l24u1Ke3tkr47ZNjCe
+JmYYBCwiSh66YJ0vPb3cIXdFGVBUbAiKQy/c0NLEuru1W4dPcbK+uNO8dPrrL1KyEFdhCcUTdxQYiIC6xDrXwIDAQABo1MwUTAdBgNVHQ4EF
+gQUXaoHqJVd1e4dOGOPQPgDxRU1CYgwHwYDVR0jBBgwFoAUXaoHqJVd1e4dOGOPQPgDxRU1CYgwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9
+w0BAQsFAAOCAQEA3C3P0mcHQapmFBIQeA6oMdUUG6thlR5ZXWLk39rsj+eGPkSJHMVrFt0adnTZTC6GdRuCQ4aOuFvU2kwlyfiBtFIAz6OiJ
+4Gddaj7wQFzmvBzqOG6/ZOShReJbSuDLbq6XaLXf6kJ7RTBGH7j5+HQjef06U0qjgbC5y3/SQ9tCBkW7wTh3szhSCGCqLySrmYnbTSjfkKE3
+Q9sZ5Ug16rGwlKoLZiE/aQC65YL+PejVA7Tj4uyMOs+O+v35UomK0/Mt/KcxVGsxmCne5lcTitB/BTs6M/xOSM3EDlJ0L2rN29WzAeZAsrZ3
+QBHNq2J6/0Hi29YQ3+6fZpEwmpnuedZYTGCAeMwggHfAgEBME0wNTESMBAGA1UEAwwJQnVybkJsYWNrMRIwEAYDVQQKDAlCdXJuQmxhY2sxC
+zAJBgNVBAYTAklOAhQQpxIqWejWKscFbzy2GKp1GL1x5DANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwLwYJK
+oZIhvcNAQkEMSIEIFGGzOICORbPMtMpNBS2hw1EH/KO6p9Kg7tdWgl0+esfMBwGCSqGSIb3DQEJBTEPFw0yNTA1MDcwOTA0MzZaMA0GCSqGS
+Ib3DQEBAQUABIIBAKbPwiqr6GOONQcaNpWupMwpnEDk6QyahYOzcXXcSA96ka/PyefOJuepr4FBV5EQbDadBcuPytyVv8ZAX1ycG34IhQ8iB
+g/iWla8ONrDJS4BESFOOTFT9Tgx8TwbAe4SWjXCk+60A6WXw4mIsmcKTSh34qYQFASGhbePIl6W4dQ/mUHnJsJtrOSFIAaeYfs8YLjBKSagZ
+817bDSpTCezNL86Uq8ARdNtCRckzhO+rkyel8WGJr05/Q1l2yo2vkol1b5D7nqpmH/qWSl4ldEK99CyOY8nXbHUbWRGkzrDHPZpSeXR/AVar
+Lw6dq7GNQNvHd8mVerHlxinM14Fk1eKwNk=",
+  "data": "eyJzZXJ2aWNlTmFtZSI6IkVyaURhdGFTZXJ2aWNlIiwiZW50aXR5IjoiRVJJUDAwNzc1NCIsInBhc3MiOiJUZXN0UGFzc3dvc
+mQxMjMifQ==",
+  "eriUserId": "ERIP007754"
+}
+
+------------------------------------------------------
+ADDITIONAL INFORMATION
+------------------------------------------------------
+
+We have implemented the digital signature process as per the ERI Data Signature 
+process guide. Our implementation uses the node-forge library to handle the 
+cryptographic operations in our Node.js application.
+
+Once our ERI ID is whitelisted, we plan to use the following API endpoints:
+1. /erilogin - For authentication
+2. /gettaxpayerdetails - To fetch taxpayer information
+3. /getform26as - To retrieve Form 26AS data
+4. /getreturndetails - To check return filing status
+
+Please let us know if you need any additional information or have questions about 
+our implementation.
+
+Thank you for your assistance.
+
+Best Regards,
+BurnBlack Team
+ERIP007754
