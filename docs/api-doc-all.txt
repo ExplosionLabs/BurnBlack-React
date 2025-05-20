@@ -1,0 +1,3626 @@
+ERI API Specifications
+Integrated e-filing and CPC 2.0 Project
+Version History
+Version Date Description
+1.0 29-10-2021 Initial Draft
+1.1 17-11-2021 Session details updated for type 2 ERI
+Table of Contents
+1 INTRODUCTION...................................................................................................................................................................................4
+1.1 Types of Intermediaries.............................................................................................................................................4
+1.2 Objective of this document........................................................................................................................................4
+1.3 Scope of the Specification ..........................................................................................................................................4
+2 OVERVIEW OF APIS...........................................................................................................................................................................5
+2.1 API Catalog in Context..............................................................................................................................................5
+2.2 About Authentication APIs and Session ...................................................................................................................7
+2.3 About Verification APIs.............................................................................................................................................7
+3 API SPECIFICATION...........................................................................................................................................................................8
+4 SIGNING API REQUEST.....................................................................................................................................................................8
+1 Introduction
+One of the key visions of Integrated E-Filing CPC program is to enable 3rd parties to enhance taxpayer experience by
+providing their own tax solutions in the areas of tax return preparation and submission. Such 3rd parties are called
+Electronic Return Intermediaries (ERIs). Software solutions developed by these intermediaries will essentially need to
+interact with the eFiling system to provide complete services. These include authentication, getting prefill data, perform
+validations and submission of Income Tax Returns (ITRs).
+1.1 Types of Intermediaries
+The solution envisions 3 different types of intermediaries:
+a. ERI-Type 1: Qualified Tax Professionals who act on behalf of the taxpayers and provide tax return preparation
+services. But they do not provide software solutions on their own – instead use the solutions provided by the
+department or Type-3 intermediaries.
+b. ERI-Type 2: Tax Software Providers who act on behalf of the taxpayer and provide tax return reparation
+services including the necessary software for return preparation.
+c. ERI Type 3: Tax Software Providers who provide tax return preparation software to either taxpayers or Type-1
+intermediaries. They are pure software providers and do not themselves act on behalf of the taxpayers.
+1.2 Objective of this document
+The objective of this document is to define and describe specifications of the APIs that shall be used by the
+intermediariesto interact with the eFiling system.
+1.3 Scope of the Specification
+The scope of this document is limited to the Apis required for tax return preparation and submission to the e-filing
+system.
+• Specification for other services such as viewing of return status, adding of bank accounts, refund status et cetera
+maybe added in the future.
+• One of the APIs that shall be described later in this document include the fetching of the prefill data. The schema
+for the prefill payload returned is not included in this API specification. Intermediaries are instructed to study
+the prefill schema document published on eFiling Portal for this purpose. TODO
+• The APIs for validation and Submit shall carry a payload that includes the ITR Form data. The schema for the
+form payload for each of the 7 ITRs is not included in this document. Intermediaries are requested to refer to
+the ITR Form schema documentation published on eFiling Portalfor this purpose
+• The form data submitted must be compliant to the ITR rules specified by the department. The intermediaries are
+expected to study the validation rules and implement necessary validations/computationwithin their software
+in a manner that is conformant to the published rules. The validation rules for each form are available on the
+eFiling Portal
+2 Overview of APIs
+The following sections provide an overview of the API specification in the form of functional catalog.
+2.1 API Catalog in Context
+The API Catalog is best understood when viewed from the perspective the larger functional purpose they serve. Broadly
+defined there are two three distinct phases or flows in tax return preparation.
+1. Initiation Phase: In this phase the return preparation is initiated by fetching the information required to prefill
+the various sections of the return
+2. Return Preparation Phase: In this phase, the user interacts with the software provided by the intermediary to
+complete the return preparation. It may be noted that there will be no interaction with the efiling system during
+this phase. All interactions including saving of the return etc. shall be performed within the domain of the
+intermediary’ssoftware.
+3. Submission Phase: In this phase, the return is submitted to the filing system. The submission flow follows three
+steps
+a. Validation of the return
+b. Saving of the Validated Return
+c. Selection of eVerification mode and completion of Verification
+d. Submission of the Verified Return
+The following figure presents a catalogue of APIs that shall be consumed by the intermediary in each of these phases.
+ Pre-Initiation Phase:
+ Post-Submission Phase:
+
+• As illustrated in the figure above, each interaction phase will commence with an authentication call to begin a
+session and conclude with the logout call to end the session. See more on the concept of a session in subsequent
+sections.
+• The interaction in the Initiation phase will only include a call to fetch the prefill data available at the time of API
+call. It may be noted that prefill data of the taxpayer may change based on information availability. It is 
+therefore suggested that software providers include a menu or a feature to refresh prefill schema at user
+request.
+• The interaction in the submission phase will include 3 key steps
+o Validation: Validation of the ITR data prepared now. It is expected that that the software design should
+include local validation of the return before transmission to the efiling system. The API is meant for final
+validation just before submission and SHOULD NOT BE construed as a substitute for validations that
+must be implemented with the utility software itself.
+o Verification APIs: This includes one or more APIs which shall be invoked for eVerifying the return. The
+applicable APIs will vary based on the verification mode selected. For example, if verification mode is
+through Aadhaar OTP, there will be two calls to eFiling system – first to generate the OTP and next to
+validate the OTP. On the other hand, if the verification mode is ITR-V or DSC or Verify Later, then there
+shall be only one call.
+o Submission: The submit call completes the ITR filing process with the chosen verification mode.
+2.2 About Authentication APIs and Session
+As noted earlier, every interaction with the eFiling system begins with establishing a session through a login API. That
+said, there are differences between the two types of ERIs which is compared and contrasted in the below table.
+Aspect ERI Type 2 ERI Type 3
+Access Method Via API GW Via Web API
+Session Created for Type 2 ERI Taxpayer or ERI Type-1
+Credentials Supplied ClientID, Client Secret, ERIUserID and
+ERIPassword
+Taxpayer or ERI-1 Credentials
+(PAN/Aadhaar, Password, OTP etc.)
+Description Creates a session for the ERI-2
+themselves. Subsequent calls
+operate in the context of the ERI-2’s
+session. Each call will carry the
+context of the PAN which they want
+to operate on and shall be validated
+for appropriate access.
+Creates a session for the Taxpayer or
+ERI-Type 1. Subsequent calls operate
+in the context of the session
+established. Each call will carry the
+PAN which shall be matched with the
+logged in PAN in case of Taxpayer. In
+case of ERI-Type-1, the system shall
+validate appropriate access.
+Number of Sessions Allowed Single Single
+Session Validity (Period of Inactivity) 24 hours or until logout 45 Minutes
+Session Identification AUTH token (sent as a cookie) AUTH token (sent as a cookie)
+Login Methods Available Password Only Password, Mobile OTP, Bank OTP
+(Taxpayer Only), Aadhaar OTP
+2.3 About Verification APIs
+As noted earlier, the submission flow includes a set of Verification APIs to eVerify the return. The following table
+describes each of the verification modes and the applicable model for utilizing it.
+Verification Mode Notes
+eVerify Later • Indicates the taxpayer shall verify the return later by
+logging into the portal
+• The software shall make only 1 API call indicating the
+same
+ITR-V • Indicates the taxpayer shall verify the return by
+downloading and sending the physical ITR-V to CPC
+center. The download of ITR-V will be available on the
+Portal.
+• The software shall make only 1 API call indicating the
+same.
+Aadhaar OTP, Mobile OTP, Bank OTP and Demat OTP • Indicates the taxpayer shall verify the return by the
+chosen method.
+• Available for ERI-Type-3 only as it requires the
+presence of the taxpayer.
+• Not Available for ERI-Type-2
+• The software shall make two API callsin a sequence.
+The first call shall request the efiling system to
+generate the OTP and send it to the mobile number
+associated with the chosen channel.
+• The second call shall validate the OTP and mark the
+return as verified.
+Digital Signature Certificate • Indicates that the subsequent submit payload shall
+carry Form payload digitally signed by the taxpayer.
+• This method shall be available to both Type-2 and
+Type-3 ERIs
+• The software shall make 1 API call indicating the
+chosen method as DSC.
+• The subsequent submit call should carry the taxpayer
+signed form payload. It is the responsibility of the
+software provider to submit a digitally signed payload.
+• The signature should be in PKCS#7 format
+• The signature should be generated using a valid X.509
+certificate belonging to the taxpayer and should be
+preregistered against the taxpayer PAN in the eFiling
+system
+3 API Specification
+The specification for each of the API are included in separate document. The objective is to upload them into an API
+portal in swagger format. The following table provides references to each API.
+API Name Specification Document
+Authentication API_Login_0.1.docx
+Get Prefill API_Prefill_0.2.docx
+Validation API_SubmitFlow_0.1.docx
+Verification API_Everify_Return_0.1.docx
+Submit API_SubmitFlow_0.1.docx
+Add Client API_AddClient_0.1.docx
+Get Acknowledgement API_AcknowledgementFlow_0.1.docx
+4 Signing API request
+All the API will have below attribute as part of the request:
+Data – Base64 encoded string from request json given in each API specification document
+Signature – Singed value from data field using ERI’s DSC private key. ERI will share their DSC public key with ITD to
+validate the signature.
+
+
+
+
+
+
+ERI API Specifications
+Integrated e-filing and CPC 2.0 Project
+API Name Login
+API Description APIs for performing User Authentication
+Version History
+Version Date Description
+1.0 29-10-2021 Initial Draft
+1.1 17-11-2021 Exception scenarios added
+Table of Contents
+1. Overview............................................................................................................................. 4
+2. About API........................................................................................................................... 4
+3. Target Audience and Pre-requisites...................................................................................... 5
+4. login API Details................................................................................................................. 5
+4.1 API Usage Scenario ....................................................................................................... 5
+4.2 API Request process....................................................................................................... 5
+4.3 API Protocol.................................................................................................................. 5
+4.4 Request Parameters........................................................................................................ 5
+4.4.1 Request Header: ...................................................................................................... 5
+4.4.2 Request Body: Description....................................................................................... 6
+4.4.3 Details of data attribute:........................................................................................... 6
+4.5 Response Parameters...................................................................................................... 7
+4.6.login API - Sample Request format................................................................................. 8
+4.7 API Usage Scenario ....................................................................................................... 9
+4.8 API Request process....................................................................................................... 9
+4.9 API Protocol.................................................................................................................. 9
+4.10 Request Parameters...................................................................................................... 9
+4.10.1 Request Header: .................................................................................................... 9
+4.10.2 Request Body:..................................................................................................... 10
+4.10.3 Details of data attribute:....................................................................................... 10
+4.11 logout API - Sample Request format........................................................................... 11
+4.12 logout API Response.................................................................................................. 11
+5. API Exception Details........................................................................................................ 11
+1. Overview
+Electronic Return Intermediaries shall begin the interaction with the eFiling system by
+establishing a session by invoking the login APIs. As noted in the ERI Specifications document,
+type-2 ERIs shall create a session using their own credentials while the Type-3 ERIs shall use the
+taxpayer or ERI-Type1 credentials.
+2. About API
+Requester Type-2 or Type-3 ERI
+Provider LoginApi
+Description
+Login API supports multiple modes of authentication which can be broadly
+classified into two categories
+1. Single Call (Password Based) - There will be single call for ERI 2
+2. Multiple Calls (OTP Based) - There will be multiple calls for individual
+taxpayers when ERI 3
+In the second category, the caller needs to make two calls, first to
+request for an OTP and subsequent call to submit the OTP. The request
+payload shall be common for both the calls. The system shall
+intelligently interpret the intent based on the parameters passed. For
+e.g. if the password is supplied, then the system will assume that the
+caller intends to login using password. If the password and otp is
+missing, then the system shall treat it as a request for an OTP. Finally,
+if the password is blank and OTP is supplied, the system shall attempt
+to log the user in using the OTP.
+Mode of
+Integration
+(Real time /
+Batch)
+Real Time
+Processing
+Details
+All validations regarding User Id, Password, OTP must be passed for
+successful authentication
+PreProcessing
+Details
+User should be registered with e-filing portal and should have active profile
+Service
+Name EriLoginService
+API URL TBD
+3. Target Audience and Pre-requisites
+This is technical document and is target to ERIs working in their application and interested to
+integrate their application with IEC 2.0 platform.
+The pre-requisites to call this API is that ERI is already registered with IEC 2.0 platform. They
+have valid credentials to call the API.
+4. login API Details
+This service is used to login and stablish the session with eFiling system from ERI application.
+4.1 API Usage Scenario
+ERI application pass their credentials to login API to get the session stablish with eFiling system.
+This is required to call any other eFiling API from ERI application. ERI user must be registered
+with eFiling system and should have valid credentials.
+4.2 API Request process
+ERI application must pass the ERI credential to establish the login session. Application will
+initiate addClient request as below:
+1. ERI application will pass ERI user id and password to login API.
+2. Login API will validate the credentials and respond with authToken.
+3. ERI can use the auth token to call subsequent APIs after post login.
+4.3 API Protocol
+addClient API is exposed as REST API over the HTTPS. The input data should be sent as JSON
+document using Content-Type "application/json".
+4.4 Request Parameters
+The request will consist of request header and request body:
+4.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+accessMode "API"
+4.4.2 Request Body: Description
+Request body will consist of below attributes:
+data: data attribute will be Base64 encoded string of API request json. Details of request json
+attributes are explained in request data element details.
+signature:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+eriUserId:
+• It is mandatory and valid value is user ID of the ERI
+4.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 yes It is mandatory value is "EriLoginService"
+entity String 10 yes
+ERI user Id for ERI 2
+taxpayer user ID/PAN for ERI 3
+pass String 50 yes
+Encrypted Password associated with the
+User using symmetric key
+otpSourceFlag String 1 no
+This is mandatory only for ERI 3
+Checks for Option user has selected for otp:
+"E" for eFiling OTP
+"A" for Aadhaar OTP
+otp String 6 no
+This is only for ERI 3 where taxpayer will
+pass OTP after receiving OTP. It is not
+mandatory. It is mandatory when
+Transaction Id is provided.
+transactionId String 20 No
+This is only for ERI 3 where taxpayer will
+pass OTP after receiving OTP. It is
+mandatory when otp is provided.
+Transaction no. which was provided while
+OTP generation
+Request Parameter logic for different flows:
+Login API supports multiple modes of authentication which can be broadly classified into two
+categories
+1. Single Call (Password Based) There will be single call for ERI 2
+2. Multiple Calls (OTP Based) There will be multiple calls for individual taxpayers when
+ERI 3
+In the second category, the caller needs to make two calls, first to request for an OTP and
+subsequent call to submit the OTP. The request payload shall be common for both the calls. The
+system shall intelligently interpret the intent based on the parameters passed. For e.g. if the
+password is supplied, then the system will assume that the caller intends to login using password.
+Below is the details of password and OTP options:
+Option 1: UserId/password validation: If password is provided, then it will be considered as
+password to be validated.
+Option 2: UserId/password and OTP request: If password and otpSourceFlag both are
+provided, then password will be validated and on successful userid/password then otp will be
+sent to taxpayer based on the value of otpSourceFlag
+Option 3: OTP validation: If OTP is provided, then it will be considered as OTP to be
+validated. In this case value of otpSourceFlag and transactionId to be provided. When OTP value
+is provided then password should not be provided.
+4.5 Response Parameters
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+entity String 60 yes User id used for Login
+messages Array yes
+This is an array which has 4 sub
+parameters – code, type, desc,
+fieldName
+code String 7 yes
+Error/message code depending on
+validation response
+type String 10 yes It describes type of message
+desc String 50 yes
+It describes Error/message if validation
+is passed/failed
+fieldName String 50 no
+It describes the field name, when not
+applicable null will be returned
+transactionId String 20 yes
+Transaction no. generated post
+successful login
+autkn String 32 yes
+It is random number generated to
+authorize user for post login services
+4.6.login API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId:""
+}
+data tag will be Base64Encoded string from following request json
+{
+ "serviceName": "EriLoginService",
+ "entity": "ERA2343353",
+ "pass": " TXlwYXNzd29yZEAxMjM="
+}
+login API - Sample Response format
+{
+"messages": [
+{
+"code": "EF00000",
+"type": "INFO",
+"desc": "OK",
+"fieldName": null
+}
+],
+"errors": [],
+"entity": " ERA2343353",
+"desc": "”,
+“transactionId” “”,
+"autkn": "dGVzdFVzZXJEZXY4QGluZm9zeXMuY29t”
+}
+Logout API Details
+This service is used to logout the ERI session from ERI application.
+4.7 API Usage Scenario
+ERI application already have logged in and has auth token. ERI application wants to logout from
+eFiling system
+4.8 API Request process
+ERI application already have auth token and wants to logout from the eFiling system.
+Application will initiate addClient request as below:
+1. ERI application will auth token and call the logout API.
+2. Login API will remove the validity of the auth token and kill the session for given auth
+token. Once logout then same auth token cannot be used to validate the session.
+4.9 API Protocol
+Login API is exposed as REST API over the HTTPS. The input data should be sent as JSON
+document using Content-Type "application/json".
+4.10 Request Parameters
+The request will consist of request header and request body:
+4.10.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+4.10.2 Request Body:
+Request body will consist of below attributes:
+data: data attribute will be Base64 encoded string of API request json. Details of request json
+attributes are explained in request data element details.
+sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+eriUserId: It is mandatory and valid value is user ID of the ERI
+4.10.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 yes
+It is mandatory and valid value is
+"EriLogoutService"
+entity String 10 yes
+Valid User Id for ERI 2
+Valid PAN for taxpayer in case of
+ERI3
+pan String 10 Yes Valid PAN of the taxpayer
+4.11 logout API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "EriLogoutService",
+"entity": "ERIP124345",
+"pan": ""
+}
+4.12 logout API Response
+There is no response data. Caller must check the HTTP status of 200.
+5. API Exception Details
+Scenario Error
+code Error string detail Message
+Type
+Successful
+scenario EF00000 OK
+If in response, we get
+this code then user
+navigates to next
+page else we show
+corresponding error
+message
+INFO
+When User enters
+PAN in user ID EF00036
+PAN does not exist, please
+register this PAN or try
+with some other PAN.
+This means user id is
+PAN and user does
+not exist
+REMARK
+When User enters
+Aadhaar Number
+in user ID
+EF00026
+This Aadhaar number is
+not linked to any registered
+PAN. Please link your
+registered PAN with this
+Aadhaar number to login
+through Aadhaar number.
+Else, login through PAN
+This means user id is
+Aadhaar Number and
+it is not linked to any
+active PAN profile
+ERROR
+When User enters
+OTP to validate EF00016
+The OTP has expired, on
+clicking of OK button you
+will be navigated to the
+previous screen to generate
+new OTP.
+If User enters any
+OTP which has
+already expired
+REMARK
+When User enters
+OTP to validate EF00028 Invalid OTP, please retry. When user enters
+wrong OTP ERROR
+When User Id is
+entered EF00032
+Your UserId has been
+deactivated, kindly contact
+helpdesk for more
+information.
+userId/account
+entered by user is
+deactivated
+REMARK
+When user enters
+password EF00042
+Your User Id/account has
+been locked, you can try
+after <4 hours> or contact
+e-filing helpdesk to unlock
+your account
+When user enters
+Incorrect password
+for continuous 6
+times
+REMARK
+too many invalid
+credentials
+attempts and
+account locked
+EF00079
+Your e-filing account has
+been locked\deactivated.
+Please contact e-filing
+helpdesk <Helpdesk Toll
+Free number>
+ERROR
+When PAN
+entered is inactive EF00098
+The PAN entered is
+inactive. Please contact
+your Accessing Officer to
+activate the PAN.
+When user enter a
+PAN which is
+inactive (will be
+applicable for Type
+3)
+ERROR
+When invalid
+userId/password
+is entered
+EF500060 Invalid UserId/Password Incorrect
+UserId/Password ERROR
+When attributes
+are incorrect in
+json request data
+EF20123 Invalid Request Data When request data is
+invalid ERROR
+When any
+attributes are
+missing in request
+JSON
+EF40000 JSON data invalid. JSON data invalid. ERROR
+
+
+
+
+Application Programming Interface Specifications
+Integrated e-filing and CPC 2.0 Project
+API Name Add Client API Flow
+API Description API is to be used to add client by the ERI
+Version History
+Version Date Description
+1.0 29-10-2021 Initial Draft
+1.1 17-11-2021 Exception scenarios added
+Table of Contents
+1. Overview............................................................................................................................. 5
+2. About API........................................................................................................................... 5
+3. Target Audience and Pre-requisites...................................................................................... 5
+4. addClient API Details.......................................................................................................... 6
+4.1 API Usage Scenario ....................................................................................................... 6
+4.2 API Request process....................................................................................................... 6
+4.3 API Protocol.................................................................................................................. 7
+4.4 Request Parameters........................................................................................................ 7
+4.4.1 Request Header: ...................................................................................................... 7
+4.4.2 Request Body:......................................................................................................... 7
+4.4.3 Details of data attribute:........................................................................................... 8
+4.5 Response Parameters...................................................................................................... 9
+4.6 addClient API - Sample Request format.......................................................................... 9
+4.7 addClient API - Sample Response format...................................................................... 10
+5. validateClientOtp API Details............................................................................................ 10
+5.1 API Usage Scenario ..................................................................................................... 11
+5.2 API Request process..................................................................................................... 11
+5.3 API Protocol................................................................................................................ 11
+5.4 Request Parameters...................................................................................................... 11
+5.4.1 Request Header: .................................................................................................... 11
+5.4.2 Request Body:....................................................................................................... 12
+5.4.3 Details of data attribute:......................................................................................... 12
+5.5 Response Parameters.................................................................................................... 13
+5.6 validateClientOtp API - Sample Request format............................................................ 14
+5.7 validateClientOtp API - Sample Response format ......................................................... 15
+6. AddRegisterClient API Details........................................................................................... 15
+6.1 API Usage Scenario ..................................................................................................... 15
+6.2 API Request process..................................................................................................... 16
+6.3 API Protocol................................................................................................................ 16
+6.4 Request Parameters...................................................................................................... 16
+6.4.1 Request Header: .................................................................................................... 16
+6.4.2 Request Body:....................................................................................................... 16
+6.4.3 Details of data attribute:......................................................................................... 17
+6.5 Response Parameters.................................................................................................... 20
+6.6 RegisterClient API - Sample Request format................................................................. 21
+6.7 RegisterClient API - Sample Response format .............................................................. 22
+6.8 List of Codes................................................................................................................ 23
+6.8.1 Country List.......................................................................................................... 23
+6.8.2 List of States......................................................................................................... 23
+6.8.3 List of Districts...................................................................................................... 23
+6.8.4 List of Localities.................................................................................................... 23
+7. ValidateRegOtp API Details .............................................................................................. 23
+7.1 API Usage Scenario ..................................................................................................... 24
+7.2 API Request process..................................................................................................... 24
+7.3 API Protocol................................................................................................................ 24
+7.4 Request Parameters...................................................................................................... 24
+7.4.1 Request Header: .................................................................................................... 24
+7.4.2 Request Body:....................................................................................................... 25
+7.4.3 Details of data attribute:......................................................................................... 25
+7.5 Response Parameters.................................................................................................... 26
+7.6 validateRegOtp API - Sample Request format............................................................... 27
+7.7 validateRegOtp API - Sample Response format............................................................. 27
+8. API Error Details............................................................................................................... 28
+1. Overview
+As noted in the ERI Specification Overview document the interaction during the submission
+phase includes 3 key steps in addition to the Login and Logout. This document defines the
+specification for adding. There will be two API calls, one is to provide client’s (taxpayer’s)
+details and second call the verification details from the taxpayers such as mobile OTP, email
+OTP and new password.
+2. About API
+Requester Type-2 ERI
+Provider ITD
+Description These APIs shall be used to add client by ERI
+Mode of
+Integration
+(Real time /
+Batch)
+Real Time
+Processing
+Details
+Pre-Processing
+Details
+User should have established a session using the Login API specifications
+and user should have valid auth token.
+Service Name EriAddClientService
+API URL
+http<hostname>/itrweb/auth/v0.1/client/addClient
+http://<hostname>//itrweb/auth/v0.1/client/validateClientOtp
+http<hostname>/itrweb/auth/v0.1/client/registerClient
+http://<hostname>//itrweb/auth/v0.1/client/validateRegOtp
+3. Target Audience and Pre-requisites
+This is technical document and is target to ERIs working in their application and interested to
+integrate their application with IEC 2.0 platform.
+The pre-requisites to call this API is that ERI is already registered with IEC 2.0 platform. They
+have valid credentials to call the API.
+4. addClient API Details
+This service is used to add client for registered client (taxpayer), where client (taxpayer) is
+already registered in eFiling system.
+4.1 API Usage Scenario
+ERI can submit a request to add their client (taxpayer) in the eFiling system using this API.
+When client or taxpayer is already registered to eFiling system and ERI wants to add as their
+client.
+When ERI submits request for add client, there are two high level activities are performed:
+1. Client (taxpayer) will get OTP on her/his mobile. OTP can be sent from eFiling system or
+Aadhaar depending upon the option provide in API request.
+2. ERI application requests the taxpayer to provide the OTP in their application. This OTP
+value should be used to get the taxpayer’s consent and pass in validateClientOtp API
+request.
+Above two steps are two disconnected API calls and OTP value sent from using addClient API
+which is step 1 above is then used as part of the validateClientOTP API to get the taxpayer’s
+consent and accept the add client request.
+ERI can add taxpayer as their client using API and in case taxpayer wants to remove the ERI,
+they have to login to eFiling portal and remove the existing ERI.
+Note: Following message can be shown to the taxpayer:
+“For registered taxpayers, only PAN and Date of Birth/Incorporation, Validity period is required
+for Adding Client followed by OTP consent. Here by giving consent taxpayer understands that e -
+Return Intermediary can access taxpayer data available with the Income Tax Department for
+Income Tax Return preparation purposes or for any related status updates”
+4.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate addClient request as below:
+1. ERI application will capture the taxpayer’s details as explained as part of the request
+attribute details.
+2. Application will capture the OTP choice as eFiling OTP or Aadhaar OTP.
+3. Application will call addClient API with values captured from the taxpayer as per request
+attribute details.
+4. OTP will be sent to taxpayer to their primary mobile number/email address in case of
+eFiling OTP sourceOtpFlag is opted.
+5. OTP will be sent to taxpayer from Aadhaar to mobile number linked to Aadhaar number
+in case sourceOtpflag is opted as “A”
+4.3 API Protocol
+addClient API is exposed as REST API over the HTTPS. The input data should be sent as JSON
+document using Content-Type “application/json”.
+4.4 Request Parameters
+The request will consist of request header and request body:
+4.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode “API”
+4.4.2 Request Body:
+Request body will consist of below attributes:
+data: data attribute will be Base64 encoded string of API request json. Details of request json
+attributes are explained in request data element details.
+sign: 
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI’s DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+eriUserId: It is mandatory and valid value is user ID of the ERI
+4.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+“EriAddClientService”
+pan String 10 Yes
+Valid PAN of the taxpayer who is being
+added as client by the ERI.
+dateOfBirth String 10 Yes
+Date of birth or date of incorporation or date
+or formation. The data should be passed in
+“YYYY-MM-DD” format
+otpSourceFlag String 1 Yes
+OTP Options user has captured from
+taxpayer.
+Valid values are:
+“E” for OTP from eFiling system. OTP will
+be sent to primary mobile number and
+primary email address of the taxpayer
+registered in eFiling system.
+“A” for OTP from Aadhaar. The OTP will be
+sent only if taxpayer’s PAN is linked to
+his/her Aadhaar and mobile number is given
+in his/her Aadhaar.
+4.5 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+Messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no messages.
+"messages": []
+This is an array which has 4 sub
+parameters – code, type, desc, fieldName
+Code String 7 yes
+Error/message code depending on
+validation response
+Type String 10 yes It describes type of message
+Desc String 50 yes
+It describes Error/message if validation is
+passed/failed
+fieldName String 20 No It describes the request JSON field name
+for which message has been raised.
+Errors List<Error> Yes
+List of errors. The value will be null if
+there is no error. The sub parameters are
+similar to messages
+"errors": []
+successFlag Boolean Yes
+Indicates whether addClient call is
+successful. Possible value is true or false.
+"successFlag": true
+transactionId String 20 Yes Unique number generated
+httpStatus String 20 Yes
+http codes corresponding to response.
+Possible value is “SUBMITTED” or
+“REJECTED”
+"httpStatus": "SUBMITTED"
+4.6 addClient API - Sample Request format
+{
+ "data": "",
+ "sign": "",
+ "eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+ "serviceName": "",
+ "pan": "",
+ "dateOfBirth": "",
+ "otpSourceFlag": ""
+}
+4.7 addClient API - Sample Response format
+{
+ "messages": [],
+ "errors": [],
+ "successFlag": true,
+ "transactionId": "1324t56",
+ "httpStatus": "SUBMITTED"
+}
+5. validateClientOtp API Details
+This API will be used to validate the OTP to add client for registered client (taxpayer). The
+request will consist of request header and request body:
+5.1 API Usage Scenario
+ERI can submit a consent from their client (taxpayer) in the eFiling system using this API. When
+client or taxpayer is already registered and providing the consent to add client of the ERI.
+Note: Following message can be shown to the taxpayer:
+“For registered taxpayers, only PAN and Date of Birth/Incorporation, Validity period is required
+for Adding Client followed by OTP consent. Here by giving consent taxpayer understands that e -
+Return Intermediary can access taxpayer data available with the Income Tax Department for
+Income Tax Return preparation purposes or for any related status updates”
+5.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate request as below:
+1. Application will capture the OTP from their client as eFiling OTP or Aadhaar OTP.
+2. Application will call validateClientOtp API with OTP values captured from the taxpayer
+as per request attribute details.
+5.3 API Protocol
+addClient API is exposed as REST API over the HTTPS. The input data should be sent as JSON
+document using Content-Type “application/json”.
+5.4 Request Parameters
+The request will consist of request header and request body:
+5.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+Authorization Auth token from the Login Flow
+accessMode “API”
+5.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI’s DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+5.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 50 Yes It is mandatory field and the valid value
+“EriValidateClientService”
+Pan String 10 yes
+Valid PAN of the taxpayer who is being
+added as client by the ERI
+transactionId String 20 yes
+Transaction Id, which was received from the
+addClient API
+otpSourceFlag String 1 Yes
+OTP Options user has captured from
+taxpayer. This will be same as the value
+provided in addClient API call.
+Valid values are:
+“E” for OTP value from eFiling system.
+“A” for OTP value from Aadhaar.
+Otp String 6 Yes OTP value
+validUpto String 10 Yes
+It is mandatory field, and it defines validity
+of the ERI for the client.
+Valid from date will be considered as date of
+submission of the add client request.
+Minimum difference between valid from and
+valid upto date should be minimum 1 month
+and maximum 1 year.
+Valid format for validUpto value is “YYYYMM-DD”
+5.5 Response Parameters
+Name of the
+Parameter
+Data type Max
+length
+Is
+Mandatory Description
+Messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no messages.
+"messages": []
+Errors List<Error> Yes
+List of errors. The value will be null if
+there is no error.
+"errors": []
+successFlag Boolean Yes
+Indicates whether addClient call is
+successful. Possible value is true or false.
+"successFlag": true
+httpStatus String 20 Yes
+http codes corresponding to response.
+Possible value is “ACCEPTED” or
+“REJECTED”
+"httpStatus": "ACCEPTED"
+5.6 validateClientOtp API - Sample Request format
+{
+ "data": "",
+ "sign": "",
+ "eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+ "serviceName": "EriValidateClientService",
+ "pan": "",
+ "transactionId": "",
+ "otpSourceFlag": "A",
+ "Otp": "",
+"validUpto": ""
+}
+5.7 validateClientOtp API - Sample Response format
+{
+ "messages": [],
+ "errors": [],
+ "successFlag": true,
+ "httpStatus": "SUBMITTED"
+}
+6. AddRegisterClient API Details
+This service is used to add client (taxpayer) who individual taxpayer and not yet registered in
+eFiling system. This API will register submit the request to register the taxpayer in eFiling
+system and add client of ERI.
+6.1 API Usage Scenario
+ERI can submit a request to add their client (taxpayer) in the eFiling system using this API, who
+is an individual taxpayer. When their client, taxpayer is not registered in eFiling system and ERI
+wants to add as their client.
+When ERI submits request for add client, there are two high level activities are performed:
+1. ERI application will capture the taxpayer’s registration details as per the request
+parameters.
+2. Client (taxpayer) will get OTP on her/his mobile and email address. OTP can be sent to
+taxpayer from eFiling system to given primary mobile number and primary email
+address.
+3. ERI application capture the taxpayer to provide the OTP values. This OTP value should
+be used to get the taxpayer’s consent and pass in validateRegOtp API request.
+Above two steps are two disconnected API calls and OTP value sent from using
+addRegisterClient API which is step 1 above is then used as part of the validateRegOTP API to
+get the taxpayer’s consent and accept the add client request.
+Note: Following message can be shown to the taxpayer:
+“For registered taxpayers, only PAN and Date of Birth/Incorporation, Validity period is required
+for Adding Client followed by OTP consent. Here by giving consent taxpayer understands that e-
+Return Intermediary can access taxpayer data available with the Income Tax Department for
+Income Tax Return preparation purposes or for any related status updates”
+6.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate RegisterClient request as below:
+1. ERI application will capture the taxpayer’s details as explained as part of the request
+attribute details.
+2. ERI Application will call RegisterClient API with values captured from the taxpayer as
+per request attribute details.
+6.3 API Protocol
+RegisterClient API is exposed as REST API over the HTTPS. The input data should be sent as
+JSON document using Content-Type “application/json”.
+6.4 Request Parameters
+The request will consist of request header and request body:
+6.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+Authorization Auth token from the Login Flow
+accessMode “API”
+6.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI’s DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+6.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length Is Mandatory Description
+serviceName String 50 Yes
+It is mandatory and valid value is
+“EriRegisterClient” for individual
+taxpayer
+pan String 10 yes
+Taxpayer’s PAN is mandatory and
+should be valid PAN of individual
+taxpayer
+residentialStatusCd String 3 Yes
+Residential Status, valid value is:
+“RES” for Indian resident
+“NRI” for non-Indian resident
+firstName String 75 No First name
+lastName String 125 Yes Last name
+midName String 75 No Middle name
+dateOfBirth String 10 Yes
+Date of birth of the individual
+taxpayer. The valid format is
+“YYYY-DD-MM”
+userGender String 1 Yes
+Gender, valid values are:
+“M” for male
+“F” for female
+“T” for transgender
+priMobileNum String 10 Yes Primary mobile number of the
+taxpayer
+isdCd String 3 Yes
+ISD code
+“91” for India
+priMobBelongsTo String 2 Yes
+Primary mobile belongs to. Valid
+values are:
+"1" for Self,
+"2" for Spouse,
+"20" for Parent,
+"5" for Son,
+"6" for Daughter,
+"7" for Brother,
+"8" for Sister,
+"21" for Relative,
+"22" for Friend
+priEmailRelationId String 2 Yes
+Primary email belongs to. Valid
+values are:
+"1" for Self,
+"2" for Spouse,
+"20" for Parent,
+"5" for Son,
+"6" for Daughter,
+"7" for Brother,
+"8" for Sister,
+"21" for Relative,
+"22" for Friend
+priEmailId String 254 Yes Primary email id of the individual
+taxpayer
+addrLine1Txt String 60 Yes Flat/ Door/ Block No.
+addrLine2Txt String 60 Yes Name of Premise/ Building/ Village
+addrLine3Txt String 60 Yes Area / Locality
+addrLine4Txt String 60 Yes District / City
+addrLine5Txt String 60 Yes Post office
+pinCd String 6
+Yes, if country
+is India Pin code
+zipCd String 8
+Yes, If foreign
+country.
+Zip code
+stdCd String 4 No Std Code for landline number
+countryCd String 3 Yes
+Country Code.
+Valid values of country code are
+given in the list of countries in
+attached sheet.
+landlineNo String 8 No Land line number
+stateCd String 3 No
+State code
+Valid values of state codes are given
+in the list of state codes in attached
+sheet.
+foreignStateDesc String 50 No Foreign state description
+6.5 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+messages List<String> Yes
+List of information messages. There
+can be one or more messages. The
+messages array will be null if there
+are no messages.
+"messages": []
+This is an array which has 4 sub
+parameters – code, type, desc,
+fieldname
+Code String 7 Yes Error/message code depending on
+validation response
+Type String 10 Yes It describes type of message
+Desc String 50 Yes It describes Error/message if
+validation is passed/failed
+fieldName String 20 No
+It describes the request JSON field
+name for which message has been
+raised.
+errors List<Error> Yes
+List of errors. The value will be null
+if there is no error.
+"errors": []
+successFlag Boolean Yes
+Indicates whether addClient call is
+successful. Possible value is true or
+false.
+"successFlag": true
+smsTransactionId String 20 Yes Unique number generated for SMS
+OTP
+emailTransactionId String 20 Yes Unique number generated for email
+OTP
+httpStatus String 20 Yes
+http codes corresponding to response.
+Possible value is “SUBMITTED” or
+“REJECTED”
+"httpStatus": "SUBMITTED"
+6.6 RegisterClient API - Sample Request format
+{
+ "data": "",
+ "sign": "",
+ "eriUserId": ""
+}
+ data tag will be Base64Encoded string from following request json
+{
+ "serviceName": "EriRegisterClient",
+ "pan": "",
+ "residentialStatusCd": "",
+ "firstName": "",
+ "lastName": "",
+ "midName": "",
+ "dateOfBirth": "",
+ "userGender": "",
+ "priMobileNum": "",
+ "isdCd": "",
+ "priMobBelongsTo": "",
+ "priEmailRelationId": "",
+ "priEmailId": "",
+ "addrLine1Txt": "",
+ "addrLine2Txt": "",
+ "addrLine3Txt": "",
+ "addrLine4Txt": "",
+ "addrLine5Txt": "",
+ "pinCd": "",
+ "zipCd": "",
+ "stdCd": "",
+ "countryCd": "",
+ "landlineNo": "",
+ "stateCd": "",
+ "foreignStateDesc": ""
+}
+6.7 RegisterClient API - Sample Response format
+{
+ "messages": [],
+ "errors": [],
+ "successFlag": true,
+ "smsTransactionId": "1324t56",
+ "emailTransactionId": "1324t56",
+ "httpStatus": "SUBMITTED"
+}
+6.8 List of Codes
+Below is the list of master codes and description which are required to pass as part of request for
+some of the attributes:
+Master_list.zip
+6.8.1 Country List
+Country master list is attached.
+6.8.2 List of States
+list of states is attached.
+6.8.3 List of Districts
+List of districts is attached.
+6.8.4 List of Localities
+List if localities is attached.
+7. ValidateRegOtp API Details
+This API will be used to validate the OTP from taxpayer, register the taxpayer and add client of
+the ERI.
+7.1 API Usage Scenario
+ERI can submit a consent from their client (taxpayer) in the eFiling system using this API. When
+client or taxpayer is not yet registered and providing the consent to register and add client of the
+ERI.
+7.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Taxpayer has already received the OTP to provide his/her consent to
+register and add client of ERI.
+Application will initiate request as below:
+1. Application will capture the OTP from their client as eFiling OTP.
+2. Application will call EriValidateRegOtp API with OTP values captured from the
+taxpayer as per request attribute details.
+Note: Following message can be shown to the taxpayer:
+“For registered taxpayers, only PAN and Date of Birth/Incorporation, Validity period is required
+for Adding Client followed by OTP consent. Here by giving consent taxpayer understands that eReturn Intermediary can access taxpayer data available with the Income Tax Department for
+Income Tax Return preparation purposes or for any related status updates”
+7.3 API Protocol
+EriValidateRegOtp API is exposed as REST API over the HTTPS. The input data should be sent
+as JSON document using Content-Type “application/json”.
+7.4 Request Parameters
+The request will consist of request header and request body:
+7.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+Authorization Auth token from the Login Flow
+7.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI’s DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+7.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 50 Yes Service name is mandatory, and value is
+“EriValidateRegOtp”
+Pan String 10 yes
+Valid PAN of the taxpayer who is being
+added as client by the ERI
+smsTransactionId String 20 yes
+SMS Transaction Id is the unique
+identifier provided by previous call to
+addIndRegisterClient API for SMS OTP
+generated.
+emailTransactionId String 20 Yes
+EMAIL Transaction Id is the unique
+identifier provided by previous call to
+addIndRegisterClient API for EMAIL
+OTP generated.
+mobileOtp String 6 Yes Mobile OTP value
+emailOtp String 6 Yes Email OTP value
+validUpto String 10 Yes
+It is mandatory field, and it is validity of
+the ERI for the client.
+Valid from date will be considered as
+date of submission of the add client
+request.
+Minimum difference between valid from
+and valid upto date should be minimum 1
+month and maximum 1 year.
+Valid format for validUpto value is
+“YYYY-MM-DD”
+
+7.5 Response Parameters
+Name of the
+Parameter
+Data type Max
+length
+Is
+Mandatory Description
+messages List<String> Yes
+List of messages
+"messages": [],
+Errors List<Error> Yes
+List of errors
+"errors": [],
+successFlag Boolean Yes
+Indicates whether client is added
+"successFlag": true,
+httpStatus String Yes
+http codes corresponding to
+response
+"httpStatus": "ACCEPTED"
+7.6 validateRegOtp API - Sample Request format
+{
+ "data": "",
+ "sign": "",
+ "eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+ "serviceName": "EriValidateRegOtp",
+ "pan":"",
+ "smsTransactionId": "",
+ "emailTransactionId": "",
+ "mobileOtp": "",
+ "emailOtp": "",
+"validUpto": ""
+}
+7.7 validateRegOtp API - Sample Response format
+{
+ "messages": [],
+ "errors": [],
+ "successFlag": true,
+ "transactionId": "1324t56",
+ "httpStatus": "SUBMITTED"
+}
+8. API Error Details
+Scenario Error
+Code Error message
+Message
+Type
+When PAN is not in a
+valid format EF00011 Please enter a valid PAN Number. ERROR
+When user does not enter
+OTP number. EF00014 Please Enter OTP Number. ERROR
+When the OTP is
+incorrect. EF00128 OTP has expired, please generate new
+OTP.
+ERROR
+When ERI tries to call
+EriValidateRegOtp () for
+a client not registered
+EF00035 User ID does not exist, Please Retry ERROR
+When Pan Entered does
+not exist. EF00047 The PAN does not exist. ERROR
+When the user is already
+registered. EF00048 This PAN has already been registered. ERROR
+When the user is minor
+and is not eligible for
+registration.
+EF00050
+As you are a Minor, you are not
+authorized under the law to Register &
+carry out the Legal Functions as per the
+Income-tax Act, 1961 in your individual
+capacity. You may request your Legal
+Guardian to represent you and perform the
+required functions.
+ERROR
+When the name does not
+match. EF00065 Name provided is not as per PAN. Please
+retry. ERROR
+When the dob entered
+does not match. EF00066 DOB provided is not as per PAN. Please
+retry.
+ERROR
+When the gender entered
+does not match. EF00067 Gender provided is not as per PAN. Please
+retry.
+ERROR
+When name and dob both
+does not match. EF00068 Name and DOB provided is not as per
+PAN. Please retry. ERROR
+When the name and
+gender both does not
+match.
+EF00069 Name and Gender provided is not as per
+PAN. Please retry. ERROR
+When the dob and gender
+both does not match. EF00070 DOB and Gender provided is not as per
+PAN. Please retry. ERROR
+When the name, dob and
+gender all does not match
+from the pan master table.
+EF00071 Name, DOB and Gender provided are not
+as per PAN. Please try again. ERROR
+When mobile OTP
+entered is incorrect. EF00072 The Mobile OTP you have provided is
+incorrect. Please retry ERROR
+When email OTP entered
+is incorrect. EF00073 The Email OTP you have provided is
+incorrect. Please retry ERROR
+When the same mobile
+no. is use for registering
+more than 5 users.
+EF00075
+This number is already used for 5 PANs.
+You cannot use same Mobile for more
+than 5 users.
+ERROR
+When the same email is
+use for registering more
+than 5 users.
+EF00076
+This Email Id is already used for 5 PANs.
+You cannot use same Email Id for more
+than 5 users.
+ERROR
+When OTP entered is
+incorrect. EF40088 The OTP entered is incorrect. ERROR
+When Transaction Id is
+incorrect EF30045 The Transaction Id is incorrect. Please
+retry.
+ERROR
+When pan entered is
+inactive. EF00098 The PAN is inactive. Please contact your
+Accessing Officer to activate the PAN. ERROR
+When PAN and Aadhar
+are not linked, but
+OtpSourceFlag is 'A'
+EF00099 Your PAN and Aadhaar is not linked. ERROR
+When the name contains
+of that a deceased person. EF00111
+Kindly follow the process prescribed for
+registration of PAN of an estate of a
+deceased. Please refer Help section of
+Registration. In case your PAN does not
+represent an estate of a deceased or estate
+of an insolvent, you may kindly contact
+Helpdesk.
+ERROR
+When client is not
+registered (data not
+available in
+USER_PROFILE table)
+EF00116 PAN is not registered on e-filing. ERROR
+When ERI tries to add a
+client, which is already
+active, or request
+submitted.
+EF30032 The PAN is already a client for an ERI ERROR
+When any attributes are
+missing in request JSON EF40000 JSON data invalid. ERROR
+When attributes are
+incorrect in json request
+data
+EF20123 Invalid Request data. ERROR
+When OTP is sent
+successfully based on
+given request
+EF40010 OTP has been sent successfully. REMARK
+When OTP generation
+fails EF40014 OTP Generation failed. ERROR
+When API cannot insert
+records into DB EF40076 Record(s) insertion failed. ERROR
+When ERI Session
+validation fails EF500023 Request is not authenticated ERROR
+When client valid up to
+date is not a future date
+EF500085 Please provide a future date. Client can be
+added for minimum 1 month and
+maximum 1 year from current date.
+ERROR
+When client valid up to
+date is less than a month
+or more than a year
+EF500061 Client can be valid for minimum 1 month
+and maximum 1 year
+ERROR
+When transaction no. is
+not linked to PAN while
+validating OTP
+EF30043 The Transaction Id is not linked with the
+PAN
+ERROR
+When organization name
+does not match.
+EF00059 The Organization Name entered is not as
+per PAN. Please try again
+ERROR
+When DOI/DOF entered
+is not as per PAN
+EF00060 The Date of Incorporation entered is not
+as per PAN. Please try again
+ERROR
+When organization name
+and date of incorporation
+does not match
+EF00061 The Organization Name and Date of
+Incorporation entered are not as per PAN.
+Please try again
+ERROR
+When the name and Date
+of formation does not
+match
+EF00097 The Name and DOF entered are not as per
+PAN. Please retry.
+ERROR
+When the name of
+formation or HUF does
+not match
+EF00109 Name of Formation entered is not as per
+PAN. Please retry.
+ERROR
+When Aadhaar is not
+linked with contact PAN
+for Aadhaar OTP
+EF00100 Please inform your Principal Contact to
+complete Aadhaar PAN linking process
+by logging in to e-filing portal using his
+credentials
+ERROR
+When Principal contact is
+not registered with efiling
+EF00090 The PAN of the Principal Contact is not
+registered with e-filing. Ask your
+Principal Contact to register with e-filing
+to continue with this registration process.
+ERROR
+When SMS OTP delivery
+fails
+EF40073 SMS delivery failed. ERROR
+When Email OTP
+delivery fails
+EF40075 Email delivery failed. ERROR
+When Email OTP
+delivery is successful
+EF40074 Email sent successfully. REMARK
+When the client is not a
+resident of India
+EF30052 Non-Resident taxpayer cannot be added as
+client.
+ERROR
+When user tries to
+generate e-filing OTP
+more than 5 times
+EF00152 You have exceeded the limit to receive
+OTP. Please try again in 8 hours.
+ERROR
+When user enters wrong
+e-fling OTP for more than
+3 times
+EF00153 You have exceeded the Number of
+attempts to enter Correct OTP.
+ERROR
+
+
+Application Programming Interface Specifications
+Integrated e-filing and CPC 2.0 Project
+API Name getPrefill
+API Description API used to get Prefill data
+Version History
+Version Date Description
+1.0 29-10-2021 Initial Draft
+1.1 17-11-2021 Exception scenarios added
+Table of Contents
+1. Overview......................................................................................................................... 4
+2. About API....................................................................................................................... 4
+3. Target Audience and Pre-requisites................................................................................... 4
+4. RequestPrefillOTP API Details......................................................................................... 5
+4.1 API Usage Scenario ....................................................................................................... 5
+4.2 API Request process....................................................................................................... 5
+4.3 API Protocol.................................................................................................................. 5
+4.3.1 Request Header: ...................................................................................................... 6
+4.3.2 Request Body:......................................................................................................... 6
+4.3.3 Details of data attribute:........................................................................................... 6
+4.4 Response Parameters...................................................................................................... 7
+4.5 requestPrefillOTP API - Sample Request format............................................................. 8
+4.6 requestPrefillOTP API - Sample Response format........................................................... 8
+5. getPrefill API Details....................................................................................................... 8
+5.1 API Usage Scenario ....................................................................................................... 8
+5.2 API Request process....................................................................................................... 9
+5.3 API Protocol.................................................................................................................. 9
+5.3.1 Request Header:...................................................................................................... 9
+5.3.2 Request Body:......................................................................................................... 9
+5.3.3 Details of data attribute:......................................................................................... 10
+5.4 Response Parameters.................................................................................................... 11
+5.5 getPrefill API - Sample Request format ........................................................................ 12
+5.6 getPrefill API - Sample Response format...................................................................... 12
+6. API Exception Details.................................................................................................... 13
+1.Overview
+As noted in the ERI Specification Overview document the interaction during the initiation phase
+involves fetching the prefill information for the taxpayer. This document describes the API
+specification for the same.
+Note: The requests for get prefill data will be tracked and measured for this API response will be
+applicable to block and legal action.
+Initiation Phase
+2.About API
+Requester Type-2 or Type-3 ERI
+Provider ItrWeb
+Description
+These APIs shall be used to fetch prefill data for the taxpayer.
+There will be two calls to get Prefill data. One is to request for the prefill data
+where OTP will be sent to taxpayer and second call is to get prefill data after
+providing OTP value by the taxpayer.
+Mode of
+Integration
+(Real time /
+Batch)
+Real Time
+Processing
+Details
+Fetches the prefill data as per the schema published in the income tax portal
+ERI can fetch prefill data only for current assessment year 2021
+Pre-Processing
+Details User should have established a session using the Login API specifications.
+Service Name
+requestPrefillOTP
+getPrefill
+API URL TBD
+3.Target Audience and Pre-requisites
+This is technical document and is target to ERIs working in their application and interested to
+integrate their application with IEC 2.0 platform.
+The pre-requisites to call this API is that ERI is already registered with IEC 2.0 platform. They
+have valid credentials to call the API.
+4.RequestPrefillOTP API Details
+This service is used by ERI to request for getPrefill of taxpayer. This API will submit the request
+from ERI and send OTP to taxpayer to get consent. The ERI can get prefill data for taxpayer
+only when the consent is given by the taxpayer by entering OTP. Request for prefill can be
+performed only when taxpayer is already added as its client.
+4.1 API Usage Scenario
+This API is called taxpayer is already registered to eFiling system and he/she is already added as
+client of ERI. Where ERI wants to submit a request to get prefill data from the eFiling system for
+their client.
+When ERI submits request to get prefill for their client, there are two high level activities are
+performed:
+1. Client (taxpayer) will get OTP on her/his mobile and email address. OTP will be sent
+from eFiling system to primary mobile number and primary email address of the taxpayer
+or Aadhaar OTP will be sent depending upon the option provided in API request.
+2. ERI application requests the taxpayer to provide the OTP in their application. This OTP
+value should be used to get the taxpayer's consent and pass in getPrefill API request.
+Above two steps are two disconnected API calls and OTP value sent from using
+requestPrefillOTP API which is step 1 above is then used as part of the getPrefill API to get the
+taxpayer's consent and get the prefill data.
+4.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate requestPrefillOTP request as below:
+1. ERI application will capture the taxpayer's details as explained as part of the request
+attribute details.
+2. Application will initiate request to requestPrefillOTP API to submit the request
+4.3 API Protocol
+requestPrefillOTP API is exposed as REST API over the HTTPS. The input data should be sent
+as JSON document using Content-Type "application/json".
+The request will consist of request header and request body:
+4.3.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+4.3.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+3. eriUserId: It is mandatory and valid value is user ID of the ERI
+4.3.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+"EriGetPrefill"
+Pan String 10 Yes Valid PAN of the taxpayer whose
+prefill information is sought
+assessmentYear String 4 Yes Assessment year for which the prefill
+information is sought
+otpSourceFlag String 1 Yes
+OTP Options user has selected for
+getting consent from the taxpayer:
+Valid values are:
+"E" for eFiling OTP
+"A" for Aadhaar OTP
+4.4 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no messages.
+["messages": []
+This is an array which has 4 sub
+parameters – code, type, desc, fieldName
+code String 7 yes
+Error/message code depending on
+validation response
+type String 10 yes It describes type of message
+desc String 50 yes
+It describes Error/message if validation is
+passed/failed
+fieldName String 50 no
+It describes the field name, when not
+applicable null will be returned
+errors List<Error> Yes List of errors. The value will be null if
+there is no error."errors": []
+successFlag Boolean Yes
+Indicates whether requestPrefillOTP call
+is successful. Possible value is true or
+false.
+"successFlag": true
+transactionId String 20 Yes Unique number generated
+httpStatus String 20 Yes
+http codes corresponding to response.
+Possible value is "SUBMITTED" or
+"REJECTED"
+"httpStatus": "SUBMITTED"
+4.5 requestPrefillOTP API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "",
+"pan": "",
+"assessmentYear": "",
+"otpSourceFlag": ""
+}
+4.6 requestPrefillOTP API - Sample Response format
+{
+"messages": [],
+"errors": [],
+"successFlag": true,
+"transactionId": "1324t56",
+"httpStatus": "SUBMITTED"
+}
+5.getPrefill API Details
+This service is used by ERI to provide taxpayer's consent and get prefill for the taxpayer.
+5.1 API Usage Scenario
+This API is called taxpayer is already registered to eFiling system and he/she is already added as
+client of ERI. Where ERI wants to provide taxpayer's consent with OTP value and get prefill 
+data from the eFiling system.
+When ERI provides OTP value from taxpayer and get prefill for them, there are two high level
+activities are performed:
+1. Taxpayer will get the OTP based on the request was made to requestPrefillOTP API
+earlier.
+2. Taxpayer will provide the OTP values as their consent.
+3. API will provide the prefill data based on the consent given by the taxpayer.
+5.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate getPrefill request as below:
+1. ERI application will capture the taxpayer's OTP values as their consent.
+2. Application will initiate request to GetPrefill API to get prefill data for the taxpayer.
+5.3 API Protocol
+GetPrefill API is exposed as REST API over the HTTPS. The input data should be sent as JSON
+document using Content-Type "application/json".
+The request will consist of request header and request body:
+5.3.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+5.3.2 Request Body:
+Request body will consist of below attributes:
+data: data attribute will be Base64 encoded string of API request json. Details of request json
+attributes are explained in request data element details.
+sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+eriUserId: It is mandatory and valid value is user ID of the ERI
+5.3.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+"EriGetPrefill"
+Pan String 10 yes
+Valid PAN of the taxpayer whose prefill
+information is sought
+assessmentYear String 4 yes
+Assessment year for which the prefill
+information is sought
+otpSourceFlag String 1 Yes
+OTP Options user has selected for
+getting consent from the taxpayer:
+Valid values are:
+"E" for eFiling OTP
+"A" for Aadhaar OTP
+mobileOtp String 6 Yes OTP value for Aadhaar OTP or mobile
+OTP value for eFiling OTP
+emailOtp String 6 No
+It is mandatory only in case
+otpSourceFlag i.e., "E". Email OTP
+value
+TransactionId String Yes
+Transaction ID which was received from
+previous service call to
+requestPrefillOtp
+5.4 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no
+messages.
+"messages": []
+This is an array which has 4 sub
+parameters – code, type, desc,
+fieldname
+code String 7 yes
+Error/message code depending on
+validation response
+Type String 10 yes It describes type of message
+desc String 50 yes
+It describes Error/message if validation
+is passed/failed
+fieldName String 50 no
+It describes the field name, when not
+applicable null will be returned
+errors List<Error> Yes
+List of errors. The value will be null if
+there is no error.
+"errors": []
+successFlag Boolean Yes
+Indicates whether GetPrefill call is
+successful. Possible value is true or
+false.
+"successFlag": true
+transactionId String 20 Yes Unique number generated
+prefill json Yes
+Prefill data json. It will be encrypted
+which can be decrypted using the key
+shared with ERIs.
+Kindly refer to the JSON schema for
+the prefill information published on the
+income tax portal
+5.5 getPrefill API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "",
+"pan": "",
+"assessmentYear": "",
+"otpSourceFlag": "",
+"mobileOtp": "",
+"emailOtp": "",
+"transactionId": ""
+}
+5.6 getPrefill API - Sample Response format
+{
+"messages": [],
+"errors": [],
+"successFlag": true,
+"transactionId": "1324t56",
+“Prefill”:”
+kqAQF7c0wTJ3z94pAv8wQQ7eZxXSPLYkqQP8tPq2QywUz5mLvWK4k78FHW8vvL1aZ6BbbKMH3ygCJrVDLFeZX6yOvbS
+j6Jdfh8/ifo82hKg9M2yYeab5tg0vHzqDveXVsCqe7u7oLX9DZA9a4rTrMM/zM7Y98dJjhEpzvnoalWlDEBDrfuAXDuN5JwL
+SYiDkKZhiekkYY+EKOs6GHtYPrca1sL9B310Aciq0ixiEPKvt5l7czQTm4IuNLAD6TIWhuQVfe1wp5fydj9S6f1CmqIzZl319Jh4
+2SGFSpjRQ+KwqsnppTdY2/q6O8CvYt0MebwytWHadTL4RllEqENFdR1r+ScgVkMgYX/M5jMDuY6NhzNRlgRwogT5cbe/
+d2C15vwNm3WNeqmnhRgZwNnPYdoUjoN4cG6LCpfPNZ5PF829JyQSoA55Xt1XrIKVz00gDwzzCFGz7Rsf3csCAKlI0e fwt
+1lpX+NdYKHhjBYhPaR0dg2iablN8tm843HuzG7833I22lMqdahxH4B3r0Pl6qn3iiQodMLpNXBc6miJvmLF4pyrSn4KmYA
+Q8BmM0cqqiCtq9lj2PO3xe8HP4eMbdw45cCxRCflRd53B2AAzS9+xYmanIkI/NgRkFSwRBreVgWLv+TYkwx2brbg7N1qO
+ulCCD0UGrBvKkVYxUXJqwhcm2pZx1sMIACkYQW5KdzR4ZHE4fl2w+OIobgiT/68xbFZPM4CDpxuhB7oEIUVphiCuXkQkL
+7B5CsaipzcK9kJdqp8FnQrFYGE1A9qzagAQevSpZuIPLsEMryj8ZK5ke7R8MfNvh3KzUT4/Fzic4zzJ82ELnQj0HOMByw42sO
+myUFgLHki+D81pREyLiO7EowIsphvFMz6YhVaU6Ro3c7LtyVG7Xvs4XDek/Hwg3MmGd2DUTI51TRA7MXcmKEj/RIEN9aj
+8FDQkTazya7YoScBN2qk4CJYFa73wsLpgOFeMhXbDiMeEEHQZrjZIVUJeybDDWe/Lt+8DwtpeBQcN/l6WLnlzTh2Opcsilt
+3V0pz67BK+JcCuPxtgcxFwl3dGlXXsDn6itBhp/wQN9yPjHW5A8+dW2f3gaRbjTkvY5CUg3xcfoyScb/7IBcTlfuil5E37Y3UPr
+VSjZWaO3jsDKbxTDLmOCYBtkq1/a0O6VBtTgKam4Zb/rvs6hwxnzbop0NdAkcSlWpISWGYsrHW+qdu5JStK86c945f0Uk
+kBKR9Z8GDt5krwO0ITlaDLNz3NPsKbEU6uVw3PTiWsDiUy8OgiJKSTsnPjeIXjN1/XJtGoOvOneIn1opwLWrs2PDQWO+cur
+ehoyljES6mNl43YAOHHFdBS9hqcC+fgMYPRdxlESdlbzWTF3cApu1J4Bs84GSAUyRs1NAuzFVnfmFiqwsj8qrUd9Dj5izMp
+qv3h3NGBYfCpFOUN43MFpp7CRsAL21o9wqpfyBVfaJR8FnwmZfRkqwuzmZwTQVnhNJk59Nv/uTqZqLamZqgU0z2Z1K
+dXMG0vJzVn5Cj0jBBoDfZ/Gc8qMb/hE3L9lkY8hB1R6426Cf/IZLAV3wMORQ2MoD/pW0QtO8fAd7tMftMVSvIfvY/DIjktsu
+IEkmJDgdy1IfcmWicqyJ8JKImCWZa2RZBBEdFE6EzSXNkQQxHbJdDE9hzMXPvshgaN2anaTdDmOcB4CSiA4FJl3urz0PY0
+3zHIQW85IU8vdLGGtG/9RJAd5Y5g+oDoy1/m0Z/rz1xJzvtRmKAHclyqDfWqPS/oaEQnz7p60nhus4HdAsJNG4z4NmHm
+EjjL6OilaKEZrKJ1JSE7Y+9OvqsxYYhZBV7jzOcf2o4MgOBSZd7q89D2NN8xyEFvOg3FJw8aGjUG7pmW4/NYvD0H9ubbjOj
+GES0GvJimtERE8qIdy/JwHEgnRPqpTtxwO1gcuBXO+EjSaUuado8bMKLC5DHZFItjymwRBWgfQzj4b/PyP7FmPKgtyXMw
+R2BgINvDIlEUvYGo4wWYOSEpyNgcOfU50xcNbVYnMXbhwps/pqS+gJn0Zs9JzA3K9JNDywIuQzWJlQYD7wc6SfNIs8Rl9
+CetsaYk7h9nm6sn0oMewWoSFuoqiwHU+TZV6XZOMRI/oJwdFiE3P0z73vcuHBXpS1FXK1begYCkbGxwyPFUuSkavfRiYE
+pBtGsSQw1SQFjH/7LaIfFeP5vFSYASWtjmcarj5xc9bejjvu2T2Qm3bcZF1OmyFqHtj70n4yxj1OTs3/3RXI0SQu8YHYwiRa40t
+m92fe41747+ETDKVqnVBokfokG6KvLUjADchOyCn7s26BVu0VIfWEgdILrHH4efDVbKm5g8jMU/IpXGXNaMJmBi5jgYrq
+UATT+EpNQS7NnEbV10CieRuVg1+dF9p9kDFEZUx2U62/LzXmfseM3N2imHsFEjf5m6QLp6zn+WC9mcCOc/lW4MU+JiJ
+upwzXMXrh7Cz/5V1MBD7O2pi749SyPOnTI7TkOxH1fpiZgnVkmCnvnniChX84jqtwXfa7A6iBYh5X187liwl5T2YI8wWlfoW
+D1sLGMWy6666ewaDt+MdpJBIwq2oRiEbclz0d4FDZQuXFn+ancU6rhSVhWoe47oElaNjeX4Hcts/26xEOEZSf67QNzHZw
+HWoeX5cV3FIdaobYuW72Shmcv5l0ua0Rt8DtaFWBIsgCAFbUaPRch/do3D2HA6o0Bn/kXx/JHEPpAbKWIfwR+e2nEE7tG
+m13tl0Q79pPjUcHOETxbNZmFasJHSuDIEIwIVJwfC+NByh0oXeySj/V23YPfvIAtZof6Zj6qtsiK4h2BBgOnJo rH+zGRnl4anD
+rp6gjl2fShEL+eHeMcm/tM6Y4Mx0DBc=”
+}
+6.API Exception Details
+Scenario Error
+Code Error Message Message
+Type
+When PAN is not in a valid
+format EF00011 Please enter a valid PAN Number. ERROR
+When Pan Entered does not
+exist. EF00047 The PAN does not exist. ERROR
+When OTP is sent
+successfully based on given
+request
+EF40010 OTP has been sent successfully. REMARK
+When OTP generation fails EF40014 OTP Generation failed. ERROR
+When any attributes are
+missing in request JSON EF40000 JSON data invalid. ERROR
+When user does not enter
+OTP number. EF00014 Please Enter OTP Number. ERROR
+When the OTP is incorrect. EF00016 The OTP has expired. ERROR
+When email OTP entered is
+incorrect. EF00072 The Email OTP you have provided is
+incorrect. Please retry ERROR
+When mobile OTP entered
+is incorrect. EF00073 The Mobile OTP you have provided is
+incorrect. Please retry ERROR
+When OTP entered is
+incorrect. EF00096 The OTP you have provided is
+incorrect. Please retry ERROR
+When user does not enter
+email OTP number. EF500033 Please enter email OTP. ERROR
+When user does not enter
+mobile OTP number. EF500032 Please enter mobile OTP. ERROR
+When user does not enter
+Aadhaar OTP number. EF500034 Please enter Aadhaar OTP. ERROR
+When user does not enter
+OTP source flag. EF500031 Please enter OTP source flag. ERROR
+When AY is enter wrong or
+previous year. EF500052
+Please select correct AY. Prefill can be
+done through this channel starting
+from AY 2021-22.
+ERROR
+When AY is enter wrong or
+future year. EF500035
+Please select correct AY. You cannot
+get prefill data for future Assessment
+Year.
+ERROR
+PAN and Aadhaar is not
+linked EF00099 Your PAN and Aadhaar is not linked. ERROR
+When user does not enter
+transactionId. EF500036 Request cannot be processed as
+Transaction Id is Null. ERROR
+When ERI client linkage
+fails EF500058 The PAN is not a valid client for this
+ERI. ERROR
+When attributes are
+incorrect in json request
+data
+EF20123 Invalid Request Data ERROR
+When user tries to generate
+e-filing OTP more than 5
+times
+EF00152 You have exceeded the limit to receive
+OTP. Please try again in 8 hours. ERROR
+When user enters wrong efling OTP for more than 3
+times
+EF00153 You have exceeded the Number of
+attempts to enter Correct OTP. ERROR
+
+
+Application Programming Interface Specifications
+Integrated e-filing and CPC 2.0 Project
+API Name Submit API Flow
+API Description API used to submit ITRs for current year
+Version History
+Version Date Description
+1.0 29-10-2021 Initial Draft
+1.1 17-11-2021 Exception scenarios added
+Table of Contents
+1. Overview............................................................................................................................. 4
+2. About API........................................................................................................................... 4
+3. Target Audience and Pre-requisites...................................................................................... 4
+4. validateItr and submitItr API Details.................................................................................... 4
+4.1 API Usage Scenario ....................................................................................................... 5
+4.2 API Request process....................................................................................................... 5
+4.3 API Protocol.................................................................................................................. 5
+4.4 Request Parameters........................................................................................................ 5
+4.4.1 Request Header: ...................................................................................................... 5
+4.4.2 Request Body:......................................................................................................... 6
+4.4.3 Details of data attribute:........................................................................................... 6
+4.5 Response Parameters...................................................................................................... 8
+4.6 validateItr API - Sample Request format......................................................................... 8
+4.7 validateItr API - Sample Response format..................................................................... 11
+4.7 submitItr API - Sample Request format......................................................................... 12
+4.8 submitItr API- Sample Response format ....................................................................... 14
+5. API Exception Details........................................................................................................ 15
+1. Overview
+As noted in the ERI Specification Overview document the interaction during the submission
+phase includes 3 key steps in addition to the Login and Logout. This document defines the
+specification for the Validate and Submit calls as highlighted in the figure below. The
+verification calls are described in a separate document as they are complex and include multiple
+variations.
+2. About API
+Requester Type-2 or Type-3 ERI
+Provider ItrWeb
+Description These APIs shall be used to validate and submit the ITRs
+Mode of Integration
+(Real time / Batch) Real Time
+Processing Details ERI can submit ITR only for current assessment year 2021
+Pre-Processing
+Details
+User should have established a session using the Login API
+specifications.
+Service Name ItrService
+API URL http<hostname>/itrweb/auth/v0.1/returns/submit
+http://<hostname>//itrweb/auth/v0.1/returns/validate
+3. Target Audience and Pre-requisites
+This is technical document and target audiences are ERIs working in their application and
+interested to integrate their application with IEC 2.0 platform.
+The pre-requisites to call this API is that ERI is already registered with IEC 2.0 platform. They
+have valid credentials to call the API.
+4. validateItr and submitItr API Details
+This service is used to validate income tax return from the taxpayer, where taxpayer has already
+registered.
+There are two API endpoints, and both will have same request and response parameters.
+1. validateItr API: this API endpoint will validate the ITR and provide response to ERI
+application. It will not update anything in eFiling system.
+2. submitItr API: this API endpoint will validate the ITR and submit in eFiling system if
+validation is successful.
+4.1 API Usage Scenario
+ERI can submit their choice for verification mode for their client.
+When ERI application calls API to validate ITR from the taxpayer and below are the activities
+are performed:
+1. Taxpayer fills income tax return details through ERI application.
+2. Taxpayer submits income tax return to eFiling system to validate.
+4.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate call with API as below:
+1. ERI application will capture the taxpayer's income tax return details.
+2. ERI Application will call validateItr or submit ITR API and send the request.
+3. eFiling system will validate the ITR and provides the success or failure messages to the
+ERI application as response.
+4.3 API Protocol
+validateItr API is exposed as REST API over the HTTPS. The input data should be sent as JSON
+document using Content-Type "application/json".
+4.4 Request Parameters
+The request will consist of request header and request body:
+4.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+4.4.2 Request Body:
+Request body will consist of below attributes:
+data: data attribute will be Base64 encoded string of API request json. Details of request json
+attributes are explained in request data element details.
+sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+eriUserId: It is mandatory and valid value is user ID of the ERI
+4.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as explained
+above data attribute of the request body:
+Note: request and response parameters are same for both validateItr and submitItr API.
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes
+It is mandatory and valid value is
+"EriValidateItr" for Validate and
+"EriItrSubmit" for Submit
+Pan String 10 No Valid PAN of the taxpayer which is already
+added as client to the ERI
+Header Json - Yes See Description in table below
+formData Json Yes
+Kindly refer to the Schema published on
+the Income Tax Portal for each of the ITR
+forms
+Elements under the Header Tag:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+formName String 5 yes
+Name of the form
+Possible Values:
+ITR-1, ITR-2, ITR-3, ITR-4, ITR-5,
+ITR-6, ITR-7
+formCode String 1 yes
+ITR form Number 1 to 7 in string
+format
+mimeType String 4 yes mimeType will be json
+entityNum String 10 yes
+Valid PAN of the taxpayer for whom
+the form is being submitted
+entityType String 1 yes
+Type of Assessee
+“P”
+Ay String 4 yes
+Assessment year for which the form is
+being submitted.
+Valid format is "YYYY"
+createdBy String 10 yes
+UserID of the ERI for ERI 2
+PAN of taxpayer for ERI 3
+filingTypeCd String 1 yes
+O – Original
+R – Revised
+filingMode String 2 yes Valid value is "OF”
+incomeTaxSecCd String yes
+11- for Original
+17- for Revised
+12- for Belated (after due date of
+filing)
+submittedBy String 3 yes
+SLF – in case being done by taxpayer
+himself using Type 3 ERI software
+ERI – in case the return is being
+prepared by Type 2 ERI
+4.5 Response Parameters
+Name of the
+Parameter
+Data type Max
+length
+Is
+Mandatory Description
+Header Object Yes Contains formName
+formName Object no Null
+Messages List<String> Yes List of errors "messages": []
+errors List<Error> Yes List of errors "errors": []
+arnNumber String 15 Yes
+Unique number generated. ARN
+number is null in case of
+validateItr API
+successFlag Boolean Yes
+Indicates whether ITR
+submitted/validate or not.
+True in case ITR is validated or
+submitted
+False in case ITR is not
+validate/submitted
+transactionNo String Yes Unique number generated
+httpStatus String Yes http codes corresponding to response
+4.6 validateItr API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName":"EriValidateItr",
+"header":{
+"formName":"ITR-1",
+"formCode":"1",
+"mimeType": "json",
+"entityNum":"TNTPP9566H",
+"entityType":"p",
+"ay":"2021",
+"createdBy":"Tushar",
+"filingTypeCd":"O",
+"filingMode":"OF",
+"incomeTaxSecCd":"11",
+"submittedBy":"ERI"
+},
+"formData":"{'ITR':{'ITR1':{'CreationInfo':{'SWVersionNo':'R1','SWCreatedBy':'SW28450842',
+'XMLCreatedBy':'SW92202020','XMLCreationDate':'1991-02-
+02','IntermediaryCity':'delhi','Digest':'Ir7WR/VU+X+It08A31seF5opRKRiyaoALC/42Ck7uCg='
+},'Form_ITR1':{'FormName':'ITR-1','Description':'For Indls having Income from Salary Pension
+family pension and
+Interest','AssessmentYear':'2020','SchemaVer':'Ver1.0.1','FormVer':'Ver1.0'},'PersonalInfo':{'Ass
+esseeName':{'FirstName':'Sahana','MiddleName':'','SurNameOrOrgName':'T'},'Address':{'Reside
+nceNo':'4','ResidenceName':'SrinidhiResidency','RoadOrStreet':'RoadNumber5','LocalityOrArea':
+'Vikrampuri','CityOrTownOrDistrict':'Hyderabad','StateCode':'36','CountryCode':'91','PinCode':5
+00009,'ZipCode':'','CountryCodeMobile':91,'MobileNo':9876543210,'EmailAddress':'ankit.gupta
+@gmail.com'},'PAN':'TNTPP9566H','DOB':'1990-06-
+09','EmployerCategory':'CGOV','AadhaarCardNo':'121212121212'},'FilingStatus':{'ReturnFileSe
+c':18,'SeventhProvisio139':'N','ReceiptNo':'123456789123456','NoticeNo':'398309901','OrigRetF
+iledDate':'2020-04-02','NoticeDateUnderSec':'2020-04-
+02'},'ITR1_IncomeDeductions':{'AllwncExemptUs10':{'AllwncExemptUs10Dtls':[{'SalNatureD
+esc':'10(5)','SalOthAmount':5000},{'SalNatureDesc':'10(10)','SalOthAmount':7000}],'TotalAllwn
+cExemptUs10':12000},'OthersInc':{'OthersIncDtlsOthSrc':[{'OthSrcNatureDesc':'IFD','OthSrcOt
+hAmount':5000}]},'UsrDeductUndChapVIA':{'Section80C':80000,'Section80CCC':50000,'Sectio
+n80CCDEmployeeOrSE':20000,'Section80CCD1B':0,'Section80CCDEmployer':20000,'Section8
+0D':0,'Section80DDUsrType':'2','Section80DD':15000,'Section80DDBUsrType':'1','Section80DD
+B':7000,'Section80E':20000,'Section80EE':0,'Section80EEA':0,'Section80EEB':0,'Section80G':0,'
+Section80GG':0,'Section80GGA':0,'Section80GGC':0,'Section80UUsrType':'2','Section80U':150
+00,'Section80TTA':10000,'Section80TTB':0,'TotalChapVIADeductions':237000},'DeductUndCh
+apVIA':{'Section80C':80000,'Section80CCC':50000,'Section80CCDEmployeeOrSE':20000,'Sect
+ion80CCD1B':0,'Section80CCDEmployer':20000,'Section80D':0,'Section80DD':125000,'Section
+80DDB':7000,'Section80E':20000,'Section80EE':0,'Section80EEA':0,'Section80EEB':0,'Section8
+0G':0,'Section80GG':0,'Section80GGA':0,'Section80GGC':0,'Section80U':125000,'Section80TT
+A':0,'Section80TTB':0,'TotalChapVIADeductions':447000},'ExemptIncAgriOthUs10':{'ExemptI
+ncAgriOthUs10Total':0},'GrossSalary':2025000,'Salary':2000000,'PerquisitesValue':15000,'Profi
+tsInSalary':10000,'NetSalary':2013000,'DeductionUs16':60000,'DeductionUs16ia':50000,'Enterta
+inmentAlw16ii':5000,'ProfessionalTaxUs16iii':5000,'IncomeFromSal':1953000,'TypeOfHP':'L','
+GrossRentReceived':200000,'AnnualValue':200000,'StandardDeduction':60000,'TotalIncomeOf
+HP':140000,'IncomeOthSrc':5000,'GrossTotIncome':2098000,'DepPayInvClmUndDednVIA':'N','
+TotalIncome':1651000},'Schedule80G':{'TotalDonationsUs80G':0,'Don100Percent':{'TotDon100
+PercentCash':0,'TotDon100PercentOtherMode':0,'TotDon100Percent':0,'TotEligibleDon100Perce
+nt':0},'Don50PercentNoApprReqd':{'TotDon50PercentNoApprReqdCash':0,'TotDon50PercentN
+oApprReqdOtherMode':0,'TotDon50PercentNoApprReqd':0,'TotEligibleDon50Percent':0},'Don1
+00PercentApprReqd':{'TotDon100PercentApprReqdCash':0,'TotDon100PercentApprReqdOther
+Mode':0,'TotDon100PercentApprReqd':0,'TotEligibleDon100PercentApprReqd':0},'Don50Perce
+ntApprReqd':{'TotDon50PercentApprReqdCash':0,'TotDon50PercentApprReqdOtherMode':0,'T
+otDon50PercentApprReqd':0,'TotEligibleDon50PercentApprReqd':0},'TotalDonationsUs80GCas
+h':0,'TotalDonationsUs80GOtherMode':0,'TotalEligibleDonationsUs80G':0},'ITR1_TaxComputa
+tion':{'IntrstPay':{'IntrstPayUs234A':4222,'IntrstPayUs234B':11083,'IntrstPayUs234C':10292,'La
+teFilingFee234F':0},'TotalTaxPayable':307800,'Rebate87A':0,'TaxPayableOnRebate':307800,'Ed
+ucationCess':12312,'GrossTaxLiability':320112,'Section89':0,'NetTaxLiability':320112,'TotalIntr
+stPay':25597,'TotTaxPlusIntrstPay':345709},'TaxPaid':{'TaxesPaid':{'AdvanceTax':19000,'TDS':
+64000,'TCS':26000,'SelfAssessmentTax':0,'TotalTaxesPaid':109000},'BalTaxPayable':236709},'
+Refund':{'BankAccountDtls':{'AddtnlBankDetails':[{'IFSCCode':'UTIB0002766','BankName':'A
+xisBank','BankAccountNo':'567854676789678','UseForRefund':'true'}]},'RefundDue':0},'Schedu
+leDI':{'InvstDpstPymntDtlSysCalc':{'Section80C':80000,'Section80CCC':50000,'Section80CCD
+EmployeeOrSE':20000,'Section80CCD1B':0,'Section80CCDEmployer':20000,'Section80D':0,'Se
+ction80DD':125000,'Section80DDB':7000,'Section80E':20000,'Section80EE':0,'Section80EEA':0
+,'Section80EEB':0,'Section80G':0,'Section80GG':0,'Section80GGA':0,'Section80GGC':0,'Eligible
+AmountDedTotal':322000}},'Schedule80GGA':{'TotalDonationAmtCash80GGA':0,'TotalDonati
+onAmtOtherMode80GGA':0,'TotalDonationsUs80GGA':0,'TotalEligibleDonationAmt80GGA':0
+},'Schedule80D':{'Sec80DSelfFamSrCtznHealth':{'SeniorCitizenFlag':'N','SelfAndFamily':0,'Self
+AndFamilySeniorCitizen':0,'ParentsSeniorCitizenFlag':'N','Parents':0,'ParentsSeniorCitizen':0,'Eli
+gibleAmountOfDedn':0}},'TDSonSalaries':{'TDSonSalary':[{'EmployerOrDeductorOrCollectDe
+tl':{'TAN':'HYDS03028F','EmployerOrDeductorOrCollecterName':'Tribunalpvtltd'},'IncChrgSal'
+:100000,'TotalTDSSal':10000}],'TotalTDSonSalaries':10000},'TDSonOthThanSals':{'TDSonOth
+ThanSal':[{'EmployerOrDeductorOrCollectDetl':{'TAN':'HYDS03028F','EmployerOrDeductorO
+rCollecterName':'Tribunalpvtltd'},'AmtForTaxDeduct':100000,'DeductedYr':'2019','TotTDSOnA
+mtPaid':9000,'ClaimOutOfTotTDSOnAmtPaid':9000},{'EmployerOrDeductorOrCollectDetl':{'T
+AN':'HYDS03028K','EmployerOrDeductorOrCollecterName':'ABCD'},'AmtForTaxDeduct':200
+00,'DeductedYr':'2019','TotTDSOnAmtPaid':8000,'ClaimOutOfTotTDSOnAmtPaid':8000},{'Em
+ployerOrDeductorOrCollectDetl':{'TAN':'HYDD03028F','EmployerOrDeductorOrCollecterNam
+e':'PQR'},'AmtForTaxDeduct':100000,'DeductedYr':'2019','TotTDSOnAmtPaid':6000,'ClaimOut
+OfTotTDSOnAmtPaid':6000}],'TotalTDSonOthThanSals':23000},'ScheduleTDS3Dtls':{'TDS3D
+etails':[{'PANofTenant':'AAAPL1234C','NameOfTenant':'Shivani','GrsRcptToTaxDeduct':20000
+0,'DeductedYr':'2019','TDSDeducted':28000,'TDSClaimed':20000},{'PANofTenant':'ADRCV45
+79C','NameOfTenant':'Akhila','GrsRcptToTaxDeduct':100000,'DeductedYr':'2019','TDSDeducte
+d':15000,'TDSClaimed':10000},{'PANofTenant':'BDRCV4579D','NameOfTenant':'Akhil','GrsRc
+ptToTaxDeduct':15000,'DeductedYr':'2019','TDSDeducted':15000,'TDSClaimed':1000}],'TotalT
+DS3Details':31000},'ScheduleTCS':{'TCS':[{'EmployerOrDeductorOrCollectDetl':{'TAN':'AGR
+S03028F','EmployerOrDeductorOrCollecterName':'Tribunalpvtltd'},'AmtTaxCollected':100000,'
+CollectedYr':'2019','TotalTCS':10000,'AmtTCSClaimedThisYear':9000},{'EmployerOrDeductor
+OrCollectDetl':{'TAN':'HYDS03028F','EmployerOrDeductorOrCollecterName':'ABC'},'AmtTax
+Collected':15000,'CollectedYr':'2019','TotalTCS':20000,'AmtTCSClaimedThisYear':9000},{'Em
+ployerOrDeductorOrCollectDetl':{'TAN':'HYDS03028H','EmployerOrDeductorOrCollecterNam
+e':'XYZ'},'AmtTaxCollected':9000,'CollectedYr':'2019','TotalTCS':10000,'AmtTCSClaimedThis
+Year':8000}],'TotalSchTCS':26000},'TaxPayments':{'TaxPayment':[{'BSRCode':'5650987','Date
+Dep':'2019-08-19','SrlNoOfChaln':12345,'Amt':10000},{'BSRCode':'5650989','DateDep':'2019-
+09-
+10','SrlNoOfChaln':52672,'Amt':9000}],'TotalTaxPayments':19000},'Verification':{'Declaration':
+{'AssesseeVerName':'AnkitGupta','FatherName':'PraneethGupta','AssesseeVerPAN':'BURPG123
+4P'},'Capacity':'S','Place':'hyd'}}}}"
+}
+4.7 validateItr API - Sample Response format
+Response 1: When Validated Successfully
+{
+"serviceName":"EriValidateItr",
+"pan": "ACEPR7859X",
+ "header": {
+ "formName": null
+ },
+ "messages": [],
+ "errors": [],
+ "arnNumber": null,
+ "id": null,
+ "successFlag": false,
+ "transactionNo": "ITR000000004862",
+ "httpStatus": null
+Response 2: When error in validation
+{
+"serviceName":"EriValidateItr",
+"pan": "ACEPR7859X",
+ "header": {
+ "formName": null
+ },
+ "messages": [],
+ "errors": [
+ {
+ "errCd": "AssesseeName_001",
+ "errFld": "ITR.ITR1.PersonalInfo.AssesseeName",
+ "errCtg": "OTH",
+ "asPerItr": 0,
+ "asComputed": 0,
+ "variance": 0,
+ "schId": null
+ }
+ ],
+ "arnNumber": null,
+ "id": null,
+ "successFlag": false,
+ "transactionNo": null,
+ "formPath": null,
+ "httpStatus": null
+}
+4.7 submitItr API - Sample Request format
+{
+"serviceName":"EriItrSubmit",
+"header": {
+ "formName": "ITR-1",
+ "formCode": "1",
+ "mimeType": "json",
+ "entityNum": "ABCPC9999X",
+ "entityType": "p",
+ "ay": "2021",
+ "createdBy": "ERIP123456",
+ "filingTypeCd": "O",
+ "filingMode": "OF",
+ "incomeTaxSecCd": "11",
+ "submittedBy": "ERI"
+ },
+ "formData": "{'ITR': {'ITR1': {'CreationInfo': {'SWVersionNo': '1.63','SWCreatedBy':
+'SW19001101', 'JSONCreatedBy': 'SW19001101','JSONCreationDate': '2021-07-
+24','IntermediaryCity': 'Jalandhar','Digest':
+'DfW9hW+Kv1uZD1BMnkDQy8HITd6triabaavHtb69nDA='},'Form_ITR1': {'FormName':
+'ITR-1','FormVer': 'Ver1.2','SchemaVer': 'Ver1.2','AssessmentYear': '2021','Description': 'For
+Indls having Income from Salary, Pension, family pension and Interest'},'PersonalInfo':
+{'AssesseeName': {'FirstName': 'Sourav','SurNameOrOrgName': 'Gupta'},'Address':
+{'ResidenceNo': 'TESTING','LocalityOrArea': 'TESTING','CityOrTownOrDistrict':
+'Jalandhar','StateCode': '26','CountryCode': '91','PinCode': 144001,'CountryCodeMobile':
+91,'MobileNo': 9000000000,'EmailAddress': 'divumani95@gmail.com'},'PAN':
+'ABCPC9999X','DOB': '1995-01-01','EmployerCategory': 'OTH'},'FilingStatus':
+{'ReturnFileSec': 11,'NewTaxRegime': 'N','SeventhProvisio139': 'N'},'ITR1_IncomeDeductions':
+{'GrossSalary': 360000,'Salary': 360000,'PerquisitesValue': 0,'ProfitsInSalary': 0,'NetSalary':
+360000,'DeductionUs16': 50000,'DeductionUs16ia': 50000,'EntertainmentAlw16ii':
+0,'ProfessionalTaxUs16iii': 0,'IncomeFromSal': 310000,'GrossRentReceived':
+0,'TaxPaidlocalAuth': 0,'AnnualValue': 0,'StandardDeduction': 0,'InterestPayable':
+0,'ArrearsUnrealizedRentRcvd': 0,'TotalIncomeOfHP': 0,'IncomeOthSrc': 10000,'OthersInc':
+{'OthersIncDtlsOthSrc': [{'OthSrcNatureDesc': 'SAV','OthSrcOthAmount':
+10000}]},'GrossTotIncome': 320000,'UsrDeductUndChapVIA': {'Section80C':
+0,'Section80CCC': 0,'Section80CCDEmployeeOrSE': 0,'Section80CCD1B':
+0,'Section80CCDEmployer': 0,'Section80D': 0,'Section80DD': 0,'Section80DDB': 0,'Section80E':
+0,'Section80EE': 0,'Section80EEA': 0,'Section80EEB': 0,'Section80G': 0,'Section80GG':
+0,'Section80GGA': 0,'Section80GGC': 0,'Section80U': 0,'Section80TTA': 10000,'Section80TTB':
+0,'TotalChapVIADeductions': 10000},'DeductUndChapVIA': {'Section80C': 0,'Section80CCC':
+0,'Section80CCDEmployeeOrSE': 0,'Section80CCD1B': 0,'Section80CCDEmployer':
+0,'Section80D': 0,'Section80DD': 0,'Section80DDB': 0,'Section80E': 0,'Section80EE':
+0,'Section80EEA': 0,'Section80EEB': 0,'Section80G': 0,'Section80GG': 0,'Section80GGA':
+0,'Section80GGC': 0,'Section80U': 0,'Section80TTA': 10000,'Section80TTB':
+0,'TotalChapVIADeductions': 10000},'TotalIncome': 310000},'ITR1_TaxComputation':
+{'TotalTaxPayable': 3000,'Rebate87A': 3000,'TaxPayableOnRebate': 0,'EducationCess':
+0,'GrossTaxLiability': 0,'Section89': 0,'NetTaxLiability': 0,'TotalIntrstPay': 0,'IntrstPay':
+{'IntrstPayUs234A': 0,'IntrstPayUs234B': 0,'IntrstPayUs234C': 0,'LateFilingFee234F':
+0},'TotTaxPlusIntrstPay': 0},'TaxPaid': {'TaxesPaid': {'AdvanceTax': 0,'TDS': 0,'TCS':
+0,'SelfAssessmentTax': 0,'TotalTaxesPaid': 0},'BalTaxPayable': 0},'Refund': {'RefundDue':
+0,'BankAccountDtls': {'AddtnlBankDetails': [{'UseForRefund': 'true','BankAccountNo':
+'123445','IFSCCode': 'HDFC0001391','BankName': 'HDFC BANK, VIJAY NAGAR,
+JALANDHAR'}]}},'Schedule80D': {'Sec80DSelfFamSrCtznHealth': {'SeniorCitizenFlag':
+'N','SelfAndFamily': 0,'HealthInsPremSlfFam': 0,'PrevHlthChckUpSlfFam':
+0,'SelfAndFamilySeniorCitizen': 0,'HlthInsPremSlfFamSrCtzn':
+0,'PrevHlthChckUpSlfFamSrCtzn': 0,'MedicalExpSlfFamSrCtzn': 0,'ParentsSeniorCitizenFlag':
+'N','Parents': 0,'HlthInsPremParents': 0,'PrevHlthChckUpParents': 0,'ParentsSeniorCitizen':
+0,'HlthInsPremParentsSrCtzn': 0,'PrevHlthChckUpParentsSrCtzn': 0,'MedicalExpParentsSrCtzn':
+0,'EligibleAmountOfDedn': 0}},'Verification': {'Declaration': {'AssesseeVerName': 'Sourav
+Gupta','FatherName': 'RAVINDER SINGH','AssesseeVerPAN': 'ABCPC9999X'},'Capacity':
+'S','Place': 'Jalandhar'}}}}"
+ }
+}
+4.8 submitItr API- Sample Response format
+Response 1: When Submitted Successfully
+{
+"serviceName":"EriItrSubmit",
+"pan": "ACEPR7859X",
+ "header": {
+ "formName": null
+ },
+ "messages": [],
+ "errors": [],
+ "arnNumber": "100156160290920",
+ "id": null,
+ "successFlag": true,
+ "transactionNo": "ITR000000004591",
+ "formPath": null,
+ "httpStatus": "ACCEPTED"
+}
+Response 2: When error in Submit
+{
+"serviceName":"EriValidateItr",
+"pan": "ACEPR7859X",
+ "header": {
+ "formName": null
+ },
+ "messages": [],
+ "errors": [
+ {
+ "errCd": "DOB_001",
+ "errFld": "ITR.ITR1.PersonalInfo.DOB",
+ "errCtg": "OTH",
+ "asPerItr": 0,
+ "asComputed": 0,
+ "variance": 0,
+ "schId": null
+ }
+ ],
+ "arnNumber": null,
+ "id": null,
+ "successFlag": false,
+ "transactionNo": null,
+ "formPath": null,
+ "httpStatus": null
+}
+5. API Exception Details
+Scenario Error
+Code Error String Message
+Type
+Data in ITR is wrong EF20001 DOB/DOI mentioned in xml does not match
+with DOB/DOI of logged in PAN ERROR
+Validation of value
+given in the request EF20002 No Record found in user profile table ERROR
+Data in ITR is wrong EF20003
+PAN of the User in the xml/json mentioned in
+verification part is not same as of the User
+logged in. Kindly make sure both PAN are
+same
+ERROR
+Validation of value
+given in the request EF20004
+Invalid PAN. PAN format should be First 5
+Alphabets, next 4 digits, then 1 Alphabet in
+Part A General Information.
+ERROR
+Data in ITR is wrong EF20005
+Name of the User in the xml/json mentioned
+in verification part is not same as name
+mentioned in PAN. Kindly make sure both
+names are same
+ERROR
+Data in ITR is wrong EF20008 PAN cannot be null or empty. Please enter
+correct PAN ERROR
+Data in ITR is wrong EF20009 FormName cannot be null or empty .Please
+enter correct FormName ERROR
+Data in ITR is wrong EF20010 Incorrect formName ERROR
+Data in ITR is wrong EF20011 Assessment Year cannot be null or empty ERROR
+Data in ITR is wrong EF20027
+Filing section mentioned in the return
+mentioned does not match with the filing Type
+selected
+ERROR
+Data in ITR is wrong EF20029 You cannot file revised return under section
+142(1)(i), 148, 153A & 153C. ERROR
+Data in ITR is wrong EF20030
+PAN mentioned in verification part of
+xml/json is not same as of the PAN of
+Principal contact mentioned under Profile.
+Kindly make sure both PAN are same.
+ERROR
+Data in ITR is wrong EF20033 Kindly enter the acknowledgement number for
+original return. ERROR
+Data in ITR is wrong EF20034 Aadhaar number entered is invalid. ERROR
+Data in ITR is wrong EF20036 Minor cannot file the return. ERROR
+Data in ITR is wrong EF20037 Receipt no. is mandatory. ERROR
+Data in ITR is wrong EF20038 Invalid Receipt number. Please retry and enter
+correct acknowledgement number. ERROR
+Data in ITR is wrong EF20041
+PAN mentioned in the return in verification
+part does not match with PAN of authorized
+person.
+ERROR
+Data in ITR is wrong EF20042
+PAN mentioned in the return in verification
+part does not match with PAN of authorized
+person.
+ERROR
+Validation of value
+given in the request EF20044 Contact person details not available. ERROR
+Data in ITR is wrong EF20048 You are not eligible to file the revised return. ERROR
+Data in ITR is wrong EF20049 Name" of taxpayer in ITR does not match with
+the "Name" as per the PAN data base." ERROR
+Data in ITR is wrong EF20050
+Name entered in ITR form does not match
+with the name provided in the PAN database/
+Aadhaar Data Base
+ERROR
+Data in ITR is wrong EF20052 IFSC under "Bank Details" is not matching
+with the RBI database ERROR
+Validation of value
+given in the request EF20080 MimeType cannot be null ERROR
+Validation of value
+given in the request EF20081 MimeType entered is not valid. Please enter a
+valid value ERROR
+Validation of value
+given in the request EF20082 EntityType entered is not valid ERROR
+Validation of value
+given in the request EF20083 CreatedBy cannot be null ERROR
+Validation of value
+given in the request EF20088 FilingTypeCode cannot be null ERROR
+Validation of value
+given in the request EF20089 FilingTypeCode entered is not valid ERROR
+Validation of value
+given in the request EF20090 FilingMode cannot be null ERROR
+Validation of value
+given in the request EF20091 FilingMode entered is not valid ERROR
+Validation of value
+given in the request EF20092 IncomeTaxSecCd cannot be null ERROR
+Validation of value
+given in the request EF20093 IncomeTaxSecCd entered is not valid ERROR
+Validation of value
+given in the request EF20094 SubmittedBy cannot be null ERROR
+Validation of value
+given in the request EF20095 SubmittedBy entered is not valid ERROR
+Data in ITR is wrong EF20135 You are not eligible to file ITR7 ERROR
+Data in ITR is wrong EF20136
+You cannot file return under section<…> as
+the time limit to file the return under this
+section is over
+ERROR
+When software Id is
+not linked with ERI EF500059 The software Id is not linked with the ERI
+User ERROR
+When ERI client
+linkage fails EF500058 The PAN is not a valid client for this ERI. ERROR
+When attributes are
+incorrect in json
+request data
+EF20123 Invalid Request Data ERROR
+When entityNum and
+Pan specified in the
+ITR are not the same
+values
+EF500091 The PAN mentioned in the submitted ITR is
+different from the logged-in PAN ERROR
+When user provides
+AY prior to 2021-22
+EF500052
+Please select correct AY. Returns can be filed
+through this channel starting from AY 2021-
+22.
+ERROR
+
+
+
+
+Application Programming Interface Specifications
+Integrated e-filing and CPC 2.0 Project
+API Name e-Verify Return
+API Description
+API used to e-Verify filed returns using Electronic
+Verification Code (EVC) or Aadhaar OTP.
+Version History
+Version Date Description
+1.0 29-10-2021 Initial Draft
+1.1 17-11-2021 Exception scenarios added
+Table of Contents
+1. Overview............................................................................................................................. 5
+2. About API........................................................................................................................... 5
+3. Target Audience and Pre-requisites...................................................................................... 6
+4. EriUpdateVerMode API Details........................................................................................... 6
+4.1 API Usage Scenario ....................................................................................................... 6
+4.2 API Request process....................................................................................................... 6
+4.3 API Protocol.................................................................................................................. 6
+4.4 Request Parameters........................................................................................................ 6
+4.4.1 Request Header: ...................................................................................................... 7
+4.4.2 Request Body:......................................................................................................... 7
+4.4.3 Details of data attribute:........................................................................................... 7
+4.5 Response Parameters...................................................................................................... 8
+4.6 UpdateVerMode API - Sample Request format ............................................................... 9
+4.7 UpdateVerMode API - Sample Response format............................................................. 9
+5. GenerateEvc API Details ..................................................................................................... 9
+5.1 API Usage Scenario ....................................................................................................... 9
+5.2 API Request process..................................................................................................... 10
+5.3 API Protocol................................................................................................................ 10
+5.4 Request Parameters...................................................................................................... 10
+5.4.1 Request Header: .................................................................................................... 10
+5.4.2 Request Body:....................................................................................................... 10
+5.4.3 Details of data attribute:......................................................................................... 11
+5.5 Response Parameters.................................................................................................... 12
+5.6 GenerateEvc API - Sample Request format................................................................... 12
+5.7 GenerateEvc API - Sample Response format................................................................. 13
+6. VerifyEvc API Details....................................................................................................... 13
+6.1 API Usage Scenario ..................................................................................................... 13
+6.2 API Request process..................................................................................................... 13
+6.3 API Protocol................................................................................................................ 14
+6.4 Request Parameters...................................................................................................... 14
+6.4.1 Request Header: .................................................................................................... 14
+6.4.2 Request Body:....................................................................................................... 14
+6.4.3 Details of data attribute:......................................................................................... 15
+6.5 Response Parameters.................................................................................................... 15
+6.6 VerifyEvc API - Sample Request format....................................................................... 16
+6.7 VerifyEvc API - Sample Response format..................................................................... 17
+7. API Exception Details........................................................................................................ 17
+1. Overview
+As noted in the ERI Specification Overview document the interaction during the submission
+phase includes 3 key steps in addition to the Login and Logout.
+This document describes the APIs available to e-verify filed returns using Electronic Verification
+Code (EVC) or Aadhaar OTP.
+• EVC can be generated by the user using Aadhaar OTP, Bank Account, Demat account.
+• If taxpayer selects the option to verify return later, he/she can verify return electronically
+using e-verify return functionality or by sending ITR-V to CPC by post.
+• If return is filed by ERI than unregistered/registered taxpayer can verify return
+electronically using e-verify return functionality at Home page or by sending ITR-V to
+CPC by post.
+2. About API
+Requester ERI type 2 or ERI type 3
+Provider eVerifyApi
+Description Collection of APIs to enable ERI type-2 and Type-3 to e-Verify IT returns
+Mode of
+Integration
+(Real time /
+Batch)
+Real Time
+Processing
+Details
+It will give a platform to verify return electronically using e-verify return
+functionality or by sending ITR-V to CPC by post
+Pre-Processing
+Details
+Caller must have a validated return with ARN Number
+Taxpayer should have submitted the ITR through this ERI
+Service Name
+updateVerMode
+generateEVC
+verifyEVC
+API URL TBD
+3. Target Audience and Pre-requisites
+This is technical document and target audiences are ERIs working in their application and
+interested to integrate their application with IEC 2.0 platform.
+The pre-requisites to call this API is that ERI is already registered with IEC 2.0 platform. They
+have valid credentials to call the API.
+4. EriUpdateVerMode API Details
+This service is used to update the ITR verification mode of the taxpayer, where taxpayer has
+already submitted the ITR.
+4.1 API Usage Scenario
+Taxpayer update verification mode for their ITR once it is submitted using submitITR API.
+When ERI application submits the call this API below are the activities are performed:
+1. Taxpayer can choose option to verify the ITR "LATER" where he/she can verify their
+return later using any one of the modes which are available in eFiling portal or through
+ERI.
+2. Taxpayer can also choose the option to verify the ITR "ITRV" where he/she can send
+ITR-V through offline mode by post.
+4.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate call with API as below:
+1. ERI application will capture the taxpayer's choice for verification mode as per request
+parameters are defined.
+2. ERI Application will call EriUpdateVerMode API and send the request.
+3. eFiling system will update the verification mode provided by the ERI application.
+4.3 API Protocol
+EriUpdateVerMode API is exposed as REST API over the HTTPS. The input data should be sent
+as JSON document using Content-Type "application/json".
+4.4 Request Parameters
+The request will consist of request header and request body:
+4.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+4.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+4.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+"EriUpdateVerMode"
+Pan String 10 Yes Valid PAN of the taxpayer.
+verMode String 10 Yes
+Valid values are:
+"LATER" for later
+"ITRV" for ITR-V
+ackNum String 15 Yes Acknowledgement number of the ITR
+Ay String 4 Yes Assessment year value format it
+"YYYY"
+formCode String 1 Yes
+Form code
+"1" for ITR 1
+"2" for ITR 2
+"3" for ITR 3
+"4" for ITR 4
+"5" for ITR 5
+"6" for ITR 6
+"7" for ITR 7
+4.5 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+Messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no
+messages.
+Errors List<Error> No
+This is a not mandatory field. List of
+errors. The value will be null if there is
+no error.
+successFlag Boolean Yes
+Indicates whether EriUpdateVerMode
+call is successful. Possible value is true
+or false.
+"successFlag": true
+httpStatus String 20 No http codes corresponding to response.
+Possible value is "OK"
+4.6 UpdateVerMode API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "",
+"pan": "",
+"verMode": "",
+"ackNum": "",
+"ay": "",
+"formCode”:""
+}
+4.7 UpdateVerMode API - Sample Response format
+{
+"messages": [],
+"errors": [],
+"successFlag": true,
+"transactionId": "1324t56",
+"httpStatus": "OK"
+}
+5. GenerateEvc API Details
+This API is used to generate EVC online using one of the verifications online.
+5.1 API Usage Scenario
+Taxpayer can verify their ITR once it is submitted using submitITR API.
+When ERI application submits the call this API below are the activities are performed:
+1. Taxpayer can choose option to verify the ITR through Aadhaar OTP where PAN is linked
+to Aadhaar and Aadhaar has valid mobile number.
+2. Taxpayer can also choose option to verify the ITR through Bank EVC where bank
+account is linked to PAN and EVC is enabled.
+3. Taxpayer can also choose option to verify the ITR through DEMAT EVC where
+DEMAT is linked to PAN and EVC is enabled.
+5.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate call with API as below:
+1. ERI application will capture the taxpayer's choice for verification mode as per request
+parameters are defined.
+2. ERI Application will call GenerateEvc API and send the request.
+3. eFiling system will send the OTP or EVC depending on the verification mode is chosen
+by the taxpayer.
+5.3 API Protocol
+GenerateEvc API is exposed as REST API over the HTTPS. The input data should be sent as
+JSON document using Content-Type "application/json".
+5.4 Request Parameters
+The request will consist of request header and request body:
+5.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+5.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+5.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+"EriGenerateEvcService"
+pan String 10 Yes Valid PAN of the taxpayer
+verMode String 10 Yes
+Verification mode. Valid values are:
+"AADHAAR" for Aadhaar OTP
+"BANKEVC" for EVC through bank
+account
+"DEMATEVC" for EVC through
+DEMAT account
+ackNum String 15 Yes Acknowledgement number
+ay String 4 Yes Assessment year valid format is
+"YYYY"
+formCode String 1 Yes
+Form code
+"1" for ITR 1
+"2" for ITR 2
+"3" for ITR 3
+"4" for ITR 4
+"5" for ITR 5
+"6" for ITR 6
+"7" for ITR 7
+5.5 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no
+messages.
+errors List<Error> No
+This is not a mandatory field. List of
+errors. The value will be null if there is
+no error.
+successFlag Boolean Yes
+Indicates whether generateEVC call is
+successful. Possible value is true or
+false.
+"successFlag": true
+entity String No This field is only for positive response.
+transactionId String No
+This field is only for positive response.
+Transaction ID received from UIDAI or
+eFiling system at the time of OTP
+generation
+Mandatory for Aadhaar OTP Validation
+but not required for Bank or Demat
+EVC verification
+autkn String 15 No This field is only for positive response.
+httpStatus String 20 No
+This is a not mandatory field. http codes
+corresponding to response.
+Possible value is "OK"
+5.6 GenerateEvc API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "",
+"eriUserId": "",
+"pan": "",
+"verMode": "",
+"ackNum": "",
+"ay": "",
+"formCode":""
+}
+5.7 GenerateEvc API - Sample Response format
+{
+"messages": [],
+"errors": [],
+"successFlag": true,
+"transactionId": "1324t56",
+"httpStatus": "OK"
+}
+6. VerifyEvc API Details
+This API is used to verify the ITR using Aadhaar OTP or EVC
+6.1 API Usage Scenario
+ERI can submit their choice for verification mode for their client.
+When ERI application submits the call this API below are the activities are performed:
+1. Taxpayer already has the OTP or EVC based on the generateEVC API called was made
+earlier.
+2. Taxpayer will provide the OTP or EVC to verify the return.
+6.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate call with API as below:
+1. ERI application will capture the OTP or EVC value from the taxpayer.
+2. ERI application will call EriVerifyEvc API to verify the return for the taxpayer.
+6.3 API Protocol
+EriVerifyEvc API is exposed as REST API over the HTTPS. The input data should be sent as
+JSON document using Content-Type "application/json".
+6.4 Request Parameters
+The request will consist of request header and request body:
+6.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+6.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+6.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+"EriVerifyEvcService"
+pan String 10 Yes Valid PAN of the taxpayer who is being
+added as client by the ERI
+ay String 4 Yes Assessment year. Valid format is "YYYY"
+formCode String 1 Yes
+Form code
+"1" for ITR 1
+"2" for ITR 2
+"3" for ITR 3
+"4" for ITR 4
+"5" for ITR 5
+"6" for ITR 6
+"7" for ITR 7
+ackNum String 15 Yes Acknowledgement number generated at the
+time of ITR submission
+transactionId String Yes Transaction ID received from UIDAI or
+eFiling system at the time of OTP generation
+verMode String Yes
+Verification mode. Valid values are:
+"AADHAAR" for Aadhaar OTP
+"BANKEVC" for EVC through bank
+account
+"DEMATEVC" for EVC through DMAT
+account
+otpValue String 6 Yes
+It is mandatory only in case verMode is
+"AADHAAR". Aadhaar OTP value will be
+6-digit number.
+evcValue String 10 Yes
+It is mandatory only in case verMode is
+"BANKEVC" or "DEMATEVC". Value will
+be 10-alphanumeric.
+6.5 Response Parameters
+Name of the
+Parameter Data type Max
+length
+Is
+Mandatory Description
+messages List<String> Yes
+List of information messages. There can
+be one or more messages. The messages
+array will be null if there are no
+messages.
+"messages": []
+errors List<Error> No
+This is not a mandatory field. List of
+errors. The value will be null if there is
+no error.
+"errors": []
+successFlag Boolean Yes
+Indicates whether EriVerifyEvc call is
+successful. Possible value is true or
+false.
+"successFlag": true
+httpStatus String 20 No http codes corresponding to response.
+Possible value is "OK"
+6.6 VerifyEvc API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "",
+"eriUserId": "",
+"pan": "",
+"verMode": "",
+"ay": "",
+"formCode:"",
+"ackNum": "",
+"transactionId": "",
+"otpValue": "",
+"evcValue ": ""
+}
+6.7 VerifyEvc API - Sample Response format
+{
+"messages": [],
+"errors": [],
+"successFlag": true,
+"transactionId": "132456",
+"httpStatus": "OK"
+}
+7. API Exception Details
+Scenario Error
+code Details Error String Message
+Type
+Invalid Json data EF40000 When json is invalid JSON data invalid. ERROR
+Pan has no record in
+DB EF00009 When entered pan has
+no record in DB
+No record found for
+the entered PAN. ERROR
+When transactionId
+associated with
+Aadhaar OTP is not
+same
+EF00224
+When transactionId
+associated with
+Aadhaar OTP is not
+same
+"txn" value did not
+match with "txn" value
+of Request OTP API.
+ERROR
+OTP validation failed EF40012 When user enters
+incorrect OTP OTP validation failed. ERROR
+OTP generation
+Failed EF40014 When user generation
+fails
+OTP Generation
+failed. ERROR
+When
+Acknowledgement
+number does not have
+any record
+EF00156
+When entered
+Acknowledgement
+number does not have
+record in DB
+No records found for
+this
+Acknowledgement
+number, Please Retry
+ERROR
+When expected values
+are not provided for
+e.g., absence of
+ackNum while
+validation
+EF00001
+When expected values
+are not provided for
+e.g., absence of
+ackNum while
+validation
+Please enter valid
+values.
+ERROR
+When individual pan
+selects EVC through
+bank account and
+account is not EVC
+enabled
+EF00101
+When individual pan
+selects EVC through
+bank account and
+account is not EVC
+enabled
+To generate EVC, you
+need to validate and
+enable EVC on your
+bank account. ERROR
+When other than
+individual pan tries to
+generate EVC
+through bank, but
+account is not EVC
+enabled and validated
+EF00102
+When other than
+individual pan tries to
+generate EVC
+through bank, but
+account is not EVC
+enabled and validated
+Please inform your
+Principal Contact to
+validate his bank
+account and enable
+EVC by logging in to
+e-filing portal using
+his credentials.
+ERROR
+When individual pan
+selects EVC through
+demat account and
+account is not EVC
+enabled
+EF00104
+When individual pan
+selects EVC through
+demat account and
+account is not EVC
+enabled
+To generate EVC, you
+need to validate and
+enable EVC on your
+demat account.
+ERROR
+When other than
+individual pan tries to
+generate EVC
+through demat
+account, but account
+is not EVC enabled
+and validated
+EF00105
+When other than
+individual pan tries to
+generate EVC
+through demat
+account, but account
+is not EVC enabled
+and validated
+Please inform your
+Principal Contact to
+validate his Demat
+account and enable
+EVC on it by logging
+in to e-filing portal
+using his credentials.
+ERROR
+When otp is expired
+while hitting everification services
+EF00128
+When otp is expired
+while hitting everification services
+OTP has expired,
+please generate new
+OTP.
+ERROR
+When user enters
+invalid otp
+while hitting everification services
+EF00028
+When user enters
+invalid otp
+while hitting everification services
+Invalid OTP. Please
+retry.
+ERROR
+When entered EVC is
+invalid EF00108 When entered EVC is
+invalid
+Invalid EVC. Please
+retry.
+ERROR
+When user wants to
+generate Aadhaar
+OTP but Aadhaar is
+not linked with PAN
+(for registered user)
+EF00099
+When user wants to
+generate Aadhaar
+OTP but Aadhaar is
+not linked with PAN
+(for registered user)
+Your PAN and
+Aadhaar is not linked. ERROR
+When other than
+individual register
+pan does not have
+linking between
+Aadhaar and PAN
+EF00100
+When other than
+individual register
+pan does not have
+linking between
+Aadhaar and PAN
+Please inform your
+Principal Contact to
+complete Aadhaar
+PAN linking process
+by logging in to efiling portal using his
+credentials
+ERROR
+When error code
+received from UIDAI
+is 953
+EF00226
+When error code
+received from UIDAI
+Is 953
+(this error will come
+from UIDAI side)
+Aadhaar OTP is
+already generated.
+Please use the same
+for verification or try
+to generate new OTP
+after half an hour.
+ERROR
+When PAN is not in a
+valid format EF00011 Please enter a valid
+PAN Number.
+When PAN is not in a
+valid format ERROR
+When Pan Entered
+does not exist. EF00047 The PAN does not
+exist.
+When Pan Entered
+does not exist. ERROR
+When the user is
+inactive. EF00098
+The PAN entered is
+inactive. Please
+contact your
+Accessing Officer to
+activate the PAN.
+The PAN entered is
+inactive. Please
+contact your
+Accessing Officer to
+activate the PAN.
+ERROR
+When no record
+found for PAN. EF00009 No record found for
+the entered PAN.
+No record found for
+the entered PAN. INFO
+When provided
+incorrect input for
+PAN, AY and Form
+Name
+EF500054
+No Details found as
+per acknowledgement
+number
+Details are not as per
+Acknowledgement
+number. Please
+provide correct input
+for PAN, AY and
+Form Name
+ERROR
+When incorrect
+verification mode
+provided
+EF500055
+Bank EVC and Demat
+EVC will not be
+verified as incorrect
+verification mode
+provided
+Please provide correct
+verification mode for
+which EVC is
+generated
+ERROR
+When EVC has
+expired EF00107
+EVC will not be
+verified as EVC has
+expired
+EVC has expired.
+Please generate new
+EVC.
+ERROR
+When Aadhaar is not
+linked with PAN EF00232
+Aadhaar OTP will not
+be verified as
+Aadhaar is not linked
+with PAN
+Please link your
+Aadhaar to your PAN
+to verify return using
+Aadhaar OTP.
+ERROR
+When ERI user who
+created the ITR is not
+the one who is
+accessing now
+EF500051
+E-verify cannot be
+done for this ITR as it
+is not submitted
+through this ERI.
+This ITR cannot be everified as it is not
+submitted through this
+ERI.
+ERROR
+When ITR is already
+Verified EF40055 ITR is already
+verified.
+Your ITR is already EVerified. REMARK
+When ERI client
+linkage fails EF500058
+When the PAN is not
+a valid client of
+logged in ERI user
+The PAN is not a valid
+client for this ERI. ERROR
+When attributes are
+incorrect in json
+request data
+EF20123 When request data is
+invalid Invalid Request Data ERROR
+When a user request
+EVC for 6th time for
+same service within
+72 hours
+EF500093 When limit to receive
+EVC is over
+You have exceeded
+the limit to receive
+EVC. Please try again
+after some time.
+ERROR
+When user enters
+incorrect EVC for 4th
+time
+EF500094
+When number of
+attempts to enter
+correct EVC is over
+You have exceeded
+the number of
+attempts to enter
+correct EVC. Please
+generate new EVC.
+ERROR
+
+
+
+
+Application Programming Interface Specifications
+Integrated e-filing and CPC 2.0 Project
+API Name Acknowledgement API Flow
+API Description API used to get acknowledgement for submitted ITRs
+Table of Contents
+1. Overview............................................................................................................................. 3
+2. About API........................................................................................................................... 3
+3. Target Audience and Pre-requisites...................................................................................... 3
+4. getAcknowledgement API Details........................................................................................ 4
+4.1 API Usage Scenario ....................................................................................................... 4
+4.2 API Request process....................................................................................................... 4
+4.3 API Protocol.................................................................................................................. 4
+4.4 Request Parameters........................................................................................................ 4
+4.4.1 Request Header: ...................................................................................................... 4
+4.4.2 Request Body:......................................................................................................... 5
+4.4.3 Details of data attribute:........................................................................................... 5
+4.5 Response Parameters...................................................................................................... 6
+4.6 getAcknowledgement API - Sample Request format........................................................ 6
+4.7 getAcknowledgement API - Sample Response format ..................................................... 6
+5. API Exception Details.......................................................................................................... 7
+1. Overview
+As noted in the ERI Specification Overview document the interaction during the submission
+phase includes 3 key steps in addition to the Login and Logout. This document defines the
+specification to get the acknowledgement for submitted ITR as highlighted in the figure below.
+Post Submission
+2. About API
+Requester Type-2 ERI
+Provider ItrWeb
+Description These APIs shall be used to get acknowledgment after submission of the
+ITRs
+Mode of
+Integration
+(Real time / Batch)
+Real Time
+Processing Details
+Pre-Processing
+Details
+User should have established a session using the Login API
+specifications.
+Taxpayers should have submitted the ITR through this ERI
+Taxpayers get acknowledgement when ITR verification is completed.
+Service Name ItrService
+API URL http<hostname>/itrweb/auth/v0.1/returns/getAcknowledgement
+3. Target Audience and Pre-requisites
+This is technical document and is target to ERIs working in their application and interested to
+integrate their application with IEC 2.0 platform.
+The pre-requisites to call this API is that ERI is already registered with IEC 2.0 platform. They
+have valid credentials to call the API.
+4. getAcknowledgement API Details
+This service is used to get acknowledge of the ITR after the taxpayer has submitted the ITR.
+4.1 API Usage Scenario
+ERI can get the acknowledge for their client (taxpayer) in the eFiling system using this API.
+When client or taxpayer has already submitted the ITR and ERI wants to get acknowledgement
+for their client.
+When ERI submits request for get acknowledgement, there are two high level activities are
+performed:
+1. ERI application will get acknowledgement number from the taxpayer.
+2. ERI application will call getAcknowledgement API to get the acknowledgement.
+4.2 API Request process
+ERI application must have already establish the login session and auth token with eFiling system
+using the login API. Application will initiate getAcknowledgement request as below:
+1. ERI application will capture the taxpayer's details as explained as part of the request
+attribute details.
+2. Application will call getAcknowledgement API with values captured from the taxpayer
+as per request attribute details.
+3. API will return the PDF as base64 format.
+4. ERI application can show PDF document to the taxpayer.
+4.3 API Protocol
+getAcknowledgement API is exposed as REST API over the HTTPS. The input data should be
+sent as JSON document using Content-Type "application/json".
+4.4 Request Parameters
+The request will consist of request header and request body:
+4.4.1 Request Header:
+Header is mandatory and will consists of following values:
+Mandatory Request Header Parameters:
+Header Name Header Value
+Content-type application/json
+clientId clientId value which is provided to ERI as part of the registration
+clientSecret clientSecret value which is provided to ERI as part of the registration
+authToken Auth token from the Login Flow
+accessMode "API"
+4.4.2 Request Body:
+Request body will consist of below attributes:
+1. data: data attribute will be Base64 encoded string of API request json. Details of request
+json attributes are explained in request data element details.
+2. eriUserId: It is mandatory and valid value is user ID of the ERI
+3. sign:
+• The API request data attribute should be digitally signed for the message integrity and
+non-repudiation purposes.
+• Digital signing should always be performed by the ERI from value of data attribute which
+was generated from request json.
+• The signature should be generated using a valid X.509 certificate
+• signature value should be generated from data field using ERI's DSC private key.
+• ERI should share their DSC public key with ITD to validate the signature.
+4.4.3 Details of data attribute:
+Below are the request parameters, which is request json used to create data attribute as
+explained above data attribute of the request body:
+Name of the
+Parameter
+Data
+type
+Max
+length
+Is
+Mandatory Description
+serviceName String 60 Yes It is mandatory and valid value is
+"EriGetAckowledgement"
+Pan String 10 Yes It is mandatory and valid value is PAN
+of the taxpayer
+arnNumber String 15 Yes Unique acknowledgement receipt
+number
+4.5 Response Parameters
+Name of the
+Parameter
+Data type Max
+length
+Is
+Mandatory Description
+Messages List<String> Yes (on
+error)
+List of information messages. There
+can be one or more messages. The
+messages array will be null if there are
+no messages.
+"messages": []
+Errors List<Error> Yes (on
+error)
+List of errors. The value will be null if
+there is no error.
+"errors": []
+successFlag Boolean Yes (on
+error) Possible value is false.
+Ack Byte Array Yes (on
+Success) Binary format PDF
+4.6 getAcknowledgement API - Sample Request format
+{
+"data": "",
+"sign": "",
+"eriUserId": ""
+}
+data tag will be Base64Encoded string from following request json
+{
+"serviceName": "EriGetAckowledgement",
+"pan": "",
+ " arnNumber ": "123466645",
+}
+4.7 getAcknowledgement API - Sample Response format
+For Errors:
+{
+ "messages": [
+ {
+ "code": "EF500058",
+ "type": "ERROR",
+ "desc": "The PAN is not a valid client for this ERI.",
+ "fieldName": null
+ }
+ ],
+ "errors": [],
+ "successFlag": false,
+ "header": {
+ "formName": null
+ }
+}
+On Success:
+<<Downloadable PDF File in binary format>>
+5. API Exception Details
+Scenario Error
+code Details Error String Message
+Type
+When user enters
+incorrect arnNumber EF20038
+When user enters
+incorrect arnNumber
+(Acknowledgment
+Number)
+Invalid Receipt
+number. Please retry
+and enter correct
+acknowledgement
+number.
+ERROR
+When arnNumber is
+not accessible for
+Eri user
+EF500053
+When ack number given
+is not submitted by that
+Eri user who is calling
+getAcknowledgment.
+Acknowledgement
+form cannot be
+generated for this ITR
+as it is not submitted
+through this ERI.
+ERROR
+When PAN is null EF20008 When user does not
+enter the PAN
+PAN cannot be null or
+empty. Please enter
+correct PAN
+ERROR
+When ERI client
+linkage fails EF500058
+When the PAN is not a
+valid client of logged in
+ERI user
+The PAN is not a valid
+client for this ERI. ERROR
+When
+Acknowledgement
+number is not for the
+entered PAN
+EF00158
+When user enters
+Acknowledgement
+number which is not
+linked with given PAN
+The entered
+Acknowledgement
+number is not linked to
+the PAN entered in the
+database, please enter
+correct PAN.
+ERROR
+When attributes are
+incorrect in json
+request data
+EF20123
+When request data is
+invalid Invalid Request Data ERROR
