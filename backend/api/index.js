@@ -1,5 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
+// const fs = require("fs");
 const connectDB = require("../database/db");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -25,11 +27,24 @@ app.use(
   })
 );
 connectDB();
+
+// middlewares
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(morgan("dev"));
 
+// static files from the frontend build folder
+const clientBuildPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(clientBuildPath));
+
+app.get("*", (req, res) => {
+  // Skip this for API routes
+  if (req.path.startsWith("/api")) return;
+  res.sendFile(path.join(clientBuildPath, "index.html"));
+});
+
+// apis
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/fillDetail", fileITRRoute);
 app.use("/api/v1/capitalGain", capitalGainRoute);
@@ -39,7 +54,7 @@ app.use("/api/v1/verificationApi", verificationApiRoute);
 app.use("/api/v1/adminApi", adminRoute);
 app.use("/api/v1/wallet", walletRoute);
 app.use("/api/v1/itr", itrRoute);
-app.get("/", (req, res) => {
+app.get("/backend-health", (req, res) => {
   res.send("black burn backend running");
 });
 
