@@ -6,6 +6,7 @@ import { store } from "./stores/store";
 import Router from "./router";
 import "./assets/css/app.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import 'simplebar/dist/simplebar.min.css';
 
 const googleClientId=import.meta.env.VITE_GOOGLE_CLIENT_ID;
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
