@@ -3,7 +3,6 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      # - develop
       - pmdnawaz1
 
 jobs:
@@ -31,16 +30,24 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Git pull and Deploy to EC2
+      - name: Upload frontend to server
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP << 'EOF'
-            cd /var/www/BurnBlack-React
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r frontend/dist/* $SERVER_USER@$SERVER_IP:/var/www/$REPO_NAME/frontend/dist/
+
+      - name: Pull latest code and restart backend
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP << EOF
+            cd /var/www/$REPO_NAME
             git pull origin pmdnawaz1
             cd backend
             npm install
-            cp -r frontend/dist/* /var/www/BurnBlack-React/frontend/dist/
             pm2 restart burn-black-server
           EOF
