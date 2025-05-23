@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - pmdnawaz1
+      - develop
 
 jobs:
   deploy:
@@ -46,7 +46,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP << EOF
             cd /var/www/$REPO_NAME
-            git pull origin pmdnawaz1
+            git pull origin develop
             cd backend
             npm install
             pm2 restart burn-black-server
