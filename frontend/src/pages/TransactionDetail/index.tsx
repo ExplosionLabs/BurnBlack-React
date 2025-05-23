@@ -207,7 +207,7 @@ function Main() {
                             <Tippy
                               as="img"
                               alt="Midone - HTML Admin Template"
-                              className="border-2 border-white rounded-lg shadow-md"
+                              className="border-2 border-white rounded-md shadow-md"
                               src={faker.images[0]}
                               content={`Uploaded at ${faker.dates[0]}`}
                             />

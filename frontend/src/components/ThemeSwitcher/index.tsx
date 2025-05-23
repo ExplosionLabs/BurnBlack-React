@@ -48,7 +48,7 @@ function Main() {
   setDarkModeClass();
 
   const themes: Array<Themes["name"]> = [
-    "rubick",
+    "BurnBlack",
     "icewall",
     "tinker",
     "enigma",

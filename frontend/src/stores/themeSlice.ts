@@ -50,6 +50,11 @@ export const themes = [
     component: TinkerSideMenu,
   },
   {
+    name: "BurnBlack",
+    layout: "side-menu",
+    component: TinkerSideMenu,
+  },
+  {
     name: "tinker",
     layout: "simple-menu",
     component: TinkerSimpleMenu,

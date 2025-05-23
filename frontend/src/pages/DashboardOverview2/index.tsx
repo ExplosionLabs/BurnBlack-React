@@ -33,7 +33,7 @@ function Main() {
           <div className="grid grid-cols-12 gap-6">
             {/* BEGIN: Notification */}
             <div className="col-span-12 mt-6 -mb-6 intro-y">
-              <Alert
+              {/* <Alert
                 variant="primary"
                 dismissible
                 className="flex items-center mb-6 box dark:border-darkmode-600"
@@ -59,7 +59,7 @@ function Main() {
                     </Alert.DismissButton>
                   </>
                 )}
-              </Alert>
+              </Alert> */}
             </div>
             {/* BEGIN: Notification */}
             {/* BEGIN: General Report */}

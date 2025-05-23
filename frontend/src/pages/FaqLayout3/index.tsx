@@ -14,7 +14,7 @@ function Main() {
           <div className="mt-5 box">
             <div className="px-4 pt-5 pb-3">
               <a
-                className="flex items-center px-4 py-2 font-medium text-white rounded-lg bg-primary"
+                className="flex items-center px-4 py-2 font-medium text-white rounded-md bg-primary"
                 href=""
               >
                 <Lucide icon="Activity" className="w-4 h-4 mr-2" />
