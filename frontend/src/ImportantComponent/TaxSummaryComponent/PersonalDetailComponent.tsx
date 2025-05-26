@@ -20,14 +20,13 @@ const sessionYear = `${currentYear}-${currentYear + 1}`;
     const fetchContactDetail = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getContactDetails`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/personal/contact-details`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         const data = response.data;
-        setPanNumber(data.panNumber        );
-        
+        setPanNumber(data.panNumber);
       } catch (error) {
         console.error("Error fetching personal details:", error);
       }
@@ -36,7 +35,7 @@ const sessionYear = `${currentYear}-${currentYear + 1}`;
       const token = localStorage.getItem('token');
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getPersonalDetail`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/personal/personal-details`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

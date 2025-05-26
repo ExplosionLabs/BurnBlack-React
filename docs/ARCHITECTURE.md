@@ -78,9 +78,9 @@ frontend/
      - Error handling
      - Request validation
    - API Structure:
-     - Route organization
-     - Controller logic
-     - Service layer
+     - Modular route organization
+     - Specialized controllers
+     - Service layer separation
 
 2. **Database (MongoDB)**
    - Schema Design:
@@ -117,14 +117,55 @@ frontend/
 backend/
 ├── src/
 │   ├── controllers/
+│   │   ├── PersonalInfoController.js
+│   │   ├── Form16Controller.js
+│   │   ├── IncomeController.js
+│   │   ├── PropertyController.js
+│   │   ├── AssetController.js
+│   │   ├── BusinessController.js
+│   │   ├── OtherIncomeController.js
+│   │   └── ITRController.js
 │   ├── models/
 │   ├── routes/
+│   │   ├── personalInfoRoutes.js
+│   │   ├── form16Routes.js
+│   │   ├── incomeRoutes.js
+│   │   ├── propertyRoutes.js
+│   │   ├── assetRoutes.js
+│   │   ├── businessRoutes.js
+│   │   ├── otherIncomeRoutes.js
+│   │   └── itrRoutes.js
 │   ├── services/
 │   ├── middleware/
 │   └── utils/
 ├── config/
 └── tests/
 ```
+
+### API Architecture
+1. **Route Organization**
+   - Modular route files for each domain
+   - Clear separation of concerns
+   - Consistent endpoint naming
+   - Versioned API structure
+
+2. **Controller Organization**
+   - Specialized controllers for each domain
+   - Business logic separation
+   - Error handling standardization
+   - Response format consistency
+
+3. **Middleware Implementation**
+   - Authentication middleware
+   - Request validation
+   - Error handling
+   - Logging and monitoring
+
+4. **Service Layer**
+   - Business logic abstraction
+   - Database operations
+   - External service integration
+   - Data transformation
 
 ## System Integration
 

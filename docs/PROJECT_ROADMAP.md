@@ -1,5 +1,29 @@
 # BurnBlack Project Roadmap
 
+## Completed Tasks ✅
+
+### API Restructuring
+- **Status**: COMPLETED
+- **Impact**: Improved code organization and maintainability
+- **Components**:
+  - Modular route organization
+  - Specialized controllers
+  - Consistent endpoint naming
+  - Clear separation of concerns
+
+### Route Organization
+- **Status**: COMPLETED
+- **Impact**: Better API structure and documentation
+- **Components**:
+  - Personal Information routes
+  - Form 16 routes
+  - Income routes
+  - Property routes
+  - Asset routes
+  - Business routes
+  - Other Income routes
+  - ITR routes
+
 ## Phase 1: Critical Security & Authentication (Showstoppers)
 
 ### 1. Password Reset System
@@ -181,6 +205,25 @@
 3. **Cloud Storage**
    - Document Storage
    - Backup Storage
+
+### API Dependencies
+1. **Personal Information Module**
+   - Personal Details
+   - Contact Details
+   - Bank Details
+
+2. **Tax Filing Module**
+   - Form 16 Processing
+   - Income Management
+   - Property Management
+   - Asset Management
+   - Business Management
+   - Other Income Management
+
+3. **ITR Module**
+   - Filing Process
+   - Status Tracking
+   - History Management
 
 ## Risk Assessment
 

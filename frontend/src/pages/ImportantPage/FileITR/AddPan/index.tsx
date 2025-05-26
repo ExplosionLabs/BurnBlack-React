@@ -46,9 +46,7 @@ function Main() {
 
     try {
       await axios.put(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/api/v1/fillDetail/updatePersonalDetail`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/personal/personal-details`,
         payload,
         {
           headers: {
@@ -68,9 +66,7 @@ function Main() {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/v1/fillDetail/getContactDetails`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/personal/contact-details`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -87,9 +83,7 @@ function Main() {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/v1/fillDetail/getPersonalDetail`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/personal/personal-details`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -40,7 +40,7 @@ export default function BankDetails() {
       const token = localStorage.getItem("token")
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getBankDetails`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/personal/bank-details`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -48,7 +48,6 @@ export default function BankDetails() {
           }
         )
         setBankDetails(response.data.data.bankDetails || [])
-        
       } catch (err) {
         setError("Failed to load bank details.")
         console.error(err)
@@ -64,7 +63,7 @@ export default function BankDetails() {
     const token = localStorage.getItem("token")
     try {
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/updateBankDetails`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/personal/bank-details`,
         { bankDetails: details },
         {
           headers: {

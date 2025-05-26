@@ -351,9 +351,8 @@ export const fetchDividendData = async (token: string) => {
 
   export const fetchContactDetails = async (token: string) => {
     try {
-      
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getContactDetails`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/personal/contact-details`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -368,6 +367,5 @@ export const fetchDividendData = async (token: string) => {
     } catch (error) {
       console.error(`Error fetching data `, error)
       console.log("eror",error);
-   
     }
   }

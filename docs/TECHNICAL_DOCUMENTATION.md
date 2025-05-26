@@ -13,7 +13,48 @@
 - Node.js/Express.js server
 - MongoDB database with Mongoose ODM
 - JWT-based authentication
-- RESTful API architecture
+- RESTful API architecture with modular routes
+
+### API Architecture
+1. **Personal Information Routes** (`/api/personal`)
+   - Personal Details: `/personal-details`
+   - Contact Details: `/contact-details`
+   - Bank Details: `/bank-details`
+
+2. **Form 16 Routes** (`/api/form16`)
+   - Upload: `/upload`
+   - Update Data: `/update-data`
+   - Manual Data: `/manual-data`
+
+3. **Income Routes** (`/api/income`)
+   - Interest Income: `/interest`, `/interest/:type`, `/interest-all`
+   - Dividend Income: `/dividend`, `/dividend/:id`
+   - Professional Income: `/professional`
+   - Business Income: `/business`, `/prof-business`
+
+4. **Property Routes** (`/api/property`)
+   - Property Details: `/property`, `/property/:propertyIndex`
+   - Rental Details: `/rental`, `/rental/:propertyIndex`
+
+5. **Asset Routes** (`/api/asset`)
+   - Crypto: `/crypto`, `/crypto/:id`
+   - NFT: `/nft/:id`
+
+6. **Business Routes** (`/api/business`)
+   - Finance Particulars: `/finance-particulars`
+   - Profit & Loss: `/profit-loss`
+   - Balance Sheet: `/balance-sheet`
+   - Depreciation: `/depreciation`, `/depreciation/:id`
+
+7. **Other Income Routes** (`/api/other-income`)
+   - Exempt Income: `/exempt`, `/exempt/:type`
+   - Agricultural Income: `/agricultural`
+   - Business Fund: `/business-fund`, `/business-fund/:section`
+
+8. **ITR Routes** (`/api/itr`)
+   - ITR Filing: `/file`
+   - Status: `/status`
+   - History: `/history`
 
 ## Technical Workflows
 
@@ -114,14 +155,19 @@
    Client -> API Request -> JWT Validation -> Database -> Response
    ```
 
-2. **Tax Calculation Flow**
+2. **Personal Information Flow**
+   ```
+   Client -> /api/personal/* -> PersonalInfoController -> Database -> Response
+   ```
+
+3. **Tax Calculation Flow**
    ```
    User Input -> Data Validation -> Tax Calculation -> Database Storage -> Summary Generation
    ```
 
-3. **Payment Flow**
+4. **Document Upload Flow**
    ```
-   Payment Initiation -> Razorpay Integration -> Transaction Recording -> Wallet Update
+   Client -> /api/form16/upload -> Form16Controller -> Storage -> Database Update
    ```
 
 ## Missing Items (In Order of Importance)
