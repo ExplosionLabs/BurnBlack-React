@@ -2,7 +2,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  user: null | { _id: string; name: string; email: string }; // Added _id here
+  user: null | { 
+    _id: string; 
+    name: string; 
+    email: string;
+    role?: string; // Adding role field
+  };
   loading: boolean;
   error: string | null;
 }
@@ -21,11 +26,11 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    loginSuccess(state, action: PayloadAction<{ user: { _id: string; name: string; email: string }; token: string }>) { // Added _id here
+    loginSuccess(state, action: PayloadAction<{ user: { _id: string; name: string; email: string; role?: string }; token: string }>) {
       state.loading = false;
       state.user = action.payload.user;
-      localStorage.setItem('user', JSON.stringify(action.payload.user)); // Store user info
-      localStorage.setItem('token', action.payload.token); // Store token
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem('token', action.payload.token);
     },
     loginFailure(state, action: PayloadAction<string>) {
       state.loading = false;

@@ -1,2 +1,4 @@
-export { default as LineChart } from './LineChart';
-export { default as BarChart } from './BarChart'; 
+export { LineChart } from './LineChart';
+export { BarChart } from './BarChart';
+export type { Dataset } from './LineChart';
+export type { BarData } from './BarChart'; 

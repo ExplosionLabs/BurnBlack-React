@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  Grid,
+  Grid as MuiGrid,
   Paper,
   Typography,
   Card,
@@ -16,7 +16,11 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
-  CircularProgress
+  CircularProgress,
+  Button,
+  useTheme,
+  useMediaQuery,
+  GridProps
 } from '@mui/material';
 import {
   MoreVert as MoreVertIcon,
@@ -64,6 +68,18 @@ interface DashboardStats {
     uptime: number;
   };
 }
+
+// Create a type-safe Grid component with breakpoint props
+type GridItemProps = GridProps & {
+  item?: boolean;
+  xs?: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
+  xl?: number;
+};
+
+const Grid = MuiGrid as React.ComponentType<GridItemProps>;
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -142,32 +158,34 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <Box p={3}>
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4">Dashboard</Typography>
-        <Box>
-          <IconButton onClick={handleMenuOpen}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            anchorEl={menuAnchor}
-            open={Boolean(menuAnchor)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={() => handleTimeRangeChange('day')}>Last 24 Hours</MenuItem>
-            <MenuItem onClick={() => handleTimeRangeChange('week')}>Last 7 Days</MenuItem>
-            <MenuItem onClick={() => handleTimeRangeChange('month')}>Last 30 Days</MenuItem>
-            <Divider />
-            <MenuItem onClick={() => handleExport('users')}>Export Users</MenuItem>
-            <MenuItem onClick={() => handleExport('transactions')}>Export Transactions</MenuItem>
-            <MenuItem onClick={() => handleExport('documents')}>Export Documents</MenuItem>
-          </Menu>
-        </Box>
-      </Box>
+    <Box sx={{ p: 3 }}>
+      <Grid container spacing={3}>
+        {/* Header */}
+        <Grid item xs={12}>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h4">Dashboard</Typography>
+            <Box>
+              <IconButton onClick={handleMenuOpen}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={menuAnchor}
+                open={Boolean(menuAnchor)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={() => handleTimeRangeChange('day')}>Last 24 Hours</MenuItem>
+                <MenuItem onClick={() => handleTimeRangeChange('week')}>Last 7 Days</MenuItem>
+                <MenuItem onClick={() => handleTimeRangeChange('month')}>Last 30 Days</MenuItem>
+                <Divider />
+                <MenuItem onClick={() => handleExport('users')}>Export Users</MenuItem>
+                <MenuItem onClick={() => handleExport('transactions')}>Export Transactions</MenuItem>
+                <MenuItem onClick={() => handleExport('documents')}>Export Documents</MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+        </Grid>
 
-      {/* Stats Cards */}
-      <Grid container spacing={3} mb={3}>
+        {/* Stats Cards */}
         <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
@@ -226,10 +244,8 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
 
-      {/* Charts */}
-      <Grid container spacing={3} mb={3}>
+        {/* Charts */}
         <Grid item xs={12} md={8}>
           <Card>
             <CardHeader
@@ -261,43 +277,45 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
 
-      {/* Recent Transactions */}
-      <Card>
-        <CardHeader
-          title="Recent Transactions"
-          action={
-            <IconButton onClick={() => navigate('/admin/transactions')}>
-              <MoreVertIcon />
-            </IconButton>
-          }
-        />
-        <CardContent>
-          <List>
-            {stats.recentTransactions.map((transaction) => (
-              <React.Fragment key={transaction.id}>
-                <ListItem>
-                  <ListItemIcon>
-                    {transaction.status === 'completed' ? (
-                      <CheckCircleIcon color="success" />
-                    ) : transaction.status === 'pending' ? (
-                      <WarningIcon color="warning" />
-                    ) : (
-                      <ErrorIcon color="error" />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={`${transaction.user.name} - ${formatCurrency(transaction.amount)}`}
-                    secondary={`${transaction.type} - ${formatDate(transaction.createdAt)}`}
-                  />
-                </ListItem>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
-        </CardContent>
-      </Card>
+        {/* Recent Transactions */}
+        <Grid item xs={12}>
+          <Card>
+            <CardHeader
+              title="Recent Transactions"
+              action={
+                <IconButton onClick={() => navigate('/admin/transactions')}>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+            />
+            <CardContent>
+              <List>
+                {stats.recentTransactions.map((transaction) => (
+                  <React.Fragment key={transaction.id}>
+                    <ListItem>
+                      <ListItemIcon>
+                        {transaction.status === 'completed' ? (
+                          <CheckCircleIcon color="success" />
+                        ) : transaction.status === 'pending' ? (
+                          <WarningIcon color="warning" />
+                        ) : (
+                          <ErrorIcon color="error" />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`${transaction.user.name} - ${formatCurrency(transaction.amount)}`}
+                        secondary={`${transaction.type} - ${formatDate(transaction.createdAt)}`}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </React.Fragment>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

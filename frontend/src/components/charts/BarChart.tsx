@@ -1,5 +1,4 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,9 +7,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartData,
   ChartOptions
 } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -21,46 +20,44 @@ ChartJS.register(
   Legend
 );
 
-interface BarChartProps {
-  data: Array<{
-    label: string;
-    value: number;
-    color?: string;
-  }>;
-  title?: string;
+interface BarData {
+  label: string;
+  value: number;
+  color: string;
 }
 
-const BarChart: React.FC<BarChartProps> = ({ data, title }) => {
-  const chartData: ChartData<'bar'> = {
-    labels: data.map((item) => item.label),
+interface BarChartProps {
+  data: BarData[];
+  height?: number;
+  options?: ChartOptions<'bar'>;
+}
+
+const BarChart: React.FC<BarChartProps> = ({ data, height = 300, options }) => {
+  const chartData = {
+    labels: data.map(item => item.label),
     datasets: [
       {
-        label: 'Value',
-        data: data.map((item) => item.value),
-        backgroundColor: data.map((item) => item.color || 'rgba(75, 192, 192, 0.6)'),
-        borderColor: data.map((item) => item.color || 'rgb(75, 192, 192)'),
+        data: data.map(item => item.value),
+        backgroundColor: data.map(item => item.color),
+        borderColor: data.map(item => item.color),
         borderWidth: 1
       }
     ]
   };
 
-  const options: ChartOptions<'bar'> = {
+  const defaultOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false
       },
-      title: {
-        display: !!title,
-        text: title
-      },
       tooltip: {
         callbacks: {
           label: (context) => {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
-            return `${label}: ${value}`;
+            return `${label}${label ? ': ' : ''}${value}`;
           }
         }
       }
@@ -81,10 +78,11 @@ const BarChart: React.FC<BarChartProps> = ({ data, title }) => {
   };
 
   return (
-    <div style={{ height: '300px', width: '100%' }}>
-      <Bar data={chartData} options={options} />
+    <div style={{ height }}>
+      <Bar data={chartData} options={{ ...defaultOptions, ...options }} />
     </div>
   );
 };
 
-export default BarChart; 
+export { BarChart };
+export type { BarData }; 

@@ -23,7 +23,11 @@ import {
   Tooltip,
   CircularProgress,
   SelectChangeEvent,
-  Grid
+  Grid as MuiGrid,
+  GridProps,
+  Select,
+  FormControl,
+  InputLabel
 } from '@mui/material';
 import {
   Visibility as VisibilityIcon,
@@ -68,6 +72,18 @@ interface TransactionFilters {
   search?: string;
 }
 
+// Create a type-safe Grid component with breakpoint props
+type GridItemProps = GridProps & {
+  item?: boolean;
+  xs?: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
+  xl?: number;
+};
+
+const Grid = MuiGrid as React.ComponentType<GridItemProps>;
+
 const TransactionHistory: React.FC = () => {
   const { showNotification } = useNotification();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -110,8 +126,23 @@ const TransactionHistory: React.FC = () => {
     setPage(0);
   };
 
-  const handleFilterChange = (field: keyof TransactionFilters, value: any) => {
+  const handleFilterChange = (field: keyof TransactionFilters, value: string | { start: string; end: string }) => {
     setFilters(prev => ({ ...prev, [field]: value }));
+    setPage(0);
+  };
+
+  const handleSelectChange = (field: keyof TransactionFilters) => (event: SelectChangeEvent) => {
+    handleFilterChange(field, event.target.value);
+  };
+
+  const handleDateChange = (field: 'start' | 'end', value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      dateRange: {
+        ...(prev.dateRange || { start: '', end: '' }),
+        [field]: value
+      }
+    }));
     setPage(0);
   };
 
@@ -167,6 +198,14 @@ const TransactionHistory: React.FC = () => {
     ]
   };
 
+  const handleTextFieldChange = (field: keyof TransactionFilters) => (event: ChangeEvent<HTMLInputElement>) => {
+    handleFilterChange(field, event.target.value);
+  };
+
+  const handleDateFieldChange = (field: 'start' | 'end') => (event: ChangeEvent<HTMLInputElement>) => {
+    handleDateChange(field, event.target.value);
+  };
+
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
@@ -212,57 +251,59 @@ const TransactionHistory: React.FC = () => {
                   size="small"
                   fullWidth
                   value={filters.search || ''}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleFilterChange('search', e.target.value)}
+                  onChange={handleTextFieldChange('search')}
                   placeholder="Search by ID or user"
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <TextField
-                  select
-                  label="Type"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  value={filters.type || ''}
-                  onChange={(e: SelectChangeEvent) => handleFilterChange('type', e.target.value)}
-                >
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="subscription">Subscription</MenuItem>
-                  <MenuItem value="document">Document</MenuItem>
-                  <MenuItem value="other">Other</MenuItem>
-                </TextField>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="type-select-label">Type</InputLabel>
+                  <Select
+                    labelId="type-select-label"
+                    id="type-select"
+                    label="Type"
+                    value={filters.type || ''}
+                    onChange={handleSelectChange('type')}
+                  >
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="subscription">Subscription</MenuItem>
+                    <MenuItem value="one-time">One Time</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <TextField
-                  select
-                  label="Status"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  value={filters.status || ''}
-                  onChange={(e: SelectChangeEvent) => handleFilterChange('status', e.target.value)}
-                >
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="completed">Completed</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="failed">Failed</MenuItem>
-                </TextField>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="status-select-label">Status</InputLabel>
+                  <Select
+                    labelId="status-select-label"
+                    id="status-select"
+                    label="Status"
+                    value={filters.status || ''}
+                    onChange={handleSelectChange('status')}
+                  >
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="completed">Completed</MenuItem>
+                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="failed">Failed</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
-                <TextField
-                  select
-                  label="Payment Method"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  value={filters.paymentMethod || ''}
-                  onChange={(e: SelectChangeEvent) => handleFilterChange('paymentMethod', e.target.value)}
-                >
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="card">Card</MenuItem>
-                  <MenuItem value="bank_transfer">Bank Transfer</MenuItem>
-                  <MenuItem value="upi">UPI</MenuItem>
-                </TextField>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="payment-method-select-label">Payment Method</InputLabel>
+                  <Select
+                    labelId="payment-method-select-label"
+                    id="payment-method-select"
+                    label="Payment Method"
+                    value={filters.paymentMethod || ''}
+                    onChange={handleSelectChange('paymentMethod')}
+                  >
+                    <MenuItem value="">All</MenuItem>
+                    <MenuItem value="card">Card</MenuItem>
+                    <MenuItem value="bank">Bank Transfer</MenuItem>
+                    <MenuItem value="upi">UPI</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -272,12 +313,7 @@ const TransactionHistory: React.FC = () => {
                   size="small"
                   fullWidth
                   value={filters.dateRange?.start || ''}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleFilterChange('dateRange', {
-                      ...filters.dateRange,
-                      start: e.target.value
-                    })
-                  }
+                  onChange={handleDateFieldChange('start')}
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
@@ -289,12 +325,7 @@ const TransactionHistory: React.FC = () => {
                   size="small"
                   fullWidth
                   value={filters.dateRange?.end || ''}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    handleFilterChange('dateRange', {
-                      ...filters.dateRange,
-                      end: e.target.value
-                    })
-                  }
+                  onChange={handleDateFieldChange('end')}
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
