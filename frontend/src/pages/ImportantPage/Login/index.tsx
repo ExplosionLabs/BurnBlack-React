@@ -153,7 +153,7 @@ function Main() {
             <FormCheck.Label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
               Remember me
             </FormCheck.Label>
-            <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+            <a href="/forgot-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
               Forgot your password?
             </a>
           </div>

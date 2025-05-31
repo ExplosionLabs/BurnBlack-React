@@ -41,6 +41,7 @@ import FaqLayout2 from "../pages/FaqLayout2";
 import FaqLayout3 from "../pages/FaqLayout3";
 import Login from "../pages/ImportantPage/Login";
 import Register from "../pages/ImportantPage/Register";
+import ForgotPassword from "../pages/ImportantPage/ForgotPassword";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
@@ -214,6 +215,14 @@ function Router() {
           element: (
             <Layout>
               <FileUpload />
+            </Layout>
+          ),
+        },
+        {
+          path: "/forgot-password",
+          element: (
+            <Layout>
+              <ForgotPassword />
             </Layout>
           ),
         },

@@ -2,6 +2,8 @@ const {
   registerController,
   loginController,
   signupGoogleController,
+  forgotPasswordController,
+  resetPasswordController,
 } = require("../controller/authController");
 
 const router = require("express").Router();
@@ -9,8 +11,7 @@ const router = require("express").Router();
 router.post("/register", registerController);
 router.post("/login", loginController);
 router.post("/google-signup", signupGoogleController);
-// router.post("/send-phone-otp", sendOtpPhone);
-// router.post("/send-email-otp", sendOtpEmail);
-// router.post("/verify-otp", verifyOtp);
+router.post("/forgot-password", forgotPasswordController);
+router.post("/reset-password", resetPasswordController);
 
 module.exports = router;

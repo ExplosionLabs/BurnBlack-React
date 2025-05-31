@@ -3,6 +3,8 @@ const User = require("../model/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
+const nodemailer = require("nodemailer");
+
 const registerController = async (req, res) => {
   const { name, phone, email, password } = req.body;
 
@@ -119,82 +121,82 @@ const signupGoogleController = async (req, res) => {
     res.status(400).json({ error: "Invalid Google token" });
   }
 };
-// const sendOtpPhone = async (req, res) => {
-//   const { phoneNumber } = req.body;
-//   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
 
-//   try {
-//     // Save OTP to database
-//     await Otpmodel.create({
-//       type: "phone",
-//       identifier: phoneNumber,
-//       otp: otp,
-//     });
+// Send OTP for forgot password
+const forgotPasswordController = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email is required" });
 
-//     // Log OTP for testing (replace with actual SMS service)
-//     console.log("Phone OTP:", otp);
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
-//     res.status(200).json({ message: "OTP sent to phone number" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to send OTP" });
-//   }
-// };
-// const sendOtpEmail = async (req, res) => {
-//   const { email } = req.body;
-//   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
-//   try {
-//     // Save OTP to database
-//     await Otpmodel.create({
-//       type: "email",
-//       identifier: email,
-//       otp: otp,
-//     });
+    // Save OTP to DB
+    await Otpmodel.create({
+      type: "forgot-password",
+      identifier: email,
+      otp: otp,
+    });
 
-//     // Log OTP for testing (replace with actual email service)
-//     console.log("Email OTP:", otp);
+    // Send OTP via email (configure your SMTP credentials)
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-//     res.status(200).json({ message: "OTP sent to email" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to send OTP" });
-//   }
-// };
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your Password Reset OTP",
+      text: `Your OTP for password reset is: ${otp}`,
+    });
 
-// const verifyOtp = async (req, res) => {
-//   const { otp, type, identifier } = req.body;
+    res.status(200).json({ message: "OTP sent to email" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to send OTP" });
+  }
+};
 
-//   try {
-//     // Find OTP in the database
-//     const otpRecord = await Otpmodel.findOne({ type, identifier });
+// Reset password using OTP
+const resetPasswordController = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  if (!email || !otp || !newPassword)
+    return res.status(400).json({ message: "All fields are required" });
 
-//     console.log("otp record");
-//     if (!otpRecord) {
-//       return res
-//         .status(400)
-//         .json({ error: `OTP verified. Proceed to register.` });
-//     }
+  try {
+    // order by
+    const otpRecord = await Otpmodel.findOne({
+      type: "forgot-password",
+      identifier: email,
+    }).sort({ createdAt: -1 });
+    console.log("otpRecord", otpRecord);
+    if (!otpRecord || otpRecord.otp !== otp)
+      return res.status(400).json({ message: "Invalid OTP" });
 
-//     // Check if OTP matches
-//     if (otpRecord.otp === otp) {
-//       // Delete OTP after successful verification
-//       await Otpmodel.deleteOne({ _id: otpRecord._id });
+    // Update password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.updateOne({ email }, { password: hashedPassword });
 
-//       return res
-//         .status(200)
-//         .json({ message: `OTP verified. Proceed to register.` });
-//     } else {
-//       return res.status(400).json({ error: "Invalid OTP." });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to verify OTP." });
-//   }
-// };
+    // Delete OTP
+    await Otpmodel.deleteOne({ _id: otpRecord._id });
+
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to reset password" });
+  }
+};
 
 module.exports = {
   registerController,
   loginController,
   signupGoogleController,
+  forgotPasswordController,
+  resetPasswordController,
 };
