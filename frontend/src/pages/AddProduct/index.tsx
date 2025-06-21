@@ -35,7 +35,7 @@ function Main() {
           dismissible
           className="col-span-11 mb-6 intro-y box dark:border-darkmode-600"
         >
-          {({ dismiss }) => (
+          {/* {({ dismiss }) => (
             <>
               <div className="flex items-center">
                 <span>
@@ -62,7 +62,7 @@ function Main() {
                 </Alert.DismissButton>
               </div>
             </>
-          )}
+          )} */}
         </Alert>
         {/* BEGIN: Notification */}
         <div className="col-span-11 intro-y 2xl:col-span-9">
@@ -1200,7 +1200,7 @@ function Main() {
                       dismissible
                       className="mt-5 bg-warning/20 dark:bg-darkmode-400 dark:border-darkmode-400"
                     >
-                      {({ dismiss }) => (
+                      {/* {({ dismiss }) => (
                         <>
                           <div className="flex items-center">
                             <span>
@@ -1225,7 +1225,7 @@ function Main() {
                             </Alert.DismissButton>
                           </div>
                         </>
-                      )}
+                      )} */}
                     </Alert>
                   </div>
                 </FormInline>

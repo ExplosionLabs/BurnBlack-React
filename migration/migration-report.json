@@ -1,0 +1,81 @@
+{
+  "migration": "Phase 2.1 - Core User Data",
+  "startTime": "2025-06-21T10:16:04.999Z",
+  "endTime": "2025-06-21T10:16:08.262Z",
+  "duration": "3s",
+  "statistics": {
+    "totalProcessed": 22,
+    "successful": 5,
+    "failed": 17,
+    "skipped": 12,
+    "successRate": "22.73%"
+  },
+  "errors": [
+    {
+      "context": "PersonalDetailsMigration",
+      "error": "\nInvalid `prisma.personalDetail.create()` invocation:\n\n\nUnique constraint failed on the fields: (`id`)",
+      "record": "676692e825593356079b35fa",
+      "timestamp": "2025-06-21T10:16:07.376Z"
+    },
+    {
+      "context": "PersonalDetailsMigration",
+      "error": "\nInvalid `prisma.personalDetail.create()` invocation:\n\n\nUnique constraint failed on the fields: (`id`)",
+      "record": "677e4e5bdfb6b22acb6c60a7",
+      "timestamp": "2025-06-21T10:16:07.557Z"
+    },
+    {
+      "context": "PersonalDetailsMigration",
+      "error": "\nInvalid `prisma.personalDetail.create()` invocation:\n\n\nUnique constraint failed on the fields: (`id`)",
+      "record": "67909c5720485392db03446a",
+      "timestamp": "2025-06-21T10:16:07.624Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "67444cc9acd985fbf0828285",
+      "timestamp": "2025-06-21T10:16:07.763Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759b605ade7494a4709ea32",
+      "timestamp": "2025-06-21T10:16:07.853Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759b9f6f682b4752d838513",
+      "timestamp": "2025-06-21T10:16:07.889Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759bad0f682b4752d838561",
+      "timestamp": "2025-06-21T10:16:07.924Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759bb96f682b4752d83857b",
+      "timestamp": "2025-06-21T10:16:07.962Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759bd2ef682b4752d8385da",
+      "timestamp": "2025-06-21T10:16:07.995Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6773d8526f11365451e6b77b",
+      "timestamp": "2025-06-21T10:16:08.156Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "682c676cd12e1193e9c47966",
+      "timestamp": "2025-06-21T10:16:08.260Z"
+    }
+  ]
+}

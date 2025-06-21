@@ -39,8 +39,8 @@ import InvoiceLayout2 from "../pages/InvoiceLayout2";
 import FaqLayout1 from "../pages/FaqLayout1";
 import FaqLayout2 from "../pages/FaqLayout2";
 import FaqLayout3 from "../pages/FaqLayout3";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../pages/ImportantPage/Login";
+import Register from "../pages/ImportantPage/Register";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
@@ -52,7 +52,6 @@ import Notification from "../pages/Notification";
 import Tab from "../pages/Tab";
 import Accordion from "../pages/Accordion";
 import Button from "../pages/Button";
-import Alert from "../pages/Alert";
 import ProgressBar from "../pages/ProgressBar";
 import Tooltip from "../pages/Tooltip";
 import Dropdown from "../pages/Dropdown";
@@ -68,296 +67,615 @@ import Validation from "../pages/Validation";
 import Chart from "../pages/Chart";
 import Slider from "../pages/Slider";
 import ImageZoom from "../pages/ImageZoom";
+import HomePage from "../pages/ImportantPage/HomePage"
+import AddPan from "../pages/ImportantPage/FileITR/AddPan"
+import UploadForm16 from "../pages/ImportantPage/FileITR/UploadForm16"
+import PersonalDetail from "../pages/ImportantPage/FileITR/Personal Detail";
+import IncomeSources from "../pages/ImportantPage/FileITR/IncomeSources";
+import ITRMainPage from "../pages/ImportantPage/FileITR/ITRMainPage";
+import TaxSummary from "../pages/ImportantPage/FileITR/TaxSummary";
+import TaxSaving from "../pages/ImportantPage/FileITR/TaxSaving";
+import IncomeInterest from "@/ImportantComponent/IncomeSourcesComponent/IncomeInterest";
+import CapitalGainSubMain from "@/ImportantComponent/CaptialGainComponent/CapitalGainSubMain";
+import HousePropMain from "@/ImportantComponent/HousePropertyComponent/HousePropMain";
+import SelfProperty from "@/ImportantComponent/HousePropertyComponent/SelfProperty";
+import RentProperty from "@/ImportantComponent/HousePropertyComponent/RentProperty";
+import DividentIncome from "@/ImportantComponent/HousePropertyComponent/DividentComponent/DivdentIcome";
+import ProSubSection from "@/ImportantComponent/ProfessionBussinessIncome/ProfSubSection";
+import ProfessionalIncome from "@/ImportantComponent/ProfessionBussinessIncome/ProfessionalIncome";
+import BussinessIncome from "@/ImportantComponent/ProfessionBussinessIncome/BussinesIncome";
+import Main from "@/main/main";
+import ProfBussinessSection from "@/ImportantComponent/ProfessionBussinessIncome/ProffBussinessSection";
+import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/ProfitLoss";
+import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
+import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
+import { ReactNode } from "react";
+import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
+import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/DeprectationEntry";
+import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
+import ExemptIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/ExemptCom/ExempIncom";
+import AgriIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/AgriIncome";
+import BussinessFundIncome from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/BussinessFundncome";
+import TaxDeduction from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDeduction";
+import TaxDashboard from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDashboard";
+import Sliderbar from "@/Layout/Sidebar";
+import TaxDonation80G from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/TaxDonation80G";
+import DonationRurual from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationRurual";
+import DonationParty from "@/ImportantComponent/TaxSavingComponent/TaxDeduction/DonationParty";
+import TaxPaidSub from "@/ImportantComponent/TaxSavingComponent/TaxPaid/TaxPaidSub";
+import NonSalaryForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/NonSalaryForm";
+import TDSRentForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TDSRentForm";
+import TaxCollectedForm from "@/ImportantComponent/TaxSavingComponent/TaxPaid/Component/TaxCollectedForm";
+import TaxLossSub from "@/ImportantComponent/TaxSavingComponent/TaxLoss/TaxLossSub";
+import Form16Manually from "@/ImportantComponent/IncomeSourcesComponent/Form16Manually/Form16Manually";
+import UserDetailLayout from "@/utils/UserDetailLayout";
+import RequiredAuth from "@/route/RequiredAuth";
+import AdminDashboard from "@/pages/ImportantPage/AdminDashboard/AdminDashboard";
+import RequiredAdmin from "@/route/RequiredAdmin";
+import AllGSTData from "@/pages/ImportantPage/AdminDashboard/AllGstindata";
+import AdminDashboardLayout from "@/Layout/AdminDashboardLayout";
+import AdminUser from "@/pages/ImportantPage/AdminDashboard/AdminUser";
+import path from "path";
+import Wallet from "@/pages/Wallet/Wallet";
+import SmartITRFlow from "@/components/ITRFlow/SmartITRFlow";
+// import Layout from "../themes";
 
-import Layout from "../themes";
+interface LayoutProps {
+  children: ReactNode; // Define children type as ReactNode
+}
+
+function Layout({ children }: LayoutProps) {
+  return <div className="">{children}</div>;
+}
+
 
 function Router() {
   const routes = [
     {
       path: "/",
-      element: <Layout />,
+      element: <Main></Main>,
       children: [
         {
           path: "/",
-          element: <DashboardOverview1 />,
-        },
-        {
-          path: "dashboard-overview-2",
-          element: <DashboardOverview2 />,
-        },
-        {
-          path: "dashboard-overview-3",
-          element: <DashboardOverview3 />,
-        },
-        {
-          path: "dashboard-overview-4",
-          element: <DashboardOverview4 />,
-        },
-        {
-          path: "categories",
-          element: <Categories />,
-        },
-        {
-          path: "add-product",
-          element: <AddProduct />,
-        },
-        {
-          path: "product-list",
-          element: <ProductList />,
-        },
-        {
-          path: "product-grid",
-          element: <ProductGrid />,
-        },
-        {
-          path: "transaction-list",
-          element: <TransactionList />,
-        },
-        {
-          path: "transaction-detail",
-          element: <TransactionDetail />,
-        },
-        {
-          path: "seller-list",
-          element: <SellerList />,
-        },
-        {
-          path: "seller-detail",
-          element: <SellerDetail />,
-        },
-        {
-          path: "reviews",
-          element: <Reviews />,
-        },
-        {
-          path: "inbox",
-          element: <Inbox />,
-        },
-        {
-          path: "file-manager",
-          element: <FileManager />,
-        },
-        {
-          path: "point-of-sale",
-          element: <PointOfSale />,
-        },
-        {
-          path: "chat",
-          element: <Chat />,
-        },
-        {
-          path: "post",
-          element: <Post />,
-        },
-        {
-          path: "calendar",
-          element: <Calendar />,
-        },
-        {
-          path: "crud-data-list",
-          element: <CrudDataList />,
-        },
-        {
-          path: "crud-form",
-          element: <CrudForm />,
-        },
-        {
-          path: "users-layout-1",
-          element: <UsersLayout1 />,
-        },
-        {
-          path: "users-layout-2",
-          element: <UsersLayout2 />,
-        },
-        {
-          path: "users-layout-3",
-          element: <UsersLayout3 />,
-        },
-        {
-          path: "profile-overview-1",
-          element: <ProfileOverview1 />,
-        },
-        {
-          path: "profile-overview-2",
-          element: <ProfileOverview2 />,
-        },
-        {
-          path: "profile-overview-3",
-          element: <ProfileOverview3 />,
-        },
-        {
-          path: "wizard-layout-1",
-          element: <WizardLayout1 />,
-        },
-        {
-          path: "wizard-layout-2",
-          element: <WizardLayout2 />,
-        },
-        {
-          path: "wizard-layout-3",
-          element: <WizardLayout3 />,
-        },
-        {
-          path: "blog-layout-1",
-          element: <BlogLayout1 />,
-        },
-        {
-          path: "blog-layout-2",
-          element: <BlogLayout2 />,
-        },
-        {
-          path: "blog-layout-3",
-          element: <BlogLayout3 />,
-        },
-        {
-          path: "pricing-layout-1",
-          element: <PricingLayout1 />,
-        },
-        {
-          path: "pricing-layout-2",
-          element: <PricingLayout2 />,
-        },
-        {
-          path: "invoice-layout-1",
-          element: <InvoiceLayout1 />,
-        },
-        {
-          path: "invoice-layout-2",
-          element: <InvoiceLayout2 />,
-        },
-        {
-          path: "faq-layout-1",
-          element: <FaqLayout1 />,
-        },
-        {
-          path: "faq-layout-2",
-          element: <FaqLayout2 />,
-        },
-        {
-          path: "faq-layout-3",
-          element: <FaqLayout3 />,
-        },
-        {
-          path: "update-profile",
-          element: <UpdateProfile />,
-        },
-        {
-          path: "change-password",
-          element: <ChangePassword />,
-        },
-        {
-          path: "regular-table",
-          element: <RegularTable />,
-        },
-        {
-          path: "tabulator",
-          element: <Tabulator />,
-        },
-        {
-          path: "modal",
-          element: <Modal />,
-        },
-        {
-          path: "slideover",
-          element: <Slideover />,
-        },
-        {
-          path: "notification",
-          element: <Notification />,
-        },
-        {
-          path: "tab",
-          element: <Tab />,
-        },
-        {
-          path: "accordion",
-          element: <Accordion />,
-        },
-        {
-          path: "button",
-          element: <Button />,
-        },
-        {
-          path: "alert",
-          element: <Alert />,
-        },
-        {
-          path: "progress-bar",
-          element: <ProgressBar />,
-        },
-        {
-          path: "tooltip",
-          element: <Tooltip />,
-        },
-        {
-          path: "dropdown",
-          element: <Dropdown />,
-        },
-        {
-          path: "typography",
-          element: <Typography />,
-        },
-        {
-          path: "icon",
-          element: <Icon />,
-        },
-        {
-          path: "loading-icon",
-          element: <LoadingIcon />,
-        },
-        {
-          path: "regular-form",
-          element: <RegularForm />,
-        },
-        {
-          path: "datepicker",
-          element: <Datepicker />,
-        },
-        {
-          path: "tom-select",
-          element: <TomSelect />,
-        },
-        {
-          path: "file-upload",
-          element: <FileUpload />,
-        },
-        {
-          path: "wysiwyg-editor",
-          element: <WysiwygEditor />,
-        },
-        {
-          path: "validation",
-          element: <Validation />,
-        },
-        {
-          path: "chart",
-          element: <Chart />,
-        },
-        {
-          path: "slider",
-          element: <Slider />,
-        },
-        {
-          path: "image-zoom",
-          element: <ImageZoom />,
+          element: (
+            <Layout>
+              <HomePage />
+            </Layout>
+          ),
+        },
+        {
+          path: "/login",
+          element: (
+            <Layout>
+              <Login />
+            </Layout>
+          ),
+        },
+        {
+          path: "/register",
+          element: (
+            <Layout>
+              <Register />
+            </Layout>
+          ),
+        },
+        {
+          path: "/wallet",
+          element: (
+            <Layout>
+              <Wallet />
+            </Layout>
+          )
+        },
+        {
+          path: "/admin",
+          element: (
+
+            <RequiredAdmin>
+              <AdminDashboardLayout />
+            </RequiredAdmin>
+
+          ),
+          children: [
+            {
+              index: true, // this means /admin will load Dashboard by default
+              element: (
+                <RequiredAdmin>
+                  <AdminDashboard />
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "all-gst-data",
+              element: (
+
+                <RequiredAdmin>
+
+                  <AllGSTData />
+                </RequiredAdmin>
+
+              ),
+            },
+            {
+              path: "users",
+              element: (
+
+                <RequiredAdmin>
+
+                  <AdminUser />
+                </RequiredAdmin>
+
+              ),
+            },
+
+          ],
+        },
+        {
+          path: "/tes",
+          element: (
+            <Layout>
+              <FileUpload />
+            </Layout>
+          ),
         },
       ],
     },
     {
-      path: "/login",
-      element: <Login />,
+      path: "/fileITR",
+      element: <Main></Main>,
+      children: [
+        {
+          path: "",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <ITRMainPage />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "smart-flow/*",
+          element: (
+            <RequiredAuth>
+              <SmartITRFlow />
+            </RequiredAuth>
+          ),
+        },
+        {
+          path: "incomeSources/fill-detail",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources"
+              nextLink="/fileITR/incomeSources/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <Form16Manually />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "addPanCardDetail",
+          element: (
+            <Layout>
+              <RequiredAuth>
+                <AddPan />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "uploadForm16",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <UploadForm16 />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "personalDetail",
+          element: (
+            <Layout>
+              <RequiredAuth>
+                <PersonalDetail />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "incomeSources",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <IncomeSources />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "incomeSources/incomeInterest",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <IncomeInterest />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/capitalGain",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <CapitalGainSubMain />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/income-house-property",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <HousePropMain />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/self-occupied-property/:propertyIndex",
+          element: (
+            //   <UserDetailLayout
+            // backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            // >
+            <RequiredAuth>
+
+              <SelfProperty />
+            </RequiredAuth>
+            // </UserDetailLayout>
+
+          ),
+        },
+        {
+          path: "incomeSources/rental-property/:propertyIndex",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <RentProperty />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/dividend-income",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <DividentIncome />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/income-professional-freelancing-business",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <ProSubSection />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/professional-income",
+          element: (
+            // <UserDetailLayout
+            // backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            // >
+            <RequiredAuth>
+
+              <ProfessionalIncome />
+            </RequiredAuth>
+            // </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/bussiness-income",
+          element: (
+            // <Layout>
+            <RequiredAuth>
+
+              <BussinessIncome />
+            </RequiredAuth>
+            // </Layout>
+          ),
+        },
+        {
+          path: "incomeSources/book-of-account-dashboard",
+          element: (
+
+            <RequiredAuth>
+
+              <ProfBussinessSection />
+            </RequiredAuth>
+
+          ),
+        },
+        {
+          path: "profit-and-loss-boa",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <ProfitLoss />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "balance-sheet-boa",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <BalanceSheet />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "incomeSources/financial-particulars",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <FinanceSubSection />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "incomeSources/virtual-assets",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <VirtualAssestSubMain />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "incomeSources/other-income",
+          element: (
+            <UserDetailLayout
+              backLink="/fileITR/incomeSources" nextLink="/fileITR/incomeInterest"
+            >
+              <RequiredAuth>
+
+                <OtherIncomeSubSection />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "exempt-other-income",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <ExemptIncome />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "agri-income",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <AgriIncome />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "bussiness-fund",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <BussinessFundIncome />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "tax-summary",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <TaxSummary />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "add-deprectation",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <DeprectationEntry />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+      ],
     },
     {
-      path: "/register",
-      element: <Register />,
-    },
-    {
-      path: "/error-page",
-      element: <ErrorPage />,
-    },
-    {
-      path: "*",
-      element: <ErrorPage />,
+      path: "/tax-saving",
+      element: <Main></Main>,
+      children: [
+        {
+          path: "",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <TaxSaving />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "dashboard",
+          element: (
+            <UserDetailLayout
+              backLink="/tax-saving"
+              nextLink="/tax-saving"
+            >
+              <RequiredAuth>
+
+                <TaxDashboard />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "deduction-80g",
+          element: (
+            <UserDetailLayout
+              backLink="/tax-saving/dashboard"
+              nextLink="/tax-saving"
+            >
+              <RequiredAuth>
+
+                <TaxDonation80G />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "deduction-80gga",
+          element: (
+            <UserDetailLayout
+              backLink="/tax-saving/dashboard"
+              nextLink="/tax-saving"
+            >
+              <RequiredAuth>
+
+                <DonationRurual />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "contri-party",
+          element: (
+            <UserDetailLayout
+              backLink="/tax-saving/dashboard"
+              nextLink="/tax-saving"
+            >
+              <RequiredAuth>
+
+                <DonationParty />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "tds-nonsalary",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <NonSalaryForm />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "tds-rent",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <TDSRentForm />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+        {
+          path: "tax-paid",
+          element: (
+            <UserDetailLayout
+              backLink="/tax-saving"
+              nextLink="/tax-saving"
+            >
+              <RequiredAuth>
+
+                <TaxPaidSub />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "other-tax",
+          element: (
+            <UserDetailLayout
+              backLink="/tax-saving"
+              nextLink="/fileITR/tax-summary"
+            >
+              <RequiredAuth>
+
+                <TaxLossSub />
+              </RequiredAuth>
+            </UserDetailLayout>
+          ),
+        },
+        {
+          path: "tax-collected",
+          element: (
+            <Layout>
+              <RequiredAuth>
+
+                <TaxCollectedForm />
+              </RequiredAuth>
+            </Layout>
+          ),
+        },
+
+      ],
     },
   ];
 
@@ -365,3 +683,4 @@ function Router() {
 }
 
 export default Router;
+

@@ -1,0 +1,257 @@
+[2025-06-21T10:14:12.413Z] INFO: 🚀 Starting Phase 2: MongoDB to PostgreSQL Data Migration\n[2025-06-21T10:14:12.414Z] INFO: Configuration: {"batchSize":100,"dryRun":false,"continueOnError":false,"logLevel":"INFO","backupEnabled":true}\n[2025-06-21T10:14:13.068Z] INFO: Connected to MongoDB successfully\n[2025-06-21T10:14:13.329Z] INFO: 📋 Phase 2.1: Migrating core user data...\n[2025-06-21T10:14:13.330Z] INFO: Starting user migration...\n[2025-06-21T10:14:23.476Z] ERROR: User migration failed\n{
+  "error": "Operation `users.find()` buffering timed out after 10000ms"
+}\n[2025-06-21T10:14:23.477Z] ERROR: ❌ Phase 2 migration failed\n{
+  "error": "Operation `users.find()` buffering timed out after 10000ms"
+}\n[2025-06-21T10:14:23.484Z] INFO: Disconnected from MongoDB\n[2025-06-21T10:15:33.479Z] INFO: 🚀 Starting Phase 2: MongoDB to PostgreSQL Data Migration\n[2025-06-21T10:15:33.481Z] INFO: Configuration: {"batchSize":100,"dryRun":false,"continueOnError":false,"logLevel":"INFO","backupEnabled":true}\n[2025-06-21T10:15:34.144Z] INFO: Connected to MongoDB successfully\n[2025-06-21T10:15:34.416Z] INFO: 📋 Phase 2.1: Migrating core user data...\n[2025-06-21T10:15:34.416Z] INFO: Starting user migration...\n[2025-06-21T10:15:34.451Z] INFO: Found 12 users to migrate\n[2025-06-21T10:15:34.587Z] DEBUG: Migrated user: gautam14.hitesh@gmail.com\n[2025-06-21T10:15:34.656Z] DEBUG: Migrated user: farhan28mohammed@gmail.com\n[2025-06-21T10:15:34.721Z] DEBUG: Migrated user: vr00336699@gmail.com\n[2025-06-21T10:15:34.787Z] DEBUG: Migrated user: jus.like.tht@gmail.com\n[2025-06-21T10:15:34.857Z] DEBUG: Migrated user: mayurb4515@gmail.com\n[2025-06-21T10:15:34.923Z] DEBUG: Migrated user: lojelef390@bizatop.com\n[2025-06-21T10:15:34.988Z] DEBUG: Migrated user: asff0@bizatop.com\n[2025-06-21T10:15:35.055Z] DEBUG: Migrated user: mayurbhoyar4455@gmail.com\n[2025-06-21T10:15:35.122Z] DEBUG: Migrated user: gautam31.hitesh@gmail.com\n[2025-06-21T10:15:35.186Z] DEBUG: Migrated user: ruvientpl@gmail.com\n[2025-06-21T10:15:35.254Z] DEBUG: Migrated user: rungta.vivek@gmail.com\n[2025-06-21T10:15:35.319Z] DEBUG: Migrated user: pmdnawaz1@gmail.com\n[2025-06-21T10:15:35.320Z] INFO: User migration completed: 12/12 successful\n[2025-06-21T10:15:35.321Z] INFO: Starting personal details migration...\n[2025-06-21T10:15:35.353Z] INFO: Found 9 personal detail records to migrate\n[2025-06-21T10:15:35.420Z] ERROR: User not found for personal detail: 674083071f02e41d5e347c7f\n[2025-06-21T10:15:35.453Z] ERROR: User not found for personal detail: 6759b9e9f682b4752d83850d\n[2025-06-21T10:15:35.486Z] ERROR: User not found for personal detail: 6759bb8df682b4752d838575\n[2025-06-21T10:15:35.519Z] ERROR: User not found for personal detail: 6759bd05f682b4752d8385d0\n[2025-06-21T10:15:35.706Z] DEBUG: Migrated personal detail for user: 6761292cc02d49211c3f03b4\n[2025-06-21T10:15:35.833Z] ERROR: User not found for personal detail: 676e263558dc52781a57d364\n[2025-06-21T10:15:35.907Z] DEBUG: Migrated personal detail for user: 677e4e3f6c507a66df6b36bc\n[2025-06-21T10:15:35.984Z] DEBUG: Migrated personal detail for user: 67909c0f20485392db03445b\n[2025-06-21T10:15:36.017Z] ERROR: User not found for personal detail: 682c674ed12e1193e9c47960\n[2025-06-21T10:15:36.019Z] INFO: Personal details migration completed: 3/9 successful\n[2025-06-21T10:15:36.020Z] INFO: Starting contact details migration...\n[2025-06-21T10:15:36.053Z] INFO: Found 13 contact detail records to migrate\n[2025-06-21T10:15:36.123Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "67444cc9acd985fbf0828285",
+  "userId": "674083071f02e41d5e347c7f",
+  "aadharNumber": "434343434ere",
+  "panNumber": "2024-0232",
+  "mobileNumber": "918767732105",
+  "email": "",
+  "secondaryMobileNumber": "",
+  "secondaryEmail": "",
+  "landlineNumber": "",
+  "createdAt": "2024-11-25T10:09:13.666Z",
+  "updatedAt": "2024-12-20T06:56:45.449Z",
+  "__v": 0
+}\n[2025-06-21T10:15:36.124Z] ERROR: Contact details migration failed\n{
+  "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`"
+}\n[2025-06-21T10:15:36.124Z] ERROR: ❌ Phase 2 migration failed\n{
+  "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`"
+}\n[2025-06-21T10:15:36.130Z] INFO: Disconnected from MongoDB\n[2025-06-21T10:16:04.999Z] INFO: 🚀 Starting Phase 2: MongoDB to PostgreSQL Data Migration\n[2025-06-21T10:16:05.000Z] INFO: Configuration: {"batchSize":100,"dryRun":false,"continueOnError":true,"logLevel":"INFO","backupEnabled":true}\n[2025-06-21T10:16:05.580Z] INFO: Connected to MongoDB successfully\n[2025-06-21T10:16:06.083Z] INFO: 📋 Phase 2.1: Migrating core user data...\n[2025-06-21T10:16:06.083Z] INFO: Starting user migration...\n[2025-06-21T10:16:06.123Z] INFO: Found 12 users to migrate\n[2025-06-21T10:16:06.191Z] INFO: User already exists: gautam14.hitesh@gmail.com\n[2025-06-21T10:16:06.336Z] INFO: User already exists: farhan28mohammed@gmail.com\n[2025-06-21T10:16:06.369Z] INFO: User already exists: vr00336699@gmail.com\n[2025-06-21T10:16:06.401Z] INFO: User already exists: jus.like.tht@gmail.com\n[2025-06-21T10:16:06.434Z] INFO: User already exists: mayurb4515@gmail.com\n[2025-06-21T10:16:06.467Z] INFO: User already exists: lojelef390@bizatop.com\n[2025-06-21T10:16:06.501Z] INFO: User already exists: asff0@bizatop.com\n[2025-06-21T10:16:06.635Z] INFO: User already exists: mayurbhoyar4455@gmail.com\n[2025-06-21T10:16:06.670Z] INFO: User already exists: gautam31.hitesh@gmail.com\n[2025-06-21T10:16:06.701Z] INFO: User already exists: ruvientpl@gmail.com\n[2025-06-21T10:16:06.736Z] INFO: User already exists: rungta.vivek@gmail.com\n[2025-06-21T10:16:06.769Z] INFO: User already exists: pmdnawaz1@gmail.com\n[2025-06-21T10:16:06.769Z] INFO: User migration completed: 0/0 successful\n[2025-06-21T10:16:06.770Z] INFO: Starting personal details migration...\n[2025-06-21T10:16:06.809Z] INFO: Found 9 personal detail records to migrate\n[2025-06-21T10:16:06.968Z] ERROR: User not found for personal detail: 674083071f02e41d5e347c7f\n[2025-06-21T10:16:07.000Z] ERROR: User not found for personal detail: 6759b9e9f682b4752d83850d\n[2025-06-21T10:16:07.032Z] ERROR: User not found for personal detail: 6759bb8df682b4752d838575\n[2025-06-21T10:16:07.074Z] ERROR: User not found for personal detail: 6759bd05f682b4752d8385d0\n[2025-06-21T10:16:07.376Z] ERROR: Migration error in PersonalDetailsMigration: 
+Invalid `prisma.personalDetail.create()` invocation:
+
+
+Unique constraint failed on the fields: (`id`)\n{
+  "_id": "676692e825593356079b35fa",
+  "userId": "6761292cc02d49211c3f03b4",
+  "dob": "1985-10-05T00:00:00.000Z",
+  "createdAt": "2024-12-21T10:05:28.260Z",
+  "updatedAt": "2025-04-11T10:04:58.859Z",
+  "__v": 0,
+  "firstName": "VIVEK",
+  "lastName": "",
+  "middleName": "RUNGTA"
+}\n[2025-06-21T10:16:07.409Z] ERROR: User not found for personal detail: 676e263558dc52781a57d364\n[2025-06-21T10:16:07.557Z] ERROR: Migration error in PersonalDetailsMigration: 
+Invalid `prisma.personalDetail.create()` invocation:
+
+
+Unique constraint failed on the fields: (`id`)\n{
+  "_id": "677e4e5bdfb6b22acb6c60a7",
+  "userId": "677e4e3f6c507a66df6b36bc",
+  "dob": "2025-01-01T00:00:00.000Z",
+  "createdAt": "2025-01-08T10:07:23.363Z",
+  "updatedAt": "2025-01-08T10:08:48.463Z",
+  "__v": 0,
+  "firstName": "MOHAMMED",
+  "lastName": "",
+  "middleName": "FARHAN"
+}\n[2025-06-21T10:16:07.624Z] ERROR: Migration error in PersonalDetailsMigration: 
+Invalid `prisma.personalDetail.create()` invocation:
+
+
+Unique constraint failed on the fields: (`id`)\n{
+  "_id": "67909c5720485392db03446a",
+  "userId": "67909c0f20485392db03445b",
+  "dob": "0019-01-19T00:00:00.000Z",
+  "createdAt": "2025-01-22T07:20:55.153Z",
+  "updatedAt": "2025-01-22T07:21:07.395Z",
+  "__v": 0,
+  "firstName": "RAM",
+  "lastName": "SIKARIA",
+  "middleName": "NARESH"
+}\n[2025-06-21T10:16:07.657Z] ERROR: User not found for personal detail: 682c674ed12e1193e9c47960\n[2025-06-21T10:16:07.658Z] INFO: Personal details migration completed: 0/9 successful\n[2025-06-21T10:16:07.659Z] INFO: Starting contact details migration...\n[2025-06-21T10:16:07.696Z] INFO: Found 13 contact detail records to migrate\n[2025-06-21T10:16:07.763Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "67444cc9acd985fbf0828285",
+  "userId": "674083071f02e41d5e347c7f",
+  "aadharNumber": "434343434ere",
+  "panNumber": "2024-0232",
+  "mobileNumber": "918767732105",
+  "email": "",
+  "secondaryMobileNumber": "",
+  "secondaryEmail": "",
+  "landlineNumber": "",
+  "createdAt": "2024-11-25T10:09:13.666Z",
+  "updatedAt": "2024-12-20T06:56:45.449Z",
+  "__v": 0
+}\n[2025-06-21T10:16:07.853Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "6759b605ade7494a4709ea32",
+  "userId": "6759b5fcade7494a4709ea2c",
+  "panNumber": "2018-01-01",
+  "createdAt": "2024-12-11T15:55:49.530Z",
+  "updatedAt": "2024-12-11T15:56:03.275Z",
+  "__v": 0
+}\n[2025-06-21T10:16:07.889Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "6759b9f6f682b4752d838513",
+  "userId": "6759b9e9f682b4752d83850d",
+  "panNumber": "2024-12-03",
+  "createdAt": "2024-12-11T16:12:38.600Z",
+  "updatedAt": "2024-12-11T16:13:27.632Z",
+  "__v": 0,
+  "aadharNumber": "24242454",
+  "mobileNumber": "918767732105",
+  "email": "mayurbhoyar4455@gmail.com"
+}\n[2025-06-21T10:16:07.924Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "6759bad0f682b4752d838561",
+  "userId": "6759bac6f682b4752d83855b",
+  "panNumber": "2024-12-01",
+  "createdAt": "2024-12-11T16:16:16.120Z",
+  "updatedAt": "2024-12-11T16:16:19.000Z",
+  "__v": 0
+}\n[2025-06-21T10:16:07.962Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "6759bb96f682b4752d83857b",
+  "userId": "6759bb8df682b4752d838575",
+  "panNumber": "DFDFDFDFDF",
+  "createdAt": "2024-12-11T16:19:34.585Z",
+  "updatedAt": "2024-12-11T16:24:44.486Z",
+  "__v": 0,
+  "aadharNumber": "24242454",
+  "mobileNumber": "91825025"
+}\n[2025-06-21T10:16:07.995Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "6759bd2ef682b4752d8385da",
+  "userId": "6759bd05f682b4752d8385d0",
+  "panNumber": "3353352",
+  "createdAt": "2024-12-11T16:26:22.610Z",
+  "updatedAt": "2024-12-11T16:26:52.782Z",
+  "__v": 0,
+  "aadharNumber": "24242454",
+  "mobileNumber": "918767732105"
+}\n[2025-06-21T10:16:08.028Z] DEBUG: Migrated contact detail for user: 675ed54f55a74af24890c752\n[2025-06-21T10:16:08.062Z] DEBUG: Migrated contact detail for user: 6761292cc02d49211c3f03b4\n[2025-06-21T10:16:08.120Z] DEBUG: Migrated contact detail for user: 676be67fe28ac72c851f1b68\n[2025-06-21T10:16:08.156Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "6773d8526f11365451e6b77b",
+  "userId": "676e263558dc52781a57d364",
+  "aadharNumber": "434343432",
+  "panNumber": "FJTPB2736R",
+  "mobileNumber": "918767732105",
+  "email": "",
+  "secondaryMobileNumber": "9199227338",
+  "secondaryEmail": "",
+  "landlineNumber": "",
+  "createdAt": "2024-12-31T11:41:06.765Z",
+  "updatedAt": "2025-01-03T07:06:23.870Z",
+  "__v": 0
+}\n[2025-06-21T10:16:08.191Z] DEBUG: Migrated contact detail for user: 677e4e3f6c507a66df6b36bc\n[2025-06-21T10:16:08.227Z] DEBUG: Migrated contact detail for user: 67909c0f20485392db03445b\n[2025-06-21T10:16:08.260Z] ERROR: Migration error in ContactDetailsMigration: 
+Invalid `prisma.contactDetail.create()` invocation:
+
+
+Foreign key constraint violated on the constraint: `contact_details_userId_fkey`\n{
+  "_id": "682c676cd12e1193e9c47966",
+  "userId": "682c674ed12e1193e9c47960",
+  "panNumber": "CGTPN5148M",
+  "createdAt": "2025-05-20T11:28:44.433Z",
+  "updatedAt": "2025-05-20T11:31:45.088Z",
+  "__v": 0,
+  "aadharNumber": "",
+  "email": "pmdnawaz1@gmail.com"
+}\n[2025-06-21T10:16:08.261Z] INFO: Contact details migration completed: 5/13 successful\n[2025-06-21T10:16:08.262Z] INFO: 📊 Migration Report\n{
+  "migration": "Phase 2.1 - Core User Data",
+  "startTime": "2025-06-21T10:16:04.999Z",
+  "endTime": "2025-06-21T10:16:08.262Z",
+  "duration": "3s",
+  "statistics": {
+    "totalProcessed": 22,
+    "successful": 5,
+    "failed": 17,
+    "skipped": 12,
+    "successRate": "22.73%"
+  },
+  "errors": [
+    {
+      "context": "PersonalDetailsMigration",
+      "error": "\nInvalid `prisma.personalDetail.create()` invocation:\n\n\nUnique constraint failed on the fields: (`id`)",
+      "record": "676692e825593356079b35fa",
+      "timestamp": "2025-06-21T10:16:07.376Z"
+    },
+    {
+      "context": "PersonalDetailsMigration",
+      "error": "\nInvalid `prisma.personalDetail.create()` invocation:\n\n\nUnique constraint failed on the fields: (`id`)",
+      "record": "677e4e5bdfb6b22acb6c60a7",
+      "timestamp": "2025-06-21T10:16:07.557Z"
+    },
+    {
+      "context": "PersonalDetailsMigration",
+      "error": "\nInvalid `prisma.personalDetail.create()` invocation:\n\n\nUnique constraint failed on the fields: (`id`)",
+      "record": "67909c5720485392db03446a",
+      "timestamp": "2025-06-21T10:16:07.624Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "67444cc9acd985fbf0828285",
+      "timestamp": "2025-06-21T10:16:07.763Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759b605ade7494a4709ea32",
+      "timestamp": "2025-06-21T10:16:07.853Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759b9f6f682b4752d838513",
+      "timestamp": "2025-06-21T10:16:07.889Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759bad0f682b4752d838561",
+      "timestamp": "2025-06-21T10:16:07.924Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759bb96f682b4752d83857b",
+      "timestamp": "2025-06-21T10:16:07.962Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6759bd2ef682b4752d8385da",
+      "timestamp": "2025-06-21T10:16:07.995Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "6773d8526f11365451e6b77b",
+      "timestamp": "2025-06-21T10:16:08.156Z"
+    },
+    {
+      "context": "ContactDetailsMigration",
+      "error": "\nInvalid `prisma.contactDetail.create()` invocation:\n\n\nForeign key constraint violated on the constraint: `contact_details_userId_fkey`",
+      "record": "682c676cd12e1193e9c47966",
+      "timestamp": "2025-06-21T10:16:08.260Z"
+    }
+  ]
+}\n[2025-06-21T10:16:08.263Z] INFO: ✅ Phase 2.1 completed successfully\n[2025-06-21T10:16:08.270Z] INFO: Disconnected from MongoDB\n
