@@ -188,10 +188,11 @@ function HomePage() {
                 transition={{ delay: 0.2 }}
               >
                 <Link
-                  to={isUserLoggedIn ? "/fileITR" : "/register"}
-                  className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium shadow-lg hover:shadow-xl"
+                  to={isUserLoggedIn ? "/fileITR/smart-flow/assessment" : "/register"}
+                  className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium shadow-lg hover:shadow-xl flex items-center gap-2"
                 >
-                  Start Filing Now
+                  <Zap className="w-5 h-5" />
+                  Start Smart Filing Now
                 </Link>
                 <Link
                   to="#features"

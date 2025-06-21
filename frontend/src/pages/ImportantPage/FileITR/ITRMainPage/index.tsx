@@ -73,7 +73,8 @@ function Main() {
 
           <div className="mb-6">
           <p className="text-gray-600 mb-2 text-xl">Hi {userName}, it&apos;s a good day today to complete e-filing 😊</p>
-          <h2 className="text-2xl font-semibold text-gray-900">Let&apos;s finish the last few steps quickly</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Choose your filing method</h2>
+          <p className="text-gray-500 mt-2">We recommend our new Smart Filing for faster, more accurate results</p>
           </div>
 
           <div className="flex flex-col gap-4 mb-8">
@@ -108,25 +109,70 @@ function Main() {
           transition={{ duration: 0.5 }}
           >
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full">
-          <Link to="/fileITR/addPanCardDetail" className="flex-1">
-            <button className="w-full flex items-center bg-orange-500		 hover:bg-grey-500 text-white font-semibold py-4 px-6 rounded-md transition duration-300 ease-in-out">
-            <AlertCircle className="w-5 h-5 mr-2" />
-            Complete Your E-Filing →
-            </button>
-          </Link>
-          <Link to="/fileITR/addPanCardDetail" className="flex-1">
-            <button className="w-full flex items-center bg-dark  border hover:text-white hover:bg-blue text-white font-semibold py-4 px-6 rounded-md transition duration-300 ease-in-out">
-            <PlayCircle className="w-5 h-5 mr-2" />
-            Start a New Filing →
-            </button>
-          </Link>
-          <Link to="/fileITR/addPanCardDetail" className="flex-1">
-            <button className="w-full flex items-center bg-grey-200 border hover:text-white hover:bg-dark text-dark font-semibold py-4 px-6 rounded-md transition duration-300 ease-in-out">
-            <UserPlus className="w-5 h-5 mr-2" />
-            File for Family/Friend →
-            </button>
-          </Link>
+          {/* Smart Filing Option - Primary Recommendation */}
+          <div className="mb-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">
+                ⭐ RECOMMENDED
+              </div>
+              <div className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                NEW
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">🚀 Smart Filing</h3>
+            <p className="text-gray-600 mb-4">
+              AI-powered filing with document auto-fill, real-time tax calculation, and 20 minutes average completion time.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-sm">
+              <div className="flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Auto PAN verification</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Form 16 OCR scanning</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Real-time tax preview</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>ITR type recommendation</span>
+              </div>
+            </div>
+            <Link to="/fileITR/smart-flow/assessment" className="block">
+              <button className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition duration-300 ease-in-out shadow-lg">
+                <PlayCircle className="w-5 h-5 mr-2" />
+                Start Smart Filing (Recommended)
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </button>
+            </Link>
+          </div>
+
+          {/* Traditional Filing Options */}
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-700 mb-3">Or continue with traditional filing</h3>
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <Link to="/fileITR/addPanCardDetail" className="flex-1">
+                <button className="w-full flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-lg transition duration-300 ease-in-out">
+                  <AlertCircle className="w-4 h-4 mr-2" />
+                  Complete Your E-Filing
+                </button>
+              </Link>
+              <Link to="/fileITR/addPanCardDetail" className="flex-1">
+                <button className="w-full flex items-center justify-center bg-gray-700 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg transition duration-300 ease-in-out">
+                  <PlayCircle className="w-4 h-4 mr-2" />
+                  Start Manual Filing
+                </button>
+              </Link>
+              <Link to="/fileITR/addPanCardDetail" className="flex-1">
+                <button className="w-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 px-4 rounded-lg transition duration-300 ease-in-out">
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  File for Family/Friend
+                </button>
+              </Link>
+            </div>
           </div>
           </motion.div>
 

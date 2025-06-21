@@ -1,0 +1,588 @@
+// BurnBlack Tax Management Platform - Supabase Migration Schema
+// Generated based on migrationplan.md and existing MongoDB models
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("SUPABASE_DATABASE_URL")
+}
+
+// ========================================
+// ENUMS
+// ========================================
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum ITRType {
+  ITR1
+  ITR2
+  ITR3
+  ITR4
+}
+
+enum ITRStatus {
+  GENERATED
+  DOWNLOADED
+  FILED
+  PROCESSED
+}
+
+enum TransactionType {
+  CREDIT 
+  DEBIT
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+// ========================================
+// CORE USER MANAGEMENT
+// ========================================
+
+model User {
+  id                          String    @id @default(cuid())
+  name                        String
+  phone                       String?
+  email                       String    @unique
+  password                    String?
+  role                        Role      @default(USER)
+  emailVerified               Boolean   @default(false)
+  emailVerificationDate       DateTime?
+  lastVerificationEmailSent   DateTime?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+
+  // Relations to all user data
+  personalDetails             PersonalDetail?
+  contactDetails              ContactDetail?
+  bankDetails                 BankDetail?
+  addressDetails              AddressDetail?
+  form16Data                  Form16Data[]
+  properties                  Property[]
+  capitalGains                CapitalGain[]
+  businessIncome              BusinessIncome?
+  professionalIncome          ProfessionalIncome?
+  cryptoIncome                CryptoIncome[]
+  taxSavingInvestments        TaxSavingInvestment?
+  donations                   Donation[]
+  medicalInsurance            MedicalInsurance[]
+  taxPaid                     TaxPaid[]
+  interestIncome              InterestIncome[]
+  dividendIncome              DividendIncome[]
+  agriculturalIncome          AgriculturalIncome[]
+  exemptIncome                ExemptIncome[]
+  wallet                      Wallet?
+  itrGenerations              ITRGeneration[]
+  taxSummaries                TaxSummary[]
+  profitLoss                  ProfitLoss[]
+  balanceSheets               BalanceSheet[]
+  depreciationEntries         DepreciationEntry[]
+
+  @@map("users")
+}
+
+model PersonalDetail {
+  id            String         @id @default(cuid())
+  userId        String         @unique
+  firstName     String?
+  middleName    String?
+  lastName      String?
+  dob           DateTime?
+  gender        Gender?
+  maritalStatus MaritalStatus?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("personal_details")
+}
+
+model ContactDetail {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  email               String?
+  phone               String?
+  panNumber           String?
+  aadharNumber        String?
+  alternativeEmail    String?
+  alternativePhone    String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("contact_details")
+}
+
+model AddressDetail {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  flatNo       String?
+  premiseName  String?
+  road         String?
+  area         String?
+  pincode      String?
+  country      String?
+  state        String?
+  city         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("address_details")
+}
+
+model BankDetail {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  accountNumber     String?
+  ifscCode          String?
+  bankName          String?
+  accountType       String?
+  accountHolderName String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("bank_details")
+}
+
+// ========================================
+// INCOME SOURCES
+// ========================================
+
+model Form16Data {
+  id                            String   @id @default(cuid())
+  userId                        String
+  employerName                  String?
+  employerTAN                   String?
+  employerCategory              String?
+  totalTax                      Decimal? @db.Decimal(15, 2)
+  grossSalary                   Decimal? @db.Decimal(15, 2)
+  notifiedIncome                Decimal? @db.Decimal(15, 2)
+  salaryBreakup                 Json?
+  perquisitesAmount             Decimal? @db.Decimal(15, 2)
+  perquisites                   Json?
+  profitAmount                  Decimal? @db.Decimal(15, 2)
+  profitsInLieu                 Json?
+  notifiedCountry               Json?
+  notifiedIncomeOtherCountry    Decimal? @db.Decimal(15, 2)
+  previousYearIncomeTax         Decimal? @db.Decimal(15, 2)
+  exemptAllowance               Decimal? @db.Decimal(15, 2)
+  exemptAllowanceBreakup        Json?
+  balance                       Decimal? @db.Decimal(15, 2)
+  standardDeduction             Decimal? @db.Decimal(15, 2)
+  professionalTax               Decimal? @db.Decimal(15, 2)
+  reliefUnder89                 Decimal? @db.Decimal(15, 2)
+  incomeClaimed                 Decimal? @db.Decimal(15, 2)
+  address                       Json?
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("form16_data")
+}
+
+model Property {
+  id                    String   @id @default(cuid())
+  userId                String
+  propertyIndex         String?
+  propertyType          String?
+  netTaxableIncome      Decimal? @db.Decimal(15, 2)
+  houseAddress          Json?
+  ownerDetails          Json?
+  taxSavings            Json?
+  rentalIncomeDetails   Json?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("properties")
+}
+
+model CapitalGain {
+  id                String   @id @default(cuid())
+  userId            String
+  assetType         String?  // Stocks, Mutual Funds, Gold, etc.
+  assetSubType      String?
+  dateOfSale        DateTime?
+  dateOfPurchase    DateTime?
+  description       String?
+  salePrice         Decimal? @db.Decimal(15, 2)
+  transferExpenses  Decimal? @db.Decimal(15, 2)
+  purchasePrice     Decimal? @db.Decimal(15, 2)
+  sttPaid           Boolean  @default(false)
+  totalProfit       Decimal? @db.Decimal(15, 2)
+  indexationCost    Decimal? @db.Decimal(15, 2)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("capital_gains")
+}
+
+model InterestIncome {
+  id              String   @id @default(cuid())
+  userId          String
+  sourceType      String?  // Savings, FD, etc.
+  bankName        String?
+  accountNumber   String?
+  interestAmount  Decimal? @db.Decimal(15, 2)
+  tdsDeducted     Decimal? @db.Decimal(15, 2)
+  financialYear   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("interest_income")
+}
+
+model DividendIncome {
+  id              String    @id @default(cuid())
+  userId          String
+  companyName     String?
+  dividendAmount  Decimal?  @db.Decimal(15, 2)
+  taxDeducted     Decimal?  @db.Decimal(15, 2)
+  dateReceived    DateTime?
+  shareQuantity   Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dividend_income")
+}
+
+// ========================================
+// BUSINESS & PROFESSIONAL INCOME
+// ========================================
+
+model BusinessIncome {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  businessName          String?
+  businessType          String?
+  businessAddress       String?
+  grossReceipts         Decimal? @db.Decimal(15, 2)
+  totalIncome           Decimal? @db.Decimal(15, 2)
+  businessExpenses      Decimal? @db.Decimal(15, 2)
+  netProfit             Decimal? @db.Decimal(15, 2)
+  depreciationClaimed   Decimal? @db.Decimal(15, 2)
+  presumptiveIncome     Decimal? @db.Decimal(15, 2)
+  section44AD           Boolean  @default(false)
+  section44AE           Boolean  @default(false)
+  auditRequired         Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profitLoss      ProfitLoss[]
+  balanceSheet    BalanceSheet[]
+  depreciation    DepreciationEntry[]
+
+  @@map("business_income")
+}
+
+model ProfessionalIncome {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  professionType        String?
+  grossReceipts         Decimal? @db.Decimal(15, 2)
+  totalExpenses         Decimal? @db.Decimal(15, 2)
+  netProfit             Decimal? @db.Decimal(15, 2)
+  section44ADA          Boolean  @default(false)
+  presumptiveIncome     Decimal? @db.Decimal(15, 2)
+  auditRequired         Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("professional_income")
+}
+
+model ProfitLoss {
+  id               String   @id @default(cuid())
+  userId           String
+  businessIncomeId String?
+  year             String?
+  income           Json?    // {businessIncome, otherIncome, totalIncome}
+  expenses         Json?    // {directExpenses, indirectExpenses, depreciation, totalExpenses}
+  netProfit        Decimal? @db.Decimal(15, 2)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessIncome BusinessIncome? @relation(fields: [businessIncomeId], references: [id], onDelete: Cascade)
+
+  @@map("profit_loss")
+}
+
+model BalanceSheet {
+  id               String   @id @default(cuid())
+  userId           String
+  businessIncomeId String?
+  year             String?
+  assets           Json?    // {fixedAssets, currentAssets, totalAssets}
+  liabilities      Json?    // {capital, currentLiabilities, totalLiabilities}
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessIncome BusinessIncome? @relation(fields: [businessIncomeId], references: [id], onDelete: Cascade)
+
+  @@map("balance_sheets")
+}
+
+model DepreciationEntry {
+  id                      String   @id @default(cuid())
+  userId                  String
+  businessIncomeId        String?
+  assetName               String?
+  assetCategory           String?
+  purchaseDate            DateTime?
+  purchaseCost            Decimal? @db.Decimal(15, 2)
+  depreciationRate        Decimal? @db.Decimal(5, 2)
+  accumulatedDepreciation Decimal? @db.Decimal(15, 2)
+  writtenDownValue        Decimal? @db.Decimal(15, 2)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessIncome BusinessIncome? @relation(fields: [businessIncomeId], references: [id], onDelete: Cascade)
+
+  @@map("depreciation_entries")
+}
+
+// ========================================
+// VIRTUAL ASSETS & OTHER INCOME
+// ========================================
+
+model CryptoIncome {
+  id              String    @id @default(cuid())
+  userId          String
+  assetType       String?   // Cryptocurrency, NFT
+  coinName        String?
+  purchaseDate    DateTime?
+  saleDate        DateTime?
+  purchasePrice   Decimal?  @db.Decimal(15, 2)
+  salePrice       Decimal?  @db.Decimal(15, 2)
+  quantity        Decimal?  @db.Decimal(15, 8)
+  exchangeName    String?
+  transactionHash String?
+  profit          Decimal?  @db.Decimal(15, 2)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("crypto_income")
+}
+
+model AgriculturalIncome {
+  id            String   @id @default(cuid())
+  userId        String
+  landArea      Decimal? @db.Decimal(10, 2)
+  location      String?
+  cropType      String?
+  annualIncome  Decimal? @db.Decimal(15, 2)
+  expenses      Decimal? @db.Decimal(15, 2)
+  netIncome     Decimal? @db.Decimal(15, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("agricultural_income")
+}
+
+model ExemptIncome {
+  id          String   @id @default(cuid())
+  userId      String
+  incomeType  String?
+  description String?
+  amount      Decimal? @db.Decimal(15, 2)
+  section     String?  // Section under which exempt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("exempt_income")
+}
+
+// ========================================
+// TAX SAVING & DEDUCTIONS
+// ========================================
+
+model TaxSavingInvestment {
+  id                         String   @id @default(cuid())
+  userId                     String   @unique
+  section80C                 Decimal  @default(0) @db.Decimal(15, 2)
+  savingsInterest80TTA       Decimal  @default(0) @db.Decimal(15, 2)
+  pensionContribution80CCC   Decimal  @default(0) @db.Decimal(15, 2)
+  npsEmployeeContribution    Decimal  @default(0) @db.Decimal(15, 2)
+  npsEmployerContribution    Decimal  @default(0) @db.Decimal(15, 2)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tax_saving_investments")
+}
+
+model Donation {
+  id                    String   @id @default(cuid())
+  userId                String
+  organizationName      String?
+  donationType          String?
+  amount                Decimal? @db.Decimal(15, 2)
+  date                  DateTime?
+  receiptNumber         String?
+  eligibleAmount        Decimal? @db.Decimal(15, 2)
+  deductionPercentage   Decimal? @db.Decimal(5, 2)
+  section               String?  // 80G, 80GGA, etc.
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("donations")
+}
+
+model MedicalInsurance {
+  id                String   @id @default(cuid())
+  userId            String
+  policyType        String?
+  insuredPersons    String?
+  premiumPaid       Decimal? @db.Decimal(15, 2)
+  eligibleAmount    Decimal? @db.Decimal(15, 2)
+  policyNumber      String?
+  insuranceCompany  String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("medical_insurance")
+}
+
+model TaxPaid {
+  id            String    @id @default(cuid())
+  userId        String
+  taxType       String?   // TDS, Advance Tax, Self Assessment
+  amount        Decimal?  @db.Decimal(15, 2)
+  date          DateTime?
+  challanNumber String?
+  bankName      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tax_paid")
+}
+
+// ========================================
+// FINANCIAL MANAGEMENT
+// ========================================
+
+model Wallet {
+  id           String              @id @default(cuid())
+  userId       String              @unique
+  balance      Decimal             @default(0) @db.Decimal(15, 2)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  transactions WalletTransaction[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("wallets")
+}
+
+model WalletTransaction {
+  id                 String            @id @default(cuid())
+  walletId           String
+  transactionType    TransactionType
+  amount             Decimal           @db.Decimal(15, 2)
+  description        String?
+  razorpayPaymentId  String?
+  razorpayOrderId    String?
+  status             TransactionStatus @default(PENDING)
+  timestamp          DateTime          @default(now())
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@map("wallet_transactions")
+}
+
+// ========================================
+// ITR GENERATION & TAX SUMMARY
+// ========================================
+
+model ITRGeneration {
+  id             String    @id @default(cuid())
+  userId         String
+  itrType        ITRType
+  assessmentYear String
+  fileName       String
+  checksum       String    @unique
+  jsonData       Json
+  status         ITRStatus @default(GENERATED)
+  generatedAt    DateTime  @default(now())
+  downloadedAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("itr_generations")
+}
+
+model TaxSummary {
+  id               String    @id @default(cuid())
+  userId           String
+  assessmentYear   String?
+  totalIncome      Decimal?  @db.Decimal(15, 2)
+  totalDeductions  Decimal?  @db.Decimal(15, 2)
+  taxableIncome    Decimal?  @db.Decimal(15, 2)
+  taxLiability     Decimal?  @db.Decimal(15, 2)
+  taxPaid          Decimal?  @db.Decimal(15, 2)
+  refundAmount     Decimal?  @db.Decimal(15, 2)
+  filingStatus     String?
+  filingDate       DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tax_summaries")
+}
+

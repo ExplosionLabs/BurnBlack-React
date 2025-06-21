@@ -3,6 +3,9 @@ import { handleApiError } from '../utils/errorHandler';
 
 interface PaginationParams {
   page: number;
+  limit: number;
+}
+
 class AdminService {
   private api = axios.create({
     baseURL: `${API_BASE_URL}/admin`,

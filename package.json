@@ -2,10 +2,18 @@
   "name": "burnblack",
   "version": "1.0.0",
   "description": "BurnBlack Tax Platform",
+  "type": "module",
   "scripts": {
     "start": "cd backend && npm start",
     "dev": "cd backend && npm run dev",
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "test": "cd backend && npm test"
+    "test": "cd backend && npm test",
+    "migrate": "node migrate-schema.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "@supabase/supabase-js": "^2.50.0",
+    "dotenv": "^16.5.0",
+    "prisma": "^6.10.1"
   }
-} 
+}

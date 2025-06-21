@@ -117,6 +117,7 @@ import AdminDashboardLayout from "@/Layout/AdminDashboardLayout";
 import AdminUser from "@/pages/ImportantPage/AdminDashboard/AdminUser";
 import path from "path";
 import Wallet from "@/pages/Wallet/Wallet";
+import SmartITRFlow from "@/components/ITRFlow/SmartITRFlow";
 // import Layout from "../themes";
 
 interface LayoutProps {
@@ -232,6 +233,14 @@ function Router() {
                 <ITRMainPage />
               </RequiredAuth>
             </Layout>
+          ),
+        },
+        {
+          path: "smart-flow/*",
+          element: (
+            <RequiredAuth>
+              <SmartITRFlow />
+            </RequiredAuth>
           ),
         },
         {
