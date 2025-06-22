@@ -28,7 +28,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store", "prop-types"],
+    include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store", "prop-types", "react-is"],
     force: true,
     esbuildOptions: {
       define: {
@@ -48,7 +48,7 @@ export default defineConfig({
         new URL("./tailwind.config.js", import.meta.url)
       ),
     },
-    dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux', 'prop-types'],
+    dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux', 'prop-types', 'react-is'],
   },
   define: {
     global: 'globalThis',
