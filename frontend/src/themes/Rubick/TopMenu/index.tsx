@@ -1,5 +1,5 @@
+import React, { useState, useEffect, Fragment } from "react";
 import "@/assets/css/themes/rubick/top-nav.css";
-import { useState, useEffect, Fragment } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { selectMenu } from "@/stores/menuSlice";
 import { useAppSelector } from "@/stores/hooks";

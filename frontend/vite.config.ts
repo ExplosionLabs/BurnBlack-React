@@ -14,20 +14,20 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      external: [],
       output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
-            }
-            return 'vendor';
-          }
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react/jsx-runtime'],
+          'redux-vendor': ['react-redux', '@reduxjs/toolkit'],
+          'ui-vendor': ['@mui/material', '@emotion/react', '@emotion/styled'],
+          'chart-vendor': ['chart.js', 'react-chartjs-2'],
+          'vendor': ['axios', 'lodash.debounce', 'date-fns', 'framer-motion']
         }
       }
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-redux', '@reduxjs/toolkit', 'use-sync-external-store']
+    include: ['react', 'react-dom', 'react/jsx-runtime', 'react-redux', '@reduxjs/toolkit', 'use-sync-external-store']
   },
   plugins: [
     react({
@@ -45,5 +45,8 @@ export default defineConfig({
   define: {
     global: 'globalThis',
     'process.env': {},
+  },
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
   }
 });
