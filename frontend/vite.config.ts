@@ -8,6 +8,10 @@ export default defineConfig({
     host: 'localhost',
     port: 3000,
   },
+  preview: {
+    port: 4173,
+    host: 'localhost',
+  },
   build: {
     rollupOptions: {
       output: {
