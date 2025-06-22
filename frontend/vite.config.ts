@@ -16,11 +16,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         format: 'es',
-        globals: {
-          'react': 'React',
-          'react-dom': 'ReactDOM',
-          'prop-types': 'PropTypes'
-        },
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
@@ -53,7 +48,7 @@ export default defineConfig({
         new URL("./tailwind.config.js", import.meta.url)
       ),
     },
-    dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux'],
+    dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux', 'prop-types'],
   },
   define: {
     global: 'globalThis',
