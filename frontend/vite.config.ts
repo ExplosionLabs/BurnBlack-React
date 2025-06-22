@@ -42,7 +42,7 @@ export default defineConfig({
   },
   plugins: [
     react({
-      jsxRuntime: 'automatic'
+      jsxRuntime: 'classic'
     })
   ],
   resolve: {
@@ -51,7 +51,6 @@ export default defineConfig({
       "tailwind-config": fileURLToPath(
         new URL("./tailwind.config.js", import.meta.url)
       ),
-      "react": fileURLToPath(new URL("./src/react-shim.ts", import.meta.url)),
     },
     dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux'],
   },

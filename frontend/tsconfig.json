@@ -15,13 +15,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
+    "jsx": "react",
     "paths": {
-      "@/*": ["./src/*"],
-      "react": ["./src/react-shim"],
-      "react-dom": ["./node_modules/react-dom"],
-      "react-router-dom": ["./node_modules/react-router-dom"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],

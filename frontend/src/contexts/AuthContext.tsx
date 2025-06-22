@@ -1,4 +1,4 @@
-import React from '../react-shim';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { API_BASE_URL, SESSION } from '../config';
@@ -25,15 +25,15 @@ interface AuthContextType {
   refreshToken: () => Promise<void>;
 }
 
-const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = React.useState<User | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { showNotification } = useNotification();
 
   const api = axios.create({
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   // Add auth token to requests
-  const setAuthToken = React.useCallback((token: string | null) => {
+  const setAuthToken = useCallback((token: string | null) => {
     if (token) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       localStorage.setItem(SESSION.TOKEN_KEY, token);
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   // Load user from token
-  const loadUser = React.useCallback(async () => {
+  const loadUser = useCallback(async () => {
     const token = localStorage.getItem(SESSION.TOKEN_KEY);
     if (!token) {
       setIsLoading(false);
@@ -87,12 +87,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [setAuthToken, showNotification]);
 
   // Initialize auth state
-  React.useEffect(() => {
+  useEffect(() => {
     loadUser();
   }, [loadUser]);
 
   // Set up token refresh
-  React.useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem(SESSION.TOKEN_KEY);
     if (!token) return;
 
@@ -216,7 +216,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 };
 
 export const useAuth = () => {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
