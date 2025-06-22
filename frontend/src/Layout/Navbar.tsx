@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown, Share2, Menu, Wallet, X, Shield } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { RootState } from '@/stores/store';

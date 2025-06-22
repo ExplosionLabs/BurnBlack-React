@@ -19,7 +19,6 @@ import {
   HelpCircle
 } from 'lucide-react';
 import heroImage from "../../../assets/images/hero-illustration.svg";
-import { useState } from "react";
 
 const features = [
   {

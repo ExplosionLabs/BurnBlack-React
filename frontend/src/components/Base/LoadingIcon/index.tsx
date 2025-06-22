@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { selectDarkMode } from "@/stores/darkModeSlice";
 import { useAppSelector } from "@/stores/hooks";
 
