@@ -1,23 +1,34 @@
 import { fileURLToPath, URL } from "node:url";
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: 'localhost', // Specify the host
-    port: 3000,        // Specify the port
+    host: 'localhost',
+    port: 3000,
   },
   build: {
     commonjsOptions: {
       include: ["tailwind.config.js", "node_modules/**"],
     },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+        }
+      }
+    }
   },
   optimizeDeps: {
-    include: ["tailwind-config"],
+    include: ["tailwind-config", "react", "react-dom", "react-router-dom"],
   },
-  plugins: [react()],
+  plugins: [
+    react({
+      jsxRuntime: 'automatic'
+    })
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -25,5 +36,9 @@ export default defineConfig({
         new URL("./tailwind.config.js", import.meta.url)
       ),
     },
+    dedupe: ['react', 'react-dom'],
+  },
+  define: {
+    global: 'globalThis',
   },
 });
