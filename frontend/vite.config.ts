@@ -9,13 +9,8 @@ export default defineConfig({
     port: 3000,
   },
   build: {
-    commonjsOptions: {
-      include: ["tailwind.config.js", "node_modules/**"],
-      transformMixedEsModules: true,
-    },
     rollupOptions: {
       output: {
-        format: 'es',
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
@@ -27,19 +22,8 @@ export default defineConfig({
       }
     }
   },
-  optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store", "prop-types", "react-is"],
-    force: true,
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
-      },
-    },
-  },
   plugins: [
-    react({
-      jsxRuntime: 'classic'
-    })
+    react()
   ],
   resolve: {
     alias: {
@@ -48,10 +32,8 @@ export default defineConfig({
         new URL("./tailwind.config.js", import.meta.url)
       ),
     },
-    dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux', 'prop-types', 'react-is'],
   },
   define: {
     global: 'globalThis',
-    'process.env.NODE_ENV': '"production"',
   }
 });
