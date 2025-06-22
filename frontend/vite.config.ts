@@ -22,7 +22,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ["tailwind-config", "react", "react-dom", "react-router-dom"],
+    include: ["tailwind-config", "react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store"],
   },
   plugins: [
     react({
@@ -36,7 +36,7 @@ export default defineConfig({
         new URL("./tailwind.config.js", import.meta.url)
       ),
     },
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'use-sync-external-store'],
   },
   define: {
     global: 'globalThis',
