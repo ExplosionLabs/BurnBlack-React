@@ -1,12 +1,13 @@
 {
-  "name": "midone-react",
-  "version": "0.0.0",
+  "name": "burnblack-frontend",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^40.2.0",
