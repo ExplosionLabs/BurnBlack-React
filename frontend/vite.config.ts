@@ -16,6 +16,7 @@ export default defineConfig({
     rollupOptions: {
       external: [],
       output: {
+        format: 'es',
         manualChunks: {
           react: ['react', 'react-dom'],
           router: ['react-router-dom'],
@@ -24,12 +25,17 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ["tailwind-config", "react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store"],
+    include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store"],
     force: true,
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+    },
   },
   plugins: [
     react({
-      jsxRuntime: 'automatic',
+      jsxRuntime: 'classic',
       jsxImportSource: 'react'
     })
   ],
@@ -39,13 +45,12 @@ export default defineConfig({
       "tailwind-config": fileURLToPath(
         new URL("./tailwind.config.js", import.meta.url)
       ),
-      "react": "react",
-      "react-dom": "react-dom"
     },
-    dedupe: ['react', 'react-dom', 'use-sync-external-store'],
+    dedupe: ['react', 'react-dom'],
   },
   define: {
     global: 'globalThis',
+    'process.env.NODE_ENV': '"production"',
   },
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' }

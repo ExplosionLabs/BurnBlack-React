@@ -1,7 +1,5 @@
-import React from 'react';
-import * as ReactRouterDOM from 'react-router-dom';
-
-const { BrowserRouter: Router, Routes, Route } = ReactRouterDOM;
+import * as React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { AuthProvider } from './contexts/AuthContext';
 import AppRoutes from './routes';
