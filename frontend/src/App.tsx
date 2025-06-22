@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from './react-shim';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { AuthProvider } from './contexts/AuthContext';

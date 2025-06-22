@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "../../react-shim";
 import { useLocation } from "react-router-dom";
 
 function ScrollToTop() {

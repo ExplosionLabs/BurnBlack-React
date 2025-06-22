@@ -14,12 +14,19 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     rollupOptions: {
-      external: [],
       output: {
         format: 'es',
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          router: ['react-router-dom'],
+        globals: {
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+        },
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            return 'vendor';
+          }
         }
       }
     }
@@ -35,8 +42,7 @@ export default defineConfig({
   },
   plugins: [
     react({
-      jsxRuntime: 'classic',
-      jsxImportSource: 'react'
+      jsxRuntime: 'automatic'
     })
   ],
   resolve: {
@@ -45,14 +51,12 @@ export default defineConfig({
       "tailwind-config": fileURLToPath(
         new URL("./tailwind.config.js", import.meta.url)
       ),
+      "react": fileURLToPath(new URL("./src/react-shim.ts", import.meta.url)),
     },
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', 'react-router-dom', 'react-redux'],
   },
   define: {
     global: 'globalThis',
     'process.env.NODE_ENV': '"production"',
-  },
-  esbuild: {
-    logOverride: { 'this-is-undefined-in-esm': 'silent' }
   }
 });

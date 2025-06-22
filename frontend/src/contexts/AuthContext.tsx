@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from '../react-shim';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { API_BASE_URL, SESSION } from '../config';
