@@ -4,7 +4,7 @@ import { getColor } from "@/utils/colors";
 import { selectColorScheme } from "@/stores/colorSchemeSlice";
 import { selectDarkMode } from "@/stores/darkModeSlice";
 import { useAppSelector } from "@/stores/hooks";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { randomNumbers } from "@/utils/helper";
 
 interface MainProps extends React.ComponentPropsWithoutRef<"canvas"> {

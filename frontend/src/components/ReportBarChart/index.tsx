@@ -4,7 +4,7 @@ import { getColor } from "@/utils/colors";
 import { selectColorScheme } from "@/stores/colorSchemeSlice";
 import { selectDarkMode } from "@/stores/darkModeSlice";
 import { useAppSelector } from "@/stores/hooks";
-import { useMemo, useEffect, useRef } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 
 interface MainProps extends React.ComponentPropsWithoutRef<"canvas"> {
   width?: number | "auto";

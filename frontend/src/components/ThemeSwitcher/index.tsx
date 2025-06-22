@@ -8,7 +8,7 @@ import { selectTheme, setTheme, setLayout, Themes } from "@/stores/themeSlice";
 import { selectDarkMode, setDarkMode } from "@/stores/darkModeSlice";
 import { Slideover } from "@/components/Base/Headless";
 import Lucide from "@/components/Base/Lucide";
-import { useState } from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 
 function Main() {

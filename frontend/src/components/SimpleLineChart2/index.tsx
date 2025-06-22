@@ -3,7 +3,7 @@ import { ChartData, ChartOptions } from "chart.js/auto";
 import { getColor } from "@/utils/colors";
 import { selectColorScheme } from "@/stores/colorSchemeSlice";
 import { useAppSelector } from "@/stores/hooks";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 interface MainProps extends React.ComponentPropsWithoutRef<"canvas"> {
   width?: number | "auto";
