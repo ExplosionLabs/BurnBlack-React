@@ -8,6 +8,11 @@ import Router from "./router";
 import "./assets/css/app.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+// Ensure React is globally available for hooks
+if (typeof window !== 'undefined') {
+  (window as any).React = React;
+}
+
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "fallback-client-id";
 const container = document.getElementById("root")!;
 const root = createRoot(container);

@@ -89,7 +89,7 @@ import ProfBussinessSection from "@/ImportantComponent/ProfessionBussinessIncome
 import ProfitLoss from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/ProfitLoss";
 import FinanceSubSection from "@/ImportantComponent/FinancialParticular/FinanceSubSection";
 import BalanceSheet from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/BalanceSheet";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import VirtualAssestSubMain from "@/ImportantComponent/VirtualAsssetComponent/VirtualAssestSubMain";
 import DeprectationEntry from "@/ImportantComponent/ProfessionBussinessIncome/AccountMaintain/DeprectationEntry";
 import OtherIncomeSubSection from "@/ImportantComponent/HousePropertyComponent/OtherIncomeComponent/OtherIncomeSubSection";
