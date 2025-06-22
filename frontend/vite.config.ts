@@ -19,6 +19,7 @@ export default defineConfig({
         globals: {
           'react': 'React',
           'react-dom': 'ReactDOM',
+          'prop-types': 'PropTypes'
         },
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
@@ -32,7 +33,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store"],
+    include: ["react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store", "prop-types"],
     force: true,
     esbuildOptions: {
       define: {
