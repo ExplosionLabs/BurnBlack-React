@@ -30,7 +30,9 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-redux', '@reduxjs/toolkit', 'use-sync-external-store']
   },
   plugins: [
-    react()
+    react({
+      jsxRuntime: 'automatic'
+    })
   ],
   resolve: {
     alias: {

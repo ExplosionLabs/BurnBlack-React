@@ -7,12 +7,6 @@ import { store } from "./stores/store";
 import Router from "./router";
 import "./assets/css/app.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
-
-// Ensure React has useSyncExternalStore
-if (!React.useSyncExternalStore) {
-  (React as any).useSyncExternalStore = useSyncExternalStore;
-}
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "fallback-client-id";
 const container = document.getElementById("root")!;
