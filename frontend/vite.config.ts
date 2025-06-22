@@ -11,8 +11,10 @@ export default defineConfig({
   build: {
     commonjsOptions: {
       include: ["tailwind.config.js", "node_modules/**"],
+      transformMixedEsModules: true,
     },
     rollupOptions: {
+      external: [],
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
@@ -23,10 +25,12 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ["tailwind-config", "react", "react-dom", "react-router-dom", "react-redux", "@reduxjs/toolkit", "use-sync-external-store"],
+    force: true,
   },
   plugins: [
     react({
-      jsxRuntime: 'automatic'
+      jsxRuntime: 'automatic',
+      jsxImportSource: 'react'
     })
   ],
   resolve: {
@@ -35,10 +39,15 @@ export default defineConfig({
       "tailwind-config": fileURLToPath(
         new URL("./tailwind.config.js", import.meta.url)
       ),
+      "react": "react",
+      "react-dom": "react-dom"
     },
     dedupe: ['react', 'react-dom', 'use-sync-external-store'],
   },
   define: {
     global: 'globalThis',
   },
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  }
 });

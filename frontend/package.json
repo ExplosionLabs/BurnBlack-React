@@ -102,11 +102,20 @@
   "resolutions": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "use-sync-external-store": "1.2.0"
+    "use-sync-external-store": "1.2.0",
+    "react-router-dom": "6.21.1"
   },
   "overrides": {
-    "react": "18.2.0",
+    "react": "18.2.0", 
     "react-dom": "18.2.0",
-    "use-sync-external-store": "1.2.0"
+    "use-sync-external-store": "1.2.0",
+    "react-router-dom": "6.21.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "18.2.0",
+      "react-dom": "18.2.0",
+      "use-sync-external-store": "1.2.0"
+    }
   }
 }

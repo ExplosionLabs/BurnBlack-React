@@ -1,5 +1,7 @@
+import React from "react";
 import { useLocation } from "react-router-dom";
-import React, { useEffect } from "react";
+
+const { useEffect } = React;
 
 function ScrollToTop() {
   const location = useLocation();

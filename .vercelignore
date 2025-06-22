@@ -1,0 +1,31 @@
+# Ignore backend directory for frontend deployment
+backend/
+
+# Ignore archive and documentation
+archive/
+docs/
+COMPREHENSIVE_APPLICATION_DOCUMENTATION.md
+MISSING_FEATURES_ANALYSIS.md
+PLATFORM_UPGRADE_PLAN.md
+migrationplan.md
+
+# Ignore development files
+.env.local
+.env.development
+.env.test
+*.log
+node_modules/
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Other files
+README.md
+.DS_Store

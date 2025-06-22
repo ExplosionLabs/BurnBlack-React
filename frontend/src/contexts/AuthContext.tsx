@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React from 'react';
+
+const { createContext, useContext, useState, useEffect, useCallback } = React;
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { API_BASE_URL, SESSION } from '../config';
