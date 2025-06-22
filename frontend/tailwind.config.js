@@ -1,6 +1,6 @@
-const plugin = require("tailwindcss/plugin");
-const colors = require("tailwindcss/colors");
-const { parseColor } = require("tailwindcss/lib/util/color");
+import plugin from "tailwindcss/plugin";
+import colors from "tailwindcss/colors";
+import { parseColor } from "tailwindcss/lib/util/color";
 
 /** Converts HEX color to RGB */
 const toRGB = (value) => {
@@ -10,6 +10,10 @@ const toRGB = (value) => {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  fontFamily: {
+    mentra: ["mentra", "sans-serif"],
+    poppins: ["Poppins", "sans-serif"],
+  },
   darkMode: "class",
   theme: {
     extend: {
@@ -71,6 +75,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("tailwind-scrollbar-hide"),
     require("@tailwindcss/forms"),
     plugin(function ({ addBase, matchUtilities }) {
       addBase({
