@@ -22,6 +22,9 @@ export default defineConfig({
       }
     }
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-redux', '@reduxjs/toolkit', 'use-sync-external-store']
+  },
   plugins: [
     react()
   ],
