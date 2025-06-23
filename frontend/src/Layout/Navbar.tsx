@@ -41,19 +41,15 @@ const adminNavigation = [
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const selectIsUserLoggedIn = (state: RootState) => state.user.user !== null;
-  const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
-  const selectUserData = (state: RootState) => state.user.user;
-  const userData = useSelector(selectUserData);
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const { user, signOut, loading: authLoading } = useAuth();
   const [wallet, setWallet] = useState<WalletData | null>(null);
+  const [walletLoading, setWalletLoading] = useState(false);
 
-  const isAdmin = userData?.role === 'admin';
+  const isUserLoggedIn = !!user;
+  const isAdmin = false; // TODO: Add admin role logic for Supabase
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,25 +67,28 @@ const Navbar = () => {
   }, [isUserLoggedIn]);
 
   const fetchWallet = async () => {
+    if (!user) return;
+
     try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/wallet/getWallet`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setWallet(response.data);
+      setWalletLoading(true);
+      // TODO: Implement Supabase wallet fetching
+      // For now, set a default wallet balance
+      setWallet({ balance: 0 });
     } catch (error) {
       console.error('Error fetching wallet:', error);
+      setWallet({ balance: 0 });
     } finally {
-      setLoading(false);
+      setWalletLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   const getInitials = (name: string | undefined) => {
@@ -98,6 +97,10 @@ const Navbar = () => {
       .split(' ')
       .map(word => word[0]?.toUpperCase())
       .join('');
+  };
+
+  const getUserName = () => {
+    return user?.user_metadata?.name || user?.email?.split('@')[0] || 'User';
   };
 
   return (
@@ -187,88 +190,59 @@ const Navbar = () => {
           <div className="hidden md:flex md:items-center md:space-x-4">
             {isUserLoggedIn ? (
               <>
-                <button className="inline-flex items-center gap-x-2 rounded-md bg-blue-50 px-3.5 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-100">
+                <Button variant="outline" size="sm" className="gap-2">
                   <Wallet className="h-4 w-4" />
-                  Wallet Balance: ₹{wallet?.balance?.toFixed(2) || '0.00'}
-                </button>
+                  Balance: ₹{wallet?.balance?.toFixed(2) || '0.00'}
+                </Button>
 
-                <div className="relative">
-                  <button
-                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="flex items-center gap-x-2 text-sm font-medium text-gray-900 hover:text-blue-600 focus:outline-none"
-                  >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-medium text-gray-700">
-                      {getInitials(userData?.name)}
-                    </div>
-                    <span>{userData?.email}</span>
-                    <ChevronDown className="h-4 w-4" />
-                  </button>
-
-                  <AnimatePresence>
-                    {isProfileOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5"
-                      >
-                        <div className="py-1">
-                          {userNavigation.map((item) => (
-                            <Link
-                              key={item.name}
-                              to={item.href}
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              onClick={() => setIsProfileOpen(false)}
-                            >
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="gap-2 px-2">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user?.user_metadata?.avatar_url} />
+                        <AvatarFallback>{getInitials(getUserName())}</AvatarFallback>
+                      </Avatar>
+                      <span className="hidden sm:inline">{getUserName()}</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    {userNavigation.map((item) => (
+                      <DropdownMenuItem key={item.name} asChild>
+                        <Link to={item.href}>{item.name}</Link>
+                      </DropdownMenuItem>
+                    ))}
+                    {isAdmin && (
+                      <>
+                        <DropdownMenuSeparator />
+                        {adminNavigation.map((item) => (
+                          <DropdownMenuItem key={item.name} asChild>
+                            <Link to={item.href} className="flex items-center gap-2">
+                              {item.icon && <item.icon className="h-4 w-4" />}
                               {item.name}
                             </Link>
-                          ))}
-                          {isAdmin && (
-                            <>
-                              <div className="border-t border-gray-100 my-1" />
-                              {adminNavigation.map((item) => (
-                                <Link
-                                  key={item.name}
-                                  to={item.href}
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                  onClick={() => setIsProfileOpen(false)}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    {item.icon && <item.icon className="h-4 w-4" />}
-                                    {item.name}
-                                  </div>
-                                </Link>
-                              ))}
-                            </>
-                          )}
-                          <button
-                            onClick={handleLogout}
-                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                          >
-                            Sign out
-                          </button>
-                        </div>
-                      </motion.div>
+                          </DropdownMenuItem>
+                        ))}
+                      </>
                     )}
-                  </AnimatePresence>
-                </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={handleLogout}
+                      className="text-red-600 focus:text-red-600"
+                    >
+                      Sign out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className={`text-sm font-medium transition-colors ${
-                    isScrolled ? 'text-gray-900 hover:text-blue-600' : 'text-gray-900 hover:text-blue-600'
-                  }`}
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Sign up
-                </Link>
+                <Button variant="ghost" asChild>
+                  <Link to="/login">Log in</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/register">Sign up</Link>
+                </Button>
               </>
             )}
           </div>

@@ -22,8 +22,8 @@ module.exports = {
           1: "rgb(var(--color-theme-1) / <alpha-value>)",
           2: "rgb(var(--color-theme-2) / <alpha-value>)",
         },
-        primary: "rgb(var(--color-primary) / <alpha-value>)",
-        secondary: "rgb(var(--color-secondary) / <alpha-value>)",
+        "theme-primary": "rgb(var(--color-primary) / <alpha-value>)",
+        "theme-secondary": "rgb(var(--color-secondary) / <alpha-value>)",
         success: "rgb(var(--color-success) / <alpha-value>)",
         info: "rgb(var(--color-info) / <alpha-value>)",
         warning: "rgb(var(--color-warning) / <alpha-value>)",
@@ -42,6 +42,40 @@ module.exports = {
           700: "rgb(var(--color-darkmode-700) / <alpha-value>)",
           800: "rgb(var(--color-darkmode-800) / <alpha-value>)",
           900: "rgb(var(--color-darkmode-900) / <alpha-value>)",
+        },
+        // shadcn/ui colors
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
       },
       fontFamily: {
@@ -92,6 +126,26 @@ module.exports = {
           "--color-danger": toRGB(colors.red["600"]),
           "--color-light": toRGB(colors.slate["100"]),
           "--color-dark": toRGB(colors.slate["800"]),
+          // shadcn/ui variables
+          "--background": "0 0% 100%",
+          "--foreground": "222.2 84% 4.9%",
+          "--card": "0 0% 100%",
+          "--card-foreground": "222.2 84% 4.9%",
+          "--popover": "0 0% 100%",
+          "--popover-foreground": "222.2 84% 4.9%",
+          "--primary": "221.2 83.2% 53.3%",
+          "--primary-foreground": "210 40% 98%",
+          "--secondary": "210 40% 96%",
+          "--secondary-foreground": "222.2 84% 4.9%",
+          "--muted": "210 40% 96%",
+          "--muted-foreground": "215.4 16.3% 46.9%",
+          "--accent": "210 40% 96%",
+          "--accent-foreground": "222.2 84% 4.9%",
+          "--destructive": "0 84.2% 60.2%",
+          "--destructive-foreground": "210 40% 98%",
+          "--border": "214.3 31.8% 91.4%",
+          "--input": "214.3 31.8% 91.4%",
+          "--ring": "221.2 83.2% 53.3%",
         },
         // Default dark-mode colors
         ".dark": {
