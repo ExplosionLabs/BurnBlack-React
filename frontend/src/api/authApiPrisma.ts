@@ -4,7 +4,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 // Base API configuration
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001';
 const API_PREFIX = '/api/v1/auth'; // Updated to match Prisma routes
 
 // Types for Prisma-based responses
