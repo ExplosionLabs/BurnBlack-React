@@ -33,7 +33,7 @@ const userNavigation = [
 ];
 
 const adminNavigation = [
-  { name: 'Admin Dashboard', href: '/admin/dashboard', icon: Shield },
+  { name: 'Admin Dashboard', href: '/admin', icon: Shield },
   { name: 'User Management', href: '/admin/users' },
   { name: 'GST Management', href: '/admin/gst' },
 ];

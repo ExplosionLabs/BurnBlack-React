@@ -43,6 +43,9 @@ import SupabaseLogin from "../pages/ImportantPage/Login/SupabaseLogin";
 import SupabaseRegister from "../pages/ImportantPage/Register/SupabaseRegister";
 import AuthCallback from "../pages/AuthCallback";
 import SupabaseDashboard from "../components/SupabaseDashboard";
+import TaxReturnDetails from "../components/TaxReturnDetails";
+import DocumentsPage from "../pages/DocumentsPage";
+import SettingsPage from "../pages/SettingsPage";
 import SupabaseProtectedRoute from "../components/SupabaseProtectedRoute";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
@@ -183,6 +186,30 @@ function Router() {
           ),
         },
         {
+          path: "/dashboard/tax-return/:id",
+          element: (
+            <SupabaseProtectedRoute>
+              <TaxReturnDetails />
+            </SupabaseProtectedRoute>
+          ),
+        },
+        {
+          path: "/documents",
+          element: (
+            <SupabaseProtectedRoute>
+              <DocumentsPage />
+            </SupabaseProtectedRoute>
+          ),
+        },
+        {
+          path: "/settings",
+          element: (
+            <SupabaseProtectedRoute>
+              <SettingsPage />
+            </SupabaseProtectedRoute>
+          ),
+        },
+        {
           path: "/wallet",
           element: (
             <Layout>
@@ -226,6 +253,17 @@ function Router() {
                 <RequiredAdmin>
 
                   <AdminUser />
+                </RequiredAdmin>
+
+              ),
+            },
+            {
+              path: "gst",
+              element: (
+
+                <RequiredAdmin>
+
+                  <AllGSTData />
                 </RequiredAdmin>
 
               ),

@@ -115,11 +115,12 @@ export const taxReturnService = {
     return data || []
   },
 
-  async getTaxReturn(id: string): Promise<TaxReturn | null> {
+  async getTaxReturn(userId: string, id: string): Promise<TaxReturn | null> {
     const { data, error } = await supabase
       .from('tax_returns')
       .select('*')
       .eq('id', id)
+      .eq('user_id', userId)
       .single()
 
     if (error) {
