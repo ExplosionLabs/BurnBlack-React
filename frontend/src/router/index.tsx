@@ -39,8 +39,6 @@ import InvoiceLayout2 from "../pages/InvoiceLayout2";
 import FaqLayout1 from "../pages/FaqLayout1";
 import FaqLayout2 from "../pages/FaqLayout2";
 import FaqLayout3 from "../pages/FaqLayout3";
-import Login from "../pages/ImportantPage/Login";
-import Register from "../pages/ImportantPage/Register";
 import SupabaseLogin from "../pages/ImportantPage/Login/SupabaseLogin";
 import SupabaseRegister from "../pages/ImportantPage/Register/SupabaseRegister";
 import AuthCallback from "../pages/AuthCallback";
@@ -160,7 +158,7 @@ function Router() {
           path: "/login-old",
           element: (
             <Layout>
-              <Login />
+              <SupabaseLogin />
             </Layout>
           ),
         },
@@ -168,7 +166,7 @@ function Router() {
           path: "/register-old",
           element: (
             <Layout>
-              <Register />
+              <SupabaseRegister />
             </Layout>
           ),
         },

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, Share2, Menu, Wallet, X, Shield } from 'lucide-react'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { RootState } from '@/stores/store';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { logout } from '@/stores/userSlice';
+import { useAuth } from '../contexts/SupabaseAuthContext';
 import mainlogo from '@/assets/images/burnblacklogo.png';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/ui/button';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger, 
+  DropdownMenuSeparator 
+} from '@/components/ui/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/ui/avatar';
 
 interface WalletData {
   balance: number;
@@ -116,7 +121,7 @@ const Navbar = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="inline-flex items-center gap-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Filing for: {userData?.name}
+                  Filing for: {getUserName()}
                   <ChevronDown className="h-4 w-4" />
                 </button>
                 <AnimatePresence>
@@ -297,7 +302,7 @@ const Navbar = () => {
               {isUserLoggedIn ? (
                 <>
                   <div className="px-3 py-2 text-base font-medium text-gray-900">
-                    Filing for: {userData?.name}
+                    Filing for: {getUserName()}
                   </div>
                   <button className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-base font-medium text-blue-600 hover:bg-gray-100">
                     <Wallet className="h-4 w-4" />
