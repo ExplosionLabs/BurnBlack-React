@@ -66,7 +66,7 @@ function Main() {
 
     dispatch(googleLoginRequest());
     try {
-      const response = await registerUserWithGoogle({ token: credentialResponse.credential });
+      const response = await registerUserWithGoogle({ idToken: credentialResponse.credential });
       dispatch(googleLoginSuccess(response));
       toast.success('Login successful!');
       setTimeout(() => {

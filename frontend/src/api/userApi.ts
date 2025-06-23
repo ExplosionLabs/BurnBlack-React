@@ -64,6 +64,6 @@ export const loginUser = async (userData: { email: string; password: string }) =
 // }
 
 export const registerUserWithGoogle = async (data: any) => {
-  const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/google-signup`, data);
+  const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/google`, data);
   return response.data;
 };

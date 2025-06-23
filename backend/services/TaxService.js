@@ -1,7 +1,7 @@
-const TaxSummary = require('../model/TaxSummary');
-const TaxInvestment = require('../model/TaxInvestment');
-const Donation80G = require('../model/Donation80G');
-const RentalProperty = require('../model/RentalProperty');
+const TaxSummary = require('../models/taxSummary');
+// const TaxInvestment = require('../models/taxInvestment');
+// const Donation80G = require('../models/donation80G');  
+// const RentalProperty = require('../models/rentalProperty');
 
 class TaxService {
   // Calculate Total Income

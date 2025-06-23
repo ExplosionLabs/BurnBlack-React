@@ -20,8 +20,8 @@ mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
+// Import routes  
+const authRoutes = require('./routes/authRoutesPrisma');
 const taxRoutes = require('./routes/taxRoutes');
 const personalDetailRoutes = require('./routes/personalDetailRoutes');
 const contactDetailRoutes = require('./routes/contactDetailRoutes');
