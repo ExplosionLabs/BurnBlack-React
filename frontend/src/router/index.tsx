@@ -41,6 +41,9 @@ import FaqLayout2 from "../pages/FaqLayout2";
 import FaqLayout3 from "../pages/FaqLayout3";
 import Login from "../pages/ImportantPage/Login";
 import Register from "../pages/ImportantPage/Register";
+import SupabaseLogin from "../pages/ImportantPage/Login/SupabaseLogin";
+import SupabaseRegister from "../pages/ImportantPage/Register/SupabaseRegister";
+import AuthCallback from "../pages/AuthCallback";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
@@ -145,6 +148,14 @@ function Router() {
         },
         {
           path: "/login",
+          element: <SupabaseLogin />,
+        },
+        {
+          path: "/register",
+          element: <SupabaseRegister />,
+        },
+        {
+          path: "/login-old",
           element: (
             <Layout>
               <Login />
@@ -152,12 +163,16 @@ function Router() {
           ),
         },
         {
-          path: "/register",
+          path: "/register-old",
           element: (
             <Layout>
               <Register />
             </Layout>
           ),
+        },
+        {
+          path: "/auth/callback",
+          element: <AuthCallback />,
         },
         {
           path: "/wallet",
