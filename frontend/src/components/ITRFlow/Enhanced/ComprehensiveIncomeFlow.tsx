@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useITRFlow } from '../../../contexts/ITRFlowContext';
 import { 
   ArrowRight, 
   Upload, 
@@ -38,6 +39,7 @@ interface IncomeData {
 
 const ComprehensiveIncomeFlow: React.FC = () => {
   const navigate = useNavigate();
+  const { data, updateIncomeDetails, setITRType, markStepCompleted } = useITRFlow();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedSources, setSelectedSources] = useState<string[]>([]);
   const [incomeData, setIncomeData] = useState<IncomeData>({});
@@ -162,10 +164,30 @@ const ComprehensiveIncomeFlow: React.FC = () => {
   ];
 
   useEffect(() => {
+    // Load existing income data from context
+    if (data.incomeDetails) {
+      // Set selected sources based on existing data
+      const sources: string[] = [];
+      if (data.incomeDetails.salary) sources.push('salary');
+      if (data.incomeDetails.interest) sources.push('interest');
+      if (data.incomeDetails.dividend) sources.push('dividend');
+      if (data.incomeDetails.capitalGains) sources.push('capitalGains');
+      if (data.incomeDetails.houseProperty) sources.push('houseProperty');
+      if (data.incomeDetails.business) sources.push('business');
+      if (data.incomeDetails.professional) sources.push('professional');
+      if (data.incomeDetails.otherIncome) sources.push('otherIncome');
+      
+      setSelectedSources(sources);
+    }
+  }, [data.incomeDetails]);
+
+  useEffect(() => {
     // Determine ITR type based on selected sources
     const determineITRType = () => {
+      let itrType = 'ITR-1';
+      
       if (selectedSources.includes('business') || selectedSources.includes('professional')) {
-        setRecommendedITR('ITR-3');
+        itrType = 'ITR-3';
       } else if (
         selectedSources.includes('capitalGains') ||
         selectedSources.includes('houseProperty') ||
@@ -175,14 +197,15 @@ const ComprehensiveIncomeFlow: React.FC = () => {
           incomeSourcesConfig.find(config => config.id === source)?.category === 'advanced'
         )
       ) {
-        setRecommendedITR('ITR-2');
-      } else {
-        setRecommendedITR('ITR-1');
+        itrType = 'ITR-2';
       }
+      
+      setRecommendedITR(itrType);
+      setITRType(itrType);
     };
 
     determineITRType();
-  }, [selectedSources]);
+  }, [selectedSources, setITRType]);
 
   const toggleIncomeSource = (sourceId: string) => {
     setSelectedSources(prev => 
@@ -196,9 +219,69 @@ const ComprehensiveIncomeFlow: React.FC = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Navigate to deductions
+      // Save income data to context before proceeding
+      saveIncomeDataToContext();
+      markStepCompleted('income');
       navigate('/fileITR/smart-flow/deductions');
     }
+  };
+
+  const saveIncomeDataToContext = () => {
+    // Convert local income data to context format
+    const contextIncomeData: any = {};
+    
+    selectedSources.forEach(sourceId => {
+      const sourceData = incomeData[sourceId];
+      if (!sourceData) return;
+      
+      switch (sourceId) {
+        case 'salary':
+          contextIncomeData.salary = {
+            employers: [{
+              employerName: sourceData.employerName || '',
+              grossSalary: parseFloat(sourceData.grossSalary) || 0,
+              basicPay: parseFloat(sourceData.basicPay) || 0,
+              hra: parseFloat(sourceData.hra) || 0,
+              lta: parseFloat(sourceData.lta) || 0,
+              tdsDeducted: parseFloat(sourceData.tds) || 0,
+              professionalTax: parseFloat(sourceData.professionalTax) || 0,
+              standardDeduction: 50000
+            }],
+            totalGrossSalary: parseFloat(sourceData.grossSalary) || 0,
+            totalTDS: parseFloat(sourceData.tds) || 0,
+            netSalary: (parseFloat(sourceData.grossSalary) || 0) - (parseFloat(sourceData.tds) || 0)
+          };
+          break;
+        case 'interest':
+          contextIncomeData.interest = {
+            savingsBankInterest: parseFloat(sourceData.savingsInterest) || 0,
+            fixedDepositInterest: parseFloat(sourceData.fdInterest) || 0,
+            p2pInterest: parseFloat(sourceData.p2pInterest) || 0,
+            bondInterest: parseFloat(sourceData.bondInterest) || 0,
+            epfInterest: parseFloat(sourceData.epfInterest) || 0,
+            otherInterest: 0,
+            totalInterest: (parseFloat(sourceData.savingsInterest) || 0) + 
+                          (parseFloat(sourceData.fdInterest) || 0) + 
+                          (parseFloat(sourceData.p2pInterest) || 0) + 
+                          (parseFloat(sourceData.bondInterest) || 0) + 
+                          (parseFloat(sourceData.epfInterest) || 0)
+          };
+          break;
+        case 'dividend':
+          contextIncomeData.dividend = {
+            equityShares: parseFloat(sourceData.equityDividend) || 0,
+            mutualFunds: parseFloat(sourceData.mutualFundDividend) || 0,
+            otherCompanies: parseFloat(sourceData.otherDividend) || 0,
+            totalDividend: (parseFloat(sourceData.equityDividend) || 0) + 
+                          (parseFloat(sourceData.mutualFundDividend) || 0) + 
+                          (parseFloat(sourceData.otherDividend) || 0)
+          };
+          break;
+        // Add other income source mappings as needed
+      }
+    });
+    
+    updateIncomeDetails(contextIncomeData);
   };
 
   const handlePrevious = () => {
@@ -216,6 +299,48 @@ const ComprehensiveIncomeFlow: React.FC = () => {
       }
     }));
   };
+
+  // Load existing data from context when component mounts
+  useEffect(() => {
+    if (data.incomeDetails) {
+      const existingData: IncomeData = {};
+      
+      // Map context data back to local form data
+      if (data.incomeDetails.salary) {
+        const employer = data.incomeDetails.salary.employers?.[0];
+        if (employer) {
+          existingData.salary = {
+            grossSalary: employer.grossSalary?.toString() || '',
+            basicPay: employer.basicPay?.toString() || '',
+            hra: employer.hra?.toString() || '',
+            lta: employer.lta?.toString() || '',
+            tds: employer.tdsDeducted?.toString() || '',
+            professionalTax: employer.professionalTax?.toString() || ''
+          };
+        }
+      }
+      
+      if (data.incomeDetails.interest) {
+        existingData.interest = {
+          savingsInterest: data.incomeDetails.interest.savingsBankInterest?.toString() || '',
+          fdInterest: data.incomeDetails.interest.fixedDepositInterest?.toString() || '',
+          p2pInterest: data.incomeDetails.interest.p2pInterest?.toString() || '',
+          bondInterest: data.incomeDetails.interest.bondInterest?.toString() || '',
+          epfInterest: data.incomeDetails.interest.epfInterest?.toString() || ''
+        };
+      }
+      
+      if (data.incomeDetails.dividend) {
+        existingData.dividend = {
+          equityDividend: data.incomeDetails.dividend.equityShares?.toString() || '',
+          mutualFundDividend: data.incomeDetails.dividend.mutualFunds?.toString() || '',
+          otherDividend: data.incomeDetails.dividend.otherCompanies?.toString() || ''
+        };
+      }
+      
+      setIncomeData(existingData);
+    }
+  }, [data.incomeDetails]);
 
   const renderIncomeSourceSelection = () => (
     <div className="space-y-6">
@@ -498,8 +623,8 @@ const ComprehensiveIncomeFlow: React.FC = () => {
             <p className="text-2xl font-bold">{selectedSources.length}</p>
           </div>
           <div className="bg-white bg-opacity-20 rounded-lg p-4">
-            <h4 className="font-semibold">Estimated Time</h4>
-            <p className="text-2xl font-bold">25 mins</p>
+            <h4 className="font-semibold">ITR Form</h4>
+            <p className="text-2xl font-bold">{recommendedITR}</p>
           </div>
           <div className="bg-white bg-opacity-20 rounded-lg p-4">
             <h4 className="font-semibold">Complexity</h4>

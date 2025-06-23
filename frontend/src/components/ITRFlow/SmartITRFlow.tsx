@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ITRFlowProvider } from '../../contexts/ITRFlowContext';
 import { 
   CheckCircle, 
   Clock,
@@ -18,6 +19,7 @@ import ComprehensiveIncomeFlow from './Enhanced/ComprehensiveIncomeFlow';
 import ComprehensiveDeductions from './Enhanced/ComprehensiveDeductions';
 import SmartReview from './SmartReview/SmartReview';
 import SmartSubmit from './SmartSubmit/SmartSubmit';
+import TestDataCapture from './TestDataCapture';
 
 interface FlowStep {
   id: string;
@@ -148,9 +150,10 @@ const SmartITRFlow: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      
-      {/* Top Navigation Bar */}
+    <ITRFlowProvider>
+      <div className="min-h-screen bg-gray-50">
+        
+        {/* Top Navigation Bar */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -337,7 +340,11 @@ const SmartITRFlow: React.FC = () => {
         </div>
       </div>
 
-    </div>
+      {/* Test Data Capture Component (Development Only) */}
+      <TestDataCapture />
+
+      </div>
+    </ITRFlowProvider>
   );
 };
 

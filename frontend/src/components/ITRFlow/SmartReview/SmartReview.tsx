@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useITRFlow } from '../../../contexts/ITRFlowContext';
 import { 
   CheckCircle, 
   AlertTriangle, 
@@ -56,129 +57,218 @@ interface ITRData {
 }
 
 const SmartReview: React.FC = () => {
-  const [itrData, setItrData] = useState<ITRData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, calculateTax, getTotalIncome, getTotalDeductions, markStepCompleted } = useITRFlow();
+  const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [isValidated, setIsValidated] = useState(false);
   const [showJSONPreview, setShowJSONPreview] = useState(false);
   const [jsonData, setJsonData] = useState<string>('');
 
   useEffect(() => {
-    // Simulate loading ITR data from previous steps
-    setTimeout(() => {
-      const mockData: ITRData = {
-        personalDetails: {
-          name: 'John Doe',
-          pan: 'ABCDE1234F',
-          aadhaar: '1234 5678 9012',
-          dateOfBirth: '1990-01-15',
-          email: 'john.doe@example.com',
-          mobile: '+91 9876543210',
-          address: '123 Main Street, Mumbai, Maharashtra - 400001'
-        },
-        incomeDetails: {
-          salaryIncome: 800000,
-          interestIncome: 15000,
-          capitalGains: 50000,
-          businessIncome: 0,
-          otherIncome: 5000,
-          totalIncome: 870000
-        },
-        deductions: {
-          section80C: 150000,
-          section80D: 25000,
-          section80G: 10000,
-          otherDeductions: 5000,
-          totalDeductions: 190000
-        },
-        taxCalculation: {
-          grossTotalIncome: 870000,
-          taxableIncome: 630000,
-          taxLiability: 19000,
-          taxPaid: 25000,
-          refundDue: 6000,
-          regime: 'old'
-        },
-        itrType: 'ITR-2',
-        assessmentYear: '2024-25'
-      };
-      
-      setItrData(mockData);
-      validateData(mockData);
-      generateJSON(mockData);
-      setLoading(false);
-    }, 1500);
-  }, []);
+    // Load actual data from ITR flow context
+    validateContextData();
+    generateContextJSON();
+  }, [data.personalDetails, data.incomeDetails, data.deductionDetails]);
 
-  const validateData = (data: ITRData) => {
+  useEffect(() => {
+    // Calculate tax only when income or deductions change
+    calculateTax();
+  }, [calculateTax]);
+
+  const validateContextData = () => {
     const errors: string[] = [];
     
-    // Validate PAN format
-    if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(data.personalDetails.pan.replace(/\s/g, ''))) {
-      errors.push('Invalid PAN format');
+    // Only validate if we have some data to work with
+    if (!hasMinimalData) {
+      errors.push('Please complete previous steps to view review');
+      setValidationErrors(errors);
+      setIsValidated(false);
+      return;
     }
     
-    // Validate Aadhaar format
-    if (!/^\d{4}\s\d{4}\s\d{4}$/.test(data.personalDetails.aadhaar)) {
-      errors.push('Invalid Aadhaar format');
+    // Validate personal details only if they exist
+    if (data.personalDetails.name && !data.personalDetails.name.trim()) {
+      errors.push('Name cannot be empty');
     }
     
-    // Validate income calculations
-    const calculatedTotal = data.incomeDetails.salaryIncome + 
-                           data.incomeDetails.interestIncome + 
-                           data.incomeDetails.capitalGains + 
-                           data.incomeDetails.businessIncome + 
-                           data.incomeDetails.otherIncome;
-    
-    if (Math.abs(calculatedTotal - data.incomeDetails.totalIncome) > 1) {
-      errors.push('Income calculation mismatch');
+    if (data.personalDetails.pan) {
+      if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(data.personalDetails.pan.replace(/\s/g, ''))) {
+        errors.push('Invalid PAN format');
+      }
     }
     
-    // Validate taxable income
-    const expectedTaxableIncome = data.taxCalculation.grossTotalIncome - data.deductions.totalDeductions - 50000; // Standard deduction
-    if (Math.abs(expectedTaxableIncome - data.taxCalculation.taxableIncome) > 1) {
-      errors.push('Taxable income calculation error');
+    if (data.personalDetails.aadhaar) {
+      if (!/^\d{4}\s\d{4}\s\d{4}$/.test(data.personalDetails.aadhaar)) {
+        errors.push('Invalid Aadhaar format (use XXXX XXXX XXXX)');
+      }
+    }
+    
+    if (data.personalDetails.email) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.personalDetails.email)) {
+        errors.push('Invalid email format');
+      }
+    }
+    
+    if (data.personalDetails.mobile) {
+      if (!/^\+91\s\d{5}\s\d{5}$/.test(data.personalDetails.mobile)) {
+        errors.push('Invalid mobile format (use +91 XXXXX XXXXX)');
+      }
+    }
+    
+    // Validate income sources
+    const totalIncome = getTotalIncome();
+    if (totalIncome <= 0) {
+      errors.push('At least one income source is required');
     }
     
     setValidationErrors(errors);
     setIsValidated(errors.length === 0);
   };
 
-  const generateJSON = (data: ITRData) => {
+  const generateContextJSON = () => {
     const itrJson = {
       ITR: {
-        ITRType: data.itrType,
-        AssessmentYear: data.assessmentYear,
+        ITRType: data.itrType || 'ITR-1',
+        AssessmentYear: data.assessmentYear || '2024-25',
         PersonalInfo: {
-          Name: data.personalDetails.name,
-          PAN: data.personalDetails.pan.replace(/\s/g, ''),
-          AadhaarNumber: data.personalDetails.aadhaar.replace(/\s/g, ''),
-          DateOfBirth: data.personalDetails.dateOfBirth,
-          Email: data.personalDetails.email,
-          Mobile: data.personalDetails.mobile,
-          Address: data.personalDetails.address
+          Name: data.personalDetails.name || '',
+          PAN: data.personalDetails.pan?.replace(/\s/g, '') || '',
+          AadhaarNumber: data.personalDetails.aadhaar?.replace(/\s/g, '') || '',
+          DateOfBirth: data.personalDetails.dateOfBirth || '',
+          Email: data.personalDetails.email || '',
+          Mobile: data.personalDetails.mobile || '',
+          Address: {
+            Line1: data.personalDetails.address?.line1 || '',
+            Line2: data.personalDetails.address?.line2 || '',
+            City: data.personalDetails.address?.city || '',
+            State: data.personalDetails.address?.state || '',
+            Pincode: data.personalDetails.address?.pincode || '',
+            Country: data.personalDetails.address?.country || 'India'
+          }
         },
         IncomeDetails: {
-          SalaryIncome: data.incomeDetails.salaryIncome,
-          InterestIncome: data.incomeDetails.interestIncome,
-          CapitalGains: data.incomeDetails.capitalGains,
-          BusinessIncome: data.incomeDetails.businessIncome,
+          Salary: data.incomeDetails.salary ? {
+            Employers: data.incomeDetails.salary.employers?.map(emp => ({
+              EmployerName: emp.employerName || '',
+              TAN: emp.tan || '',
+              GrossSalary: emp.grossSalary || 0,
+              BasicPay: emp.basicPay || 0,
+              HRA: emp.hra || 0,
+              LTA: emp.lta || 0,
+              Allowances: emp.allowances || 0,
+              Perquisites: emp.perquisites || 0,
+              ProfitsInLieu: emp.profitsInLieu || 0,
+              TDSDeducted: emp.tdsDeducted || 0,
+              ProfessionalTax: emp.professionalTax || 0,
+              StandardDeduction: emp.standardDeduction || 50000
+            })) || [],
+            TotalGrossSalary: data.incomeDetails.salary.totalGrossSalary || 0,
+            TotalTDS: data.incomeDetails.salary.totalTDS || 0,
+            NetSalary: data.incomeDetails.salary.netSalary || 0
+          } : null,
+          Interest: data.incomeDetails.interest ? {
+            SavingsBankInterest: data.incomeDetails.interest.savingsBankInterest || 0,
+            FixedDepositInterest: data.incomeDetails.interest.fixedDepositInterest || 0,
+            P2PInterest: data.incomeDetails.interest.p2pInterest || 0,
+            BondInterest: data.incomeDetails.interest.bondInterest || 0,
+            EPFInterest: data.incomeDetails.interest.epfInterest || 0,
+            OtherInterest: data.incomeDetails.interest.otherInterest || 0,
+            TotalInterest: data.incomeDetails.interest.totalInterest || 0
+          } : null,
+          Dividend: data.incomeDetails.dividend ? {
+            EquityShares: data.incomeDetails.dividend.equityShares || 0,
+            MutualFunds: data.incomeDetails.dividend.mutualFunds || 0,
+            OtherCompanies: data.incomeDetails.dividend.otherCompanies || 0,
+            TotalDividend: data.incomeDetails.dividend.totalDividend || 0
+          } : null,
+          CapitalGains: data.incomeDetails.capitalGains ? {
+            ShortTerm: {
+              Transactions: data.incomeDetails.capitalGains.shortTerm || [],
+              Total: data.incomeDetails.capitalGains.totalSTCG || 0
+            },
+            LongTerm: {
+              Transactions: data.incomeDetails.capitalGains.longTerm || [],
+              Total: data.incomeDetails.capitalGains.totalLTCG || 0
+            }
+          } : null,
+          HouseProperty: data.incomeDetails.houseProperty || [],
+          Business: data.incomeDetails.business,
+          Professional: data.incomeDetails.professional,
           OtherIncome: data.incomeDetails.otherIncome,
-          GrossTotalIncome: data.taxCalculation.grossTotalIncome
+          GrossTotalIncome: getTotalIncome()
         },
         Deductions: {
-          Section80C: data.deductions.section80C,
-          Section80D: data.deductions.section80D,
-          Section80G: data.deductions.section80G,
-          OtherDeductions: data.deductions.otherDeductions,
-          TotalDeductions: data.deductions.totalDeductions
+          Section80C: data.deductionDetails.section80C ? {
+            LifeInsurance: data.deductionDetails.section80C.lifeInsurance || 0,
+            PPF: data.deductionDetails.section80C.ppf || 0,
+            ELSS: data.deductionDetails.section80C.elss || 0,
+            NSC: data.deductionDetails.section80C.nsc || 0,
+            TaxSavingFD: data.deductionDetails.section80C.taxSavingFD || 0,
+            ULIP: data.deductionDetails.section80C.ulip || 0,
+            HomeLoanPrincipal: data.deductionDetails.section80C.homeLoanPrincipal || 0,
+            Total: data.deductionDetails.section80C.total || 0
+          } : null,
+          Section80D: data.deductionDetails.section80D ? {
+            SelfAndFamily: data.deductionDetails.section80D.selfAndFamily || 0,
+            Parents: data.deductionDetails.section80D.parents || 0,
+            PreventiveHealthCheckup: data.deductionDetails.section80D.preventiveHealthCheckup || 0,
+            SeniorCitizenPremium: data.deductionDetails.section80D.seniorCitizenPremium || 0,
+            Total: data.deductionDetails.section80D.total || 0
+          } : null,
+          Section80E: data.deductionDetails.section80E ? {
+            EducationLoanInterest: data.deductionDetails.section80E.educationLoanInterest || 0
+          } : null,
+          Section80EE: data.deductionDetails.section80EE ? {
+            HomeLoanInterest: data.deductionDetails.section80EE.homeLoanInterest || 0
+          } : null,
+          Section80EEA: data.deductionDetails.section80EEA ? {
+            AdditionalHomeLoanInterest: data.deductionDetails.section80EEA.additionalHomeLoanInterest || 0
+          } : null,
+          Section80G: data.deductionDetails.section80G ? {
+            Donations: data.deductionDetails.section80G.donations || [],
+            Total: data.deductionDetails.section80G.total || 0
+          } : null,
+          Section80GG: data.deductionDetails.section80GG ? {
+            RentPaid: data.deductionDetails.section80GG.rentPaid || 0,
+            EligibleAmount: data.deductionDetails.section80GG.eligibleAmount || 0
+          } : null,
+          Section80TTA: data.deductionDetails.section80TTA ? {
+            SavingsInterest: data.deductionDetails.section80TTA.savingsInterest || 0
+          } : null,
+          Section80TTB: data.deductionDetails.section80TTB ? {
+            SeniorCitizenInterest: data.deductionDetails.section80TTB.seniorCitizenInterest || 0
+          } : null,
+          Section80U: data.deductionDetails.section80U ? {
+            DisabilityDeduction: data.deductionDetails.section80U.disabilityDeduction || 0,
+            DisabilityType: data.deductionDetails.section80U.disabilityType || 'Normal'
+          } : null,
+          Section80DD: data.deductionDetails.section80DD ? {
+            DependentDisabilityDeduction: data.deductionDetails.section80DD.dependentDisabilityDeduction || 0,
+            DisabilityType: data.deductionDetails.section80DD.disabilityType || 'Normal'
+          } : null,
+          Section80CCC: data.deductionDetails.section80CCC ? {
+            PensionFundContribution: data.deductionDetails.section80CCC.pensionFundContribution || 0
+          } : null,
+          Section80CCD1: data.deductionDetails.section80CCD1 ? {
+            NPSEmployeeContribution: data.deductionDetails.section80CCD1.npsEmployeeContribution || 0
+          } : null,
+          Section80CCD1B: data.deductionDetails.section80CCD1B ? {
+            AdditionalNPSContribution: data.deductionDetails.section80CCD1B.additionalNPSContribution || 0
+          } : null,
+          Section80CCD2: data.deductionDetails.section80CCD2 ? {
+            NPSEmployerContribution: data.deductionDetails.section80CCD2.npsEmployerContribution || 0
+          } : null,
+          OtherDeductions: data.deductionDetails.otherDeductions || {},
+          TotalDeductions: getTotalDeductions()
         },
         TaxComputation: {
-          TaxableIncome: data.taxCalculation.taxableIncome,
-          TaxLiability: data.taxCalculation.taxLiability,
-          TaxPaid: data.taxCalculation.taxPaid,
-          RefundDue: data.taxCalculation.refundDue,
-          TaxRegime: data.taxCalculation.regime
+          GrossTotalIncome: data.taxCalculation.grossTotalIncome || getTotalIncome(),
+          TotalDeductions: data.taxCalculation.totalDeductions || getTotalDeductions(),
+          TaxableIncome: data.taxCalculation.taxableIncome || 0,
+          TaxLiability: data.taxCalculation.taxLiability || 0,
+          TaxPaid: data.taxCalculation.taxPaid?.totalTaxPaid || 0,
+          RefundDue: data.taxCalculation.refundOrDemand || 0,
+          TaxRegime: data.taxCalculation.regime || 'Old'
         }
       }
     };
@@ -191,11 +281,16 @@ const SmartReview: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ITR_${itrData?.personalDetails.pan}_${itrData?.assessmentYear}.json`;
+    a.download = `ITR_${data.personalDetails.pan?.replace(/\s/g, '') || 'UNKNOWN'}_${data.assessmentYear || '2024-25'}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  const handleProceedToSubmit = () => {
+    markStepCompleted('review');
+    // Navigate to submit step - you might want to add navigation here
   };
 
   if (loading) {
@@ -210,13 +305,38 @@ const SmartReview: React.FC = () => {
     );
   }
 
-  if (!itrData) {
+  // Show loading state or basic view even if data is minimal
+  const hasMinimalData = data.personalDetails.name || getTotalIncome() > 0;
+
+  // Show message if no data is available
+  if (!hasMinimalData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900">No Data Found</h2>
-          <p className="text-gray-600">Please complete the previous steps first.</p>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <AlertTriangle className="w-16 h-16 text-orange-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Complete Previous Steps</h2>
+            <p className="text-gray-600 mb-6">
+              Please complete the personal details and income steps before reviewing your ITR.
+            </p>
+            <div className="bg-white rounded-lg p-6 text-left max-w-md mx-auto">
+              <h3 className="font-semibold text-gray-900 mb-3">Required Steps:</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <div className={`w-4 h-4 rounded-full ${data.personalDetails.name ? 'bg-green-500' : 'bg-gray-300'}`} />
+                  Personal Details
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className={`w-4 h-4 rounded-full ${getTotalIncome() > 0 ? 'bg-green-500' : 'bg-gray-300'}`} />
+                  Income Details
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className={`w-4 h-4 rounded-full ${getTotalDeductions() > 0 ? 'bg-green-500' : 'bg-orange-300'}`} />
+                  Tax Deductions (Optional)
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -288,23 +408,23 @@ const SmartReview: React.FC = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Name:</span>
-                <span className="font-medium">{itrData.personalDetails.name}</span>
+                <span className="font-medium">{data.personalDetails.name || 'Not provided'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">PAN:</span>
-                <span className="font-medium">{itrData.personalDetails.pan}</span>
+                <span className="font-medium">{data.personalDetails.pan || 'Not provided'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Aadhaar:</span>
-                <span className="font-medium">{itrData.personalDetails.aadhaar}</span>
+                <span className="font-medium">{data.personalDetails.aadhaar || 'Not provided'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Email:</span>
-                <span className="font-medium">{itrData.personalDetails.email}</span>
+                <span className="font-medium">{data.personalDetails.email || 'Not provided'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Mobile:</span>
-                <span className="font-medium">{itrData.personalDetails.mobile}</span>
+                <span className="font-medium">{data.personalDetails.mobile || 'Not provided'}</span>
               </div>
             </div>
             
@@ -330,23 +450,27 @@ const SmartReview: React.FC = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Salary Income:</span>
-                <span className="font-medium">₹{itrData.incomeDetails.salaryIncome.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.incomeDetails.salary?.netSalary || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Interest Income:</span>
-                <span className="font-medium">₹{itrData.incomeDetails.interestIncome.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.incomeDetails.interest?.totalInterest || 0).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Dividend Income:</span>
+                <span className="font-medium">₹{(data.incomeDetails.dividend?.totalDividend || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Capital Gains:</span>
-                <span className="font-medium">₹{itrData.incomeDetails.capitalGains.toLocaleString()}</span>
+                <span className="font-medium">₹{((data.incomeDetails.capitalGains?.totalSTCG || 0) + (data.incomeDetails.capitalGains?.totalLTCG || 0)).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Other Income:</span>
-                <span className="font-medium">₹{itrData.incomeDetails.otherIncome.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.incomeDetails.otherIncome?.totalOtherIncome || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between font-semibold text-lg border-t pt-2">
                 <span>Total Income:</span>
-                <span>₹{itrData.incomeDetails.totalIncome.toLocaleString()}</span>
+                <span>₹{getTotalIncome().toLocaleString()}</span>
               </div>
             </div>
           </motion.div>
@@ -368,23 +492,23 @@ const SmartReview: React.FC = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Section 80C:</span>
-                <span className="font-medium">₹{itrData.deductions.section80C.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.deductionDetails.section80C?.total || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Section 80D:</span>
-                <span className="font-medium">₹{itrData.deductions.section80D.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.deductionDetails.section80D?.total || 0).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Section 80E:</span>
+                <span className="font-medium">₹{(data.deductionDetails.section80E?.educationLoanInterest || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Section 80G:</span>
-                <span className="font-medium">₹{itrData.deductions.section80G.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Other Deductions:</span>
-                <span className="font-medium">₹{itrData.deductions.otherDeductions.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.deductionDetails.section80G?.total || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between font-semibold text-lg border-t pt-2">
                 <span>Total Deductions:</span>
-                <span>₹{itrData.deductions.totalDeductions.toLocaleString()}</span>
+                <span>₹{getTotalDeductions().toLocaleString()}</span>
               </div>
             </div>
           </motion.div>
@@ -406,29 +530,35 @@ const SmartReview: React.FC = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">Gross Total Income:</span>
-                <span className="font-medium">₹{itrData.taxCalculation.grossTotalIncome.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.taxCalculation.grossTotalIncome || getTotalIncome()).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Total Deductions:</span>
+                <span className="font-medium">₹{(data.taxCalculation.totalDeductions || getTotalDeductions()).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Taxable Income:</span>
-                <span className="font-medium">₹{itrData.taxCalculation.taxableIncome.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.taxCalculation.taxableIncome || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax Liability:</span>
-                <span className="font-medium">₹{itrData.taxCalculation.taxLiability.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.taxCalculation.taxLiability || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax Paid (TDS):</span>
-                <span className="font-medium">₹{itrData.taxCalculation.taxPaid.toLocaleString()}</span>
+                <span className="font-medium">₹{(data.taxCalculation.taxPaid?.totalTaxPaid || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between font-semibold text-lg border-t pt-2">
-                <span>Refund Due:</span>
-                <span className="text-green-600">₹{itrData.taxCalculation.refundDue.toLocaleString()}</span>
+                <span>{(data.taxCalculation.refundOrDemand || 0) >= 0 ? 'Refund Due:' : 'Tax Due:'}</span>
+                <span className={(data.taxCalculation.refundOrDemand || 0) >= 0 ? 'text-green-600' : 'text-red-600'}>
+                  ₹{Math.abs(data.taxCalculation.refundOrDemand || 0).toLocaleString()}
+                </span>
               </div>
             </div>
             
             <div className="mt-4 p-3 bg-blue-50 rounded-lg">
               <p className="text-sm text-blue-700">
-                <strong>Tax Regime:</strong> {itrData.taxCalculation.regime === 'old' ? 'Old Regime' : 'New Regime'}
+                <strong>Tax Regime:</strong> {data.taxCalculation.regime === 'Old' ? 'Old Regime' : 'New Regime'}
               </p>
             </div>
           </motion.div>
@@ -448,7 +578,7 @@ const SmartReview: React.FC = () => {
               </div>
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">Filing Details</h2>
-                <p className="text-gray-600">ITR Type: <strong>{itrData.itrType}</strong> | Assessment Year: <strong>{itrData.assessmentYear}</strong></p>
+                <p className="text-gray-600">ITR Type: <strong>{data.itrType || 'ITR-1'}</strong> | Assessment Year: <strong>{data.assessmentYear || '2024-25'}</strong></p>
               </div>
             </div>
             
@@ -513,6 +643,7 @@ const SmartReview: React.FC = () => {
           </button>
           
           <button
+            onClick={handleProceedToSubmit}
             disabled={!isValidated}
             className={`flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-lg transition-all ${
               isValidated

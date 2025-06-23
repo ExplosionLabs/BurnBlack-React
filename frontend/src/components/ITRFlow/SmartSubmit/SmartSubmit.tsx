@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useITRFlow } from '../../../contexts/ITRFlowContext';
 import { 
   CheckCircle, 
   Upload, 
@@ -44,6 +45,7 @@ interface ITRFilingResult {
 }
 
 const SmartSubmit: React.FC = () => {
+  const { data, getTotalIncome, getTotalDeductions } = useITRFlow();
   const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
     stage: 'uploading',
     progress: 0,
@@ -96,19 +98,20 @@ const SmartSubmit: React.FC = () => {
       setSubmissionStatus(stages[i]);
       
       if (stages[i].stage === 'completed') {
-        // Generate mock filing result
+        // Generate filing result based on actual user data
+        const refundAmount = Math.max(0, data.taxCalculation.refundOrDemand || 0);
         const result: ITRFilingResult = {
-          acknowledgmentNumber: `${Date.now()}-ITR-ACK`,
+          acknowledgmentNumber: `${Date.now()}-ITR-${data.personalDetails.pan?.replace(/\s/g, '')?.slice(-4) || 'XXXX'}`,
           filingDate: new Date().toLocaleDateString('en-IN'),
-          assessmentYear: '2024-25',
-          itrType: 'ITR-2',
-          refundAmount: 6000,
+          assessmentYear: data.assessmentYear || '2024-25',
+          itrType: data.itrType || 'ITR-1',
+          refundAmount: refundAmount,
           status: 'Filed Successfully',
           processingTime: '2 minutes 30 seconds',
           downloadLinks: {
-            acknowledgment: '/downloads/acknowledgment.pdf',
-            itrXML: '/downloads/itr.xml',
-            taxComputationSheet: '/downloads/tax-computation.pdf'
+            acknowledgment: `/downloads/acknowledgment_${data.personalDetails.pan?.replace(/\s/g, '')}.pdf`,
+            itrXML: `/downloads/itr_${data.personalDetails.pan?.replace(/\s/g, '')}.xml`,
+            taxComputationSheet: `/downloads/tax_computation_${data.personalDetails.pan?.replace(/\s/g, '')}.pdf`
           }
         };
         

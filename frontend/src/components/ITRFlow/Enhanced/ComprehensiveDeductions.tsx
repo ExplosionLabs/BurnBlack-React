@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useITRFlow } from '../../../contexts/ITRFlowContext';
 import { 
   ArrowRight, 
   Plus, 
@@ -62,10 +63,13 @@ interface TaxSaving {
 
 const ComprehensiveDeductions: React.FC = () => {
   const navigate = useNavigate();
+  const { data, updateDeductionDetails, markStepCompleted, getTotalIncome, calculateTax } = useITRFlow();
   const [selectedSections, setSelectedSections] = useState<string[]>([]);
   const [deductionData, setDeductionData] = useState<DeductionData>({});
   const [taxSaving, setTaxSaving] = useState<TaxSaving | null>(null);
-  const [annualIncome] = useState(800000); // This would come from income flow
+  
+  // Get actual income from context instead of hardcoded value
+  const annualIncome = getTotalIncome();
 
   const deductionSections: DeductionSection[] = [
     // Popular Deductions
@@ -78,13 +82,13 @@ const ComprehensiveDeductions: React.FC = () => {
       maxLimit: 150000,
       category: 'popular',
       fields: [
-        { id: 'lifeInsurance', name: 'Life Insurance Premium', type: 'number', placeholder: '50000', required: false },
-        { id: 'ppf', name: 'PPF Contribution', type: 'number', placeholder: '150000' },
-        { id: 'elss', name: 'ELSS Mutual Funds', type: 'number', placeholder: '50000' },
-        { id: 'nsc', name: 'NSC Investment', type: 'number', placeholder: '25000' },
-        { id: 'taxSavingFD', name: 'Tax Saving FD', type: 'number', placeholder: '25000' },
-        { id: 'ulip', name: 'ULIP Premium', type: 'number', placeholder: '30000' },
-        { id: 'homeLoanPrincipal', name: 'Home Loan Principal', type: 'number', placeholder: '100000' }
+        { id: 'lifeInsurance', name: 'Life Insurance Premium', type: 'number', placeholder: 'Enter premium amount', required: false },
+        { id: 'ppf', name: 'PPF Contribution', type: 'number', placeholder: 'Enter PPF amount' },
+        { id: 'elss', name: 'ELSS Mutual Funds', type: 'number', placeholder: 'Enter investment amount' },
+        { id: 'nsc', name: 'NSC Investment', type: 'number', placeholder: 'Enter NSC amount' },
+        { id: 'taxSavingFD', name: 'Tax Saving FD', type: 'number', placeholder: 'Enter FD amount' },
+        { id: 'ulip', name: 'ULIP Premium', type: 'number', placeholder: 'Enter ULIP amount' },
+        { id: 'homeLoanPrincipal', name: 'Home Loan Principal', type: 'number', placeholder: 'Enter principal amount' }
       ],
       selected: false
     },
@@ -97,10 +101,10 @@ const ComprehensiveDeductions: React.FC = () => {
       maxLimit: 75000,
       category: 'medical',
       fields: [
-        { id: 'selfFamily', name: 'Self & Family Premium', type: 'number', placeholder: '25000' },
-        { id: 'parents', name: 'Parents Premium', type: 'number', placeholder: '25000' },
-        { id: 'preventiveHealth', name: 'Preventive Health Checkup', type: 'number', placeholder: '5000' },
-        { id: 'seniorCitizen', name: 'Senior Citizen Premium', type: 'number', placeholder: '50000' }
+        { id: 'selfFamily', name: 'Self & Family Premium', type: 'number', placeholder: 'Enter premium amount' },
+        { id: 'parents', name: 'Parents Premium', type: 'number', placeholder: 'Enter premium amount' },
+        { id: 'preventiveHealth', name: 'Preventive Health Checkup', type: 'number', placeholder: 'Enter checkup amount' },
+        { id: 'seniorCitizen', name: 'Senior Citizen Premium', type: 'number', placeholder: 'Enter premium amount' }
       ],
       selected: false
     },
@@ -113,7 +117,7 @@ const ComprehensiveDeductions: React.FC = () => {
       maxLimit: 10000,
       category: 'investment',
       fields: [
-        { id: 'savingsInterest', name: 'Savings Account Interest', type: 'number', placeholder: '10000' }
+        { id: 'savingsInterest', name: 'Savings Account Interest', type: 'number', placeholder: 'Enter interest amount' }
       ],
       selected: false
     },
@@ -351,12 +355,12 @@ const ComprehensiveDeductions: React.FC = () => {
       return total + limitedAmount;
     }, 0);
 
-    // Tax calculation (simplified)
+    // Tax calculation using context method
     const taxableIncomeOld = Math.max(0, annualIncome - totalDeductions - 50000); // Standard deduction
     const taxableIncomeNew = Math.max(0, annualIncome - 50000); // Only standard deduction
 
-    const oldRegimeTax = calculateTax(taxableIncomeOld, 'old');
-    const newRegimeTax = calculateTax(taxableIncomeNew, 'new');
+    const oldRegimeTax = calculateTaxInternal(taxableIncomeOld, 'old');
+    const newRegimeTax = calculateTaxInternal(taxableIncomeNew, 'new');
 
     setTaxSaving({
       oldRegime: oldRegimeTax,
@@ -367,7 +371,7 @@ const ComprehensiveDeductions: React.FC = () => {
     });
   };
 
-  const calculateTax = (income: number, regime: 'old' | 'new'): number => {
+  const calculateTaxInternal = (income: number, regime: 'old' | 'new'): number => {
     if (regime === 'old') {
       if (income <= 250000) return 0;
       if (income <= 500000) return (income - 250000) * 0.05;
@@ -383,12 +387,118 @@ const ComprehensiveDeductions: React.FC = () => {
     }
   };
 
+  // Load existing deduction data from context
+  useEffect(() => {
+    if (data.deductionDetails) {
+      const existingData: DeductionData = {};
+      const existingSections: string[] = [];
+      
+      // Map context data back to local form data
+      if (data.deductionDetails.section80C && data.deductionDetails.section80C.total > 0) {
+        existingSections.push('80C');
+        existingData['80C'] = {
+          lifeInsurance: data.deductionDetails.section80C.lifeInsurance?.toString() || '',
+          ppf: data.deductionDetails.section80C.ppf?.toString() || '',
+          elss: data.deductionDetails.section80C.elss?.toString() || '',
+          nsc: data.deductionDetails.section80C.nsc?.toString() || '',
+          taxSavingFD: data.deductionDetails.section80C.taxSavingFD?.toString() || '',
+          ulip: data.deductionDetails.section80C.ulip?.toString() || '',
+          homeLoanPrincipal: data.deductionDetails.section80C.homeLoanPrincipal?.toString() || ''
+        };
+      }
+      
+      if (data.deductionDetails.section80D && data.deductionDetails.section80D.total > 0) {
+        existingSections.push('80D');
+        existingData['80D'] = {
+          selfFamily: data.deductionDetails.section80D.selfAndFamily?.toString() || '',
+          parents: data.deductionDetails.section80D.parents?.toString() || '',
+          preventiveHealth: data.deductionDetails.section80D.preventiveHealthCheckup?.toString() || '',
+          seniorCitizen: data.deductionDetails.section80D.seniorCitizenPremium?.toString() || ''
+        };
+      }
+      
+      if (data.deductionDetails.section80E && data.deductionDetails.section80E.educationLoanInterest > 0) {
+        existingSections.push('80E');
+        existingData['80E'] = {
+          loanInterest: data.deductionDetails.section80E.educationLoanInterest?.toString() || ''
+        };
+      }
+      
+      setSelectedSections(existingSections);
+      setDeductionData(existingData);
+    }
+  }, [data.deductionDetails]);
+
   useEffect(() => {
     calculateTaxSaving();
-  }, [deductionData]);
+  }, [deductionData, annualIncome]);
 
   const handleContinue = () => {
+    // Save deduction data to context before proceeding
+    saveDeductionDataToContext();
+    markStepCompleted('deductions');
     navigate('/fileITR/smart-flow/review');
+  };
+
+  const saveDeductionDataToContext = () => {
+    // Convert local deduction data to context format
+    const contextDeductionData: any = {};
+    
+    selectedSections.forEach(sectionId => {
+      const sectionData = deductionData[sectionId];
+      if (!sectionData) return;
+      
+      switch (sectionId) {
+        case '80C':
+          contextDeductionData.section80C = {
+            lifeInsurance: parseFloat(sectionData.lifeInsurance) || 0,
+            ppf: parseFloat(sectionData.ppf) || 0,
+            elss: parseFloat(sectionData.elss) || 0,
+            nsc: parseFloat(sectionData.nsc) || 0,
+            taxSavingFD: parseFloat(sectionData.taxSavingFD) || 0,
+            ulip: parseFloat(sectionData.ulip) || 0,
+            homeLoanPrincipal: parseFloat(sectionData.homeLoanPrincipal) || 0,
+            total: Math.min(150000, (parseFloat(sectionData.lifeInsurance) || 0) + 
+                                   (parseFloat(sectionData.ppf) || 0) + 
+                                   (parseFloat(sectionData.elss) || 0) + 
+                                   (parseFloat(sectionData.nsc) || 0) + 
+                                   (parseFloat(sectionData.taxSavingFD) || 0) + 
+                                   (parseFloat(sectionData.ulip) || 0) + 
+                                   (parseFloat(sectionData.homeLoanPrincipal) || 0))
+          };
+          break;
+        case '80D':
+          contextDeductionData.section80D = {
+            selfAndFamily: parseFloat(sectionData.selfFamily) || 0,
+            parents: parseFloat(sectionData.parents) || 0,
+            preventiveHealthCheckup: parseFloat(sectionData.preventiveHealth) || 0,
+            seniorCitizenPremium: parseFloat(sectionData.seniorCitizen) || 0,
+            total: Math.min(75000, (parseFloat(sectionData.selfFamily) || 0) + 
+                                  (parseFloat(sectionData.parents) || 0) + 
+                                  (parseFloat(sectionData.preventiveHealth) || 0) + 
+                                  (parseFloat(sectionData.seniorCitizen) || 0))
+          };
+          break;
+        case '80E':
+          contextDeductionData.section80E = {
+            educationLoanInterest: parseFloat(sectionData.loanInterest) || 0
+          };
+          break;
+        // Add other section mappings as needed
+      }
+    });
+    
+    // Calculate total deductions
+    const totalDeductions = Object.values(contextDeductionData).reduce((total: number, section: any) => {
+      if (section && typeof section === 'object' && section.total !== undefined) {
+        return total + section.total;
+      }
+      return total;
+    }, 0);
+    
+    contextDeductionData.totalDeductions = totalDeductions;
+    
+    updateDeductionDetails(contextDeductionData);
   };
 
   const categorizedSections = {
