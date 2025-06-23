@@ -20,7 +20,7 @@ const AuthCallback: React.FC = () => {
         if (data.session) {
           // Successfully authenticated, redirect to dashboard
           console.log('User authenticated:', data.session.user)
-          navigate('/fileITR')
+          navigate('/dashboard')
         } else {
           // No session found, redirect to login
           navigate('/login')

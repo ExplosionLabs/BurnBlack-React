@@ -44,6 +44,8 @@ import Register from "../pages/ImportantPage/Register";
 import SupabaseLogin from "../pages/ImportantPage/Login/SupabaseLogin";
 import SupabaseRegister from "../pages/ImportantPage/Register/SupabaseRegister";
 import AuthCallback from "../pages/AuthCallback";
+import SupabaseDashboard from "../components/SupabaseDashboard";
+import SupabaseProtectedRoute from "../components/SupabaseProtectedRoute";
 import ErrorPage from "../pages/ErrorPage";
 import UpdateProfile from "../pages/UpdateProfile";
 import ChangePassword from "../pages/ChangePassword";
@@ -175,6 +177,14 @@ function Router() {
           element: <AuthCallback />,
         },
         {
+          path: "/dashboard",
+          element: (
+            <SupabaseProtectedRoute>
+              <SupabaseDashboard />
+            </SupabaseProtectedRoute>
+          ),
+        },
+        {
           path: "/wallet",
           element: (
             <Layout>
@@ -237,6 +247,14 @@ function Router() {
     },
     {
       path: "/fileITR",
+      element: (
+        <SupabaseProtectedRoute>
+          <SupabaseDashboard />
+        </SupabaseProtectedRoute>
+      ),
+    },
+    {
+      path: "/fileITR-old",
       element: <Main></Main>,
       children: [
         {

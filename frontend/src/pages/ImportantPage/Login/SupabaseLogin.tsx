@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import { FormInput, FormCheck } from "@/components/Base/Form";
 import Button from "@/components/Base/Button";
 import { motion } from 'framer-motion';
@@ -9,12 +9,22 @@ import { useAuth } from '../../../contexts/SupabaseAuthContext';
 
 function SupabaseLogin() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signInWithEmail, signInWithGoogle, loading, error, clearError } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  useEffect(() => {
+    // Check for message from registration
+    const urlParams = new URLSearchParams(location.search);
+    const message = urlParams.get('message');
+    if (message) {
+      toast.info(decodeURIComponent(message));
+    }
+  }, [location]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,7 +50,7 @@ function SupabaseLogin() {
 
       if (data.user) {
         toast.success('Login successful!');
-        navigate("/fileITR");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error('Login error:', error);

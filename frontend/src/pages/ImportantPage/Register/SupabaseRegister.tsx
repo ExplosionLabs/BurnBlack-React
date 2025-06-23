@@ -100,11 +100,11 @@ function SupabaseRegister() {
         if (data.user.email_confirmed_at) {
           // User is already confirmed, redirect to dashboard
           toast.success('Registration successful!');
-          navigate("/fileITR");
+          navigate("/dashboard");
         } else {
           // User needs to confirm email
-          toast.success('Registration successful! Please check your email to verify your account.');
-          navigate("/login?message=" + encodeURIComponent('Please check your email to verify your account'));
+          toast.success(`Registration successful! We've sent a verification email to ${formData.email}. Please check your email and click the verification link to complete your registration.`);
+          navigate("/login?message=" + encodeURIComponent('Please check your email to verify your account before signing in'));
         }
       }
     } catch (error) {

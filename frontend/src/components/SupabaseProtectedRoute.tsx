@@ -33,7 +33,7 @@ const SupabaseProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // If user is authenticated but trying to access auth pages, redirect to dashboard
   if (!requireAuth && user && (location.pathname === '/login' || location.pathname === '/register')) {
-    return <Navigate to="/fileITR" replace />
+    return <Navigate to="/dashboard" replace />
   }
 
   return <>{children}</>
