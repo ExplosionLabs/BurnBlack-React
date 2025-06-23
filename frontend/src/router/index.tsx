@@ -288,16 +288,14 @@ function Router() {
           <SupabaseDashboard />
         </SupabaseProtectedRoute>
       ),
-      children: [
-        {
-          path: "smart-flow/*",
-          element: (
-            <SupabaseProtectedRoute>
-              <SmartITRFlow />
-            </SupabaseProtectedRoute>
-          ),
-        },
-      ],
+    },
+    {
+      path: "/fileITR/smart-flow/*",
+      element: (
+        <SupabaseProtectedRoute>
+          <SmartITRFlow />
+        </SupabaseProtectedRoute>
+      ),
     },
     {
       path: "/fileITR-old",
