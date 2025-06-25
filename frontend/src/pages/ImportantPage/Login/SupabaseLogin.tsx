@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../../../contexts/SupabaseAuthContext';
+import { ValidationUtils } from '../../../utils/validation';
+import { ErrorHandler } from '../../../utils/errorHandler';
+import LoadingButton from '../../../components/Common/LoadingButton';
 
 function SupabaseLogin() {
   const navigate = useNavigate();
@@ -15,6 +18,11 @@ function SupabaseLogin() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+  });
+
+  const [validationErrors, setValidationErrors] = useState({
+    email: '',
+    password: ''
   });
 
   useEffect(() => {
@@ -29,14 +37,32 @@ function SupabaseLogin() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    if (error) clearError(); // Clear error when user starts typing
+    
+    // Clear validation error for the field being edited
+    if (validationErrors[name as keyof typeof validationErrors]) {
+      setValidationErrors(prev => ({ ...prev, [name]: '' }));
+    }
+    
+    if (error) clearError(); // Clear auth error when user starts typing
   };
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.email || !formData.password) {
-      toast.error('Please fill in all fields');
+    // Validate email
+    const emailValidation = ValidationUtils.validateEmail(formData.email);
+    const passwordValidation = formData.password ? { isValid: true } : { isValid: false, error: 'Password is required' };
+    
+    const newValidationErrors = {
+      email: emailValidation.isValid ? '' : emailValidation.error || '',
+      password: passwordValidation.isValid ? '' : passwordValidation.error || ''
+    };
+    
+    setValidationErrors(newValidationErrors);
+    
+    // If validation fails, don't proceed
+    if (!emailValidation.isValid || !passwordValidation.isValid) {
+      toast.error('Please fix the validation errors');
       return;
     }
 
@@ -53,8 +79,7 @@ function SupabaseLogin() {
         navigate("/dashboard");
       }
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error('An unexpected error occurred');
+      ErrorHandler.handleAuthError(error, 'email_login');
     }
   };
 
@@ -70,8 +95,7 @@ function SupabaseLogin() {
       // The redirect will be handled by the OAuth flow
       // User will be redirected to /auth/callback and then to /fileITR
     } catch (error) {
-      console.error('Google login error:', error);
-      toast.error('Google login failed');
+      ErrorHandler.handleAuthError(error, 'google_login');
     }
   };
 
@@ -115,9 +139,16 @@ function SupabaseLogin() {
                 required
                 value={formData.email}
                 onChange={handleInputChange}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-sm ${
+                  validationErrors.email 
+                    ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
+                    : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500'
+                }`}
                 placeholder="Enter your email"
               />
+              {validationErrors.email && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -130,9 +161,16 @@ function SupabaseLogin() {
                 required
                 value={formData.password}
                 onChange={handleInputChange}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                className={`appearance-none relative block w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-sm ${
+                  validationErrors.password 
+                    ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
+                    : 'border-gray-300 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500'
+                }`}
                 placeholder="Enter your password"
               />
+              {validationErrors.password && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+              )}
             </div>
           </div>
 
@@ -158,25 +196,16 @@ function SupabaseLogin() {
           </div>
 
           <div className="space-y-4">
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+            <LoadingButton
               type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              loading={loading}
+              loadingText="Signing in..."
+              variant="primary"
+              size="md"
+              className="w-full"
             >
-              {loading ? (
-                <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Signing in...
-                </span>
-              ) : (
-                'Sign in'
-              )}
-            </motion.button>
+              Sign in
+            </LoadingButton>
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -187,13 +216,14 @@ function SupabaseLogin() {
               </div>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
+            <LoadingButton
               type="button"
               onClick={handleGoogleLogin}
-              disabled={loading}
-              className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              loading={loading}
+              loadingText="Connecting..."
+              variant="secondary"
+              size="md"
+              className="w-full bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:bg-gray-100"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -202,7 +232,7 @@ function SupabaseLogin() {
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               Continue with Google
-            </motion.button>
+            </LoadingButton>
           </div>
         </motion.form>
 

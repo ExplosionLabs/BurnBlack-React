@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useITRFlow } from '../../../contexts/ITRFlowContext';
+import { ITRFilingService, ITRFilingResult, FilingProgress } from '../../../services/ITRFilingService';
+import { toast } from 'react-toastify';
 import { 
   CheckCircle, 
   Upload, 
@@ -22,31 +24,13 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-interface SubmissionStatus {
-  stage: 'uploading' | 'processing' | 'validating' | 'filing' | 'completed' | 'error';
-  progress: number;
-  message: string;
-  estimatedTime?: string;
-}
+// Using FilingProgress from ITRFilingService
 
-interface ITRFilingResult {
-  acknowledgmentNumber: string;
-  filingDate: string;
-  assessmentYear: string;
-  itrType: string;
-  refundAmount: number;
-  status: 'Filed Successfully' | 'Processing' | 'Verified' | 'Error';
-  processingTime: string;
-  downloadLinks: {
-    acknowledgment: string;
-    itrXML: string;
-    taxComputationSheet: string;
-  };
-}
+// Using ITRFilingResult from ITRFilingService
 
 const SmartSubmit: React.FC = () => {
   const { data, getTotalIncome, getTotalDeductions } = useITRFlow();
-  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>({
+  const [submissionStatus, setSubmissionStatus] = useState<FilingProgress>({
     stage: 'uploading',
     progress: 0,
     message: 'Preparing your ITR for submission...'
@@ -54,84 +38,79 @@ const SmartSubmit: React.FC = () => {
   
   const [filingResult, setFilingResult] = useState<ITRFilingResult | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   useEffect(() => {
-    simulateSubmissionProcess();
+    startITRFiling();
   }, []);
 
-  const simulateSubmissionProcess = async () => {
-    const stages: SubmissionStatus[] = [
-      {
-        stage: 'uploading',
-        progress: 20,
-        message: 'Uploading your ITR data to Income Tax Portal...',
-        estimatedTime: '30 seconds'
-      },
-      {
-        stage: 'processing',
-        progress: 40,
-        message: 'Processing and validating tax calculations...',
-        estimatedTime: '1 minute'
-      },
-      {
-        stage: 'validating',
-        progress: 60,
-        message: 'Validating against IT Department schemas...',
-        estimatedTime: '45 seconds'
-      },
-      {
-        stage: 'filing',
-        progress: 80,
-        message: 'Filing ITR with Income Tax Department...',
-        estimatedTime: '30 seconds'
-      },
-      {
-        stage: 'completed',
-        progress: 100,
-        message: 'ITR filed successfully! Generating confirmation...',
-        estimatedTime: 'Complete'
-      }
-    ];
-
-    for (let i = 0; i < stages.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setSubmissionStatus(stages[i]);
+  const startITRFiling = async () => {
+    try {
+      setIsRetrying(false);
       
-      if (stages[i].stage === 'completed') {
-        // Generate filing result based on actual user data
-        const refundAmount = Math.max(0, data.taxCalculation.refundOrDemand || 0);
-        const result: ITRFilingResult = {
-          acknowledgmentNumber: `${Date.now()}-ITR-${data.personalDetails.pan?.replace(/\s/g, '')?.slice(-4) || 'XXXX'}`,
-          filingDate: new Date().toLocaleDateString('en-IN'),
-          assessmentYear: data.assessmentYear || '2024-25',
-          itrType: data.itrType || 'ITR-1',
-          refundAmount: refundAmount,
-          status: 'Filed Successfully',
-          processingTime: '2 minutes 30 seconds',
-          downloadLinks: {
-            acknowledgment: `/downloads/acknowledgment_${data.personalDetails.pan?.replace(/\s/g, '')}.pdf`,
-            itrXML: `/downloads/itr_${data.personalDetails.pan?.replace(/\s/g, '')}.xml`,
-            taxComputationSheet: `/downloads/tax_computation_${data.personalDetails.pan?.replace(/\s/g, '')}.pdf`
-          }
-        };
-        
-        setFilingResult(result);
-        setShowCelebration(true);
-        
-        // Hide celebration after 3 seconds
-        setTimeout(() => setShowCelebration(false), 3000);
+      // Create ITRData object from context data
+      const itrData = {
+        personalDetails: data.personalDetails,
+        incomeDetails: data.incomeDetails,
+        deductionDetails: data.deductionDetails,
+        taxCalculation: data.taxCalculation,
+        itrType: data.itrType,
+        assessmentYear: data.assessmentYear,
+        filingDate: data.filingDate,
+        submissionType: data.submissionType
+      };
+
+      let result: ITRFilingResult;
+
+      // Try real API first, fallback to test mode if not available
+      const hasBackendURL = import.meta.env.VITE_BACKEND_URL;
+      
+      if (hasBackendURL) {
+        console.info('Using real backend API for ITR filing');
+        result = await ITRFilingService.fileITR(itrData, setSubmissionStatus);
+      } else {
+        console.info('No backend URL configured. Using fallback ITR filing service for development');
+        result = await ITRFilingService.fileITRFallback(itrData, setSubmissionStatus);
       }
+
+      setFilingResult(result);
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 3000);
+
+      toast.success('ITR filed successfully!');
+
+    } catch (error) {
+      console.error('ITR filing failed:', error);
+      
+      setSubmissionStatus({
+        stage: 'error',
+        progress: 0,
+        message: error instanceof Error ? error.message : 'Filing failed due to an unexpected error'
+      });
+
+      toast.error(error instanceof Error ? error.message : 'Filing failed');
     }
   };
 
-  const downloadFile = (type: string, url: string) => {
-    // In a real implementation, this would download the actual file
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${type}_${filingResult?.acknowledgmentNumber}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const retryFiling = async () => {
+    setIsRetrying(true);
+    setSubmissionStatus({
+      stage: 'uploading',
+      progress: 0,
+      message: 'Retrying ITR submission...'
+    });
+    await startITRFiling();
+  };
+
+  const downloadFile = async (type: string, url: string) => {
+    try {
+      const filename = `${type}_${filingResult?.acknowledgmentNumber}.pdf`;
+      await ITRFilingService.downloadDocument(url, filename);
+      toast.success(`${type} downloaded successfully`);
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast.error(`Failed to download ${type}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const getStatusIcon = (stage: string) => {
@@ -538,20 +517,65 @@ const SmartSubmit: React.FC = () => {
           </div>
         </motion.div>
 
+        {/* Error State with Retry */}
+        {submissionStatus.stage === 'error' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 bg-red-50 border border-red-200 rounded-lg p-6"
+          >
+            <div className="flex items-start gap-4">
+              <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-red-900 mb-2">Filing Failed</h3>
+                <p className="text-red-800 mb-4">{submissionStatus.message}</p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={retryFiling}
+                    disabled={isRetrying}
+                    className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {isRetrying ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        Retrying...
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCw className="w-4 h-4" />
+                        Retry Filing
+                      </>
+                    )}
+                  </button>
+                  <Link
+                    to="/fileITR/smart-flow/review"
+                    className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                    Back to Review
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Security Notice */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4"
-        >
-          <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-green-600" />
-            <p className="text-green-800 font-medium">
-              Your data is being transmitted securely using 256-bit SSL encryption
-            </p>
-          </div>
-        </motion.div>
+        {submissionStatus.stage !== 'error' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-8 bg-green-50 border border-green-200 rounded-lg p-4"
+          >
+            <div className="flex items-center gap-2">
+              <Shield className="w-5 h-5 text-green-600" />
+              <p className="text-green-800 font-medium">
+                Your data is being transmitted securely using 256-bit SSL encryption
+              </p>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );

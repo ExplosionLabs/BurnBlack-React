@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { useNotification } from '../contexts/NotificationContext';
+import { toast } from 'react-toastify';
 
 interface ApiError {
   statusCode: number;
@@ -119,11 +120,113 @@ export const handleValidationError = (error: unknown): Record<string, string> =>
   return {};
 };
 
+// Additional standardized error handlers
+export const ErrorHandler = {
+  // Standard error handling with toast notifications
+  handle(error: unknown, context: { component: string; action: string }): void {
+    console.error(`Error in ${context.component} - ${context.action}:`, error);
+    
+    let message = 'An unexpected error occurred';
+    
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (typeof error === 'string') {
+      message = error;
+    }
+    
+    toast.error(message);
+  },
+
+  // Auth-specific error handling
+  handleAuthError(error: unknown, action: string): void {
+    console.error(`Auth error - ${action}:`, error);
+    
+    let message = 'Authentication failed';
+    
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        message = 'Invalid credentials. Please try again.';
+      } else if (error.response?.status === 403) {
+        message = 'Access denied. Please check your permissions.';
+      } else {
+        message = error.response?.data?.message || 'Authentication failed';
+      }
+    } else if (error instanceof Error) {
+      message = error.message;
+    }
+    
+    toast.error(message);
+  },
+
+  // Form validation error handling
+  handleFormError(error: unknown, formName: string): void {
+    console.error(`Form error - ${formName}:`, error);
+    
+    if (axios.isAxiosError(error) && error.response?.status === 422) {
+      const data = error.response.data as ApiError;
+      if (data.errors) {
+        const errorMessages = Object.entries(data.errors)
+          .map(([field, messages]) => `${field}: ${(messages as string[]).join(', ')}`)
+          .join('\n');
+        toast.error(errorMessages);
+        return;
+      }
+    }
+    
+    const message = error instanceof Error ? error.message : 'Form validation failed';
+    toast.error(message);
+  },
+
+  // File operation error handling
+  handleFileError(error: unknown, fileName: string, operation: string): void {
+    console.error(`File error - ${operation} ${fileName}:`, error);
+    
+    let message = `Failed to ${operation} ${fileName}`;
+    
+    if (error instanceof Error) {
+      message = error.message;
+    }
+    
+    toast.error(message);
+  },
+
+  // API-specific error handling
+  handleAPIError(error: unknown, endpoint: string, method: string): void {
+    console.error(`API error - ${method} ${endpoint}:`, error);
+    
+    try {
+      handleApiError(error);
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error('API request failed');
+      }
+    }
+  },
+
+  // Success message
+  showSuccess(message: string): void {
+    toast.success(message);
+  },
+
+  // Info message
+  showInfo(message: string): void {
+    toast.info(message);
+  },
+
+  // Warning message
+  showWarning(message: string): void {
+    toast.warning(message);
+  }
+};
+
 // Export all error handling utilities
 export default {
   handleApiError,
   useErrorHandler,
   isApiError,
   getErrorMessage,
-  handleValidationError
+  handleValidationError,
+  ErrorHandler
 }; 

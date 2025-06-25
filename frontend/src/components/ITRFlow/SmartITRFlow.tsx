@@ -179,7 +179,7 @@ const SmartITRFlow: React.FC = () => {
             </div>
 
             {/* Center - Progress Steps */}
-            <div className="hidden lg:flex items-center space-x-1">
+            <div className="hidden md:flex items-center space-x-1">
               {flowSteps.map((step, index) => (
                 <div key={step.id} className="flex items-center">
                   <button
@@ -247,7 +247,7 @@ const SmartITRFlow: React.FC = () => {
       </div>
 
       {/* Mobile Progress Bar */}
-      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3">
+      <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-900">
             {flowSteps.find(s => s.current)?.title}

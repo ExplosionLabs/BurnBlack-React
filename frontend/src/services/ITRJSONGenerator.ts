@@ -306,6 +306,52 @@ interface ITRData {
 
 export class ITRJSONGenerator {
   
+  static validateRequiredData(data: ITRData): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    // Validate personal details
+    if (!data.personalDetails.name) errors.push('Name is required');
+    if (!data.personalDetails.pan) errors.push('PAN is required');
+    if (!data.personalDetails.email) errors.push('Email is required');
+    if (!data.personalDetails.mobile) errors.push('Mobile number is required');
+    if (!data.personalDetails.dateOfBirth) errors.push('Date of birth is required');
+    if (!data.personalDetails.address?.line1) errors.push('Address is required');
+    if (!data.personalDetails.address?.city) errors.push('City is required');
+    if (!data.personalDetails.address?.state) errors.push('State is required');
+    if (!data.personalDetails.address?.pincode) errors.push('Pincode is required');
+
+    // Validate income details
+    let hasIncome = false;
+    const income = data.incomeDetails;
+    
+    if (income.salary && income.salary.totalGrossSalary > 0) hasIncome = true;
+    if (income.interest && income.interest.totalInterest > 0) hasIncome = true;
+    if (income.dividend && income.dividend.totalDividend > 0) hasIncome = true;
+    if (income.capitalGains && (income.capitalGains.totalSTCG > 0 || income.capitalGains.totalLTCG > 0)) hasIncome = true;
+    if (income.houseProperty && income.houseProperty.length > 0) hasIncome = true;
+    if (income.business && income.business.netProfit > 0) hasIncome = true;
+    if (income.professional && income.professional.netIncome > 0) hasIncome = true;
+    if (income.otherIncome && income.otherIncome.totalOtherIncome > 0) hasIncome = true;
+
+    if (!hasIncome) errors.push('At least one income source with positive amount is required');
+
+    // Validate tax calculation
+    if (!data.taxCalculation.grossTotalIncome || data.taxCalculation.grossTotalIncome <= 0) {
+      errors.push('Gross total income must be calculated and greater than zero');
+    }
+
+    // Validate assessment year
+    if (!data.assessmentYear) errors.push('Assessment year is required');
+    
+    // Validate ITR type
+    if (!data.itrType) errors.push('ITR type must be determined');
+
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  }
+
   static determineITRType(incomeData: IncomeData): string {
     // ITR-3: Business or Professional Income
     if (incomeData.business || incomeData.professional) {
@@ -619,6 +665,12 @@ export class ITRJSONGenerator {
   }
   
   static generateComprehensiveJSON(data: ITRData): object {
+    // Validate data before generation
+    const validation = this.validateRequiredData(data);
+    if (!validation.isValid) {
+      throw new Error(`Data validation failed: ${validation.errors.join(', ')}`);
+    }
+
     const itrType = this.determineITRType(data.incomeDetails);
     data.itrType = itrType as any;
     

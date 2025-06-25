@@ -1,5 +1,6 @@
 // src/api/userApi.ts
 import axios from 'axios';
+import { API_CONFIG, getFullApiUrl } from '../config/api';
 
 export const registerUser = async (userData: {
   name: string;
@@ -9,7 +10,7 @@ export const registerUser = async (userData: {
 }) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/register`,
+      getFullApiUrl(API_CONFIG.ENDPOINTS.AUTH + '/register'),
       userData
     );
     return response.data;
@@ -29,7 +30,7 @@ export const registerUser = async (userData: {
 export const loginUser = async (userData: { email: string; password: string }) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/login`,
+      getFullApiUrl(API_CONFIG.ENDPOINTS.AUTH + '/login'),
       userData
     );
     return response.data;
@@ -64,6 +65,6 @@ export const loginUser = async (userData: { email: string; password: string }) =
 // }
 
 export const registerUserWithGoogle = async (data: any) => {
-  const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/auth/google`, data);
+  const response = await axios.post(getFullApiUrl(API_CONFIG.ENDPOINTS.AUTH + '/google'), data);
   return response.data;
 };

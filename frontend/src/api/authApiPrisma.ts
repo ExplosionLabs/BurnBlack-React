@@ -3,9 +3,11 @@
 
 import axios, { AxiosResponse } from 'axios';
 
+import { API_CONFIG, getFullApiUrl, getAuthHeaders } from '../config/api';
+
 // Base API configuration
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001';
-const API_PREFIX = '/api/v1/auth'; // Updated to match Prisma routes
+const API_BASE_URL = API_CONFIG.BASE_URL;
+const API_PREFIX = API_CONFIG.ENDPOINTS.AUTH;
 
 // Types for Prisma-based responses
 export interface PrismaUser {

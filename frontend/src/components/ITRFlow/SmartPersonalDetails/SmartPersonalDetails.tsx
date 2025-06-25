@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, User, CreditCard, Phone, MapPin, Calendar } from 'lucide-react';
 import { useITRFlow } from '../../../contexts/ITRFlowContext';
 import { useAuth } from '../../../contexts/SupabaseAuthContext';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const SmartPersonalDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -80,8 +82,8 @@ const SmartPersonalDetails: React.FC = () => {
     
     if (!formData.mobile?.trim()) {
       newErrors.mobile = 'Mobile number is required';
-    } else if (!formData.mobile.match(/^\+91\s\d{5}\s\d{5}$/)) {
-      newErrors.mobile = 'Invalid mobile format (use +91 XXXXX XXXXX)';
+    } else if (formData.mobile.length < 12) {
+      newErrors.mobile = 'Please enter a valid 10-digit mobile number';
     }
     
     if (!formData.address.line1?.trim()) newErrors.addressLine1 = 'Address line 1 is required';
@@ -131,15 +133,6 @@ const SmartPersonalDetails: React.FC = () => {
       const digits = value.replace(/\D/g, '').slice(0, 12);
       // Format as XXXX XXXX XXXX
       formattedValue = digits.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3').trim();
-    } else if (field === 'mobile') {
-      // Remove all non-digits and limit to 10 digits after +91
-      const digits = value.replace(/\D/g, '');
-      if (digits.length <= 10) {
-        // Format as +91 XXXXX XXXXX
-        formattedValue = digits ? `+91 ${digits.slice(0, 5)} ${digits.slice(5, 10)}`.trim() : '';
-      } else {
-        return; // Don't update if more than 10 digits
-      }
     } else if (field === 'pan') {
       // Auto-uppercase PAN and limit to 10 characters
       formattedValue = value.toUpperCase().slice(0, 10);
@@ -162,6 +155,15 @@ const SmartPersonalDetails: React.FC = () => {
     const errorKey = field.replace('address.', '');
     if (errors[errorKey]) {
       setErrors(prev => ({ ...prev, [errorKey]: '' }));
+    }
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setFormData(prev => ({ ...prev, mobile: value }));
+    
+    // Clear error when user starts typing
+    if (errors.mobile) {
+      setErrors(prev => ({ ...prev, mobile: '' }));
     }
   };
 
@@ -339,18 +341,16 @@ const SmartPersonalDetails: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Mobile Number *
                   </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-                    <input
-                      type="tel"
-                      value={formData.mobile}
-                      onChange={(e) => handleInputChange('mobile', e.target.value)}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                        errors.mobile ? 'border-red-300' : 'border-gray-300'
-                      }`}
-                      placeholder="+91 XXXXX XXXXX"
-                    />
-                  </div>
+                  <PhoneInput
+                    country="in"
+                    value={formData.mobile}
+                    onChange={handlePhoneChange}
+                    inputClass={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                      errors.mobile ? 'border-red-300' : 'border-gray-300'
+                    }`}
+                    containerClass="w-full"
+                    buttonClass="border-gray-300"
+                  />
                   {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile}</p>}
                 </div>
               </div>

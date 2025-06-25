@@ -1,10 +1,11 @@
 import axios from "axios";
+import { API_CONFIG, getFullApiUrl } from '../config/api';
 
 export const fetchIncomeCal = async (token: string) => {
     try {
       console.log("ad");
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/calculateIncome/getTaxableIncome`,
+        getFullApiUrl(API_CONFIG.ENDPOINTS.CALCULATE_INCOME + '/getTaxableIncome'),
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -26,7 +27,7 @@ export const fetchForm16 = async (token: string) => {
     try {
       console.log("ad");
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/getForm16Data`,
+        getFullApiUrl(API_CONFIG.ENDPOINTS.FILL_DETAIL + '/getForm16Data'),
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,7 +49,7 @@ export const fetchTaxPaid = async (token: string) => {
     try {
       console.log("ad");
       const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/v1/calculateIncome/getTaxPaid`,
+        getFullApiUrl(API_CONFIG.ENDPOINTS.CALCULATE_INCOME + '/getTaxPaid'),
         {
           headers: {
             Authorization: `Bearer ${token}`,

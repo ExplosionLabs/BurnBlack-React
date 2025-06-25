@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { API_CONFIG, getFullApiUrl } from '../config/api';
 
 export const uploadForm16 = async (formData: FormData) => {
 
     const token = localStorage.getItem("token");
-    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/fillDetail/uploadForm`, formData,
+    const response = await axios.post(getFullApiUrl(API_CONFIG.ENDPOINTS.FILL_DETAIL + '/uploadForm'), formData,
         {
             headers: {
               "Content-Type": "multipart/form-data",
