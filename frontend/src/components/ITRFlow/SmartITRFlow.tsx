@@ -154,21 +154,21 @@ const SmartITRFlow: React.FC = () => {
       <div className="min-h-screen bg-gray-50">
         
         {/* Top Navigation Bar */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             
             {/* Left - Logo & Back */}
-            <div className="flex items-center">
+            <div className="flex items-center min-w-0 flex-shrink-0">
               <button
                 onClick={goHome}
-                className="flex items-center text-gray-600 hover:text-gray-900 mr-6"
+                className="flex items-center text-gray-600 hover:text-gray-900 mr-6 p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
                 <Home className="w-5 h-5" />
               </button>
               
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-gray-900">
                   Smart ITR Filing
                 </h1>
@@ -179,28 +179,85 @@ const SmartITRFlow: React.FC = () => {
             </div>
 
             {/* Center - Progress Steps */}
-            <div className="hidden md:flex items-center space-x-1">
+            <div className="hidden lg:flex items-center justify-center flex-1 max-w-4xl mx-8">
+              <div className="flex items-center space-x-2">
+                {flowSteps.map((step, index) => (
+                  <div key={step.id} className="flex items-center">
+                    <div className="flex flex-col items-center">
+                      {/* Step Circle */}
+                      <button
+                        onClick={() => handleStepNavigation(step.id)}
+                        disabled={!step.completed && !step.current}
+                        className={`relative flex items-center justify-center w-10 h-10 rounded-full text-sm font-semibold transition-all duration-200 ${ 
+                          step.current 
+                            ? 'bg-blue-600 text-white shadow-lg scale-110' 
+                            : step.completed 
+                              ? 'bg-green-500 text-white hover:bg-green-600 shadow-md' 
+                              : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        }`}
+                      >
+                        {step.completed ? (
+                          <CheckCircle className="w-5 h-5" />
+                        ) : (
+                          <span>{index + 1}</span>
+                        )}
+                      </button>
+                      
+                      {/* Step Label */}
+                      <div className="mt-2 text-center">
+                        <div className={`text-xs font-medium whitespace-nowrap ${
+                          step.current 
+                            ? 'text-blue-600' 
+                            : step.completed 
+                              ? 'text-green-600' 
+                              : 'text-gray-500'
+                        }`}>
+                          {step.title}
+                        </div>
+                        <div className="text-xs text-gray-400 mt-1">
+                          {step.estimatedTime}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Connection Line */}
+                    {index < flowSteps.length - 1 && (
+                      <div className="flex items-center mx-4 mb-8">
+                        <div className={`h-0.5 w-12 transition-colors duration-300 ${ 
+                          step.completed ? 'bg-green-400' : 'bg-gray-300'
+                        }`} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Medium Screen Steps - Simplified */}
+            <div className="hidden md:flex lg:hidden items-center space-x-1 flex-1 justify-center max-w-lg mx-4">
               {flowSteps.map((step, index) => (
                 <div key={step.id} className="flex items-center">
                   <button
                     onClick={() => handleStepNavigation(step.id)}
                     disabled={!step.completed && !step.current}
-                    className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${ 
+                    className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-semibold transition-all ${ 
                       step.current 
                         ? 'bg-blue-600 text-white' 
                         : step.completed 
-                          ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                     }`}
                   >
-                    <step.icon className="w-4 h-4 mr-2" />
-                    <span className="hidden xl:inline">{step.title}</span>
-                    <span className="xl:hidden">{index + 1}</span>
+                    {step.completed ? (
+                      <CheckCircle className="w-4 h-4" />
+                    ) : (
+                      <span>{index + 1}</span>
+                    )}
                   </button>
                   
                   {index < flowSteps.length - 1 && (
-                    <div className={`w-8 h-0.5 mx-1 ${ 
-                      step.completed ? 'bg-green-400' : 'bg-gray-200'
+                    <div className={`w-4 h-0.5 mx-1 ${ 
+                      step.completed ? 'bg-green-400' : 'bg-gray-300'
                     }`} />
                   )}
                 </div>
@@ -208,9 +265,9 @@ const SmartITRFlow: React.FC = () => {
             </div>
 
             {/* Right - Progress Summary */}
-            <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <div className="text-sm font-medium text-gray-900">
+            <div className="flex items-center space-x-4 flex-shrink-0">
+              <div className="text-right hidden sm:block">
+                <div className="text-sm font-semibold text-gray-900">
                   Step {progress.currentStep} of {progress.totalSteps}
                 </div>
                 <div className="text-xs text-gray-500">
@@ -218,24 +275,26 @@ const SmartITRFlow: React.FC = () => {
                 </div>
               </div>
               
-              <div className="w-12 h-12 relative">
-                <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+              <div className="w-14 h-14 relative">
+                <svg className="w-14 h-14 transform -rotate-90" viewBox="0 0 36 36">
                   <path
                     d="m18,2.0845 a 15.9155,15.9155 0 0,1 0,31.831 a 15.9155,15.9155 0 0,1 0,-31.831"
                     fill="none"
                     stroke="#E5E7EB"
-                    strokeWidth="2"
+                    strokeWidth="3"
                   />
                   <path
                     d="m18,2.0845 a 15.9155,15.9155 0 0,1 0,31.831 a 15.9155,15.9155 0 0,1 0,-31.831"
                     fill="none"
                     stroke="#3B82F6"
-                    strokeWidth="2"
+                    strokeWidth="3"
+                    strokeLinecap="round"
                     strokeDasharray={`${progress.dataCompleteness}, 100`}
+                    className="transition-all duration-500 ease-out"
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-blue-600">
+                  <span className="text-sm font-bold text-blue-600">
                     {progress.dataCompleteness}%
                   </span>
                 </div>
@@ -247,20 +306,50 @@ const SmartITRFlow: React.FC = () => {
       </div>
 
       {/* Mobile Progress Bar */}
-      <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-900">
-            {flowSteps.find(s => s.current)?.title}
-          </span>
-          <span className="text-sm text-gray-500">
-            {progress.currentStep}/{progress.totalSteps}
-          </span>
+      <div className="md:hidden bg-white border-b border-gray-200 px-4 py-4">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <span className="text-sm font-semibold text-gray-900">
+              {flowSteps.find(s => s.current)?.title}
+            </span>
+            <div className="text-xs text-gray-500 mt-1">
+              {flowSteps.find(s => s.current)?.description}
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="text-sm font-semibold text-gray-900">
+              {progress.currentStep}/{progress.totalSteps}
+            </span>
+            <div className="text-xs text-gray-500">
+              {flowSteps.find(s => s.current)?.estimatedTime}
+            </div>
+          </div>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div 
-            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-500 ease-out shadow-sm"
             style={{ width: `${(progress.currentStep / progress.totalSteps) * 100}%` }}
           />
+        </div>
+        
+        {/* Step Dots */}
+        <div className="flex justify-between mt-3">
+          {flowSteps.map((step, index) => (
+            <div key={step.id} className="flex flex-col items-center">
+              <div className={`w-2 h-2 rounded-full ${
+                step.current 
+                  ? 'bg-blue-600' 
+                  : step.completed 
+                    ? 'bg-green-500' 
+                    : 'bg-gray-300'
+              }`} />
+              <span className="text-xs text-gray-400 mt-1 text-center">
+                {index + 1}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
