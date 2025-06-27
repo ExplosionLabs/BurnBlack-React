@@ -121,6 +121,7 @@ import RequiredAdmin from "@/route/RequiredAdmin";
 import AllGSTData from "@/pages/ImportantPage/AdminDashboard/AllGstindata";
 import AdminDashboardLayout from "@/Layout/AdminDashboardLayout";
 import AdminUser from "@/pages/ImportantPage/AdminDashboard/AdminUser";
+import ITRDownloads from "@/pages/ImportantPage/AdminDashboard/ITRDownloads";
 import path from "path";
 import Wallet from "@/pages/Wallet/Wallet";
 import SmartITRFlow from "@/components/ITRFlow/SmartITRFlow";
@@ -266,6 +267,69 @@ function Router() {
                   <AllGSTData />
                 </RequiredAdmin>
 
+              ),
+            },
+            {
+              path: "itr-downloads",
+              element: (
+                <RequiredAdmin>
+                  <ITRDownloads />
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "database",
+              element: (
+                <RequiredAdmin>
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">Database Management</h1>
+                    <p className="text-gray-600">Supabase database tools and analytics coming soon...</p>
+                  </div>
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "analytics",
+              element: (
+                <RequiredAdmin>
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">Tax Analytics</h1>
+                    <p className="text-gray-600">Advanced analytics and reporting coming soon...</p>
+                  </div>
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "payments",
+              element: (
+                <RequiredAdmin>
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">Payment Management</h1>
+                    <p className="text-gray-600">Transaction and wallet management coming soon...</p>
+                  </div>
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "docs",
+              element: (
+                <RequiredAdmin>
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">Documentation</h1>
+                    <p className="text-gray-600">API documentation and system guides coming soon...</p>
+                  </div>
+                </RequiredAdmin>
+              ),
+            },
+            {
+              path: "settings",
+              element: (
+                <RequiredAdmin>
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">System Settings</h1>
+                    <p className="text-gray-600">Application configuration settings coming soon...</p>
+                  </div>
+                </RequiredAdmin>
               ),
             },
 

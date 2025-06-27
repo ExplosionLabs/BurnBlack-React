@@ -3,24 +3,25 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const compression = require('compression');
-const { errorHandler } = require('./middleware/errorMiddleware');
-const { notFoundHandler } = require('./middleware/notFoundMiddleware');
+const { errorHandler } = require('./src/middleware/errorMiddleware');
+const { notFoundHandler } = require('./src/middleware/notFoundMiddleware');
 
 // Import routes
-const authRoutes = require('./routes/authRoutes');
-const personalDetailRoutes = require('./routes/personalDetailRoutes');
-const contactDetailRoutes = require('./routes/contactDetailRoutes');
-const bankDetailRoutes = require('./routes/bankDetailRoutes');
-const taxRoutes = require('./routes/taxRoutes');
-const incomeRoutes = require('./routes/incomeRoutes');
-const personalInfoRoutes = require('./routes/personalInfoRoutes');
-const form16Routes = require('./routes/form16Routes');
-const propertyRoutes = require('./routes/propertyRoutes');
-const assetRoutes = require('./routes/assetRoutes');
-const businessRoutes = require('./routes/businessRoutes');
-const otherIncomeRoutes = require('./routes/otherIncomeRoutes');
-const itrRoutes = require('./routes/itrRoutes');
-const documentRoutes = require('./routes/documentRoutes');
+const authRoutes = require('./src/routes/authRoutes');
+const personalDetailRoutes = require('./src/routes/personalDetailRoutes');
+const contactDetailRoutes = require('./src/routes/contactDetailRoutes');
+const bankDetailRoutes = require('./src/routes/bankDetailRoutes');
+const taxRoutes = require('./src/routes/taxRoutes');
+const incomeRoutes = require('./src/routes/incomeRoutes');
+const personalInfoRoutes = require('./src/routes/personalInfoRoutes');
+const form16Routes = require('./src/routes/form16Routes');
+const propertyRoutes = require('./src/routes/propertyRoutes');
+const assetRoutes = require('./src/routes/assetRoutes');
+const businessRoutes = require('./src/routes/businessRoutes');
+const otherIncomeRoutes = require('./src/routes/otherIncomeRoutes');
+const itrRoutes = require('./src/routes/itrRoutesMongoDB');
+const documentRoutes = require('./src/routes/documentRoutes');
+const adminITRRoutes = require('./src/routes/adminITRRoutes');
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use('/api/business', businessRoutes);
 app.use('/api/other-income', otherIncomeRoutes);
 app.use('/api/itr', itrRoutes);
 app.use('/api/documents', documentRoutes);
+app.use('/api/admin', adminITRRoutes);
 
 // Error handling
 app.use(notFoundHandler);

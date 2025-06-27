@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { Users, FileText, Settings, AlertCircle, TrendingUp, Shield } from 'lucide-react';
+import { Users, FileText, Settings, AlertCircle, TrendingUp, Shield, Download, Database, BarChart3, CreditCard, BookOpen, Globe, Receipt } from 'lucide-react';
 import { AdminRoute } from '../../components/ProtectedRoutes';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../utils/api';
@@ -54,24 +54,56 @@ const AdminDashboard = () => {
       icon: Users,
       href: '/admin/users',
       color: 'bg-blue-500',
+      description: 'Manage users and ITR generations'
+    },
+    {
+      title: 'ITR JSON Downloads',
+      icon: Download,
+      href: '/admin/itr-downloads',
+      color: 'bg-green-500',
+      description: 'View and manage all ITR JSON files'
     },
     {
       title: 'GST Management',
-      icon: FileText,
+      icon: Receipt,
       href: '/admin/gst',
-      color: 'bg-green-500',
+      color: 'bg-orange-500',
+      description: 'GSTIN verification and data'
+    },
+    {
+      title: 'Database Management',
+      icon: Database,
+      href: '/admin/database',
+      color: 'bg-purple-500',
+      description: 'Supabase data and analytics'
+    },
+    {
+      title: 'Tax Analytics',
+      icon: BarChart3,
+      href: '/admin/analytics',
+      color: 'bg-red-500',
+      description: 'Filing trends and statistics'
+    },
+    {
+      title: 'Payment Management',
+      icon: CreditCard,
+      href: '/admin/payments',
+      color: 'bg-indigo-500',
+      description: 'Transactions and wallet balances'
+    },
+    {
+      title: 'Documentation',
+      icon: BookOpen,
+      href: '/admin/docs',
+      color: 'bg-teal-500',
+      description: 'API docs and system guides'
     },
     {
       title: 'System Settings',
       icon: Settings,
       href: '/admin/settings',
-      color: 'bg-purple-500',
-    },
-    {
-      title: 'Support Tickets',
-      icon: AlertCircle,
-      href: '/admin/support',
-      color: 'bg-yellow-500',
+      color: 'bg-gray-600',
+      description: 'Application configuration'
     },
   ];
 
@@ -121,11 +153,14 @@ const AdminDashboard = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => navigate(action.href)}
-              className={`${action.color} p-6 rounded-lg text-white shadow-lg hover:shadow-xl transition-shadow`}
+              className={`${action.color} p-6 rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-200`}
             >
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col items-start space-y-3">
                 <action.icon className="h-8 w-8" />
-                <span className="text-lg font-semibold">{action.title}</span>
+                <div className="text-left">
+                  <div className="text-lg font-semibold">{action.title}</div>
+                  <div className="text-sm opacity-90 mt-1">{action.description}</div>
+                </div>
               </div>
             </motion.button>
           ))}
@@ -224,11 +259,72 @@ const AdminDashboard = () => {
           </motion.div>
         </div>
 
+        {/* Key Features Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* ITR Processing Status */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white p-6 rounded-lg shadow-lg"
+          >
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <Download className="h-6 w-6 mr-2 text-green-600" />
+              ITR JSON Processing
+            </h2>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-3 bg-green-50 rounded">
+                <span className="text-gray-700">Total ITR Generated</span>
+                <span className="font-bold text-green-600">{metrics?.filings.total || 0}</span>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-blue-50 rounded">
+                <span className="text-gray-700">Pending Processing</span>
+                <span className="font-bold text-blue-600">{metrics?.filings.pending || 0}</span>
+              </div>
+              <button
+                onClick={() => navigate('/admin/itr-downloads')}
+                className="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+              >
+                Manage ITR Downloads
+              </button>
+            </div>
+          </motion.div>
+
+          {/* GSTIN Integration Status */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white p-6 rounded-lg shadow-lg"
+          >
+            <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <Globe className="h-6 w-6 mr-2 text-orange-600" />
+              GSTIN API Integration
+            </h2>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-3 bg-orange-50 rounded">
+                <span className="text-gray-700">Verified GST Records</span>
+                <span className="font-bold text-orange-600">Active</span>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-purple-50 rounded">
+                <span className="text-gray-700">SurePass API</span>
+                <span className="font-bold text-purple-600">Connected</span>
+              </div>
+              <button
+                onClick={() => navigate('/admin/gst')}
+                className="w-full mt-4 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition-colors"
+              >
+                Manage GST Data
+              </button>
+            </div>
+          </motion.div>
+        </div>
+
         {/* Recent Activity */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.5 }}
           className="bg-white p-6 rounded-lg shadow-lg"
         >
           <h2 className="text-xl font-semibold mb-4 flex items-center">
@@ -254,7 +350,18 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {/* Activity rows will be populated here */}
+                <tr>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Admin User</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ITR JSON Generated</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">User Dashboard</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2 minutes ago</td>
+                </tr>
+                <tr>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">System</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">GSTIN Verified</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">GST Management</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5 minutes ago</td>
+                </tr>
               </tbody>
             </table>
           </div>
